@@ -1,10 +1,12 @@
 @extends('layouts.app')
 
 @section('title', 'حسابي')
+@section('mainWidth', 'max-w-none')
 
 @section('content')
     @role('admin')
-        <x-card :hover="false" class="max-w-2xl p-8">
+        <div class="w-full lg:min-w-[1000px]">
+            <x-card :hover="false" class="w-full p-8">
             <x-page-header title="حسابي" subtitle="تحديث بيانات الحساب." />
 
             @if (session('status'))
@@ -41,8 +43,10 @@
 
                 <x-primary-button class="w-full">حفظ التغييرات</x-primary-button>
             </form>
-        </x-card>
+            </x-card>
+        </div>
     @else
+    <div class="w-full lg:min-w-[1000px]">
     <div class="grid gap-6 lg:grid-cols-3">
         <x-card class="p-8 lg:col-span-2" :hover="false">
             <h1 class="text-2xl font-bold text-slate-900">حسابي</h1>
@@ -155,6 +159,7 @@
                 </table>
             </div>
         </x-card>
+    </div>
     </div>
     @endrole
 @endsection

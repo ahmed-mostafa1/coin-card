@@ -1,17 +1,19 @@
-@extends('layouts.app')
+@extends('layouts.auth')
 
 @section('title', 'تسجيل الدخول')
 
 @section('content')
-    <div class="mx-auto max-w-md rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm">
-        <h1 class="text-2xl font-semibold text-emerald-700">تسجيل الدخول</h1>
+    <div class="space-y-6">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900">تسجيل الدخول</h1>
         <p class="mt-2 text-sm text-slate-600">أدخل بياناتك للوصول إلى حسابك.</p>
+        </div>
 
-        <div class="mt-6">
+        <div>
             <x-auth-session-status :status="session('status')" />
         </div>
 
-        <form method="POST" action="{{ route('login') }}" class="mt-6 space-y-4">
+        <form method="POST" action="{{ route('login') }}" class="space-y-4">
             @csrf
 
             <div>
@@ -39,7 +41,7 @@
             <x-primary-button class="w-full">تسجيل الدخول</x-primary-button>
         </form>
 
-        <div class="mt-6">
+        <div>
             <a href="{{ route('google.redirect') }}" class="flex w-full items-center justify-center gap-2 rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
                 تسجيل الدخول عبر Google
             </a>

@@ -1,13 +1,15 @@
-@extends('layouts.app')
+@extends('layouts.auth')
 
 @section('title', 'تعيين كلمة مرور جديدة')
 
 @section('content')
-    <div class="mx-auto max-w-md rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm">
-        <h1 class="text-2xl font-semibold text-emerald-700">تعيين كلمة مرور جديدة</h1>
-        <p class="mt-2 text-sm text-slate-600">اختر كلمة مرور جديدة لحسابك.</p>
+    <div class="space-y-6">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900">تعيين كلمة مرور جديدة</h1>
+            <p class="mt-2 text-sm text-slate-600">اختر كلمة مرور جديدة لحسابك.</p>
+        </div>
 
-        <form method="POST" action="{{ route('password.store') }}" class="mt-6 space-y-4">
+        <form method="POST" action="{{ route('password.store') }}" class="space-y-4">
             @csrf
 
             <input type="hidden" name="token" value="{{ $request->route('token') }}">

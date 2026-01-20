@@ -1,17 +1,19 @@
-@extends('layouts.app')
+@extends('layouts.auth')
 
 @section('title', 'استعادة كلمة المرور')
 
 @section('content')
-    <div class="mx-auto max-w-md rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm">
-        <h1 class="text-2xl font-semibold text-emerald-700">استعادة كلمة المرور</h1>
-        <p class="mt-2 text-sm text-slate-600">أدخل بريدك الإلكتروني لنرسل رابط إعادة التعيين.</p>
+    <div class="space-y-6">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900">استعادة كلمة المرور</h1>
+            <p class="mt-2 text-sm text-slate-600">أدخل بريدك الإلكتروني لنرسل رابط إعادة التعيين.</p>
+        </div>
 
-        <div class="mt-6">
+        <div>
             <x-auth-session-status :status="session('status')" />
         </div>
 
-        <form method="POST" action="{{ route('password.email') }}" class="mt-6 space-y-4">
+        <form method="POST" action="{{ route('password.email') }}" class="space-y-4">
             @csrf
 
             <div>

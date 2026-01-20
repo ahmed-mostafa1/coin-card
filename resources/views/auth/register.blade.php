@@ -1,13 +1,15 @@
-@extends('layouts.app')
+@extends('layouts.auth')
 
 @section('title', 'إنشاء حساب')
 
 @section('content')
-    <div class="mx-auto max-w-md rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm">
-        <h1 class="text-2xl font-semibold text-emerald-700">إنشاء حساب</h1>
-        <p class="mt-2 text-sm text-slate-600">ابدأ رحلتك معنا ببيانات بسيطة.</p>
+    <div class="space-y-6">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900">إنشاء حساب</h1>
+            <p class="mt-2 text-sm text-slate-600">ابدأ رحلتك معنا ببيانات بسيطة.</p>
+        </div>
 
-        <form method="POST" action="{{ route('register') }}" class="mt-6 space-y-4">
+        <form method="POST" action="{{ route('register') }}" class="space-y-4">
             @csrf
 
             <div>
