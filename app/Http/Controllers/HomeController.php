@@ -16,7 +16,7 @@ class HomeController extends Controller
 
         $services = \App\Models\Service::query()
             ->where('is_active', true)
-            ->with('category')
+            ->with(['category', 'variants'])
             ->latest()
             ->take(6)
             ->get();

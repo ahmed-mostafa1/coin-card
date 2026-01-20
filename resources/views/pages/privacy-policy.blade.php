@@ -3,8 +3,8 @@
 @section('title', 'سياسة الخصوصية')
 
 @section('content')
-    <div class="rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm">
-        <h1 class="text-2xl font-semibold text-emerald-700">سياسة الخصوصية</h1>
+    <x-card :hover="false">
+        <x-page-header title="سياسة الخصوصية" />
         <div class="mt-6 whitespace-pre-line text-sm leading-7 text-slate-700">
 سياسة الخصوصية – Market Card
 
@@ -79,5 +79,5 @@ https://market-card99.com
 وباستخدامك ماركت كارد، فإنك تؤكد إدراكك التام والتزامك ببنود هذه السياسة،
 ونتعهد بدورنا بتقديم تجربة رقمية راقية، آمنة، وسريعة تليق بعالم الفخامة الرقمية.
         </div>
-    </div>
+    </x-card>
 @endsection

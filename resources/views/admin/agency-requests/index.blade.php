@@ -35,7 +35,7 @@
                             <td class="py-3 text-slate-700">{{ $request->full_name }}</td>
                             <td class="py-3 text-slate-700">{{ $request->contact_number }}</td>
                             <td class="py-3 text-slate-700">{{ $request->region }}</td>
-                            <td class="py-3 text-slate-700">{{ number_format($request->starting_amount, 2) }} ر.س</td>
+                            <td class="py-3 text-slate-700">{{ number_format($request->starting_amount, 2) }} USD</td>
                             <td class="py-3 text-slate-500">{{ $request->created_at->format('Y-m-d H:i') }}</td>
                             <td class="py-3">
                                 <a href="{{ route('admin.agency-requests.show', $request) }}" class="text-emerald-700 hover:text-emerald-900">عرض</a>

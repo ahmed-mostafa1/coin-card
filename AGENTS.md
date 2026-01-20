@@ -201,6 +201,32 @@
 ### متغيرات/إعدادات
 - لا يوجد.
 
+## Phase 9
+### ما تم تنفيذه
+- إعادة تصميم كاملة لواجهة المستخدم بطابع احترافي موحّد مع تحسينات دقيقة للحركة والتفاعل.
+- توحيد المكونات البصرية وإعادة تنسيق الصفحات العامة والحساب ولوحات الأدمن.
+
+### التخطيطات/المكونات التي تم تعديلها أو إضافتها
+- تم تحديث التخطيط الأساسي: `resources/views/layouts/app.blade.php`.
+- مكونات جديدة: `resources/views/components/card.blade.php`, `resources/views/components/button.blade.php`, `resources/views/components/select.blade.php`, `resources/views/components/badge.blade.php`, `resources/views/components/table.blade.php`, `resources/views/components/empty-state.blade.php`, `resources/views/components/page-header.blade.php`.
+- تحديث مكونات الإدخال والأزرار: `resources/views/components/text-input.blade.php`, `resources/views/components/primary-button.blade.php`, `resources/views/components/input-error.blade.php`.
+
+### الصفحات المحدثة
+- الصفحة الرئيسية، صفحة الفئة، صفحة الخدمة، صفحات الحساب وسجل الرصيد والطلبات.
+- لوحات الأدمن: العمليات، طلبات الشحن، الطلبات.
+- الصفحات الثابتة: سياسة الخصوصية، من نحن.
+
+### قرارات تصميم أساسية
+- اعتماد نظام ألوان موحّد (Emerald) وخلفية محايدة مع زوايا وظلال موحّدة.
+- اعتماد مكونات مشتركة لتقليل تكرار الأنماط وضمان اتساق الواجهات.
+
+### الاعتمادات الجديدة
+- لا يوجد.
+
+### أوامر التشغيل
+- بناء الواجهة: `npm run build`
+- الاختبارات: `php artisan test`
+
 ## Phase 7
 ### ما تم تنفيذه
 - زر واتساب عائم يظهر في جميع الصفحات ويفتح المحادثة مباشرة.

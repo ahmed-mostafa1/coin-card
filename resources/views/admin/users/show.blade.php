@@ -23,11 +23,11 @@
                 <div class="mt-4 space-y-3 text-sm">
                     <div class="flex items-center justify-between">
                         <span class="text-slate-500">الرصيد المتاح</span>
-                        <span class="font-semibold text-slate-700">{{ number_format($wallet->balance, 2) }} ر.س</span>
+                        <span class="font-semibold text-slate-700">{{ number_format($wallet->balance, 2) }} USD</span>
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-slate-500">الرصيد المعلّق</span>
-                        <span class="font-semibold text-slate-700">{{ number_format($wallet->held_balance, 2) }} ر.س</span>
+                        <span class="font-semibold text-slate-700">{{ number_format($wallet->held_balance, 2) }} USD</span>
                     </div>
                 </div>
             </div>
@@ -59,7 +59,7 @@
                                             {{ $transaction->type }}
                                         @endif
                                     </td>
-                                    <td class="py-3 text-slate-700">{{ number_format($transaction->amount, 2) }} ر.س</td>
+                                    <td class="py-3 text-slate-700">{{ number_format($transaction->amount, 2) }} USD</td>
                                     <td class="py-3 text-slate-500">
                                         {{ $transaction->reference_type }} #{{ $transaction->reference_id ?? '-' }}
                                     </td>
@@ -105,9 +105,9 @@
                                         @endif
                                     </td>
                                     <td class="py-3 text-slate-700">{{ $deposit->paymentMethod->name }}</td>
-                                    <td class="py-3 text-slate-700">{{ number_format($deposit->user_amount, 2) }} ر.س</td>
+                                    <td class="py-3 text-slate-700">{{ number_format($deposit->user_amount, 2) }} USD</td>
                                     <td class="py-3 text-slate-700">
-                                        {{ $deposit->approved_amount ? number_format($deposit->approved_amount, 2) : '-' }} ر.س
+                                        {{ $deposit->approved_amount ? number_format($deposit->approved_amount, 2) : '-' }} USD
                                     </td>
                                     <td class="py-3 text-slate-500">{{ $deposit->reviewed_at?->format('Y-m-d H:i') ?? '-' }}</td>
                                     <td class="py-3 text-slate-500">{{ $deposit->created_at->format('Y-m-d') }}</td>
@@ -156,7 +156,7 @@
                                     </td>
                                     <td class="py-3 text-slate-700">{{ $order->service->name }}</td>
                                     <td class="py-3 text-slate-700">{{ $order->variant?->name ?? 'السعر الأساسي' }}</td>
-                                    <td class="py-3 text-slate-700">{{ number_format($order->amount_held, 2) }} ر.س</td>
+                                    <td class="py-3 text-slate-700">{{ number_format($order->amount_held, 2) }} USD</td>
                                     <td class="py-3 text-slate-500">{{ $order->settled_at?->format('Y-m-d H:i') ?? $order->released_at?->format('Y-m-d H:i') ?? '-' }}</td>
                                     <td class="py-3 text-slate-500">{{ $order->created_at->format('Y-m-d') }}</td>
                                     <td class="py-3">

@@ -21,11 +21,11 @@
                 </div>
                 <div class="rounded-2xl border border-slate-200 p-4">
                     <p class="text-xs text-slate-500">السعر</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ number_format($order->price_at_purchase, 2) }} ر.س</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ number_format($order->price_at_purchase, 2) }} USD</p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 p-4">
                     <p class="text-xs text-slate-500">المبلغ المعلّق</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ number_format($order->amount_held, 2) }} ر.س</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ number_format($order->amount_held, 2) }} USD</p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 p-4">
                     <p class="text-xs text-slate-500">الحالة</p>

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 
 class AccountController extends Controller
@@ -23,5 +25,38 @@ class AccountController extends Controller
             ->get();
 
         return view('account', compact('wallet', 'unreadNotificationsCount', 'recentOrders', 'recentDeposits'));
+    }
+
+    public function update(): RedirectResponse
+    {
+        $user = auth()->user();
+
+        if (! $user->hasRole('admin')) {
+            abort(403);
+        }
+
+        $validated = request()->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255', 'unique:users,email,'.$user->id],
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+        ], [
+            'name.required' => 'يرجى إدخال الاسم.',
+            'email.required' => 'يرجى إدخال البريد الإلكتروني.',
+            'email.email' => 'يرجى إدخال بريد إلكتروني صحيح.',
+            'email.unique' => 'البريد الإلكتروني مستخدم مسبقًا.',
+            'password.min' => 'كلمة المرور يجب أن تكون 8 أحرف على الأقل.',
+            'password.confirmed' => 'تأكيد كلمة المرور غير متطابق.',
+        ]);
+
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+
+        if (! empty($validated['password'])) {
+            $user->password = Hash::make($validated['password']);
+        }
+
+        $user->save();
+
+        return redirect()->route('account')->with('status', 'تم تحديث البيانات بنجاح.');
     }
 }

@@ -29,7 +29,7 @@ class OrderStatusChangedNotification extends Notification
             default => 'تم إنشاء الطلب',
         };
 
-        $amountText = number_format($this->order->amount_held, 2).' ر.س';
+        $amountText = number_format($this->order->amount_held, 2).' USD';
         $description = 'طلب #'.$this->order->id.' ('.$this->order->service->name.') بمبلغ '.$amountText.'.';
 
         return [

@@ -18,7 +18,7 @@ class NewOrderNotification extends Notification
 
     public function toDatabase(object $notifiable): array
     {
-        $amountText = number_format($this->order->amount_held, 2).' ر.س';
+        $amountText = number_format($this->order->amount_held, 2).' USD';
 
         return [
             'title' => 'طلب جديد',

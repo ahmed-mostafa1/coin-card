@@ -4,10 +4,10 @@
 
 @section('content')
     <div class="grid gap-6 lg:grid-cols-3">
-        <div class="rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm lg:col-span-2">
+        <x-card class="p-8 lg:col-span-2" :hover="false">
             <div class="flex items-center justify-between gap-4">
                 <div>
-                    <h1 class="text-2xl font-semibold text-emerald-700">طلب #{{ $order->id }}</h1>
+                    <h1 class="text-2xl font-bold text-slate-900">طلب #{{ $order->id }}</h1>
                     <p class="mt-2 text-sm text-slate-600">{{ $order->service->name }}</p>
                 </div>
                 <a href="{{ route('account.orders') }}" class="text-sm text-emerald-700 hover:text-emerald-900">عودة للطلبات</a>
@@ -16,25 +16,25 @@
             <div class="mt-6 grid gap-4 sm:grid-cols-2">
                 <div class="rounded-2xl border border-slate-200 p-4">
                     <p class="text-xs text-slate-500">السعر</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ number_format($order->price_at_purchase, 2) }} ر.س</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ number_format($order->price_at_purchase, 2) }} USD</p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 p-4">
                     <p class="text-xs text-slate-500">المبلغ المعلّق</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ number_format($order->amount_held, 2) }} ر.س</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ number_format($order->amount_held, 2) }} USD</p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 p-4">
                     <p class="text-xs text-slate-500">الحالة</p>
                     <p class="mt-2 text-sm font-semibold text-slate-700">
                         @if ($order->status === 'new')
-                            جديد
+                            <x-badge type="new">جديد</x-badge>
                         @elseif ($order->status === 'processing')
-                            قيد التنفيذ
+                            <x-badge type="processing">قيد التنفيذ</x-badge>
                         @elseif ($order->status === 'done')
-                            تم التنفيذ
+                            <x-badge type="done">تم التنفيذ</x-badge>
                         @elseif ($order->status === 'rejected')
-                            مرفوض
+                            <x-badge type="rejected">مرفوض</x-badge>
                         @else
-                            ملغي
+                            <x-badge>ملغي</x-badge>
                         @endif
                     </p>
                 </div>
@@ -77,9 +77,9 @@
                     ملاحظة الإدارة: {{ $order->admin_note }}
                 </div>
             @endif
-        </div>
+        </x-card>
 
-        <div class="rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm">
+        <x-card class="p-8" :hover="false">
             <h2 class="text-lg font-semibold text-emerald-700">سجل الطلب</h2>
             @php
                 $statusLabels = [
@@ -114,6 +114,6 @@
                     <p class="text-sm text-slate-500">لا توجد تحديثات مسجلة بعد.</p>
                 @endforelse
             </div>
-        </div>
+        </x-card>
     </div>
 @endsection

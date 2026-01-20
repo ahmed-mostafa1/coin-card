@@ -175,9 +175,9 @@ class AdminReportsTest extends TestCase
 
         $response->assertOk();
         $response->assertSeeInOrder(['طلبات الشحن', 'إجمالي الطلبات', '3']);
-        $response->assertSee('90.00 ر.س');
+        $response->assertSee('90.00 USD');
         $response->assertSeeInOrder(['الطلبات', 'إجمالي الطلبات', '4']);
-        $response->assertSee('200.00 ر.س');
+        $response->assertSee('200.00 USD');
     }
 
     public function test_admin_can_access_user_360_page(): void

@@ -3,18 +3,15 @@
 @section('title', 'سجل الرصيد')
 
 @section('content')
-    <div class="rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm">
-        <div class="flex flex-wrap items-center justify-between gap-4">
-            <div>
-                <h1 class="text-2xl font-semibold text-emerald-700">سجل الرصيد</h1>
-                <p class="mt-2 text-sm text-slate-600">جميع حركات الرصيد في محفظتك.</p>
-            </div>
-            <a href="{{ route('deposit.index') }}" class="rounded-full border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-50">شحن رصيد</a>
-        </div>
+    <x-card :hover="false">
+        <x-page-header title="سجل الرصيد" subtitle="جميع حركات الرصيد في محفظتك.">
+            <x-slot name="actions">
+                <a href="{{ route('deposit.index') }}" class="inline-flex items-center justify-center rounded-xl border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-50 cc-press">شحن رصيد</a>
+            </x-slot>
+        </x-page-header>
 
-        <div class="mt-6 overflow-x-auto">
-            <table class="w-full text-right text-sm">
-                <thead class="border-b border-slate-200 text-slate-500">
+        <x-table class="mt-6">
+            <thead class="bg-slate-50 text-slate-500">
                     <tr>
                         <th class="py-2">النوع</th>
                         <th class="py-2">المبلغ</th>
@@ -44,22 +41,22 @@
 
                             $amountClass = $displayAmount >= 0 ? 'text-emerald-700' : 'text-rose-700';
                         @endphp
-                        <tr>
+                        <tr class="transition hover:bg-slate-50">
                             <td class="py-3 text-slate-700">
                                 {{ $typeLabels[$transaction->type] ?? $transaction->type }}
                             </td>
                             <td class="py-3">
                                 <span class="{{ $amountClass }}">
-                                    {{ number_format($displayAmount, 2) }} ر.س
+                                    {{ number_format($displayAmount, 2) }} USD
                                 </span>
                             </td>
                             <td class="py-3">
                                 @if ($transaction->status === 'approved')
-                                    <span class="rounded-full bg-emerald-100 px-3 py-1 text-xs text-emerald-700">معتمد</span>
+                                    <x-badge type="approved">معتمد</x-badge>
                                 @elseif ($transaction->status === 'pending')
-                                    <span class="rounded-full bg-amber-100 px-3 py-1 text-xs text-amber-700">قيد المعالجة</span>
+                                    <x-badge type="pending">قيد المعالجة</x-badge>
                                 @else
-                                    <span class="rounded-full bg-rose-100 px-3 py-1 text-xs text-rose-700">مرفوض</span>
+                                    <x-badge type="rejected">مرفوض</x-badge>
                                 @endif
                             </td>
                             <td class="py-3 text-slate-500">{{ $transaction->created_at->format('Y-m-d') }}</td>
@@ -71,9 +68,8 @@
                         </tr>
                     @endforelse
                 </tbody>
-            </table>
-        </div>
+        </x-table>
 
         <div class="mt-6">{{ $transactions->links() }}</div>
-    </div>
+    </x-card>
 @endsection

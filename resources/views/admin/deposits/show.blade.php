@@ -25,12 +25,12 @@
                 </div>
                 <div class="rounded-2xl border border-slate-200 p-4">
                     <p class="text-xs text-slate-500">المبلغ المطلوب</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ number_format($depositRequest->user_amount, 2) }} ر.س</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ number_format($depositRequest->user_amount, 2) }} USD</p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 p-4">
                     <p class="text-xs text-slate-500">المبلغ المعتمد</p>
                     <p class="mt-2 text-sm font-semibold text-slate-700">
-                        {{ $depositRequest->approved_amount ? number_format($depositRequest->approved_amount, 2) : '-' }} ر.س
+                        {{ $depositRequest->approved_amount ? number_format($depositRequest->approved_amount, 2) : '-' }} USD
                     </p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 p-4">

@@ -3,36 +3,30 @@
 @section('title', 'الطلبات')
 
 @section('content')
-    <div class="rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm">
-        <div class="flex flex-wrap items-center justify-between gap-4">
-            <div>
-                <h1 class="text-2xl font-semibold text-emerald-700">الطلبات</h1>
-                <p class="mt-2 text-sm text-slate-600">متابعة طلبات الخدمات.</p>
-            </div>
-        </div>
+    <x-card :hover="false">
+        <x-page-header title="الطلبات" subtitle="متابعة طلبات الخدمات." />
 
         <form class="mt-6 flex flex-wrap gap-3" method="GET">
-            <select name="status" class="rounded-full border border-slate-200 px-4 py-2 text-sm text-slate-700">
+            <x-select name="status">
                 <option value="">كل الحالات</option>
                 <option value="new" @selected(request('status') === 'new')>جديد</option>
                 <option value="processing" @selected(request('status') === 'processing')>قيد التنفيذ</option>
                 <option value="done" @selected(request('status') === 'done')>تم التنفيذ</option>
                 <option value="rejected" @selected(request('status') === 'rejected')>مرفوض</option>
                 <option value="cancelled" @selected(request('status') === 'cancelled')>ملغي</option>
-            </select>
-            <input type="text" name="q" value="{{ request('q') }}" placeholder="بحث بالبريد أو الاسم" class="rounded-full border border-slate-200 px-4 py-2 text-sm">
-            <button type="submit" class="rounded-full bg-emerald-600 px-4 py-2 text-sm font-semibold text-white">تصفية</button>
+            </x-select>
+            <x-text-input name="q" value="{{ request('q') }}" placeholder="بحث بالبريد أو الاسم" />
+            <x-button type="submit">تصفية</x-button>
         </form>
 
         @if (session('status'))
-            <div class="mt-6 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+            <div class="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
                 {{ session('status') }}
             </div>
         @endif
 
-        <div class="mt-6 overflow-x-auto">
-            <table class="w-full text-right text-sm">
-                <thead class="border-b border-slate-200 text-slate-500">
+        <x-table class="mt-6">
+            <thead class="bg-slate-50 text-slate-500">
                     <tr>
                         <th class="py-2">المستخدم</th>
                         <th class="py-2">الخدمة</th>
@@ -44,21 +38,21 @@
                 </thead>
                 <tbody class="divide-y divide-slate-100">
                     @forelse ($orders as $order)
-                        <tr>
+                        <tr class="transition hover:bg-slate-50">
                             <td class="py-3 text-slate-700">{{ $order->user->name }}<div class="text-xs text-slate-500">{{ $order->user->email }}</div></td>
                             <td class="py-3 text-slate-700">{{ $order->service->name }}</td>
-                            <td class="py-3 text-slate-700">{{ number_format($order->price_at_purchase, 2) }} ر.س</td>
+                            <td class="py-3 text-slate-700">{{ number_format($order->price_at_purchase, 2) }} USD</td>
                             <td class="py-3">
                                 @if ($order->status === 'new')
-                                    <span class="rounded-full bg-amber-100 px-3 py-1 text-xs text-amber-700">جديد</span>
+                                    <x-badge type="new">جديد</x-badge>
                                 @elseif ($order->status === 'processing')
-                                    <span class="rounded-full bg-blue-100 px-3 py-1 text-xs text-blue-700">قيد التنفيذ</span>
+                                    <x-badge type="processing">قيد التنفيذ</x-badge>
                                 @elseif ($order->status === 'done')
-                                    <span class="rounded-full bg-emerald-100 px-3 py-1 text-xs text-emerald-700">تم التنفيذ</span>
+                                    <x-badge type="done">تم التنفيذ</x-badge>
                                 @elseif ($order->status === 'rejected')
-                                    <span class="rounded-full bg-rose-100 px-3 py-1 text-xs text-rose-700">مرفوض</span>
+                                    <x-badge type="rejected">مرفوض</x-badge>
                                 @else
-                                    <span class="rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-700">ملغي</span>
+                                    <x-badge>ملغي</x-badge>
                                 @endif
                             </td>
                             <td class="py-3 text-slate-500">{{ $order->created_at->format('Y-m-d') }}</td>
@@ -72,9 +66,8 @@
                         </tr>
                     @endforelse
                 </tbody>
-            </table>
-        </div>
+        </x-table>
 
         <div class="mt-6">{{ $orders->links() }}</div>
-    </div>
+    </x-card>
 @endsection

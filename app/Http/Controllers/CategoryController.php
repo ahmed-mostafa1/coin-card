@@ -11,12 +11,15 @@ class CategoryController extends Controller
     {
         abort_unless($category->is_active, 404);
 
+        $search = request('q');
+
         $services = $category->services()
             ->where('is_active', true)
+            ->when($search, fn ($query) => $query->where('name', 'like', "%{$search}%"))
             ->orderBy('sort_order')
             ->orderBy('name')
             ->get();
 
-        return view('categories.show', compact('category', 'services'));
+        return view('categories.show', compact('category', 'services', 'search'));
     }
 }

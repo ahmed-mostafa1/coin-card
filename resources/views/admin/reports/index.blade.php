@@ -54,7 +54,7 @@
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-slate-500">إجمالي المعتمد</span>
-                        <span class="font-semibold text-slate-700">{{ number_format($depositApprovedSum, 2) }} ر.س</span>
+                        <span class="font-semibold text-slate-700">{{ number_format($depositApprovedSum, 2) }} USD</span>
                     </div>
                 </div>
             </div>
@@ -84,7 +84,7 @@
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-slate-500">إيراد محصل</span>
-                        <span class="font-semibold text-slate-700">{{ number_format($settledRevenue, 2) }} ر.س</span>
+                        <span class="font-semibold text-slate-700">{{ number_format($settledRevenue, 2) }} USD</span>
                     </div>
                 </div>
             </div>
@@ -94,11 +94,11 @@
                 <div class="mt-4 space-y-3 text-sm">
                     <div class="flex items-center justify-between">
                         <span class="text-slate-500">الرصيد المتاح</span>
-                        <span class="font-semibold text-slate-700">{{ number_format($totalBalance, 2) }} ر.س</span>
+                        <span class="font-semibold text-slate-700">{{ number_format($totalBalance, 2) }} USD</span>
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-slate-500">الرصيد المعلّق</span>
-                        <span class="font-semibold text-slate-700">{{ number_format($totalHeld, 2) }} ر.س</span>
+                        <span class="font-semibold text-slate-700">{{ number_format($totalHeld, 2) }} USD</span>
                     </div>
                 </div>
             </div>
@@ -125,7 +125,7 @@
                     @forelse ($topUsers as $user)
                         <div class="flex items-center justify-between">
                             <span class="text-slate-600">{{ $user->name }}<span class="text-xs text-slate-400"> ({{ $user->email }})</span></span>
-                            <span class="font-semibold text-slate-700">{{ number_format($user->total, 2) }} ر.س</span>
+                            <span class="font-semibold text-slate-700">{{ number_format($user->total, 2) }} USD</span>
                         </div>
                     @empty
                         <p class="text-sm text-slate-500">لا توجد بيانات كافية للفترة.</p>

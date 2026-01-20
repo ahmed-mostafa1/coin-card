@@ -36,7 +36,7 @@
                     @forelse ($variants as $variant)
                         <tr>
                             <td class="py-3 text-slate-700">{{ $variant->name }}</td>
-                            <td class="py-3 text-slate-700">{{ number_format($variant->price, 2) }} ر.س</td>
+                            <td class="py-3 text-slate-700">{{ number_format($variant->price, 2) }} USD</td>
                             <td class="py-3">
                                 @if ($variant->is_active)
                                     <span class="rounded-full bg-emerald-100 px-3 py-1 text-xs text-emerald-700">مفعلة</span>

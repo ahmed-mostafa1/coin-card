@@ -3,8 +3,8 @@
 @section('title', 'من نحن')
 
 @section('content')
-    <div class="rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm">
-        <h1 class="text-2xl font-semibold text-emerald-700">من نحن</h1>
+    <x-card :hover="false">
+        <x-page-header title="من نحن" />
         <div class="mt-6 whitespace-pre-line text-sm leading-7 text-slate-700">
 يقدم موقع market-card99.com خدماته منذ عام 2018، ويعرض حاليًا مجموعة متنوعة تشمل شحن 200 تطبيقًا ولعبة مختلفة، مع إستمرار إضافة المزيد
 
@@ -16,5 +16,5 @@
 
 منذ انطلاق الخدمة، يعمل فريق الدعم المباشر على مساعدة اللاعبين والوكلاء في جميع جوانب الخدمة . يمكنكم الحصول على معلومات إضافية على مدار الساعة من خلال خط WhatsApp أو عبر البريد الإلكتروني
         </div>
-    </div>
+    </x-card>
 @endsection

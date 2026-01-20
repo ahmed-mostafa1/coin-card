@@ -21,8 +21,8 @@ class DepositStatusChangedNotification extends Notification
         $status = $this->deposit->status;
         $approvedAmount = $this->deposit->approved_amount;
         $amountText = $approvedAmount
-            ? number_format($approvedAmount, 2).' ر.س'
-            : number_format($this->deposit->user_amount, 2).' ر.س';
+            ? number_format($approvedAmount, 2).' USD'
+            : number_format($this->deposit->user_amount, 2).' USD';
 
         $title = $status === DepositRequest::STATUS_APPROVED
             ? 'تم اعتماد طلب الشحن'

@@ -37,6 +37,7 @@ Route::post('/agency-request', [AgencyRequestController::class, 'store'])->name(
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/account', [AccountController::class, 'index'])->name('account');
+    Route::post('/account/update', [AccountController::class, 'update'])->name('account.update')->middleware('role:admin');
     Route::get('/account/deposits', [AccountDepositController::class, 'index'])->name('account.deposits');
     Route::get('/account/deposits/{depositRequest}', [AccountDepositController::class, 'show'])->name('account.deposits.show');
     Route::get('/account/wallet', [AccountWalletController::class, 'index'])->name('account.wallet');

@@ -3,24 +3,21 @@
 @section('title', 'طلبات الشحن')
 
 @section('content')
-    <div class="rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm">
-        <div class="flex flex-wrap items-center justify-between gap-4">
-            <div>
-                <h1 class="text-2xl font-semibold text-emerald-700">طلبات الشحن</h1>
-                <p class="mt-2 text-sm text-slate-600">تابع حالة طلبات الشحن الخاصة بك.</p>
-            </div>
-            <a href="{{ route('deposit.index') }}" class="rounded-full bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700">شحن رصيد جديد</a>
-        </div>
+    <x-card :hover="false">
+        <x-page-header title="طلبات الشحن" subtitle="تابع حالة طلبات الشحن الخاصة بك.">
+            <x-slot name="actions">
+                <a href="{{ route('deposit.index') }}" class="inline-flex items-center justify-center rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:brightness-105 cc-press">شحن رصيد جديد</a>
+            </x-slot>
+        </x-page-header>
 
         @if (session('status'))
-            <div class="mt-6 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+            <div class="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
                 {{ session('status') }}
             </div>
         @endif
 
-        <div class="mt-6 overflow-x-auto">
-            <table class="w-full text-right text-sm">
-                <thead class="border-b border-slate-200 text-slate-500">
+        <x-table class="mt-6">
+            <thead class="bg-slate-50 text-slate-500">
                     <tr>
                         <th class="py-2">الطريقة</th>
                         <th class="py-2">المبلغ المطلوب</th>
@@ -32,23 +29,23 @@
                 </thead>
                 <tbody class="divide-y divide-slate-100">
                     @forelse ($deposits as $deposit)
-                        <tr>
+                        <tr class="transition hover:bg-slate-50">
                             <td class="py-3 text-slate-700">{{ $deposit->paymentMethod->name }}</td>
-                            <td class="py-3 text-slate-700">{{ number_format($deposit->user_amount, 2) }} ر.س</td>
+                            <td class="py-3 text-slate-700">{{ number_format($deposit->user_amount, 2) }} USD</td>
                             <td class="py-3 text-slate-700">
                                 @if ($deposit->approved_amount)
-                                    {{ number_format($deposit->approved_amount, 2) }} ر.س
+                                    {{ number_format($deposit->approved_amount, 2) }} USD
                                 @else
                                     -
                                 @endif
                             </td>
                             <td class="py-3">
                                 @if ($deposit->status === 'pending')
-                                    <span class="rounded-full bg-amber-100 px-3 py-1 text-xs text-amber-700">قيد المراجعة</span>
+                                    <x-badge type="pending">قيد المراجعة</x-badge>
                                 @elseif ($deposit->status === 'approved')
-                                    <span class="rounded-full bg-emerald-100 px-3 py-1 text-xs text-emerald-700">مقبول</span>
+                                    <x-badge type="approved">مقبول</x-badge>
                                 @else
-                                    <span class="rounded-full bg-rose-100 px-3 py-1 text-xs text-rose-700">مرفوض</span>
+                                    <x-badge type="rejected">مرفوض</x-badge>
                                 @endif
                             </td>
                             <td class="py-3 text-slate-500">{{ $deposit->created_at->format('Y-m-d') }}</td>
@@ -67,9 +64,8 @@
                         </tr>
                     @endforelse
                 </tbody>
-            </table>
-        </div>
+        </x-table>
 
         <div class="mt-6">{{ $deposits->links() }}</div>
-    </div>
+    </x-card>
 @endsection

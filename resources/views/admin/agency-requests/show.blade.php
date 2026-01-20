@@ -27,7 +27,7 @@
             </div>
             <div class="rounded-2xl border border-slate-200 p-4">
                 <p class="text-xs text-slate-500">المبلغ المتاح</p>
-                <p class="mt-2 text-sm font-semibold text-slate-700">{{ number_format($agencyRequest->starting_amount, 2) }} ر.س</p>
+                <p class="mt-2 text-sm font-semibold text-slate-700">{{ number_format($agencyRequest->starting_amount, 2) }} USD</p>
             </div>
         </div>
 
