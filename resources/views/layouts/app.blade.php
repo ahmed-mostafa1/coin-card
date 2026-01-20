@@ -18,18 +18,73 @@
                         كوين كارد
                     </a>
                     <div class="hidden items-center gap-4 text-sm text-slate-700 md:flex">
-                        <a href="{{ route('home') }}" class="transition hover:text-emerald-700">الرئيسية</a>
-                        <a href="{{ route('privacy-policy') }}" class="transition hover:text-emerald-700">سياسة الخصوصية</a>
-                        <a href="{{ route('about') }}" class="transition hover:text-emerald-700">من نحن</a>
+                        <a href="{{ route('home') }}" class="transition hover:text-emerald-700 hover:bg-emerald-100">الرئيسية</a>
                         @auth
-                            <a href="{{ route('account') }}" class="transition hover:text-emerald-700">حسابي</a>
+                            <a href="{{ route('account') }}" class="transition hover:text-emerald-700  hover:bg-emerald-100">حسابي</a>
                             @role('admin')
-                                <a href="{{ route('admin.index') }}" class="rounded-full bg-emerald-50 px-3 py-1 text-emerald-700 transition hover:bg-emerald-100">لوحة الأدمن</a>
+                                <a href="{{ route('admin.index') }}" class="rounded-full px-3 py-1  transition hover:bg-emerald-100">لوحة الأدمن</a>
                             @endrole
                         @endauth
+                         @auth
+                            <div class="relative">
+                                <x-button type="button" variant="secondary" data-dropdown-trigger="notifications-panel" class="rounded-full px-3 py-1 border-0">
+                                    الإشعارات
+                                    @if (! empty($navUnreadCount ?? 0))
+                                        <span class="absolute -left-1 -top-1 rounded-full bg-rose-500 px-2 text-xs text-white">{{ $navUnreadCount }}</span>
+                                    @endif
+                                </x-button>
+                                <div id="notifications-panel" class="hidden fixed inset-x-3 top-16 z-50 w-auto max-w-[calc(100vw-1.5rem)] rounded-xl overflow-hidden sm:absolute sm:inset-x-auto sm:top-full sm:mt-2 sm:right-0 sm:w-80">
+                                    <div class="p-4">
+                                        <div class="flex items-center justify-between">
+                                            <p class="text-sm font-semibold text-slate-900">آخر الإشعارات</p>
+                                            <a href="{{ route('account.notifications') }}" class="text-xs text-emerald-700 hover:text-emerald-900">عرض الكل</a>
+                                        </div>
+                                        <div class="mt-3 space-y-3 text-sm min-w-0">
+                                            @forelse ($navNotifications ?? [] as $notification)
+                                                <a href="{{ $notification->data['url'] ?? route('account.notifications') }}" class="block rounded-xl border border-slate-200 p-3 transition hover:border-emerald-200">
+                                                    <div class="flex items-start justify-between gap-2 min-w-0">
+                                                        <p class="font-semibold text-slate-700 break-words">{{ $notification->data['title'] ?? 'إشعار جديد' }}</p>
+                                                        @if ($notification->read_at === null)
+                                                            <span class="mt-1 h-2 w-2 rounded-full bg-emerald-500"></span>
+                                                        @endif
+                                                    </div>
+                                                    <p class="mt-2 text-xs text-slate-500 break-words">{{ $notification->data['description'] ?? '' }}</p>
+                                                    <p class="mt-2 text-xs text-slate-400">{{ $notification->created_at->diffForHumans() }}</p>
+                                                </a>
+                                            @empty
+                                                <p class="text-xs text-slate-500">لا توجد إشعارات حتى الآن.</p>
+                                            @endforelse
+                                        </div>
+                                        <form method="POST" action="{{ route('account.notifications.mark-all-read') }}" class="mt-4">
+                                            @csrf
+                                            <button type="submit" class="w-full rounded-xl border border-emerald-200 px-3 py-2 text-xs font-semibold text-emerald-700 transition hover:bg-emerald-50">
+                                                تعليم الكل كمقروء
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <x-button type="button" variant="ghost" data-dropdown-trigger="user-panel" class="rounded-full px-3 py-1 border-0">
+                                    {{ auth()->user()->name }}
+                                </x-button>
+                                <div id="user-panel" class="hidden fixed inset-x-3 top-16 z-50 w-auto max-w-[calc(100vw-1.5rem)] rounded-xl bg-white shadow-lg overflow-hidden sm:absolute sm:inset-x-auto sm:top-full sm:mt-2 sm:right-0 sm:w-48">
+                                    <div class="p-2">
+                                        <x-button type="button" variant="ghost" data-logout-button class="w-full justify-start">
+                                            تسجيل الخروج
+                                        </x-button>
+                                    </div>
+                                </div>
+                            </div>
+                        @else
+                            <a href="{{ route('login') }}" class="rounded-xl border border-emerald-200 px-4 py-2 text-emerald-700 transition hover:bg-emerald-50">تسجيل الدخول</a>
+                            <a href="{{ route('register') }}" class="rounded-xl bg-emerald-600 px-4 py-2 text-white transition hover:brightness-105">إنشاء حساب</a>
+                        @endauth
+                         <a href="{{ route('privacy-policy') }}" class="transition hover:text-emerald-700 hover:bg-emerald-100">سياسة الخصوصية</a>
+                        <a href="{{ route('about') }}" class="transition hover:text-emerald-700 hover:bg-emerald-100">من نحن</a>
                     </div>
                     <div class="hidden items-center gap-3 text-sm md:flex">
-                        @auth
+                        <!-- @auth
                             <div class="relative">
                                 <x-button type="button" variant="secondary" data-dropdown-trigger="notifications-panel" class="rounded-full px-3 py-1">
                                     الإشعارات
@@ -83,7 +138,7 @@
                         @else
                             <a href="{{ route('login') }}" class="rounded-xl border border-emerald-200 px-4 py-2 text-emerald-700 transition hover:bg-emerald-50">تسجيل الدخول</a>
                             <a href="{{ route('register') }}" class="rounded-xl bg-emerald-600 px-4 py-2 text-white transition hover:brightness-105">إنشاء حساب</a>
-                        @endauth
+                        @endauth -->
                     </div>
                     <div class="md:hidden">
                         <button type="button" data-dropdown-trigger="mobile-menu-panel" class="cursor-pointer rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-700">القائمة</button>
