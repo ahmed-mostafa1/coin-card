@@ -36,3 +36,26 @@
 ## الاختبارات
 - PHPUnit عبر `php artisan test`
 - اختبارات الوصول في `tests/Feature/AuthAccessTest.php`
+
+## Phase 2
+### ما تم تنفيذه
+- محفظة لكل مستخدم مع سجل عمليات (Ledger) عبر `wallets` و`wallet_transactions`.
+- طلبات شحن يدوية مع إثباتات مرفوعة وجدول مخصص للأدلة.
+- إدارة طرق الدفع للأدمن مع رفع الأيقونات.
+- صفحات مستخدم لطلبات الشحن وسجل الرصيد وصفحات أدمن للمراجعة والاعتماد/الرفض.
+
+### أوامر التشغيل
+- الهجرات: `php artisan migrate`
+- البذور: `php artisan db:seed`
+- إنشاء رابط التخزين للأيقونات العامة: `php artisan storage:link`
+- الاختبارات: `php artisan test`
+
+### متغيرات البيئة
+- `MAX_PENDING_DEPOSITS`
+- `DEPOSIT_MIN_AMOUNT`
+- `DEPOSIT_MAX_AMOUNT`
+
+### قرارات معمارية
+- تحديث الرصيد يتم عبر `WalletService` داخل معاملات DB مع `lockForUpdate` لضمان الاتساق.
+- إثباتات التحويل تُخزن في قرص `local` (خاص) وتُعرض عبر مسارات أدمن مؤمنة.
+- أيقونات طرق الدفع تُخزن على قرص `public` ضمن `payment-methods/icons`.

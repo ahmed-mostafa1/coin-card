@@ -19,7 +19,7 @@
                             <a href="{{ route('dashboard') }}" class="transition hover:text-emerald-700">لوحة التحكم</a>
                             <a href="{{ route('account') }}" class="transition hover:text-emerald-700">حسابي</a>
                             @role('admin')
-                                <a href="{{ route('admin') }}" class="rounded-full bg-emerald-100 px-3 py-1 text-emerald-700 transition hover:bg-emerald-200">لوحة الأدمن</a>
+                                <a href="{{ route('admin.index') }}" class="rounded-full bg-emerald-100 px-3 py-1 text-emerald-700 transition hover:bg-emerald-200">لوحة الأدمن</a>
                             @endrole
                         @endauth
                     </div>

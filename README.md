@@ -64,6 +64,18 @@ ADMIN_PASSWORD=YourStrongPassword
 - الأدوار الافتراضية: `admin` و `customer`.
 - أي تسجيل جديد يحصل تلقائيًا على دور `customer`.
 - صفحة الأدمن محمية بواسطة صلاحية `admin`.
+- ملفات إثبات التحويل تُخزّن في المسار `storage/app/private` ويتم الوصول إليها عبر مسارات الأدمن المؤمنة.
+- أيقونات طرق الدفع تُخزن في `storage/app/public` وتحتاج `php artisan storage:link` لعرضها.
+
+## إعدادات الشحن اليدوي
+
+يمكن ضبط الحدود عبر `.env`:
+
+```
+MAX_PENDING_DEPOSITS=3
+DEPOSIT_MIN_AMOUNT=1
+DEPOSIT_MAX_AMOUNT=100000
+```
 
 ## اختبارات
 

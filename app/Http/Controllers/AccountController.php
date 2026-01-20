@@ -8,6 +8,8 @@ class AccountController extends Controller
 {
     public function index(): View
     {
-        return view('account');
+        $wallet = auth()->user()->wallet()->firstOrCreate([]);
+
+        return view('account', compact('wallet'));
     }
 }
