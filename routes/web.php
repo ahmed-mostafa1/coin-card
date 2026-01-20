@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\DepositController as AdminDepositController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\OpsController as AdminOpsController;
+use App\Http\Controllers\Admin\ReportsController as AdminReportsController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\PaymentMethodController as AdminPaymentMethodController;
 use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
 use App\Http\Controllers\Admin\ServiceFormFieldController as AdminServiceFormFieldController;
@@ -46,6 +48,8 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('index');
     Route::get('/ops', [AdminOpsController::class, 'index'])->name('ops.index');
+    Route::get('/reports', [AdminReportsController::class, 'index'])->name('reports.index');
+    Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('users.show');
     Route::get('/payment-methods', [AdminPaymentMethodController::class, 'index'])->name('payment-methods.index');
     Route::get('/payment-methods/create', [AdminPaymentMethodController::class, 'create'])->name('payment-methods.create');
     Route::post('/payment-methods', [AdminPaymentMethodController::class, 'store'])->name('payment-methods.store');

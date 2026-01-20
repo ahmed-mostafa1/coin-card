@@ -148,3 +148,29 @@
 ### قرارات معمارية
 - تم إنشاء جدول `order_events` مخصص بدل نظام نشاط عام لضمان بساطة السجل وتركيزه على دورة حياة الطلب.
 - تم استخدام إشعارات قاعدة البيانات فقط بدون قنوات خارجية حسب نطاق المرحلة.
+
+## Phase 6
+### ما تم تنفيذه
+- لوحة تقارير للإدارة مع فلاتر زمنية وملخصات رقمية لنشاط الشحن والطلبات.
+- صفحة "User 360" للأدمن لعرض نظرة شاملة على المستخدم (الملف، المحفظة، الحركات، الشحنات، الطلبات).
+
+### المسارات الجديدة
+- `/admin/reports`
+- `/admin/users/{user}`
+
+### الفلاتر والتعريفات
+- فلاتر التقارير: `from` و`to` مع إعدادات سريعة (`today`, `7`, `30`).
+- KPIs الشحن: عدد الطلبات المنشأة + التفصيل حسب الحالة + مجموع `approved_amount` للطلبات المعتمدة.
+- KPIs الطلبات: عدد الطلبات المنشأة + التفصيل حسب الحالة + "إيراد محصل" من `orders.amount_held` للطلبات المنفذة.
+- نطاق "الإيراد المحصل" يعتمد على `settled_at`، مع fallback إلى `updated_at` للطلبات القديمة بدون `settled_at`.
+- لقطة المحفظة: مجموع `held_balance` ومجموع `balance` الحاليين عبر جميع المحافظ.
+
+### قرارات الأداء/الفهارس
+- تمت إضافة فهارس للتقارير والفلاتر على: `deposit_requests.status`, `deposit_requests.created_at`, `deposit_requests.user_id`.
+- تمت إضافة فهارس على: `orders.status`, `orders.created_at`, `orders.user_id`, `orders.service_id`, `orders.settled_at`, `orders.released_at`.
+- تمت إضافة فهارس على: `wallet_transactions.wallet_id`, `wallet_transactions.created_at`, `wallet_transactions.type`.
+- تمت إضافة فهرس على: `wallets.held_balance`.
+
+### أوامر التشغيل
+- الهجرات: `php artisan migrate`
+- الاختبارات: `php artisan test`
