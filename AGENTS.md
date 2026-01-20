@@ -59,3 +59,27 @@
 - تحديث الرصيد يتم عبر `WalletService` داخل معاملات DB مع `lockForUpdate` لضمان الاتساق.
 - إثباتات التحويل تُخزن في قرص `local` (خاص) وتُعرض عبر مسارات أدمن مؤمنة.
 - أيقونات طرق الدفع تُخزن على قرص `public` ضمن `payment-methods/icons`.
+
+## Phase 3
+### ما تم تنفيذه
+- إدارة التصنيفات والخدمات عبر صفحات الأدمن مع رفع الصور.
+- نماذج خدمات ديناميكية (حقول نصية وقوائم) مع خيارات قابلة للإدارة.
+- واجهة متجر للمستخدم مع تصفح الفئات والخدمات وتفاصيل الخدمة.
+- شراء من المحفظة مع خصم الرصيد وتسجيل الطلبات في دفتر الأستاذ.
+- صفحات المستخدم للطلبات وتفاصيل الطلب.
+
+### المسارات والجداول
+- المسارات: `/categories/{category:slug}`, `/services/{service:slug}`, `/services/{service:slug}/purchase`، صفحات المستخدم `/account/orders` و`/account/orders/{order}`، وإدارة الأدمن `/admin/categories`, `/admin/services`, `/admin/orders`، وحقول الخدمة `/admin/services/{service}/fields`.
+- الجداول: `categories`, `services`, `service_form_fields`, `service_form_options`, `orders`.
+- حالات الطلب: `new`, `processing`, `done`, `rejected`, `cancelled`.
+
+### أوامر التشغيل
+- الهجرات: `php artisan migrate`
+- البذور: `php artisan db:seed`
+- رابط التخزين: `php artisan storage:link`
+- الاختبارات: `php artisan test`
+
+### قرارات معمارية
+- تخزين إجابات النموذج في عمود JSON `payload` حسب `name_key`.
+- خصم المحفظة يتم ضمن معاملة واحدة مع `lockForUpdate` لضمان الاتساق.
+- صور التصنيفات والخدمات تُخزن في قرص `public` ضمن مسارات منفصلة.

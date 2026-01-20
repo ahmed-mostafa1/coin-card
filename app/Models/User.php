@@ -66,6 +66,11 @@ class User extends Authenticatable
         return $this->hasMany(WalletTransaction::class, 'created_by_user_id');
     }
 
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
     protected static function booted(): void
     {
         static::created(function (User $user): void {

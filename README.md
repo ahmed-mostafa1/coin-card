@@ -66,6 +66,7 @@ ADMIN_PASSWORD=YourStrongPassword
 - صفحة الأدمن محمية بواسطة صلاحية `admin`.
 - ملفات إثبات التحويل تُخزّن في المسار `storage/app/private` ويتم الوصول إليها عبر مسارات الأدمن المؤمنة.
 - أيقونات طرق الدفع تُخزن في `storage/app/public` وتحتاج `php artisan storage:link` لعرضها.
+- صور التصنيفات والخدمات تُخزن في `storage/app/public` ضمن `categories` و`services`.
 
 ## إعدادات الشحن اليدوي
 

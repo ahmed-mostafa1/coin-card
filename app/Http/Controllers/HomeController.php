@@ -8,6 +8,19 @@ class HomeController extends Controller
 {
     public function index(): View
     {
-        return view('home');
+        $categories = \App\Models\Category::query()
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->get();
+
+        $services = \App\Models\Service::query()
+            ->where('is_active', true)
+            ->with('category')
+            ->latest()
+            ->take(6)
+            ->get();
+
+        return view('home', compact('categories', 'services'));
     }
 }
