@@ -26,6 +26,42 @@
                     <div class="flex items-center gap-3 text-sm">
                         @auth
                             <details class="relative">
+                                <summary class="relative cursor-pointer rounded-full border border-slate-200 px-3 py-1 text-slate-700 transition hover:border-emerald-200">
+                                    الإشعارات
+                                    @if (! empty($navUnreadCount ?? 0))
+                                        <span class="absolute -left-1 -top-1 rounded-full bg-rose-500 px-2 text-xs text-white">{{ $navUnreadCount }}</span>
+                                    @endif
+                                </summary>
+                                <div class="absolute left-0 mt-2 w-80 rounded-2xl border border-emerald-100 bg-white p-4 shadow-lg">
+                                    <div class="flex items-center justify-between">
+                                        <p class="text-sm font-semibold text-emerald-700">آخر الإشعارات</p>
+                                        <a href="{{ route('account.notifications') }}" class="text-xs text-emerald-700 hover:text-emerald-900">عرض الكل</a>
+                                    </div>
+                                    <div class="mt-3 space-y-3 text-sm">
+                                        @forelse ($navNotifications ?? [] as $notification)
+                                            <a href="{{ $notification->data['url'] ?? route('account.notifications') }}" class="block rounded-xl border border-slate-100 p-3 transition hover:border-emerald-200">
+                                                <div class="flex items-start justify-between gap-2">
+                                                    <p class="font-semibold text-slate-700">{{ $notification->data['title'] ?? 'إشعار جديد' }}</p>
+                                                    @if ($notification->read_at === null)
+                                                        <span class="mt-1 h-2 w-2 rounded-full bg-emerald-500"></span>
+                                                    @endif
+                                                </div>
+                                                <p class="mt-2 text-xs text-slate-500">{{ $notification->data['description'] ?? '' }}</p>
+                                                <p class="mt-2 text-xs text-slate-400">{{ $notification->created_at->diffForHumans() }}</p>
+                                            </a>
+                                        @empty
+                                            <p class="text-xs text-slate-500">لا توجد إشعارات حتى الآن.</p>
+                                        @endforelse
+                                    </div>
+                                    <form method="POST" action="{{ route('account.notifications.mark-all-read') }}" class="mt-4">
+                                        @csrf
+                                        <button type="submit" class="w-full rounded-full border border-emerald-200 px-3 py-2 text-xs font-semibold text-emerald-700 transition hover:bg-emerald-50">
+                                            تعليم الكل كمقروء
+                                        </button>
+                                    </form>
+                                </div>
+                            </details>
+                            <details class="relative">
                                 <summary class="cursor-pointer rounded-full border border-emerald-200 px-3 py-1 text-emerald-700">
                                     {{ auth()->user()->name }}
                                 </summary>

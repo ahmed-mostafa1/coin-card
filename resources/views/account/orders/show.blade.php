@@ -72,8 +72,40 @@
         </div>
 
         <div class="rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm">
-            <h2 class="text-lg font-semibold text-emerald-700">التحديثات</h2>
-            <p class="mt-3 text-sm text-slate-600">سيتم تحديث حالة الطلب بمجرد المعالجة من الإدارة.</p>
+            <h2 class="text-lg font-semibold text-emerald-700">سجل الطلب</h2>
+            @php
+                $statusLabels = [
+                    'new' => 'جديد',
+                    'processing' => 'قيد التنفيذ',
+                    'done' => 'تم التنفيذ',
+                    'rejected' => 'مرفوض',
+                    'cancelled' => 'ملغي',
+                ];
+            @endphp
+            <div class="mt-4 space-y-4">
+                @forelse ($order->events as $event)
+                    @php
+                        $actorLabel = 'النظام';
+                        if ($event->actor) {
+                            $actorLabel = $event->actor->id === auth()->id() ? 'أنت' : 'الإدارة';
+                        }
+                    @endphp
+                    <div class="rounded-2xl border border-slate-200 p-4">
+                        <div class="flex items-center justify-between gap-2">
+                            <p class="text-sm font-semibold text-slate-700">{{ $event->message ?? 'تحديث جديد' }}</p>
+                            <span class="text-xs text-slate-400">{{ $event->created_at->format('Y-m-d H:i') }}</span>
+                        </div>
+                        <p class="mt-2 text-xs text-slate-500">الجهة: {{ $actorLabel }}</p>
+                        @if ($event->old_status || $event->new_status)
+                            <p class="mt-1 text-xs text-slate-500">
+                                الحالة: {{ $statusLabels[$event->old_status] ?? '-' }} → {{ $statusLabels[$event->new_status] ?? '-' }}
+                            </p>
+                        @endif
+                    </div>
+                @empty
+                    <p class="text-sm text-slate-500">لا توجد تحديثات مسجلة بعد.</p>
+                @endforelse
+            </div>
         </div>
     </div>
 @endsection

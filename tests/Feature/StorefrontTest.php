@@ -10,6 +10,8 @@ use App\Models\ServiceFormOption;
 use App\Models\ServiceVariant;
 use App\Models\User;
 use App\Models\Wallet;
+use App\Notifications\NewOrderNotification;
+use App\Notifications\OrderStatusChangedNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
@@ -66,7 +68,11 @@ class StorefrontTest extends TestCase
 
     public function test_customer_can_purchase_with_sufficient_balance(): void
     {
+        Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
         Role::firstOrCreate(['name' => 'customer', 'guard_name' => 'web']);
+
+        $admin = User::factory()->create();
+        $admin->assignRole('admin');
 
         $user = User::factory()->create();
         $user->assignRole('customer');
@@ -142,6 +148,21 @@ class StorefrontTest extends TestCase
             'reference_type' => 'order',
             'type' => 'hold',
             'amount' => 150,
+        ]);
+
+        $this->assertDatabaseHas('order_events', [
+            'order_id' => $order->id,
+            'type' => 'created',
+        ]);
+
+        $this->assertDatabaseHas('notifications', [
+            'notifiable_id' => $user->id,
+            'type' => OrderStatusChangedNotification::class,
+        ]);
+
+        $this->assertDatabaseHas('notifications', [
+            'notifiable_id' => $admin->id,
+            'type' => NewOrderNotification::class,
         ]);
     }
 
@@ -425,6 +446,12 @@ class StorefrontTest extends TestCase
         $order->refresh();
 
         $this->assertSame('processing', $order->status);
+
+        $this->assertDatabaseHas('order_events', [
+            'order_id' => $order->id,
+            'type' => 'status_changed',
+            'new_status' => 'processing',
+        ]);
     }
 
     public function test_customer_cannot_access_admin_pages(): void

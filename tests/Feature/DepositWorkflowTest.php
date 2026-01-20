@@ -7,6 +7,8 @@ use App\Models\DepositRequest;
 use App\Models\PaymentMethod;
 use App\Models\User;
 use App\Models\Wallet;
+use App\Notifications\DepositStatusChangedNotification;
+use App\Notifications\NewDepositRequestNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -26,7 +28,11 @@ class DepositWorkflowTest extends TestCase
     {
         Storage::fake('local');
 
+        Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
         Role::firstOrCreate(['name' => 'customer', 'guard_name' => 'web']);
+
+        $admin = User::factory()->create();
+        $admin->assignRole('admin');
 
         $user = User::factory()->create();
         $user->assignRole('customer');
@@ -53,6 +59,10 @@ class DepositWorkflowTest extends TestCase
         ]);
 
         $this->assertDatabaseCount('deposit_evidences', 1);
+        $this->assertDatabaseHas('notifications', [
+            'notifiable_id' => $admin->id,
+            'type' => NewDepositRequestNotification::class,
+        ]);
     }
 
     public function test_customer_cannot_create_fourth_pending_deposit(): void
@@ -150,6 +160,11 @@ class DepositWorkflowTest extends TestCase
             'amount' => '280.00',
             'status' => 'approved',
         ]);
+
+        $this->assertDatabaseHas('notifications', [
+            'notifiable_id' => $user->id,
+            'type' => DepositStatusChangedNotification::class,
+        ]);
     }
 
     public function test_admin_can_reject_deposit(): void
@@ -191,6 +206,11 @@ class DepositWorkflowTest extends TestCase
 
         $this->assertSame(DepositRequest::STATUS_REJECTED, $deposit->status);
         $this->assertSame('0.00', $wallet->balance);
+
+        $this->assertDatabaseHas('notifications', [
+            'notifiable_id' => $user->id,
+            'type' => DepositStatusChangedNotification::class,
+        ]);
     }
 
     public function test_customer_cannot_access_admin_deposits(): void

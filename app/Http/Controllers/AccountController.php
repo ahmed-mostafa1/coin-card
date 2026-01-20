@@ -9,7 +9,8 @@ class AccountController extends Controller
     public function index(): View
     {
         $wallet = auth()->user()->wallet()->firstOrCreate([]);
+        $unreadNotificationsCount = auth()->user()->unreadNotifications()->count();
 
-        return view('account', compact('wallet'));
+        return view('account', compact('wallet', 'unreadNotificationsCount'));
     }
 }

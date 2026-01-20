@@ -112,3 +112,39 @@
 - الهجرات: `php artisan migrate`
 - البذور: `php artisan db:seed`
 - الاختبارات: `php artisan test`
+
+## Phase 5
+### ما تم تنفيذه
+- إشعارات داخل التطبيق عبر قاعدة البيانات للمستخدمين والأدمن مع قائمة منبثقة وعدّاد غير المقروء.
+- سجل زمني للطلبات يعرض كل تغيّر حالة ومنفّذه للطرفين (أدمن/مستخدم).
+- لوحة عمليات للأدمن لعرض طوابير الشحن والطلبات مع فلاتر وإجراءات سريعة.
+- تحسينات بسيطة بالواجهات (شارات، عدّادات، روابط مباشرة).
+
+### الجداول الجديدة
+- `notifications`
+- `order_events`
+
+### أنواع الإشعارات
+- `DepositStatusChangedNotification`
+- `NewDepositRequestNotification`
+- `OrderStatusChangedNotification`
+- `NewOrderNotification`
+
+### أنواع أحداث الطلب
+- `created`
+- `status_changed`
+
+### المسارات/الصفحات الجديدة
+- `/account/notifications`
+- `/account/notifications/mark-all-read`
+- `/account/deposits/{depositRequest}`
+- `/admin/ops`
+
+### أوامر التشغيل
+- الهجرات: `php artisan migrate`
+- البذور: `php artisan db:seed`
+- الاختبارات: `php artisan test`
+
+### قرارات معمارية
+- تم إنشاء جدول `order_events` مخصص بدل نظام نشاط عام لضمان بساطة السجل وتركيزه على دورة حياة الطلب.
+- تم استخدام إشعارات قاعدة البيانات فقط بدون قنوات خارجية حسب نطاق المرحلة.

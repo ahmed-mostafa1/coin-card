@@ -6,6 +6,8 @@ use App\Http\Requests\StoreDepositRequest;
 use App\Models\DepositEvidence;
 use App\Models\DepositRequest;
 use App\Models\PaymentMethod;
+use App\Notifications\NewDepositRequestNotification;
+use App\Services\NotificationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -30,7 +32,11 @@ class DepositController extends Controller
         return view('deposits.show', compact('paymentMethod'));
     }
 
-    public function store(StoreDepositRequest $request, PaymentMethod $paymentMethod): RedirectResponse
+    public function store(
+        StoreDepositRequest $request,
+        PaymentMethod $paymentMethod,
+        NotificationService $notificationService
+    ): RedirectResponse
     {
         abort_unless($paymentMethod->is_active, 404);
 
@@ -39,7 +45,9 @@ class DepositController extends Controller
         $file = $request->file('proof');
         $fileHash = hash_file('sha256', $file->getRealPath());
 
-        DB::transaction(function () use ($request, $paymentMethod, $user, $file, $fileHash) {
+        $deposit = null;
+
+        DB::transaction(function () use ($request, $paymentMethod, $user, $file, $fileHash, &$deposit) {
             $deposit = DepositRequest::create([
                 'user_id' => $user->id,
                 'payment_method_id' => $paymentMethod->id,
@@ -56,6 +64,15 @@ class DepositController extends Controller
                 'mime' => $file->getClientMimeType(),
                 'size' => $file->getSize(),
             ]);
+        });
+
+        DB::afterCommit(function () use ($deposit, $notificationService): void {
+            if (! $deposit) {
+                return;
+            }
+
+            $deposit->load('user');
+            $notificationService->notifyAdmins(new NewDepositRequestNotification($deposit));
         });
 
         return redirect()

@@ -48,7 +48,9 @@ class DepositController extends Controller
             return back()->withErrors(['status' => 'تمت مراجعة الطلب مسبقاً.']);
         }
 
-        DB::transaction(function () use ($request, $depositRequest, $walletService) {
+        $updated = false;
+
+        DB::transaction(function () use ($request, $depositRequest, $walletService, &$updated) {
             $deposit = DepositRequest::whereKey($depositRequest->id)->lockForUpdate()->firstOrFail();
 
             if ($deposit->status !== DepositRequest::STATUS_PENDING) {
@@ -77,11 +79,18 @@ class DepositController extends Controller
                 'approved_at' => now(),
                 'note' => $request->string('admin_note')->toString(),
             ], false);
+
+            $updated = true;
         });
 
+        $depositRequest->refresh();
         $depositRequest->load('user');
 
-        DB::afterCommit(function () use ($depositRequest): void {
+        DB::afterCommit(function () use ($depositRequest, $updated): void {
+            if (! $updated) {
+                return;
+            }
+
             $depositRequest->user->notify(new DepositStatusChangedNotification($depositRequest));
         });
 
@@ -95,16 +104,23 @@ class DepositController extends Controller
             return back()->withErrors(['status' => 'تمت مراجعة الطلب مسبقاً.']);
         }
 
+        $updated = false;
+
         $depositRequest->update([
             'status' => DepositRequest::STATUS_REJECTED,
             'admin_note' => $request->string('admin_note')->toString(),
             'reviewed_by_user_id' => $request->user()->id,
             'reviewed_at' => now(),
         ]);
+        $updated = true;
 
         $depositRequest->load('user');
 
-        DB::afterCommit(function () use ($depositRequest): void {
+        DB::afterCommit(function () use ($depositRequest, $updated): void {
+            if (! $updated) {
+                return;
+            }
+
             $depositRequest->user->notify(new DepositStatusChangedNotification($depositRequest));
         });
 

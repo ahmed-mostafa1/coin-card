@@ -169,6 +169,7 @@ class OrderController extends Controller
                 return;
             }
 
+            $order->refresh();
             $order->load(['service', 'user']);
             $order->user->notify(new OrderStatusChangedNotification($order, $oldStatus, $newStatus));
         });
