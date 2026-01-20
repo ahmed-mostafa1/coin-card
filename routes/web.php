@@ -5,10 +5,12 @@ use App\Http\Controllers\AccountDepositController;
 use App\Http\Controllers\AccountNotificationController;
 use App\Http\Controllers\AccountWalletController;
 use App\Http\Controllers\AccountOrderController;
+use App\Http\Controllers\AgencyRequestController;
 use App\Http\Controllers\Admin\DepositController as AdminDepositController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\OpsController as AdminOpsController;
+use App\Http\Controllers\Admin\AgencyRequestController as AdminAgencyRequestController;
 use App\Http\Controllers\Admin\ReportsController as AdminReportsController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\PaymentMethodController as AdminPaymentMethodController;
@@ -26,6 +28,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/categories/{category:slug}', [CategoryController::class, 'show'])->name('categories.show');
 Route::get('/services/{service:slug}', [ServiceController::class, 'show'])->name('services.show');
+Route::get('/privacy-policy', fn () => view('pages.privacy-policy'))->name('privacy-policy');
+Route::get('/about', fn () => view('pages.about'))->name('about');
+Route::get('/agency-request', [AgencyRequestController::class, 'create'])->name('agency-requests.create');
+Route::post('/agency-request', [AgencyRequestController::class, 'store'])->name('agency-requests.store');
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -50,6 +56,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/ops', [AdminOpsController::class, 'index'])->name('ops.index');
     Route::get('/reports', [AdminReportsController::class, 'index'])->name('reports.index');
     Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('users.show');
+    Route::get('/agency-requests', [AdminAgencyRequestController::class, 'index'])->name('agency-requests.index');
+    Route::get('/agency-requests/{agencyRequest}', [AdminAgencyRequestController::class, 'show'])->name('agency-requests.show');
+    Route::delete('/agency-requests/{agencyRequest}', [AdminAgencyRequestController::class, 'destroy'])->name('agency-requests.destroy');
     Route::get('/payment-methods', [AdminPaymentMethodController::class, 'index'])->name('payment-methods.index');
     Route::get('/payment-methods/create', [AdminPaymentMethodController::class, 'create'])->name('payment-methods.create');
     Route::post('/payment-methods', [AdminPaymentMethodController::class, 'store'])->name('payment-methods.store');
