@@ -24,6 +24,10 @@
                     <p class="mt-2 text-sm font-semibold text-slate-700">{{ number_format($order->price_at_purchase, 2) }} ر.س</p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 p-4">
+                    <p class="text-xs text-slate-500">المبلغ المعلّق</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ number_format($order->amount_held, 2) }} ر.س</p>
+                </div>
+                <div class="rounded-2xl border border-slate-200 p-4">
                     <p class="text-xs text-slate-500">الحالة</p>
                     <p class="mt-2 text-sm font-semibold text-slate-700">
                         @if ($order->status === 'new')
@@ -31,13 +35,25 @@
                         @elseif ($order->status === 'processing')
                             قيد التنفيذ
                         @elseif ($order->status === 'done')
-                            مكتمل
+                            تم التنفيذ
                         @elseif ($order->status === 'rejected')
                             مرفوض
                         @else
                             ملغي
                         @endif
                     </p>
+                </div>
+                <div class="rounded-2xl border border-slate-200 p-4">
+                    <p class="text-xs text-slate-500">الباقة</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ $order->variant?->name ?? 'السعر الأساسي' }}</p>
+                </div>
+                <div class="rounded-2xl border border-slate-200 p-4">
+                    <p class="text-xs text-slate-500">تأكيد الخصم</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ $order->settled_at?->format('Y-m-d H:i') ?? '-' }}</p>
+                </div>
+                <div class="rounded-2xl border border-slate-200 p-4">
+                    <p class="text-xs text-slate-500">إرجاع الرصيد</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ $order->released_at?->format('Y-m-d H:i') ?? '-' }}</p>
                 </div>
             </div>
 
@@ -82,9 +98,8 @@
                     <select id="status" name="status" class="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-2 text-sm text-slate-700">
                         <option value="new" @selected($order->status === 'new')>جديد</option>
                         <option value="processing" @selected($order->status === 'processing')>قيد التنفيذ</option>
-                        <option value="done" @selected($order->status === 'done')>مكتمل</option>
+                        <option value="done" @selected($order->status === 'done')>تم التنفيذ</option>
                         <option value="rejected" @selected($order->status === 'rejected')>مرفوض</option>
-                        <option value="cancelled" @selected($order->status === 'cancelled')>ملغي</option>
                     </select>
                 </div>
 

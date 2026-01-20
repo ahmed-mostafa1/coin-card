@@ -15,9 +15,11 @@
             </div>
         </div>
         <div class="rounded-3xl border border-emerald-100 bg-gradient-to-br from-emerald-600 to-emerald-700 p-8 text-white shadow-lg">
-            <h2 class="text-lg font-semibold">رصيد المحفظة الحالي</h2>
+            <h2 class="text-lg font-semibold">رصيد المحفظة</h2>
             <p class="mt-4 text-3xl font-semibold">{{ number_format($wallet->balance, 2) }} ر.س</p>
-            <p class="mt-2 text-sm text-emerald-100">آخر تحديث للرصيد يتم عبر موافقة الإدارة.</p>
+            <p class="mt-2 text-sm text-emerald-100">الرصيد المتاح</p>
+            <p class="mt-4 text-xl font-semibold">{{ number_format($wallet->held_balance, 2) }} ر.س</p>
+            <p class="mt-2 text-sm text-emerald-100">الرصيد المعلّق</p>
         </div>
     </div>
 @endsection

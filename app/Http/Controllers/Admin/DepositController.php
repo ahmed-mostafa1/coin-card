@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ApproveDepositRequest;
 use App\Http\Requests\RejectDepositRequest;
 use App\Models\DepositRequest;
+use App\Notifications\DepositStatusChangedNotification;
 use App\Services\WalletService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
@@ -78,6 +79,12 @@ class DepositController extends Controller
             ], false);
         });
 
+        $depositRequest->load('user');
+
+        DB::afterCommit(function () use ($depositRequest): void {
+            $depositRequest->user->notify(new DepositStatusChangedNotification($depositRequest));
+        });
+
         return redirect()->route('admin.deposits.show', $depositRequest)
             ->with('status', 'تم اعتماد طلب الشحن بنجاح.');
     }
@@ -94,6 +101,12 @@ class DepositController extends Controller
             'reviewed_by_user_id' => $request->user()->id,
             'reviewed_at' => now(),
         ]);
+
+        $depositRequest->load('user');
+
+        DB::afterCommit(function () use ($depositRequest): void {
+            $depositRequest->user->notify(new DepositStatusChangedNotification($depositRequest));
+        });
 
         return redirect()->route('admin.deposits.show', $depositRequest)
             ->with('status', 'تم رفض طلب الشحن.');

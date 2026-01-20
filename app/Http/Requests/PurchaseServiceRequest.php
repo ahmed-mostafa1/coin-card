@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Models\Service;
 use App\Services\ServiceFormValidator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class PurchaseServiceRequest extends FormRequest
 {
@@ -18,6 +19,20 @@ class PurchaseServiceRequest extends FormRequest
         /** @var Service $service */
         $service = $this->route('service');
 
-        return app(ServiceFormValidator::class)->rules($service);
+        $rules = app(ServiceFormValidator::class)->rules($service);
+
+        $variantsQuery = $service->variants()->where('is_active', true);
+
+        $variantRule = Rule::exists('service_variants', 'id')
+            ->where('service_id', $service->id)
+            ->where('is_active', true);
+
+        if ($variantsQuery->exists()) {
+            $rules['variant_id'] = ['required', 'integer', $variantRule];
+        } else {
+            $rules['variant_id'] = ['nullable', 'integer', $variantRule];
+        }
+
+        return $rules;
     }
 }

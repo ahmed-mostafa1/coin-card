@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class WalletTransaction extends Model
 {
     public const TYPE_DEPOSIT = 'deposit';
+    public const TYPE_HOLD = 'hold';
+    public const TYPE_SETTLE = 'settle';
+    public const TYPE_RELEASE = 'release';
     public const STATUS_APPROVED = 'approved';
     public const STATUS_PENDING = 'pending';
     public const STATUS_REJECTED = 'rejected';

@@ -11,7 +11,7 @@ class AccountOrderController extends Controller
     public function index(): View
     {
         $orders = Order::query()
-            ->with('service')
+            ->with(['service', 'variant'])
             ->where('user_id', auth()->id())
             ->latest()
             ->paginate(10);
@@ -26,7 +26,11 @@ class AccountOrderController extends Controller
     {
         $this->authorize('view', $order);
 
-        $order->load('service.formFields');
+        $order->load([
+            'service.formFields',
+            'variant',
+            'events' => fn ($query) => $query->oldest()->with('actor'),
+        ]);
         $fieldLabels = $order->service->formFields->pluck('label', 'name_key');
 
         return view('account.orders.show', compact('order', 'fieldLabels'));

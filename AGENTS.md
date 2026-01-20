@@ -83,3 +83,32 @@
 - تخزين إجابات النموذج في عمود JSON `payload` حسب `name_key`.
 - خصم المحفظة يتم ضمن معاملة واحدة مع `lockForUpdate` لضمان الاتساق.
 - صور التصنيفات والخدمات تُخزن في قرص `public` ضمن مسارات منفصلة.
+
+## Phase 4
+### ما تم تنفيذه
+- نظام تسوية مرحلية للمحفظة: الرصيد المتاح مقابل الرصيد المعلّق مع تثبيت مبلغ الطلب عند الشراء.
+- إدارة باقات الخدمة (Variants) بأسعار متعددة وربطها بالطلبات.
+- تحديث نماذج الخدمة لاختيار الباقة مع التحقق الديناميكي وحفظ البيانات.
+- تحديث واجهات المستخدم/الأدمن لعرض الرصيد المتاح والمعلّق وحركات التعليق/التسوية والإرجاع.
+
+### الهجرات والجداول/الحقول
+- `database/migrations/2024_01_01_000015_add_held_balance_to_wallets_table.php` إضافة `held_balance` إلى `wallets`.
+- `database/migrations/2024_01_01_000016_create_service_variants_table.php` إنشاء جدول `service_variants`.
+- `database/migrations/2024_01_01_000017_add_settlement_fields_to_orders_table.php` إضافة `amount_held`, `variant_id`, `settled_at`, `released_at` إلى `orders`.
+
+### حالات الطلب والانتقالات
+- الحالات: `new`, `processing`, `done`, `rejected`.
+- الانتقالات المسموحة: `new -> processing`, `processing -> done`, `processing -> rejected`, و`new -> rejected` (نهائية).
+- بعد `done` أو `rejected` لا يمكن تغيير الحالة.
+
+### أنواع حركات المحفظة والتسوية
+- الأنواع: `deposit`, `hold`, `settle`, `release` (مع بقاء `purchase` للسجل القديم فقط).
+- عند الشراء: `hold` يحول المبلغ من `balance` إلى `held_balance` ويُخزّن في `orders.amount_held`.
+- عند `done`: `settle` يخصم من `held_balance` فقط ويثبّت `settled_at`.
+- عند `rejected`: `release` يعيد المبلغ من `held_balance` إلى `balance` ويثبّت `released_at`.
+- جميع عمليات الرصيد تتم داخل معاملات DB مع `lockForUpdate` لمنع التكرار.
+
+### أوامر التشغيل
+- الهجرات: `php artisan migrate`
+- البذور: `php artisan db:seed`
+- الاختبارات: `php artisan test`

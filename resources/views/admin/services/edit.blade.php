@@ -79,7 +79,16 @@
             </form>
         </div>
 
-        <div class="rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm">
+        <div class="space-y-6">
+            <div class="rounded-3xl border border-emerald-100 bg-white p-6 shadow-sm">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-lg font-semibold text-emerald-700">الباقات</h2>
+                    <a href="{{ route('admin.services.variants.index', $service) }}" class="text-sm text-emerald-700">إدارة الباقات</a>
+                </div>
+                <p class="mt-3 text-sm text-slate-600">يمكنك إضافة خيارات متعددة بسعر مختلف لكل باقة.</p>
+            </div>
+
+            <div class="rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm">
             <div class="flex items-center justify-between">
                 <h2 class="text-lg font-semibold text-emerald-700">حقول النموذج</h2>
                 <a href="{{ route('admin.services.fields.create', $service) }}" class="text-sm text-emerald-700">إضافة حقل</a>
@@ -98,6 +107,7 @@
                 @empty
                     <p class="text-sm text-slate-500">لم يتم إضافة حقول بعد.</p>
                 @endforelse
+            </div>
             </div>
         </div>
     </div>

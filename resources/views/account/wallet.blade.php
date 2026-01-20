@@ -24,14 +24,33 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
+                    @php
+                        $typeLabels = [
+                            'deposit' => 'شحن',
+                            'hold' => 'تعليق مبلغ',
+                            'settle' => 'تأكيد الخصم',
+                            'release' => 'إرجاع الرصيد المعلّق',
+                            'purchase' => 'شراء',
+                        ];
+                    @endphp
                     @forelse ($transactions as $transaction)
+                        @php
+                            $amount = (float) $transaction->amount;
+                            $displayAmount = $amount;
+
+                            if ($amount >= 0 && in_array($transaction->type, ['hold', 'settle', 'purchase'], true)) {
+                                $displayAmount = -$amount;
+                            }
+
+                            $amountClass = $displayAmount >= 0 ? 'text-emerald-700' : 'text-rose-700';
+                        @endphp
                         <tr>
                             <td class="py-3 text-slate-700">
-                                {{ $transaction->type === 'deposit' ? 'شحن رصيد' : $transaction->type }}
+                                {{ $typeLabels[$transaction->type] ?? $transaction->type }}
                             </td>
                             <td class="py-3">
-                                <span class="{{ $transaction->amount >= 0 ? 'text-emerald-700' : 'text-rose-700' }}">
-                                    {{ number_format($transaction->amount, 2) }} ر.س
+                                <span class="{{ $amountClass }}">
+                                    {{ number_format($displayAmount, 2) }} ر.س
                                 </span>
                             </td>
                             <td class="py-3">

@@ -16,7 +16,7 @@
                 <option value="">كل الحالات</option>
                 <option value="new" @selected(request('status') === 'new')>جديد</option>
                 <option value="processing" @selected(request('status') === 'processing')>قيد التنفيذ</option>
-                <option value="done" @selected(request('status') === 'done')>مكتمل</option>
+                <option value="done" @selected(request('status') === 'done')>تم التنفيذ</option>
                 <option value="rejected" @selected(request('status') === 'rejected')>مرفوض</option>
                 <option value="cancelled" @selected(request('status') === 'cancelled')>ملغي</option>
             </select>
@@ -54,7 +54,7 @@
                                 @elseif ($order->status === 'processing')
                                     <span class="rounded-full bg-blue-100 px-3 py-1 text-xs text-blue-700">قيد التنفيذ</span>
                                 @elseif ($order->status === 'done')
-                                    <span class="rounded-full bg-emerald-100 px-3 py-1 text-xs text-emerald-700">مكتمل</span>
+                                    <span class="rounded-full bg-emerald-100 px-3 py-1 text-xs text-emerald-700">تم التنفيذ</span>
                                 @elseif ($order->status === 'rejected')
                                     <span class="rounded-full bg-rose-100 px-3 py-1 text-xs text-rose-700">مرفوض</span>
                                 @else

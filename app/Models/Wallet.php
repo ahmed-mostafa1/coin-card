@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Wallet extends Model
 {
-    protected $fillable = ['user_id', 'balance'];
+    protected $fillable = ['user_id', 'balance', 'held_balance'];
 
     protected $casts = [
         'balance' => 'decimal:2',
+        'held_balance' => 'decimal:2',
     ];
 
     public function user(): BelongsTo

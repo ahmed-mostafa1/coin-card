@@ -34,6 +34,11 @@ class Service extends Model
         return $this->hasMany(ServiceFormField::class);
     }
 
+    public function variants(): HasMany
+    {
+        return $this->hasMany(ServiceVariant::class);
+    }
+
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);

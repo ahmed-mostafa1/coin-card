@@ -22,7 +22,9 @@
                 <thead class="border-b border-slate-200 text-slate-500">
                     <tr>
                         <th class="py-2">الخدمة</th>
-                        <th class="py-2">السعر</th>
+                        <th class="py-2">الباقة</th>
+                        <th class="py-2">المبلغ</th>
+                        <th class="py-2">المبلغ المعلّق</th>
                         <th class="py-2">الحالة</th>
                         <th class="py-2">التاريخ</th>
                         <th class="py-2">تفاصيل</th>
@@ -32,14 +34,16 @@
                     @forelse ($orders as $order)
                         <tr>
                             <td class="py-3 text-slate-700">{{ $order->service->name }}</td>
+                            <td class="py-3 text-slate-700">{{ $order->variant?->name ?? '-' }}</td>
                             <td class="py-3 text-slate-700">{{ number_format($order->price_at_purchase, 2) }} ر.س</td>
+                            <td class="py-3 text-slate-700">{{ number_format($order->amount_held, 2) }} ر.س</td>
                             <td class="py-3">
                                 @if ($order->status === 'new')
                                     <span class="rounded-full bg-amber-100 px-3 py-1 text-xs text-amber-700">جديد</span>
                                 @elseif ($order->status === 'processing')
                                     <span class="rounded-full bg-blue-100 px-3 py-1 text-xs text-blue-700">قيد التنفيذ</span>
                                 @elseif ($order->status === 'done')
-                                    <span class="rounded-full bg-emerald-100 px-3 py-1 text-xs text-emerald-700">مكتمل</span>
+                                    <span class="rounded-full bg-emerald-100 px-3 py-1 text-xs text-emerald-700">تم التنفيذ</span>
                                 @elseif ($order->status === 'rejected')
                                     <span class="rounded-full bg-rose-100 px-3 py-1 text-xs text-rose-700">مرفوض</span>
                                 @else
@@ -53,7 +57,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="py-6 text-center text-slate-500">لا توجد طلبات بعد.</td>
+                            <td colspan="7" class="py-6 text-center text-slate-500">لا توجد طلبات بعد.</td>
                         </tr>
                     @endforelse
                 </tbody>

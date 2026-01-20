@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model
 {
@@ -16,18 +17,25 @@ class Order extends Model
     protected $fillable = [
         'user_id',
         'service_id',
+        'variant_id',
         'status',
         'price_at_purchase',
+        'amount_held',
         'payload',
         'admin_note',
         'handled_by_user_id',
         'handled_at',
+        'settled_at',
+        'released_at',
     ];
 
     protected $casts = [
         'price_at_purchase' => 'decimal:2',
+        'amount_held' => 'decimal:2',
         'payload' => 'array',
         'handled_at' => 'datetime',
+        'settled_at' => 'datetime',
+        'released_at' => 'datetime',
     ];
 
     public function user(): BelongsTo
@@ -40,8 +48,18 @@ class Order extends Model
         return $this->belongsTo(Service::class);
     }
 
+    public function variant(): BelongsTo
+    {
+        return $this->belongsTo(ServiceVariant::class, 'variant_id');
+    }
+
     public function handledBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'handled_by_user_id');
+    }
+
+    public function events(): HasMany
+    {
+        return $this->hasMany(OrderEvent::class);
     }
 }

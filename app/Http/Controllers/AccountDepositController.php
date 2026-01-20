@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DepositRequest;
+use Illuminate\Authorize\Access\AuthorizationException;
 use Illuminate\View\View;
 
 class AccountDepositController extends Controller
@@ -16,5 +17,17 @@ class AccountDepositController extends Controller
             ->paginate(10);
 
         return view('account.deposits', compact('deposits'));
+    }
+
+    /**
+     * @throws AuthorizationException
+     */
+    public function show(DepositRequest $depositRequest): View
+    {
+        $this->authorize('view', $depositRequest);
+
+        $depositRequest->load('paymentMethod');
+
+        return view('account.deposits.show', compact('depositRequest'));
     }
 }
