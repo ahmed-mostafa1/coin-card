@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\DepositController as AdminDepositController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\OpsController as AdminOpsController;
+use App\Http\Controllers\Admin\OpsOrderController as AdminOpsOrderController;
 use App\Http\Controllers\Admin\AgencyRequestController as AdminAgencyRequestController;
 use App\Http\Controllers\Admin\ReportsController as AdminReportsController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
@@ -54,6 +55,9 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('index');
     Route::get('/ops', [AdminOpsController::class, 'index'])->name('ops.index');
+    Route::post('/ops/orders/{order}/start-processing', [AdminOpsOrderController::class, 'startProcessing'])->name('ops.orders.start-processing');
+    Route::post('/ops/orders/{order}/mark-done', [AdminOpsOrderController::class, 'markDone'])->name('ops.orders.mark-done');
+    Route::post('/ops/orders/{order}/reject', [AdminOpsOrderController::class, 'reject'])->name('ops.orders.reject');
     Route::get('/reports', [AdminReportsController::class, 'index'])->name('reports.index');
     Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('users.show');
     Route::get('/agency-requests', [AdminAgencyRequestController::class, 'index'])->name('agency-requests.index');

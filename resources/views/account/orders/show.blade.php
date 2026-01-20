@@ -46,6 +46,14 @@
                     <p class="text-xs text-slate-500">التاريخ</p>
                     <p class="mt-2 text-sm font-semibold text-slate-700">{{ $order->created_at->format('Y-m-d H:i') }}</p>
                 </div>
+                <div class="rounded-2xl border border-slate-200 p-4">
+                    <p class="text-xs text-slate-500">تأكيد الخصم</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ $order->settled_at?->format('Y-m-d H:i') ?? '-' }}</p>
+                </div>
+                <div class="rounded-2xl border border-slate-200 p-4">
+                    <p class="text-xs text-slate-500">إرجاع الرصيد</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ $order->released_at?->format('Y-m-d H:i') ?? '-' }}</p>
+                </div>
             </div>
 
             <div class="mt-6 rounded-2xl border border-slate-200 p-4">

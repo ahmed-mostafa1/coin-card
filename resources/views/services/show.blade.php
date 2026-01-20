@@ -3,6 +3,11 @@
 @section('title', $service->name)
 
 @section('content')
+    @php
+        $availableBalance = $wallet?->balance ?? 0;
+        $basePrice = $service->variants->count() ? $service->variants->first()->price : $service->price;
+        $isBaseInsufficient = $availableBalance < $basePrice;
+    @endphp
     <div class="grid gap-6 lg:grid-cols-3">
         <div class="rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm lg:col-span-2">
             <div class="flex flex-wrap items-center gap-4">
@@ -43,7 +48,7 @@
             @endif
 
             @auth
-                <div class="mt-4 space-y-2 text-sm text-slate-600">
+                <div class="mt-4 space-y-2 text-sm text-slate-600" data-available-balance="{{ $wallet?->balance ?? 0 }}">
                     <p>الرصيد المتاح: <span class="font-semibold text-emerald-700">{{ number_format($wallet?->balance ?? 0, 2) }} ر.س</span></p>
                     <p>الرصيد المعلّق: <span class="font-semibold text-amber-600">{{ number_format($wallet?->held_balance ?? 0, 2) }} ر.س</span></p>
                 </div>
@@ -59,7 +64,7 @@
                             @foreach ($service->variants as $variant)
                                 <label class="flex items-center justify-between rounded-xl border border-slate-200 bg-white/80 px-4 py-2 text-sm text-slate-700">
                                     <span class="flex items-center gap-2">
-                                        <input type="radio" name="variant_id" value="{{ $variant->id }}" class="text-emerald-600 focus:ring-emerald-500" @checked(old('variant_id') == $variant->id) required>
+                                        <input type="radio" name="variant_id" value="{{ $variant->id }}" data-price="{{ $variant->price }}" class="text-emerald-600 focus:ring-emerald-500" @checked(old('variant_id') == $variant->id) required>
                                         <span>{{ $variant->name }}</span>
                                     </span>
                                     <span class="font-semibold text-emerald-700">{{ number_format($variant->price, 2) }} ر.س</span>
@@ -69,6 +74,18 @@
                         <x-input-error :messages="$errors->get('variant_id')" />
                     </div>
                 @endif
+
+                <div class="rounded-2xl border border-slate-200 p-4 text-sm text-slate-600">
+                    <p>السعر الحالي: <span id="current-price" class="font-semibold text-emerald-700">
+                        @if ($service->variants->count())
+                            {{ number_format($service->variants->first()->price, 2) }}
+                        @else
+                            {{ number_format($service->price, 2) }}
+                        @endif
+                    </span> ر.س</p>
+                    <p id="insufficient-message" class="mt-2 text-xs text-rose-600 {{ $isBaseInsufficient ? '' : 'hidden' }}">رصيدك المتاح غير كافٍ</p>
+                    <p class="mt-2 text-xs text-slate-500">سيظل المبلغ معلّقًا حتى يؤكد المشرف اكتمال تنفيذ الخدمة.</p>
+                </div>
 
                 @forelse ($service->formFields->sortBy('sort_order') as $field)
                     <div>
@@ -92,10 +109,61 @@
                 @guest
                     <a href="{{ route('login') }}" class="inline-flex w-full items-center justify-center rounded-full bg-emerald-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700">سجل الدخول لإتمام الشراء</a>
                 @else
-                    <p class="text-xs text-slate-500">سيظل المبلغ معلّقًا حتى تأكيد التنفيذ من مدير الموقع.</p>
-                    <x-primary-button class="w-full">شراء الآن</x-primary-button>
+                    <x-primary-button id="purchase-button" class="w-full" @disabled($isBaseInsufficient)>شراء الآن</x-primary-button>
                 @endguest
             </form>
         </div>
     </div>
+
+    @auth
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const balanceContainer = document.querySelector('[data-available-balance]');
+                const availableBalance = balanceContainer ? parseFloat(balanceContainer.dataset.availableBalance) : 0;
+                const priceElement = document.getElementById('current-price');
+                const insufficientMessage = document.getElementById('insufficient-message');
+                const purchaseButton = document.getElementById('purchase-button');
+                const variantInputs = document.querySelectorAll('input[name=\"variant_id\"]');
+
+                const getSelectedPrice = () => {
+                    const checked = document.querySelector('input[name=\"variant_id\"]:checked');
+                    if (checked && checked.dataset.price) {
+                        return parseFloat(checked.dataset.price);
+                    }
+                    return parseFloat(priceElement?.textContent || 0);
+                };
+
+                const updateState = () => {
+                    const price = getSelectedPrice();
+                    if (priceElement && !Number.isNaN(price)) {
+                        priceElement.textContent = price.toFixed(2);
+                    }
+
+                    if (!purchaseButton) {
+                        return;
+                    }
+
+                    if (availableBalance < price) {
+                        purchaseButton.setAttribute('disabled', 'disabled');
+                        purchaseButton.classList.add('opacity-50', 'cursor-not-allowed');
+                        if (insufficientMessage) {
+                            insufficientMessage.classList.remove('hidden');
+                        }
+                    } else {
+                        purchaseButton.removeAttribute('disabled');
+                        purchaseButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                        if (insufficientMessage) {
+                            insufficientMessage.classList.add('hidden');
+                        }
+                    }
+                };
+
+                variantInputs.forEach((input) => {
+                    input.addEventListener('change', updateState);
+                });
+
+                updateState();
+            });
+        </script>
+    @endauth
 @endsection
