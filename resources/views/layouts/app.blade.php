@@ -18,16 +18,16 @@
                         كوين كارد
                     </a>
                     <div class="hidden items-center gap-4 text-sm text-slate-700 md:flex">
-                        <a href="{{ route('home') }}" class="transition hover:text-emerald-700 hover:bg-emerald-100">الرئيسية</a>
+                        <a href="{{ route('home') }}" class="cc-nav-link">الرئيسية</a>
                         @auth
-                            <a href="{{ route('account') }}" class="transition hover:text-emerald-700  hover:bg-emerald-100">حسابي</a>
+                            <a href="{{ route('account') }}" class="cc-nav-link">حسابي</a>
                             @role('admin')
-                                <a href="{{ route('admin.index') }}" class="rounded-full px-3 py-1  transition hover:bg-emerald-100">لوحة الأدمن</a>
+                                <a href="{{ route('admin.index') }}" class="cc-nav-link cc-nav-link-pill">لوحة الأدمن</a>
                             @endrole
                         @endauth
                          @auth
                             <div class="relative">
-                                <x-button type="button" variant="secondary" data-dropdown-trigger="notifications-panel" class="rounded-full px-3 py-1 border-0">
+                                <x-button type="button" variant="secondary" data-dropdown-trigger="notifications-panel" class="cc-nav-link">
                                     الإشعارات
                                     @if (! empty($navUnreadCount ?? 0))
                                         <span class="absolute -left-1 -top-1 rounded-full bg-rose-500 px-2 text-xs text-white">{{ $navUnreadCount }}</span>
@@ -65,7 +65,7 @@
                                 </div>
                             </div>
                             <div class="relative">
-                                <x-button type="button" variant="ghost" data-dropdown-trigger="user-panel" class="rounded-full px-3 py-1 border-0">
+                                <x-button type="button" variant="ghost" data-dropdown-trigger="user-panel" class="cc-nav-link">
                                     {{ auth()->user()->name }}
                                 </x-button>
                                 <div id="user-panel" class="hidden fixed inset-x-3 top-16 z-50 w-auto max-w-[calc(100vw-1.5rem)] rounded-xl bg-white shadow-lg overflow-hidden sm:absolute sm:inset-x-auto sm:top-full sm:mt-2 sm:right-0 sm:w-48">
@@ -80,8 +80,8 @@
                             <a href="{{ route('login') }}" class="rounded-xl border border-emerald-200 px-4 py-2 text-emerald-700 transition hover:bg-emerald-50">تسجيل الدخول</a>
                             <a href="{{ route('register') }}" class="rounded-xl bg-emerald-600 px-4 py-2 text-white transition hover:brightness-105">إنشاء حساب</a>
                         @endauth
-                         <a href="{{ route('privacy-policy') }}" class="transition hover:text-emerald-700 hover:bg-emerald-100">سياسة الخصوصية</a>
-                        <a href="{{ route('about') }}" class="transition hover:text-emerald-700 hover:bg-emerald-100">من نحن</a>
+                         <a href="{{ route('privacy-policy') }}" class="cc-nav-link">سياسة الخصوصية</a>
+                        <a href="{{ route('about') }}" class="cc-nav-link">من نحن</a>
                     </div>
                     <div class="hidden items-center gap-3 text-sm md:flex">
                         <!-- @auth
@@ -141,24 +141,24 @@
                         @endauth -->
                     </div>
                     <div class="md:hidden">
-                        <button type="button" data-dropdown-trigger="mobile-menu-panel" class="cursor-pointer rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-700">القائمة</button>
+                        <button type="button" data-dropdown-trigger="mobile-menu-panel" class="cursor-pointer cc-nav-link">القائمة</button>
                         <div id="mobile-menu-panel" class="hidden fixed inset-x-3 top-16 z-50 w-auto max-w-[calc(100vw-1.5rem)] rounded-xl border border-slate-200 bg-white shadow-lg overflow-hidden sm:absolute sm:inset-x-auto sm:top-full sm:mt-2 sm:right-0 sm:w-64">
                             <div class="p-2">
-                                <a href="{{ route('home') }}" class="block rounded-lg px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-50">الرئيسية</a>
+                                <a href="{{ route('home') }}" class="block cc-nav-link">الرئيسية</a>
                                 @auth
-                                    <a href="{{ route('account') }}" class="block rounded-lg px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-50">حسابي</a>
+                                    <a href="{{ route('account') }}" class="block cc-nav-link">حسابي</a>
                                     @role('admin')
-                                        <a href="{{ route('admin.index') }}" class="block rounded-lg px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-50">لوحة الأدمن</a>
+                                        <a href="{{ route('admin.index') }}" class="block cc-nav-link cc-nav-link-pill">لوحة الأدمن</a>
                                     @endrole
-                                    <button type="button" data-logout-button class="mt-2 w-full rounded-lg px-3 py-2 text-right text-sm text-slate-700 transition hover:bg-emerald-50">
+                                    <button type="button" data-logout-button class="mt-2 w-full text-right cc-nav-link">
                                         تسجيل الخروج
                                     </button>
                                 @else
-                                    <a href="{{ route('login') }}" class="block rounded-lg px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-50">تسجيل الدخول</a>
-                                    <a href="{{ route('register') }}" class="block rounded-lg px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-50">إنشاء حساب</a>
+                                    <a href="{{ route('login') }}" class="block cc-nav-link">تسجيل الدخول</a>
+                                    <a href="{{ route('register') }}" class="block cc-nav-link">إنشاء حساب</a>
                                 @endauth
-                                <a href="{{ route('privacy-policy') }}" class="block rounded-lg px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-50">سياسة الخصوصية</a>
-                                <a href="{{ route('about') }}" class="block rounded-lg px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-50">من نحن</a>
+                                <a href="{{ route('privacy-policy') }}" class="block cc-nav-link">سياسة الخصوصية</a>
+                                <a href="{{ route('about') }}" class="block cc-nav-link">من نحن</a>
                             </div>
                         </div>
                     </div>

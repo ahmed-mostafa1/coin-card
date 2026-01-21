@@ -8,6 +8,54 @@
 
 @theme {
     --font-sans: 'Cairo', ui-sans-serif, system-ui, sans-serif;
+    --radius-lg: 1rem;
+    --radius-xl: 1rem;
+    --radius-2xl: 1rem;
+    --radius-3xl: 1rem;
+
+    --color-brand-50: #fbf7ea;
+    --color-brand-100: #f5ebc8;
+    --color-brand-200: #e6d79a;
+    --color-brand-300: #d6bd67;
+    --color-brand-400: #c2a148;
+    --color-brand-500: #ad8730;
+    --color-brand-600: #977024;
+    --color-brand-700: #7a5a1c;
+    --color-brand-800: #5e4516;
+    --color-brand-900: #3f2e0f;
+
+    --color-accent-50: #eff6ff;
+    --color-accent-100: #dbeafe;
+    --color-accent-200: #bfdbfe;
+    --color-accent-300: #93c5fd;
+    --color-accent-400: #60a5fa;
+    --color-accent-500: #3b82f6;
+    --color-accent-600: #2563eb;
+    --color-accent-700: #1d4ed8;
+    --color-accent-800: #1e40af;
+    --color-accent-900: #1e3a8a;
+
+    --color-emerald-50: var(--color-brand-50);
+    --color-emerald-100: var(--color-brand-100);
+    --color-emerald-200: var(--color-brand-200);
+    --color-emerald-300: var(--color-brand-300);
+    --color-emerald-400: var(--color-brand-400);
+    --color-emerald-500: var(--color-brand-500);
+    --color-emerald-600: var(--color-brand-600);
+    --color-emerald-700: var(--color-brand-700);
+    --color-emerald-800: var(--color-brand-800);
+    --color-emerald-900: var(--color-brand-900);
+
+    --color-blue-50: var(--color-accent-50);
+    --color-blue-100: var(--color-accent-100);
+    --color-blue-200: var(--color-accent-200);
+    --color-blue-300: var(--color-accent-300);
+    --color-blue-400: var(--color-accent-400);
+    --color-blue-500: var(--color-accent-500);
+    --color-blue-600: var(--color-accent-600);
+    --color-blue-700: var(--color-accent-700);
+    --color-blue-800: var(--color-accent-800);
+    --color-blue-900: var(--color-accent-900);
 }
 
 @layer base {
@@ -27,5 +75,21 @@
 
     .cc-press {
         @apply active:scale-[0.98] motion-reduce:transform-none;
+    }
+
+    .cc-nav-link {
+        @apply rounded-full border border-emerald-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:-translate-y-0.5 hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 motion-reduce:transform-none;
+    }
+
+    .cc-nav-link-pill {
+        @apply border-emerald-200 bg-emerald-100 text-emerald-800 hover:bg-emerald-200;
+    }
+
+    .cc-pill {
+        @apply rounded-full border border-emerald-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 motion-reduce:transition-none;
+    }
+
+    .cc-pill-active {
+        @apply border-emerald-200 bg-emerald-100 text-emerald-800 hover:bg-emerald-200;
     }
 }

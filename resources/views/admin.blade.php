@@ -7,14 +7,14 @@
         <h1 class="text-2xl font-semibold text-emerald-700">لوحة الأدمن</h1>
         <p class="mt-3 text-sm text-slate-600">إدارة طرق الدفع وطلبات الشحن.</p>
         <div class="mt-6 flex flex-wrap gap-3">
-            <a href="{{ route('admin.ops.index') }}" class="rounded-full border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-50">لوحة العمليات</a>
-            <a href="{{ route('admin.reports.index') }}" class="rounded-full border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-50">التقارير</a>
-            <a href="{{ route('admin.agency-requests.index') }}" class="rounded-full border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-50">طلبات الوكالة</a>
-            <a href="{{ route('admin.payment-methods.index') }}" class="rounded-full border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-50">طرق الدفع</a>
-            <a href="{{ route('admin.deposits.index') }}" class="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-emerald-200">طلبات الشحن</a>
-            <a href="{{ route('admin.categories.index') }}" class="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-emerald-200">التصنيفات</a>
-            <a href="{{ route('admin.services.index') }}" class="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-emerald-200">الخدمات</a>
-            <a href="{{ route('admin.orders.index') }}" class="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-emerald-200">الطلبات</a>
+            <a href="{{ route('admin.ops.index') }}" class="cc-pill">لوحة العمليات</a>
+            <a href="{{ route('admin.reports.index') }}" class="cc-pill">التقارير</a>
+            <a href="{{ route('admin.agency-requests.index') }}" class="cc-pill">طلبات الوكالة</a>
+            <a href="{{ route('admin.payment-methods.index') }}" class="cc-pill">طرق الدفع</a>
+            <a href="{{ route('admin.deposits.index') }}" class="cc-pill">طلبات الشحن</a>
+            <a href="{{ route('admin.categories.index') }}" class="cc-pill">التصنيفات</a>
+            <a href="{{ route('admin.services.index') }}" class="cc-pill">الخدمات</a>
+            <a href="{{ route('admin.orders.index') }}" class="cc-pill">الطلبات</a>
         </div>
     </div>
 @endsection
