@@ -9,7 +9,7 @@
 
             <div class="mt-6 grid gap-4 sm:grid-cols-3">
                 <div class="rounded-2xl border border-slate-200 p-4">
-                    <p class="text-xs text-slate-500">طلبات الشحن المعلقة</p>
+                    <p class="text-xs text-slate-500">طلبات الشحن</p>
                     <p class="mt-2 text-lg font-semibold text-emerald-700">{{ $pendingDepositsCount }}</p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 p-4">
@@ -31,7 +31,7 @@
 
         <div class="flex flex-wrap gap-3 text-sm">
             <a href="{{ route('admin.ops.index', ['tab' => 'deposits']) }}"
-                class="rounded-full border px-4 py-2 transition {{ $tab === 'deposits' ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : 'border-slate-200 text-slate-600 hover:border-emerald-200' }}">طلبات الشحن المعلقة</a>
+                class="rounded-full border px-4 py-2 transition {{ $tab === 'deposits' ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : 'border-slate-200 text-slate-600 hover:border-emerald-200' }}">طلبات الشحن</a>
             <a href="{{ route('admin.ops.index', ['tab' => 'orders_new']) }}"
                 class="rounded-full border px-4 py-2 transition {{ $tab === 'orders_new' ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : 'border-slate-200 text-slate-600 hover:border-emerald-200' }}">طلبات جديدة</a>
             <a href="{{ route('admin.ops.index', ['tab' => 'orders_processing']) }}"

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'التصنيفات')
+@section('mainWidth', 'max-w-none w-full')
 
 @section('content')
     <div class="rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm">
