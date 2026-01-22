@@ -43,12 +43,29 @@
             </div>
         </div>
 
+        @php
+            $spentTotal = (float) ($summary['spent'] ?? 0);
+            $vipCards = [
+                ['rank' => 1, 'name' => 'VIP1', 'threshold' => 500.00, 'image' => 'img/vip1.webp'],
+                ['rank' => 2, 'name' => 'VIP2', 'threshold' => 1000.00, 'image' => 'img/vip2.webp'],
+                ['rank' => 3, 'name' => 'VIP3', 'threshold' => 2000.00, 'image' => 'img/vip3.webp'],
+                ['rank' => 4, 'name' => 'VIP4', 'threshold' => 3500.00, 'image' => 'img/vip4.webp'],
+                ['rank' => 5, 'name' => 'VIP5', 'threshold' => 5000.00, 'image' => 'img/vip5.webp'],
+            ];
+
+            $currentVipRank = 0;
+            foreach ($vipCards as $card) {
+                if ($spentTotal >= $card['threshold']) {
+                    $currentVipRank = $card['rank'];
+                }
+            }
+        @endphp
+
         <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            @foreach ($tiers as $tier)
+            @foreach ($vipCards as $card)
                 @php
-                    $isCurrent = $tier->rank === $currentRank;
-                    $isCompleted = $tier->rank < $currentRank;
-                    $isLocked = $tier->rank > $currentRank;
+                    $isCurrent = $card['rank'] === $currentVipRank;
+                    $isCompleted = $card['rank'] < $currentVipRank;
 
                     $cardClasses = 'border-slate-200 bg-white';
                     $stateText = 'مغلق';
@@ -66,25 +83,18 @@
                         $stateClass = 'bg-emerald-200 text-emerald-800';
                     }
                 @endphp
-                <div class="rounded-2xl border {{ $cardClasses }} p-6">
+                <div class="rounded-2xl border {{ $cardClasses }} p-6 text-center">
+                    <div class="mb-4 flex justify-center">
+                        <img src="{{ asset($card['image']) }}" alt="{{ $card['name'] }}" class="h-20 w-20 object-contain">
+                    </div>
                     <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border border-slate-200 bg-white">
-                                @if ($tier->badge_image_path)
-                                    <img src="{{ asset('storage/'.$tier->badge_image_path) }}" alt="{{ $tier->name }}" class="h-full w-full object-cover">
-                                @else
-                                    <span class="text-sm font-semibold text-slate-500">VIP</span>
-                                @endif
-                            </div>
-                            <div>
-                                <p class="text-lg font-semibold text-slate-800">VIP{{ $tier->rank }}</p>
-                                <p class="text-xs text-slate-500">{{ $tier->name }}</p>
-                            </div>
+                        <div class="text-right">
+                            <p class="text-lg font-semibold text-slate-800">{{ $card['name'] }}</p>
                         </div>
                         <span class="rounded-full px-3 py-1 text-xs font-semibold {{ $stateClass }}">{{ $stateText }}</span>
                     </div>
-                    <div class="mt-4 text-sm text-slate-600">
-                        إجمالي المشتريات المطلوبة: <span class="font-semibold text-slate-800">{{ number_format($tier->threshold_amount, 2) }} USD</span>
+                    <div class="mt-3 text-sm text-slate-600">
+                        إجمالي المشتريات المطلوبة: <span class="font-semibold text-slate-800">{{ number_format($card['threshold'], 2) }} USD</span>
                     </div>
                 </div>
             @endforeach

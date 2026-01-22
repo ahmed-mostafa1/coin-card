@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'ملف المستخدم')
+@section('mainWidth', 'max-w-none w-full')
 
 @section('content')
     <div class="space-y-6">
@@ -41,7 +42,7 @@
                     @csrf
                     <button type="submit" class="rounded-full border border-amber-200 px-4 py-2 font-semibold text-amber-700">{{ $user->is_frozen ? 'إلغاء التجميد' : 'تجميد الحساب' }}</button>
                 </form>
-                <form method="POST" action="{{ route('admin.users.destroy', $user) }}" onsubmit="return confirm('?? ??? ????? ?? ??? ?????????')">
+                <form method="POST" action="{{ route('admin.users.destroy', $user) }}" onsubmit="return confirm('هل أنت متأكد من حذف هذا المستخدم؟ لا يمكن التراجع عن هذا الإجراء.')">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="rounded-full border border-slate-200 px-4 py-2 font-semibold text-slate-600">حذف المستخدم</button>

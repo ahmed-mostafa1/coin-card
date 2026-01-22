@@ -31,8 +31,8 @@ Route::middleware(['auth', 'not_banned'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/categories/{category:slug}', [CategoryController::class, 'show'])->name('categories.show');
     Route::get('/services/{service:slug}', [ServiceController::class, 'show'])->name('services.show');
-    Route::get('/privacy-policy', fn () => view('pages.privacy-policy'))->name('privacy-policy');
-    Route::get('/about', fn () => view('pages.about'))->name('about');
+    Route::get('/privacy-policy', fn() => view('pages.privacy-policy'))->name('privacy-policy');
+    Route::get('/about', fn() => view('pages.about'))->name('about');
     Route::get('/agency-request', [AgencyRequestController::class, 'create'])->name('agency-requests.create');
     Route::post('/agency-request', [AgencyRequestController::class, 'store'])->name('agency-requests.store');
 
@@ -47,6 +47,9 @@ Route::middleware(['auth', 'not_banned'])->group(function () {
     Route::get('/account/vip', [AccountVipController::class, 'show'])->name('account.vip');
     Route::get('/account/notifications', [AccountNotificationController::class, 'index'])->name('account.notifications');
     Route::post('/account/notifications/mark-all-read', [AccountNotificationController::class, 'markAllRead'])->name('account.notifications.mark-all-read');
+    Route::get('/account/change-password', [AccountController::class, 'changePassword'])->name('account.password.change');
+    Route::post('/account/change-password', [AccountController::class, 'updatePassword'])->name('account.password.update');
+
 
     Route::get('/deposit', [DepositController::class, 'index'])->name('deposit.index');
     Route::get('/deposit/{paymentMethod:slug}', [DepositController::class, 'show'])->name('deposit.show');
@@ -104,4 +107,4 @@ Route::middleware(['auth', 'not_banned', 'role:admin'])->prefix('admin')->name('
     Route::put('/orders/{order}', [AdminOrderController::class, 'update'])->name('orders.update');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -31,13 +31,13 @@ class AccountController extends Controller
     {
         $user = auth()->user();
 
-        if (! $user->hasRole('admin')) {
+        if (!$user->hasRole('admin')) {
             abort(403);
         }
 
         $validated = request()->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', 'unique:users,email,'.$user->id],
+            'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $user->id],
             'password' => ['nullable', 'string', 'min:8', 'confirmed'],
         ], [
             'name.required' => 'يرجى إدخال الاسم.',
@@ -51,12 +51,43 @@ class AccountController extends Controller
         $user->name = $validated['name'];
         $user->email = $validated['email'];
 
-        if (! empty($validated['password'])) {
+        if (!empty($validated['password'])) {
             $user->password = Hash::make($validated['password']);
         }
 
         $user->save();
 
         return redirect()->route('account')->with('status', 'تم تحديث البيانات بنجاح.');
+    }
+
+    public function changePassword(): View
+    {
+        return view('account.change-password');
+    }
+
+    public function updatePassword(): RedirectResponse
+    {
+        $user = auth()->user();
+
+        $validated = request()->validate([
+            'current_password' => ['required', 'string'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ], [
+            'current_password.required' => 'يرجى إدخال كلمة المرور الحالية.',
+            'password.required' => 'يرجى إدخال كلمة المرور الجديدة.',
+            'password.min' => 'كلمة المرور يجب أن تكون 8 أحرف على الأقل.',
+            'password.confirmed' => 'تأكيد كلمة المرور غير متطابق.',
+        ]);
+
+        // Check if current password is correct
+        if (!Hash::check($validated['current_password'], $user->password)) {
+            return redirect()->back()->with('error', 'كلمة المرور الحالية غير صحيحة.');
+        }
+
+        // Update password
+        $user->password = Hash::make($validated['password']);
+        $user->save();
+
+        return redirect()->route('account')->with('status', 'تم تحديث كلمة المرور بنجاح.');
     }
 }

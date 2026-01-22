@@ -26,11 +26,11 @@
             <div class="mt-4 rounded-2xl border border-slate-200 bg-white p-4">
                 <div class="flex items-center justify-between gap-4">
                     <div>
-                        <p class="text-sm text-slate-500">??? ???????</p>
+                        <p class="text-sm text-slate-500">الرقم المحول إليه</p>
                         <p class="mt-2 text-lg font-semibold text-slate-700" data-account-number>{{ $paymentMethod->account_number }}</p>
-                        <p class="mt-1 text-xs text-emerald-600 hidden" data-copy-feedback>?? ?????</p>
+                        <p class="mt-1 text-xs text-emerald-600 hidden" data-copy-feedback>تم النسخ</p>
                     </div>
-                    <button type="button" class="rounded-full border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-50" data-copy-button>???</button>
+                    <button type="button" class="rounded-full border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-50" data-copy-button>نسخ</button>
                 </div>
             </div>
         </div>

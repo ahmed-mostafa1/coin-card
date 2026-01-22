@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'المستخدمون')
+@section('mainWidth', 'max-w-none w-full')
 
 @section('content')
     <div class="space-y-6">

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'تفاصيل طلب الشحن')
+@section('mainWidth', 'max-w-none w-full')
 
 @section('content')
     <div class="grid gap-6 lg:grid-cols-3">

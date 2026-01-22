@@ -63,6 +63,7 @@
                         <span class="absolute left-2 top-2 rounded-full bg-rose-500 px-2 text-xs text-white">{{ $unreadNotificationsCount }}</span>
                     @endif
                 </a>
+                <a href="{{ route('account.password.change') }}" class="rounded-2xl border border-slate-200 px-4 py-4 text-center text-sm font-semibold text-slate-700 transition hover:border-emerald-200">تغيير كلمة المرور</a>
             </div>
         </x-card>
         <div class="rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-600 to-emerald-700 p-8 text-white shadow-sm cc-hover-glow">

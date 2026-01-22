@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'سجل الرصيد')
+@section('mainWidth', 'max-w-none w-full')
 
 @section('content')
     <x-card :hover="false">
