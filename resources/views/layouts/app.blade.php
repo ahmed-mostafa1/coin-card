@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ar" dir="rtl">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
 
 <head>
     <meta charset="utf-8">
@@ -15,23 +15,24 @@
     @endphp
     <div class="min-h-screen flex flex-col">
         <nav class="border-b border-slate-200 bg-white/90 backdrop-blur">
-            <div class="mx-auto flex {{ $containerWidth }} flex-row-reverse items-center justify-between px-4 py-4">
+            <div class="mx-auto flex {{ $containerWidth }} items-center justify-between px-4 py-4">
                 <a href="{{ route('home') }}" class="text-lg font-bold text-emerald-700">
                     Arab 8BP
                 </a>
                 <div class="hidden items-center gap-4 text-sm text-slate-700 md:flex">
-                    <a href="{{ route('home') }}" class="cc-nav-link">الرئيسية</a>
+                    <a href="{{ route('home') }}" class="cc-nav-link">{{ __('messages.home') }}</a>
                     @auth
-                        <a href="{{ route('account') }}" class="cc-nav-link">حسابي</a>
+                        <a href="{{ route('account') }}" class="cc-nav-link">{{ __('messages.my_account') }}</a>
                         @role('admin')
-                        <a href="{{ route('admin.index') }}" class="cc-nav-link cc-nav-link-pill">لوحة الأدمن</a>
+                        <a href="{{ route('admin.index') }}"
+                            class="cc-nav-link cc-nav-link-pill">{{ __('messages.admin_panel') }}</a>
                         @endrole
                     @endauth
                     @auth
                         <div class="relative">
                             <x-button type="button" variant="secondary" data-dropdown-trigger="notifications-panel"
                                 class="cc-nav-link">
-                                الإشعارات
+                                {{ __('messages.notifications') }}
                                 @if (!empty($navUnreadCount ?? 0))
                                     <span
                                         class="absolute -left-1 -top-1 rounded-full bg-rose-500 px-2 text-xs text-white">{{ $navUnreadCount }}</span>
@@ -41,9 +42,10 @@
                                 class="hidden fixed inset-x-3 top-16 z-50 w-auto max-w-[calc(100vw-1.5rem)] rounded-xl bg-white shadow-lg overflow-hidden sm:absolute sm:inset-x-auto sm:top-full sm:mt-2 sm:right-0 sm:w-80">
                                 <div class="p-4">
                                     <div class="flex items-center justify-between">
-                                        <p class="text-sm font-semibold text-slate-900">آخر الإشعارات</p>
+                                        <p class="text-sm font-semibold text-slate-900">
+                                            {{ __('messages.latest_notifications') }}</p>
                                         <a href="{{ route('account.notifications') }}"
-                                            class="text-xs text-emerald-700 hover:text-emerald-900">عرض الكل</a>
+                                            class="text-xs text-emerald-700 hover:text-emerald-900">{{ __('messages.view_all') }}</a>
                                     </div>
                                     <div class="mt-3 space-y-3 text-sm min-w-0">
                                         @forelse ($navNotifications ?? [] as $notification)
@@ -51,18 +53,24 @@
                                                 class="block rounded-xl border border-slate-200 p-3 transition hover:border-emerald-200">
                                                 <div class="flex items-start justify-between gap-2 min-w-0">
                                                     <p class="font-semibold text-slate-700 break-words">
-                                                        {{ $notification->data['title'] ?? 'إشعار جديد' }}</p>
+                                                        {{ trans($notification->data['title'] ?? 'messages.new_notification', $notification->data['title_params'] ?? []) }}
+                                                    </p>
                                                     @if ($notification->read_at === null)
                                                         <span class="mt-1 h-2 w-2 rounded-full bg-emerald-500"></span>
                                                     @endif
                                                 </div>
                                                 <p class="mt-2 text-xs text-slate-500 break-words">
-                                                    {{ $notification->data['description'] ?? '' }}</p>
+                                                    {{ trans($notification->data['description'] ?? '', $notification->data['description_params'] ?? []) }}
+                                                    @if(isset($notification->data['admin_note']) && !empty($notification->data['admin_note']))
+                                                        {{ trans('messages.notifications_custom.deposit_rejected_reason', ['reason' => $notification->data['admin_note']]) }}
+                                                    @endif
+                                                </p>
                                                 <p class="mt-2 text-xs text-slate-400">
-                                                    {{ $notification->created_at->diffForHumans() }}</p>
+                                                    {{ $notification->created_at->diffForHumans() }}
+                                                </p>
                                             </a>
                                         @empty
-                                            <p class="text-xs text-slate-500">لا توجد إشعارات حتى الآن.</p>
+                                            <p class="text-xs text-slate-500">{{ __('messages.no_notifications') }}</p>
                                         @endforelse
                                     </div>
                                     <form method="POST" action="{{ route('account.notifications.mark-all-read') }}"
@@ -70,7 +78,7 @@
                                         @csrf
                                         <button type="submit"
                                             class="w-full rounded-xl border border-emerald-200 px-3 py-2 text-xs font-semibold text-emerald-700 transition hover:bg-emerald-50">
-                                            تعليم الكل كمقروء
+                                            {{ __('messages.mark_all_read') }}
                                         </button>
                                     </form>
                                 </div>
@@ -84,101 +92,63 @@
                                 class="hidden fixed inset-x-3 top-16 z-50 w-auto max-w-[calc(100vw-1.5rem)] rounded-xl bg-white shadow-lg overflow-hidden sm:absolute sm:inset-x-auto sm:top-full sm:mt-2 sm:right-0 sm:w-48">
                                 <div class="p-2">
                                     <x-button type="button" variant="ghost" data-logout-button class="w-full justify-start">
-                                        تسجيل الخروج
+                                        {{ __('messages.logout') }}
                                     </x-button>
                                 </div>
                             </div>
                         </div>
                     @else
                         <a href="{{ route('login') }}"
-                            class="rounded-xl border border-emerald-200 px-4 py-2 text-emerald-700 transition hover:bg-emerald-50">تسجيل
-                            الدخول</a>
+                            class="rounded-xl border border-emerald-200 px-4 py-2 text-emerald-700 transition hover:bg-emerald-50">{{ __('messages.login') }}</a>
                         <a href="{{ route('register') }}"
-                            class="rounded-xl bg-emerald-600 px-4 py-2 text-white transition hover:brightness-105">إنشاء
-                            حساب</a>
+                            class="rounded-xl bg-emerald-600 px-4 py-2 text-white transition hover:brightness-105">{{ __('messages.register') }}</a>
                     @endauth
-                    <a href="{{ route('privacy-policy') }}" class="cc-nav-link">سياسة الخصوصية</a>
-                    <a href="{{ route('about') }}" class="cc-nav-link">من نحن</a>
+                    <a href="{{ route('privacy-policy') }}" class="cc-nav-link">{{ __('messages.privacy_policy') }}</a>
+                    <a href="{{ route('about') }}" class="cc-nav-link">{{ __('messages.about_us') }}</a>
+
+                    @if(app()->getLocale() == 'ar')
+                        <a href="{{ route('lang.switch', 'en') }}"
+                            class="cc-nav-link text-emerald-600 font-bold">English</a>
+                    @else
+                        <a href="{{ route('lang.switch', 'ar') }}"
+                            class="cc-nav-link text-emerald-600 font-bold">العربية</a>
+                    @endif
                 </div>
-                <div class="hidden items-center gap-3 text-sm md:flex">
-                    <!-- @auth
-                            <div class="relative">
-                                <x-button type="button" variant="secondary" data-dropdown-trigger="notifications-panel" class="rounded-full px-3 py-1">
-                                    الإشعارات
-                                    @if (! empty($navUnreadCount ?? 0))
-                                        <span class="absolute -left-1 -top-1 rounded-full bg-rose-500 px-2 text-xs text-white">{{ $navUnreadCount }}</span>
-                                    @endif
-                                </x-button>
-                                <div id="notifications-panel" class="hidden fixed inset-x-3 top-16 z-50 w-auto max-w-[calc(100vw-1.5rem)] rounded-xl border border-slate-200 bg-white shadow-lg overflow-hidden sm:absolute sm:inset-x-auto sm:top-full sm:mt-2 sm:right-0 sm:w-80">
-                                    <div class="p-4">
-                                        <div class="flex items-center justify-between">
-                                            <p class="text-sm font-semibold text-slate-900">آخر الإشعارات</p>
-                                            <a href="{{ route('account.notifications') }}" class="text-xs text-emerald-700 hover:text-emerald-900">عرض الكل</a>
-                                        </div>
-                                        <div class="mt-3 space-y-3 text-sm min-w-0">
-                                            @forelse ($navNotifications ?? [] as $notification)
-                                                <a href="{{ $notification->data['url'] ?? route('account.notifications') }}" class="block rounded-xl border border-slate-200 p-3 transition hover:border-emerald-200">
-                                                    <div class="flex items-start justify-between gap-2 min-w-0">
-                                                        <p class="font-semibold text-slate-700 break-words">{{ $notification->data['title'] ?? 'إشعار جديد' }}</p>
-                                                        @if ($notification->read_at === null)
-                                                            <span class="mt-1 h-2 w-2 rounded-full bg-emerald-500"></span>
-                                                        @endif
-                                                    </div>
-                                                    <p class="mt-2 text-xs text-slate-500 break-words">{{ $notification->data['description'] ?? '' }}</p>
-                                                    <p class="mt-2 text-xs text-slate-400">{{ $notification->created_at->diffForHumans() }}</p>
-                                                </a>
-                                            @empty
-                                                <p class="text-xs text-slate-500">لا توجد إشعارات حتى الآن.</p>
-                                            @endforelse
-                                        </div>
-                                        <form method="POST" action="{{ route('account.notifications.mark-all-read') }}" class="mt-4">
-                                            @csrf
-                                            <button type="submit" class="w-full rounded-xl border border-emerald-200 px-3 py-2 text-xs font-semibold text-emerald-700 transition hover:bg-emerald-50">
-                                                تعليم الكل كمقروء
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="relative">
-                                <x-button type="button" variant="ghost" data-dropdown-trigger="user-panel" class="rounded-full px-3 py-1 text-emerald-700">
-                                    {{ auth()->user()->name }}
-                                </x-button>
-                                <div id="user-panel" class="hidden fixed inset-x-3 top-16 z-50 w-auto max-w-[calc(100vw-1.5rem)] rounded-xl border border-slate-200 bg-white shadow-lg overflow-hidden sm:absolute sm:inset-x-auto sm:top-full sm:mt-2 sm:right-0 sm:w-48">
-                                    <div class="p-2">
-                                        <x-button type="button" variant="ghost" data-logout-button class="w-full justify-start text-slate-700">
-                                            تسجيل الخروج
-                                        </x-button>
-                                    </div>
-                                </div>
-                            </div>
-                        @else
-                            <a href="{{ route('login') }}" class="rounded-xl border border-emerald-200 px-4 py-2 text-emerald-700 transition hover:bg-emerald-50">تسجيل الدخول</a>
-                            <a href="{{ route('register') }}" class="rounded-xl bg-emerald-600 px-4 py-2 text-white transition hover:brightness-105">إنشاء حساب</a>
-                        @endauth -->
-                </div>
+                <!-- Desktop Hidden Menu items (removed duplicate section that was hidden md:flex) -->
+
                 <div class="md:hidden">
                     <button type="button" data-dropdown-trigger="mobile-menu-panel"
-                        class="cursor-pointer cc-nav-link">القائمة</button>
+                        class="cursor-pointer cc-nav-link">{{ __('messages.menu') }}</button>
                     <div id="mobile-menu-panel"
                         class="hidden fixed inset-x-3 top-16 z-50 w-auto max-w-[calc(100vw-1.5rem)] rounded-xl border border-slate-200 bg-white shadow-lg overflow-hidden sm:absolute sm:inset-x-auto sm:top-full sm:mt-2 sm:right-0 sm:w-64">
                         <div class="p-2">
-                            <a href="{{ route('home') }}" class="block cc-nav-link">الرئيسية</a>
+                            <a href="{{ route('home') }}" class="block cc-nav-link">{{ __('messages.home') }}</a>
                             @auth
-                                <a href="{{ route('account') }}" class="block cc-nav-link">حسابي</a>
+                                <a href="{{ route('account') }}"
+                                    class="block cc-nav-link">{{ __('messages.my_account') }}</a>
                                 @role('admin')
-                                <a href="{{ route('admin.index') }}" class="block cc-nav-link cc-nav-link-pill">لوحة
-                                    الأدمن</a>
+                                <a href="{{ route('admin.index') }}"
+                                    class="block cc-nav-link cc-nav-link-pill">{{ __('messages.admin_panel') }}</a>
                                 @endrole
-                                <button type="button" data-logout-button class="mt-2 w-full text-right cc-nav-link">
-                                    تسجيل الخروج
+                                <button type="button" data-logout-button
+                                    class="mt-2 w-full {{ app()->getLocale() == 'ar' ? 'text-right' : 'text-left' }} cc-nav-link">
+                                    {{ __('messages.logout') }}
                                 </button>
                             @else
-                                <a href="{{ route('login') }}" class="block cc-nav-link">تسجيل الدخول</a>
-                                <a href="{{ route('register') }}" class="block cc-nav-link">إنشاء حساب</a>
+                                <a href="{{ route('login') }}" class="block cc-nav-link">{{ __('messages.login') }}</a>
+                                <a href="{{ route('register') }}"
+                                    class="block cc-nav-link">{{ __('messages.register') }}</a>
                             @endauth
-                            <a href="{{ route('privacy-policy') }}" class="block cc-nav-link">سياسة الخصوصية</a>
-                            <a href="{{ route('about') }}" class="block cc-nav-link">من نحن</a>
+                            <a href="{{ route('privacy-policy') }}"
+                                class="block cc-nav-link">{{ __('messages.privacy_policy') }}</a>
+                            <a href="{{ route('about') }}" class="block cc-nav-link">{{ __('messages.about_us') }}</a>
+                            <div class="border-t border-slate-100 my-2 pt-2">
+                                @if(app()->getLocale() == 'ar')
+                                    <a href="{{ route('lang.switch', 'en') }}" class="block cc-nav-link">English</a>
+                                @else
+                                    <a href="{{ route('lang.switch', 'ar') }}" class="block cc-nav-link">العربية</a>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -192,7 +162,7 @@
         <footer class="border-t border-slate-200 bg-white py-6">
             <div
                 class="mx-auto flex {{ $containerWidth }} flex-wrap items-center justify-between gap-3 px-4 text-sm text-slate-600">
-                <p>جميع الحقوق محفوظة.</p>
+                <p>{{ __('messages.all_rights_reserved') }}</p>
             </div>
         </footer>
     </div>
@@ -202,15 +172,13 @@
     </form>
 
     <a href="https://wa.me/963991195136" target="_blank" rel="noopener noreferrer"
-        class="fixed bottom-4 left-4 z-50 inline-flex items-center gap-2 rounded-full bg-emerald-600 px-4 py-3 text-sm font-semibold text-white shadow-lg transition duration-200 hover:brightness-105 motion-reduce:transition-none">
+        class="fixed bottom-4 {{ app()->getLocale() == 'ar' ? 'left-4' : 'right-4' }} z-50 inline-flex items-center gap-2 rounded-full bg-emerald-600 px-4 py-3 text-sm font-semibold text-white shadow-lg transition duration-200 hover:brightness-105 motion-reduce:transition-none">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="h-5 w-5 fill-current" aria-hidden="true">
             <path
                 d="M16 3.2a12.8 12.8 0 0 0-11.1 19.2L3.2 28.8l6.6-1.7A12.8 12.8 0 1 0 16 3.2Zm7.5 17.7c-.3.8-1.5 1.5-2.3 1.6-.6.1-1.4.2-4.7-1-4.1-1.6-6.7-5.8-6.9-6.1-.2-.3-1.7-2.2-1.7-4.2s1-3 1.3-3.4c.3-.3.6-.4.9-.4h.7c.2 0 .5 0 .8.6.3.6 1 2.4 1.1 2.6.1.2.1.5 0 .7-.1.2-.2.4-.4.6-.2.2-.4.4-.6.6-.2.2-.4.4-.2.7.2.3.9 1.5 2 2.4 1.4 1.2 2.5 1.6 2.9 1.8.4.2.6.2.8 0 .2-.2 1-1.1 1.2-1.5.2-.4.5-.3.8-.2.3.1 2.1 1 2.4 1.2.3.2.5.3.6.5.1.2.1.9-.2 1.7Z" />
         </svg>
-        تواصل واتساب
+        {{ __('messages.contact_whatsapp') }}
     </a>
-
-
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {

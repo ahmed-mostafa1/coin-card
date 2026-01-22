@@ -18,11 +18,17 @@ class NewOrderNotification extends Notification
 
     public function toDatabase(object $notifiable): array
     {
-        $amountText = number_format($this->order->amount_held, 2).' USD';
+        $amountText = number_format($this->order->amount_held, 2) . ' USD';
 
         return [
-            'title' => 'طلب جديد',
-            'description' => 'طلب جديد من '.$this->order->user->name.' لخدمة '.$this->order->service->name.' بمبلغ '.$amountText.'.',
+            'title' => 'messages.notifications_custom.new_order_title',
+            'description' => 'messages.notifications_custom.new_order_desc',
+            'title_params' => [],
+            'description_params' => [
+                'user' => $this->order->user->name,
+                'service' => $this->order->service->name,
+                'amount' => $amountText,
+            ],
             'url' => route('admin.orders.show', $this->order),
             'order_id' => $this->order->id,
             'user_id' => $this->order->user_id,

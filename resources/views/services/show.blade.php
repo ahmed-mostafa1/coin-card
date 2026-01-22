@@ -20,7 +20,7 @@
                     <h1 class="text-2xl font-bold text-slate-900">{{ $service->name }}</h1>
                     <p class="mt-1 text-sm text-slate-500">{{ $service->category->name }}</p>
                     @if ($service->variants->count())
-                        <p class="mt-2 text-lg font-semibold text-emerald-700">يبدأ من {{ number_format($service->variants->min('price'), 2) }} USD</p>
+                        <p class="mt-2 text-lg font-semibold text-emerald-700">{{ __('messages.starts_from_price', ['price' => number_format($service->variants->min('price'), 2)]) }}</p>
                     @else
                         <p class="mt-2 text-lg font-semibold text-emerald-700">{{ number_format($service->price, 2) }} USD</p>
                     @endif
@@ -33,7 +33,7 @@
         </x-card>
 
         <x-card class="p-8">
-            <h2 class="text-lg font-semibold text-slate-900">تفاصيل الطلب</h2>
+            <h2 class="text-lg font-semibold text-slate-900">{{ __('messages.order_details_header') }}</h2>
 
             @if (session('status'))
                 <div class="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
@@ -49,8 +49,8 @@
 
             @auth
                 <div class="mt-4 space-y-2 text-sm text-slate-600" data-available-balance="{{ $wallet?->balance ?? 0 }}">
-                    <p>الرصيد المتاح: <span class="font-semibold text-emerald-700">{{ number_format($wallet?->balance ?? 0, 2) }} USD</span></p>
-                    <p>الرصيد المعلّق: <span class="font-semibold text-amber-600">{{ number_format($wallet?->held_balance ?? 0, 2) }} USD</span></p>
+                    <p>{{ __('messages.available_balance_text') }}: <span class="font-semibold text-emerald-700">{{ number_format($wallet?->balance ?? 0, 2) }} USD</span></p>
+                    <p>{{ __('messages.held_balance_text') }}: <span class="font-semibold text-amber-600">{{ number_format($wallet?->held_balance ?? 0, 2) }} USD</span></p>
                 </div>
             @endauth
 
@@ -59,7 +59,7 @@
 
                 @if ($service->variants->count())
                     <div>
-                        <x-input-label for="variant_id" value="اختر الباقة" />
+                        <x-input-label for="variant_id" :value="__('messages.choose_package')" />
                         <div class="mt-2 space-y-2">
                             @foreach ($service->variants as $variant)
                                 <label class="flex items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm text-slate-700 transition hover:border-emerald-200">
@@ -76,15 +76,15 @@
                 @endif
 
                 <div class="rounded-2xl border border-slate-200 p-4 text-sm text-slate-600">
-                    <p>السعر الحالي: <span id="current-price" class="font-semibold text-emerald-700">
+                    <p>{{ __('messages.current_price') }}: <span id="current-price" class="font-semibold text-emerald-700">
                         @if ($service->variants->count())
                             {{ number_format($service->variants->first()->price, 2) }}
                         @else
                             {{ number_format($service->price, 2) }}
                         @endif
                     </span> USD</p>
-                    <p id="insufficient-message" class="mt-2 text-xs text-rose-600 {{ $isBaseInsufficient ? '' : 'hidden' }}">رصيدك المتاح غير كافٍ</p>
-                    <p class="mt-2 text-xs text-slate-500">سيظل المبلغ معلّقًا حتى يؤكد المشرف اكتمال تنفيذ الخدمة.</p>
+                    <p id="insufficient-message" class="mt-2 text-xs text-rose-600 {{ $isBaseInsufficient ? '' : 'hidden' }}">{{ __('messages.insufficient_balance_msg') }}</p>
+                    <p class="mt-2 text-xs text-slate-500">{{ __('messages.held_amount_notice') }}</p>
                 </div>
 
                 @forelse ($service->formFields->sortBy('sort_order') as $field)
@@ -98,13 +98,13 @@
                         <x-input-error :messages="$errors->get('fields.'.$field->name_key)" />
                     </div>
                 @empty
-                    <p class="text-sm text-slate-500">لا توجد بيانات مطلوبة لهذه الخدمة.</p>
+                    <p class="text-sm text-slate-500">{{ __('messages.no_required_fields') }}</p>
                 @endforelse
 
                 @auth
-                    <x-primary-button id="purchase-button" class="w-full" :disabled="$isBaseInsufficient">شراء الآن</x-primary-button>
+                    <x-primary-button id="purchase-button" class="w-full" :disabled="$isBaseInsufficient">{{ __('messages.buy_now') }}</x-primary-button>
                 @else
-                    <a href="{{ route('login') }}" class="inline-flex w-full items-center justify-center rounded-xl bg-emerald-600 px-5 py-2 text-sm font-semibold text-white transition hover:brightness-105 cc-press">سجل الدخول لإتمام الشراء</a>
+                    <a href="{{ route('login') }}" class="inline-flex w-full items-center justify-center rounded-xl bg-emerald-600 px-5 py-2 text-sm font-semibold text-white transition hover:brightness-105 cc-press">{{ __('messages.login_to_purchase') }}</a>
                 @endauth
             </form>
         </x-card>

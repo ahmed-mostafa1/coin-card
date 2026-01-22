@@ -18,11 +18,16 @@ class NewDepositRequestNotification extends Notification
 
     public function toDatabase(object $notifiable): array
     {
-        $amountText = number_format($this->deposit->user_amount, 2).' USD';
+        $amountText = number_format($this->deposit->user_amount, 2) . ' USD';
 
         return [
-            'title' => 'طلب شحن جديد',
-            'description' => 'طلب شحن جديد من '.$this->deposit->user->name.' بمبلغ '.$amountText.'.',
+            'title' => 'messages.notifications_custom.new_deposit_request_title',
+            'description' => 'messages.notifications_custom.new_deposit_request_desc',
+            'title_params' => [],
+            'description_params' => [
+                'user' => $this->deposit->user->name,
+                'amount' => $amountText,
+            ],
             'url' => route('admin.deposits.show', $this->deposit),
             'deposit_id' => $this->deposit->id,
             'user_id' => $this->deposit->user_id,

@@ -22,19 +22,24 @@ class OrderStatusChangedNotification extends Notification
     public function toDatabase(object $notifiable): array
     {
         $status = $this->newStatus ?? $this->order->status;
-        $title = match ($status) {
-            Order::STATUS_PROCESSING => 'تم بدء تنفيذ الطلب',
-            Order::STATUS_DONE => 'تم تنفيذ الطلب',
-            Order::STATUS_REJECTED => 'تم رفض الطلب',
-            default => 'تم إنشاء الطلب',
+        $titleKey = match ($status) {
+            Order::STATUS_PROCESSING => 'messages.notifications_custom.order_processing_title',
+            Order::STATUS_DONE => 'messages.notifications_custom.order_done_title',
+            Order::STATUS_REJECTED => 'messages.notifications_custom.order_rejected_title',
+            default => 'messages.notifications_custom.order_created_title',
         };
 
-        $amountText = number_format($this->order->amount_held, 2).' USD';
-        $description = 'طلب #'.$this->order->id.' ('.$this->order->service->name.') بمبلغ '.$amountText.'.';
+        $amountText = number_format($this->order->amount_held, 2) . ' USD';
 
         return [
-            'title' => $title,
-            'description' => $description,
+            'title' => $titleKey,
+            'description' => 'messages.notifications_custom.order_desc',
+            'title_params' => [],
+            'description_params' => [
+                'order_id' => $this->order->id,
+                'service' => $this->order->service->name,
+                'amount' => $amountText,
+            ],
             'url' => route('account.orders.show', $this->order),
             'order_id' => $this->order->id,
             'service_id' => $this->order->service_id,

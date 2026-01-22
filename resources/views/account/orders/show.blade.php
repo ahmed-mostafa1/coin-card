@@ -1,63 +1,63 @@
 @extends('layouts.app')
 
-@section('title', 'تفاصيل الطلب')
+@section('title', __('messages.order_details_title'))
 
 @section('content')
     <div class="grid gap-6 lg:grid-cols-3">
         <x-card class="p-8 lg:col-span-2" :hover="false">
             <div class="flex items-center justify-between gap-4">
                 <div>
-                    <h1 class="text-2xl font-bold text-slate-900">طلب #{{ $order->id }}</h1>
+                    <h1 class="text-2xl font-bold text-slate-900">{{ __('messages.order_id_title', ['id' => $order->id]) }}</h1>
                     <p class="mt-2 text-sm text-slate-600">{{ $order->service->name }}</p>
                 </div>
-                <a href="{{ route('account.orders') }}" class="text-sm text-emerald-700 hover:text-emerald-900">عودة للطلبات</a>
+                <a href="{{ route('account.orders') }}" class="text-sm text-emerald-700 hover:text-emerald-900">{{ __('messages.back_to_orders') }}</a>
             </div>
 
             <div class="mt-6 grid gap-4 sm:grid-cols-2">
                 <div class="rounded-2xl border border-slate-200 p-4">
-                    <p class="text-xs text-slate-500">السعر</p>
+                    <p class="text-xs text-slate-500">{{ __('messages.price_label') }}</p>
                     <p class="mt-2 text-sm font-semibold text-slate-700">{{ number_format($order->price_at_purchase, 2) }} USD</p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 p-4">
-                    <p class="text-xs text-slate-500">المبلغ المعلّق</p>
+                    <p class="text-xs text-slate-500">{{ __('messages.held_amount') }}</p>
                     <p class="mt-2 text-sm font-semibold text-slate-700">{{ number_format($order->amount_held, 2) }} USD</p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 p-4">
-                    <p class="text-xs text-slate-500">الحالة</p>
+                    <p class="text-xs text-slate-500">{{ __('messages.status') }}</p>
                     <p class="mt-2 text-sm font-semibold text-slate-700">
                         @if ($order->status === 'new')
-                            <x-badge type="new">جديد</x-badge>
+                            <x-badge type="new">{{ __('messages.status_new') }}</x-badge>
                         @elseif ($order->status === 'processing')
-                            <x-badge type="processing">قيد التنفيذ</x-badge>
+                            <x-badge type="processing">{{ __('messages.status_processing') }}</x-badge>
                         @elseif ($order->status === 'done')
-                            <x-badge type="done">تم التنفيذ</x-badge>
+                            <x-badge type="done">{{ __('messages.status_done') }}</x-badge>
                         @elseif ($order->status === 'rejected')
-                            <x-badge type="rejected">مرفوض</x-badge>
+                            <x-badge type="rejected">{{ __('messages.status_rejected') }}</x-badge>
                         @else
-                            <x-badge>ملغي</x-badge>
+                            <x-badge>{{ __('messages.status_cancelled') }}</x-badge>
                         @endif
                     </p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 p-4">
-                    <p class="text-xs text-slate-500">الباقة</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ $order->variant?->name ?? 'السعر الأساسي' }}</p>
+                    <p class="text-xs text-slate-500">{{ __('messages.package') }}</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ $order->variant?->name ?? __('messages.base_price_label') }}</p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 p-4">
-                    <p class="text-xs text-slate-500">التاريخ</p>
+                    <p class="text-xs text-slate-500">{{ __('messages.date') }}</p>
                     <p class="mt-2 text-sm font-semibold text-slate-700">{{ $order->created_at->format('Y-m-d H:i') }}</p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 p-4">
-                    <p class="text-xs text-slate-500">تأكيد الخصم</p>
+                    <p class="text-xs text-slate-500">{{ __('messages.settled_at_label') }}</p>
                     <p class="mt-2 text-sm font-semibold text-slate-700">{{ $order->settled_at?->format('Y-m-d H:i') ?? '-' }}</p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 p-4">
-                    <p class="text-xs text-slate-500">إرجاع الرصيد</p>
+                    <p class="text-xs text-slate-500">{{ __('messages.released_at_label') }}</p>
                     <p class="mt-2 text-sm font-semibold text-slate-700">{{ $order->released_at?->format('Y-m-d H:i') ?? '-' }}</p>
                 </div>
             </div>
 
             <div class="mt-6 rounded-2xl border border-slate-200 p-4">
-                <p class="text-xs text-slate-500">بيانات الطلب</p>
+                <p class="text-xs text-slate-500">{{ __('messages.order_data_label') }}</p>
                 @if (count($order->payload))
                     <div class="mt-3 space-y-2 text-sm text-slate-700">
                         @foreach ($order->payload as $key => $value)
@@ -68,50 +68,53 @@
                         @endforeach
                     </div>
                 @else
-                    <p class="mt-3 text-sm text-slate-500">لا توجد بيانات إضافية.</p>
+                    <p class="mt-3 text-sm text-slate-500">{{ __('messages.no_additional_data') }}</p>
                 @endif
             </div>
 
             @if ($order->admin_note)
                 <div class="mt-6 rounded-2xl border border-emerald-100 bg-emerald-50 p-4 text-sm text-emerald-700">
-                    ملاحظة الإدارة: {{ $order->admin_note }}
+                    {{ __('messages.admin_note_label', ['note' => $order->admin_note]) }}
                 </div>
             @endif
         </x-card>
 
         <x-card class="p-8" :hover="false">
-            <h2 class="text-lg font-semibold text-emerald-700">سجل الطلب</h2>
+            <h2 class="text-lg font-semibold text-emerald-700">{{ __('messages.order_history_title') }}</h2>
             @php
                 $statusLabels = [
-                    'new' => 'جديد',
-                    'processing' => 'قيد التنفيذ',
-                    'done' => 'تم التنفيذ',
-                    'rejected' => 'مرفوض',
-                    'cancelled' => 'ملغي',
+                    'new' => __('messages.status_new'),
+                    'processing' => __('messages.status_processing'),
+                    'done' => __('messages.status_done'),
+                    'rejected' => __('messages.status_rejected'),
+                    'cancelled' => __('messages.status_cancelled'),
                 ];
             @endphp
             <div class="mt-4 space-y-4">
                 @forelse ($order->events as $event)
                     @php
-                        $actorLabel = 'النظام';
+                        $actorLabel = __('messages.actor_system');
                         if ($event->actor) {
-                            $actorLabel = $event->actor->id === auth()->id() ? 'أنت' : 'الإدارة';
+                            $actorLabel = $event->actor->id === auth()->id() ? __('messages.actor_you') : __('messages.actor_admin');
                         }
                     @endphp
                     <div class="rounded-2xl border border-slate-200 p-4">
                         <div class="flex items-center justify-between gap-2">
-                            <p class="text-sm font-semibold text-slate-700">{{ $event->message ?? 'تحديث جديد' }}</p>
+                            <p class="text-sm font-semibold text-slate-700">{{ $event->message ?? __('messages.update_label') }}</p>
                             <span class="text-xs text-slate-400">{{ $event->created_at->format('Y-m-d H:i') }}</span>
                         </div>
-                        <p class="mt-2 text-xs text-slate-500">الجهة: {{ $actorLabel }}</p>
+                        <p class="mt-2 text-xs text-slate-500">{{ __('messages.actor_label', ['actor' => $actorLabel]) }}</p>
                         @if ($event->old_status || $event->new_status)
                             <p class="mt-1 text-xs text-slate-500">
-                                الحالة: {{ $statusLabels[$event->old_status] ?? '-' }} → {{ $statusLabels[$event->new_status] ?? '-' }}
+                                {{ __('messages.status_change_label', [
+                                    'old' => $statusLabels[$event->old_status] ?? '-',
+                                    'new' => $statusLabels[$event->new_status] ?? '-'
+                                ]) }}
                             </p>
                         @endif
                     </div>
                 @empty
-                    <p class="text-sm text-slate-500">لا توجد تحديثات مسجلة بعد.</p>
+                    <p class="text-sm text-slate-500">{{ __('messages.no_updates_yet') }}</p>
                 @endforelse
             </div>
         </x-card>

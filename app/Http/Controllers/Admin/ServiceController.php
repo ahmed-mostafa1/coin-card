@@ -62,12 +62,12 @@ class ServiceController extends Controller
         });
 
         return redirect()->route('admin.services.edit', $service)
-            ->with('status', '???? ?????????? ???????????? ??????????.');
+            ->with('status', 'تم إضافة الخدمة بنجاح.');
     }
 
     public function edit(Service $service): View
     {
-        $service->load(['formFields.options' => fn ($query) => $query->orderBy('sort_order')]);
+        $service->load(['formFields.options' => fn($query) => $query->orderBy('sort_order')]);
         $categories = Category::query()->orderBy('name')->get();
 
         return view('admin.services.edit', compact('service', 'categories'));
@@ -98,21 +98,21 @@ class ServiceController extends Controller
         $data['sort_order'] = $data['sort_order'] ?? 0;
 
         $slug = $data['slug'] ?? null;
-        if (! $slug) {
+        if (!$slug) {
             $slug = Str::slug($data['name']);
         }
-        if (! $slug) {
+        if (!$slug) {
             $slug = Str::random(8);
         }
         $baseSlug = $slug;
         $counter = 1;
-        while (Service::where('slug', $slug)->when($service, fn ($q) => $q->where('id', '!=', $service->id))->exists()) {
-            $slug = $baseSlug.'-'.$counter;
+        while (Service::where('slug', $slug)->when($service, fn($q) => $q->where('id', '!=', $service->id))->exists()) {
+            $slug = $baseSlug . '-' . $counter;
             $counter++;
         }
         $data['slug'] = $slug;
 
-        if ($request->hasFile('image') && ! $service) {
+        if ($request->hasFile('image') && !$service) {
             $data['image_path'] = $request->file('image')->store('services', 'public');
         }
 

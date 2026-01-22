@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'طلباتي')
+@section('title', __('messages.my_orders_title'))
 @section('mainWidth', 'max-w-none w-full')
 
 @section('content')
     <x-card :hover="false">
-        <x-page-header title="طلباتي" subtitle="استعرض جميع طلبات الخدمات الخاصة بك." />
+        <x-page-header :title="__('messages.my_orders_title')" :subtitle="__('messages.my_orders_desc')" />
 
         @if (session('status'))
             <div class="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
@@ -16,13 +16,13 @@
         <x-table class="mt-6">
             <thead class="bg-slate-50 text-slate-500">
                 <tr>
-                    <th class="py-2">الخدمة</th>
-                    <th class="py-2">الباقة</th>
-                        <th class="py-2">المبلغ</th>
-                        <th class="py-2">المبلغ المعلّق</th>
-                        <th class="py-2">الحالة</th>
-                    <th class="py-2">التاريخ</th>
-                    <th class="py-2">تفاصيل</th>
+                    <th class="py-2">{{ __('messages.service') }}</th>
+                    <th class="py-2">{{ __('messages.package') }}</th>
+                    <th class="py-2">{{ __('messages.price_label') }}</th>
+                    <th class="py-2">{{ __('messages.held_amount') }}</th>
+                    <th class="py-2">{{ __('messages.status') }}</th>
+                    <th class="py-2">{{ __('messages.date') }}</th>
+                    <th class="py-2">{{ __('messages.details_link') }}</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-slate-100">
@@ -34,25 +34,26 @@
                         <td class="py-3 text-slate-700">{{ number_format($order->amount_held, 2) }} USD</td>
                         <td class="py-3">
                             @if ($order->status === 'new')
-                                <x-badge type="new">جديد</x-badge>
+                                <x-badge type="new">{{ __('messages.status_new') }}</x-badge>
                             @elseif ($order->status === 'processing')
-                                <x-badge type="processing">قيد التنفيذ</x-badge>
+                                <x-badge type="processing">{{ __('messages.status_processing') }}</x-badge>
                             @elseif ($order->status === 'done')
-                                <x-badge type="done">تم التنفيذ</x-badge>
+                                <x-badge type="done">{{ __('messages.status_done') }}</x-badge>
                             @elseif ($order->status === 'rejected')
-                                <x-badge type="rejected">مرفوض</x-badge>
+                                <x-badge type="rejected">{{ __('messages.status_rejected') }}</x-badge>
                             @else
-                                <x-badge>ملغي</x-badge>
+                                <x-badge>{{ __('messages.status_cancelled') }}</x-badge>
                             @endif
                         </td>
                         <td class="py-3 text-slate-500">{{ $order->created_at->format('Y-m-d') }}</td>
                         <td class="py-3">
-                            <a href="{{ route('account.orders.show', $order) }}" class="text-emerald-700 hover:text-emerald-900">عرض</a>
+                            <a href="{{ route('account.orders.show', $order) }}"
+                                class="text-emerald-700 hover:text-emerald-900">{{ __('messages.view_link') }}</a>
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="py-6 text-center text-slate-500">لا توجد طلبات بعد.</td>
+                        <td colspan="7" class="py-6 text-center text-slate-500">{{ __('messages.no_orders_yet') }}</td>
                     </tr>
                 @endforelse
             </tbody>

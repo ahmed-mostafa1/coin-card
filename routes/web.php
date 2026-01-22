@@ -27,6 +27,13 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/lang/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'ar'])) {
+        session(['locale' => $locale]);
+    }
+    return back();
+})->name('lang.switch');
+
 Route::middleware(['auth', 'not_banned'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/categories/{category:slug}', [CategoryController::class, 'show'])->name('categories.show');
