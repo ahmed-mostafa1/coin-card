@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\UserVipStatus;
 
 class User extends Authenticatable
 {
@@ -69,6 +70,11 @@ class User extends Authenticatable
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function vipStatus(): HasOne
+    {
+        return $this->hasOne(UserVipStatus::class);
     }
 
     protected static function booted(): void

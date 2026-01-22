@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Services;
 
@@ -12,16 +12,19 @@ use Illuminate\Validation\ValidationException;
 
 class OrderStatusService
 {
-    public function __construct(private readonly WalletService $walletService)
-    {
+    public function __construct(
+        private readonly WalletService $walletService,
+        private readonly VipService $vipService
+    ) {
     }
 
     public function updateStatus(Order $order, string $newStatus, ?string $adminNote, User $actor): array
     {
         $statusChanged = false;
         $oldStatus = null;
+        $shouldUpdateVip = false;
 
-        DB::transaction(function () use ($order, $newStatus, $adminNote, $actor, &$statusChanged, &$oldStatus) {
+        DB::transaction(function () use ($order, $newStatus, $adminNote, $actor, &$statusChanged, &$oldStatus, &$shouldUpdateVip) {
             $order = Order::whereKey($order->id)->lockForUpdate()->firstOrFail();
             $currentStatus = $order->status;
             $oldStatus = $currentStatus;
@@ -98,6 +101,9 @@ class OrderStatusService
 
             if ($oldStatus !== $newStatus) {
                 $statusChanged = true;
+                if ($newStatus === Order::STATUS_DONE) {
+                    $shouldUpdateVip = true;
+                }
 
                 $message = 'تم تغيير حالة الطلب.';
                 if ($newStatus === Order::STATUS_PROCESSING) {
@@ -125,7 +131,7 @@ class OrderStatusService
             }
         });
 
-        DB::afterCommit(function () use ($order, $statusChanged, $oldStatus, $newStatus): void {
+        DB::afterCommit(function () use ($order, $statusChanged, $oldStatus, $newStatus, $shouldUpdateVip): void {
             if (! $statusChanged) {
                 return;
             }
@@ -133,6 +139,10 @@ class OrderStatusService
             $order->refresh();
             $order->load(['service', 'user']);
             $order->user->notify(new OrderStatusChangedNotification($order, $oldStatus, $newStatus));
+
+            if ($shouldUpdateVip && $newStatus === Order::STATUS_DONE) {
+                $this->vipService->updateUserVipStatus($order->user);
+            }
         });
 
         return [

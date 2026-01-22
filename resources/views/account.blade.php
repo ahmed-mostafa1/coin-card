@@ -56,6 +56,7 @@
                 <a href="{{ route('account.deposits') }}" class="rounded-2xl border border-slate-200 px-4 py-4 text-center text-sm font-semibold text-slate-700 transition hover:border-emerald-200">طلبات الشحن</a>
                 <a href="{{ route('account.wallet') }}" class="rounded-2xl border border-slate-200 px-4 py-4 text-center text-sm font-semibold text-slate-700 transition hover:border-emerald-200">سجل الرصيد</a>
                 <a href="{{ route('account.orders') }}" class="rounded-2xl border border-slate-200 px-4 py-4 text-center text-sm font-semibold text-slate-700 transition hover:border-emerald-200">طلباتي</a>
+                <a href="{{ route('account.vip') }}" class="rounded-2xl border border-slate-200 px-4 py-4 text-center text-sm font-semibold text-slate-700 transition hover:border-emerald-200">نظام VIP</a>
                 <a href="{{ route('account.notifications') }}" class="relative rounded-2xl border border-slate-200 px-4 py-4 text-center text-sm font-semibold text-slate-700 transition hover:border-emerald-200">
                     الإشعارات
                     @if (! empty($unreadNotificationsCount))

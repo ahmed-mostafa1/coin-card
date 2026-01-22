@@ -5,6 +5,7 @@ use App\Http\Controllers\AccountDepositController;
 use App\Http\Controllers\AccountNotificationController;
 use App\Http\Controllers\AccountWalletController;
 use App\Http\Controllers\AccountOrderController;
+use App\Http\Controllers\AccountVipController;
 use App\Http\Controllers\AgencyRequestController;
 use App\Http\Controllers\Admin\DepositController as AdminDepositController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
@@ -43,6 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/account/wallet', [AccountWalletController::class, 'index'])->name('account.wallet');
     Route::get('/account/orders', [AccountOrderController::class, 'index'])->name('account.orders');
     Route::get('/account/orders/{order}', [AccountOrderController::class, 'show'])->name('account.orders.show');
+    Route::get('/account/vip', [AccountVipController::class, 'show'])->name('account.vip');
     Route::get('/account/notifications', [AccountNotificationController::class, 'index'])->name('account.notifications');
     Route::post('/account/notifications/mark-all-read', [AccountNotificationController::class, 'markAllRead'])->name('account.notifications.mark-all-read');
 

@@ -4,14 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\VipService;
 use Illuminate\View\View;
 
 class UserController extends Controller
 {
-    public function show(User $user): View
+    public function show(User $user, VipService $vipService): View
     {
         $user->load(['roles', 'wallet']);
         $wallet = $user->wallet()->firstOrCreate([]);
+
+        $vipSummary = $vipService->getVipSummary($user);
 
         $transactions = $wallet->transactions()
             ->latest()
@@ -30,6 +33,6 @@ class UserController extends Controller
             ->limit(20)
             ->get();
 
-        return view('admin.users.show', compact('user', 'wallet', 'transactions', 'deposits', 'orders'));
+        return view('admin.users.show', compact('user', 'wallet', 'transactions', 'deposits', 'orders', 'vipSummary'));
     }
 }

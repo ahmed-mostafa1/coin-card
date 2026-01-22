@@ -30,6 +30,16 @@
                         <span class="font-semibold text-slate-700">{{ number_format($wallet->held_balance, 2) }} USD</span>
                     </div>
                 </div>
+                <div class="mt-6 border-t border-slate-100 pt-4 text-sm">
+                    <div class="flex items-center justify-between">
+                        <span class="text-slate-500">مستوى VIP</span>
+                        <span class="font-semibold text-emerald-700">{{ $vipSummary['current_tier']?->name ?? 'بدون مستوى' }}</span>
+                    </div>
+                    <div class="mt-2 flex items-center justify-between">
+                        <span class="text-slate-500">إجمالي المشتريات</span>
+                        <span class="font-semibold text-slate-700">{{ number_format($vipSummary['spent'] ?? 0, 2) }} USD</span>
+                    </div>
+                </div>
             </div>
             <div class="rounded-3xl border border-emerald-100 bg-white p-6 shadow-sm lg:col-span-2">
                 <h2 class="text-lg font-semibold text-emerald-700">آخر حركات الرصيد</h2>

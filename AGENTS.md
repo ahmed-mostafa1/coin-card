@@ -175,6 +175,35 @@
 - الهجرات: `php artisan migrate`
 - الاختبارات: `php artisan test`
 
+## VIP System
+### ما تم تنفيذه
+- نظام شرائح VIP مع حساب إجمالي المشتريات طوال العمر وتخزين كاش في `user_vip_statuses`.
+- صفحة مستخدم جديدة لعرض ملخص VIP ومصفوفة الشرائح مع حالة التقدم.
+- تحديث تلقائي لـ VIP بعد تسوية الطلب (`done`) عبر `OrderStatusService`.
+- أمر Artisan لإعادة احتساب VIP لمستخدم واحد أو لجميع المستخدمين.
+- عرض ملخص VIP في صفحة "User 360" للأدمن.
+
+### الجداول/الهجرات الجديدة
+- `database/migrations/2024_01_01_000022_create_vip_tiers_table.php` جدول `vip_tiers`.
+- `database/migrations/2024_01_01_000023_create_user_vip_statuses_table.php` جدول `user_vip_statuses`.
+
+### المسارات الجديدة
+- `/account/vip`
+
+### أوامر التشغيل
+- الهجرات: `php artisan migrate`
+- البذور: `php artisan db:seed`
+- إعادة احتساب VIP: `php artisan vip:recalculate {--user_id=}`
+- الاختبارات: `php artisan test`
+
+### كيفية احتساب VIP
+- يُحسب من مجموع `orders.price_at_purchase` (أو `amount_held` عند عدم توفر السعر) للطلبات المكتملة فقط.
+- الطلب المكتمل هو: `status = done` و/أو `settled_at IS NOT NULL` (وعند توفر `settled_at` يعتبر مصدر الحقيقة).
+- المستوى يُرقّى تلقائيًا فقط ولا يحدث تخفيض (Auto-upgrade).
+
+### إعدادات جديدة
+- لا يوجد.
+
 ## Phase 8
 ### ما تم تنفيذه
 - تحسين صفحة العمليات للأدمن مع تبويبات مخصصة للمدفوعات والطلبات وإجراءات سريعة آمنة.
