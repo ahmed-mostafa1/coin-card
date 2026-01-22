@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\DepositRequest;
-use Illuminate\Authorize\Access\AuthorizationException;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\View\View;
 
 class AccountDepositController extends Controller
 {
+    use AuthorizesRequests;
+
     public function index(): View
     {
         $deposits = DepositRequest::query()

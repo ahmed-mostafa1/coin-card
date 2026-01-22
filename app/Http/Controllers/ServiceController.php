@@ -23,7 +23,7 @@ class ServiceController extends Controller
         abort_unless($service->is_active && $service->category->is_active, 404);
 
         $service->load([
-            'formFields.options' => fn ($query) => $query->orderBy('sort_order'),
+            'formFields' => fn ($query) => $query->orderBy('sort_order'),
             'variants' => fn ($query) => $query->where('is_active', true)->orderBy('sort_order'),
         ]);
 

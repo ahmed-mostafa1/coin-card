@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class ServiceFormField extends Model
 {
     public const TYPE_TEXT = 'text';
-    public const TYPE_SELECT = 'select';
+    public const TYPE_TEXTAREA = 'textarea';
 
     protected $fillable = [
         'service_id',

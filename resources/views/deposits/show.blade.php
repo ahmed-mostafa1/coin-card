@@ -22,6 +22,17 @@
             <div class="mt-6 rounded-2xl border border-emerald-100 bg-emerald-50 px-5 py-4 text-sm text-slate-700 whitespace-pre-line">
                 {{ $paymentMethod->instructions }}
             </div>
+
+            <div class="mt-4 rounded-2xl border border-slate-200 bg-white p-4">
+                <div class="flex items-center justify-between gap-4">
+                    <div>
+                        <p class="text-sm text-slate-500">??? ???????</p>
+                        <p class="mt-2 text-lg font-semibold text-slate-700" data-account-number>{{ $paymentMethod->account_number }}</p>
+                        <p class="mt-1 text-xs text-emerald-600 hidden" data-copy-feedback>?? ?????</p>
+                    </div>
+                    <button type="button" class="rounded-full border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-50" data-copy-button>???</button>
+                </div>
+            </div>
         </div>
 
         <div class="rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm">
@@ -46,4 +57,46 @@
             </form>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const button = document.querySelector('[data-copy-button]');
+            const value = document.querySelector('[data-account-number]');
+            const feedback = document.querySelector('[data-copy-feedback]');
+
+            if (!button || !value) {
+                return;
+            }
+
+            const showFeedback = () => {
+                if (!feedback) {
+                    return;
+                }
+                feedback.classList.remove('hidden');
+                setTimeout(() => feedback.classList.add('hidden'), 2000);
+            };
+
+            button.addEventListener('click', async () => {
+                const textToCopy = value.textContent?.trim() ?? '';
+                if (!textToCopy) {
+                    return;
+                }
+
+                try {
+                    await navigator.clipboard.writeText(textToCopy);
+                    showFeedback();
+                } catch (error) {
+                    const temp = document.createElement('textarea');
+                    temp.value = textToCopy;
+                    temp.style.position = 'fixed';
+                    temp.style.opacity = '0';
+                    document.body.appendChild(temp);
+                    temp.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(temp);
+                    showFeedback();
+                }
+            });
+        });
+    </script>
+
 @endsection

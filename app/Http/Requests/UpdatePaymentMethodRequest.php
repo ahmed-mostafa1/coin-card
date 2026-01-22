@@ -19,6 +19,7 @@ class UpdatePaymentMethodRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'slug' => ['required', 'string', 'max:100', 'regex:/^[a-z0-9-]+$/', 'unique:payment_methods,slug,'.$methodId],
             'instructions' => ['required', 'string'],
+            'account_number' => ['required', 'string', 'max:255'],
             'icon' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'is_active' => ['nullable', 'boolean'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
@@ -32,6 +33,7 @@ class UpdatePaymentMethodRequest extends FormRequest
             'slug.required' => 'يرجى إدخال المعرف المختصر.',
             'slug.regex' => 'المعرف المختصر يجب أن يكون بحروف لاتينية وأرقام وشرطات فقط.',
             'instructions.required' => 'يرجى إدخال تعليمات التحويل.',
+            'account_number.required' => 'يرجى إدخال رقم المحفظة أو الحساب.',
             'icon.mimes' => 'الأيقونة يجب أن تكون صورة صالحة.',
         ];
     }

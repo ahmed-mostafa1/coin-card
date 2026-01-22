@@ -27,15 +27,15 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/categories/{category:slug}', [CategoryController::class, 'show'])->name('categories.show');
-Route::get('/services/{service:slug}', [ServiceController::class, 'show'])->name('services.show');
-Route::get('/privacy-policy', fn () => view('pages.privacy-policy'))->name('privacy-policy');
-Route::get('/about', fn () => view('pages.about'))->name('about');
-Route::get('/agency-request', [AgencyRequestController::class, 'create'])->name('agency-requests.create');
-Route::post('/agency-request', [AgencyRequestController::class, 'store'])->name('agency-requests.store');
+Route::middleware(['auth', 'not_banned'])->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/categories/{category:slug}', [CategoryController::class, 'show'])->name('categories.show');
+    Route::get('/services/{service:slug}', [ServiceController::class, 'show'])->name('services.show');
+    Route::get('/privacy-policy', fn () => view('pages.privacy-policy'))->name('privacy-policy');
+    Route::get('/about', fn () => view('pages.about'))->name('about');
+    Route::get('/agency-request', [AgencyRequestController::class, 'create'])->name('agency-requests.create');
+    Route::post('/agency-request', [AgencyRequestController::class, 'store'])->name('agency-requests.store');
 
-Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
     Route::get('/account', [AccountController::class, 'index'])->name('account');
     Route::post('/account/update', [AccountController::class, 'update'])->name('account.update')->middleware('role:admin');
@@ -50,19 +50,24 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/deposit', [DepositController::class, 'index'])->name('deposit.index');
     Route::get('/deposit/{paymentMethod:slug}', [DepositController::class, 'show'])->name('deposit.show');
-    Route::post('/deposit/{paymentMethod:slug}', [DepositController::class, 'store'])->name('deposit.store');
+    Route::post('/deposit/{paymentMethod:slug}', [DepositController::class, 'store'])->name('deposit.store')->middleware('not_frozen');
 
-    Route::post('/services/{service:slug}/purchase', [ServiceController::class, 'purchase'])->name('services.purchase');
+    Route::post('/services/{service:slug}/purchase', [ServiceController::class, 'purchase'])->name('services.purchase')->middleware('not_frozen');
 });
 
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'not_banned', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('index');
     Route::get('/ops', [AdminOpsController::class, 'index'])->name('ops.index');
     Route::post('/ops/orders/{order}/start-processing', [AdminOpsOrderController::class, 'startProcessing'])->name('ops.orders.start-processing');
     Route::post('/ops/orders/{order}/mark-done', [AdminOpsOrderController::class, 'markDone'])->name('ops.orders.mark-done');
     Route::post('/ops/orders/{order}/reject', [AdminOpsOrderController::class, 'reject'])->name('ops.orders.reject');
     Route::get('/reports', [AdminReportsController::class, 'index'])->name('reports.index');
+    Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
     Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('users.show');
+    Route::post('/users/{user}/ban', [AdminUserController::class, 'toggleBan'])->name('users.ban');
+    Route::post('/users/{user}/freeze', [AdminUserController::class, 'toggleFreeze'])->name('users.freeze');
+    Route::post('/users/{user}/credit', [AdminUserController::class, 'credit'])->name('users.credit');
+    Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
     Route::get('/agency-requests', [AdminAgencyRequestController::class, 'index'])->name('agency-requests.index');
     Route::get('/agency-requests/{agencyRequest}', [AdminAgencyRequestController::class, 'show'])->name('agency-requests.show');
     Route::delete('/agency-requests/{agencyRequest}', [AdminAgencyRequestController::class, 'destroy'])->name('agency-requests.destroy');

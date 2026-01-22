@@ -53,6 +53,7 @@ class AdminReportsTest extends TestCase
         $method = PaymentMethod::create([
             'name' => 'فودافون كاش',
             'slug' => 'vodafone-cash',
+            'account_number' => '123',
             'instructions' => 'تحويل على الرقم 0100...',
             'is_active' => true,
             'sort_order' => 0,

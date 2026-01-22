@@ -187,6 +187,8 @@
             تواصل واتساب
         </a>
 
+        <div id="dropdown-overlay" class="hidden pointer-events-none fixed inset-0 z-40 bg-black/20"></div>
+
         <script>
             document.addEventListener('DOMContentLoaded', () => {
                 const overlay = document.getElementById('dropdown-overlay');
@@ -207,6 +209,7 @@
                         trigger.setAttribute('aria-expanded', 'false');
                     });
                     overlay?.classList.add('hidden');
+                    overlay?.classList.add('pointer-events-none');
                 };
 
                 triggers.forEach((trigger) => {
@@ -223,6 +226,7 @@
                             panel.classList.remove('hidden');
                             trigger.setAttribute('aria-expanded', 'true');
                             overlay?.classList.remove('hidden');
+                            overlay?.classList.remove('pointer-events-none');
                         }
                     });
 
@@ -248,6 +252,8 @@
                         closeAll();
                     }
                 });
+
+                closeAll();
             });
         </script>
     </body>

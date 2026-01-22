@@ -49,6 +49,12 @@ class GoogleController extends Controller
             }
         }
 
+
+        if ($user->is_banned) {
+            return redirect()->route('login')
+                ->with('status', 'تم حظر حسابك. يرجى التواصل مع الإدارة.');
+        }
+
         Auth::login($user, true);
 
         return redirect()->route('dashboard');

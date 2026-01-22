@@ -14,7 +14,7 @@ class ServiceFormFieldRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => ['required', 'in:text,select'],
+            'type' => ['required', 'in:text,textarea'],
             'label' => ['required', 'string', 'max:255'],
             'name_key' => ['required', 'string', 'max:100', 'regex:/^[a-z0-9_]+$/'],
             'placeholder' => ['nullable', 'string', 'max:255'],

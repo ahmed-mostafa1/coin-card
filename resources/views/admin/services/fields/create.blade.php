@@ -16,7 +16,7 @@
                 <x-input-label for="type" value="نوع الحقل" />
                 <select id="type" name="type" class="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-2 text-sm text-slate-700" required>
                     <option value="text" @selected(old('type') === 'text')>نصي</option>
-                    <option value="select" @selected(old('type') === 'select')>قائمة اختيار</option>
+                    <option value="textarea" @selected(old('type') === 'textarea')>نص متعدد الأسطر</option>
                 </select>
                 <x-input-error :messages="$errors->get('type')" />
             </div>

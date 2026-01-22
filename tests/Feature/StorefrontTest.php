@@ -6,7 +6,6 @@ use App\Models\Category;
 use App\Models\Order;
 use App\Models\Service;
 use App\Models\ServiceFormField;
-use App\Models\ServiceFormOption;
 use App\Models\ServiceVariant;
 use App\Models\User;
 use App\Models\Wallet;
@@ -22,26 +21,31 @@ class StorefrontTest extends TestCase
 
     public function test_guest_can_browse_categories_and_services(): void
     {
+        Role::firstOrCreate(['name' => 'customer', 'guard_name' => 'web']);
+
+        $user = User::factory()->create();
+        $user->assignRole('customer');
+
         $category = Category::create([
-            'name' => 'بطاقات الألعاب',
+            'name' => 'Games',
             'slug' => 'gaming',
             'is_active' => true,
         ]);
 
         $service = Service::create([
             'category_id' => $category->id,
-            'name' => 'شحن شدات PUBG',
+            'name' => 'PUBG UC',
             'slug' => 'pubg-uc',
             'price' => 100,
             'is_active' => true,
         ]);
 
-        $this->get('/categories/'.$category->slug)
+        $this->actingAs($user)->get('/categories/'.$category->slug)
             ->assertStatus(200)
             ->assertSee($category->name)
             ->assertSee($service->name);
 
-        $this->get('/services/'.$service->slug)
+        $this->actingAs($user)->get('/services/'.$service->slug)
             ->assertStatus(200)
             ->assertSee($service->name);
     }
@@ -103,26 +107,19 @@ class StorefrontTest extends TestCase
             'sort_order' => 1,
         ]);
 
-        $selectField = ServiceFormField::create([
+        ServiceFormField::create([
             'service_id' => $service->id,
-            'type' => 'select',
-            'label' => 'المنطقة',
+            'type' => 'textarea',
+            'label' => 'Region',
             'name_key' => 'region',
             'is_required' => true,
             'sort_order' => 2,
         ]);
 
-        ServiceFormOption::create([
-            'field_id' => $selectField->id,
-            'value' => 'mena',
-            'label' => 'الشرق الأوسط',
-            'sort_order' => 1,
-        ]);
-
         $response = $this->actingAs($user)->post('/services/'.$service->slug.'/purchase', [
             'fields' => [
                 'player_id' => '12345',
-                'region' => 'mena',
+                'region' => 'MENA',
             ],
         ]);
 

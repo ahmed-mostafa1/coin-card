@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class DepositEvidence extends Model
 {
+    protected $table = 'deposit_evidences';
+
     protected $fillable = [
         'deposit_request_id',
         'file_path',

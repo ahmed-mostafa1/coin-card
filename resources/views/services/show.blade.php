@@ -93,12 +93,7 @@
                         @if ($field->type === 'text')
                             <x-text-input id="field_{{ $field->name_key }}" name="fields[{{ $field->name_key }}]" type="text" :value="old('fields.'.$field->name_key)" placeholder="{{ $field->placeholder }}" {{ $field->is_required ? 'required' : '' }} />
                         @else
-                            <select id="field_{{ $field->name_key }}" name="fields[{{ $field->name_key }}]" class="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-2 text-sm text-slate-700" {{ $field->is_required ? 'required' : '' }}>
-                                <option value="">اختر</option>
-                                @foreach ($field->options as $option)
-                                    <option value="{{ $option->value }}" @selected(old('fields.'.$field->name_key) === $option->value)>{{ $option->label }}</option>
-                                @endforeach
-                            </select>
+                            <textarea id="field_{{ $field->name_key }}" name="fields[{{ $field->name_key }}]" rows="3" placeholder="{{ $field->placeholder }}" class="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-2 text-sm text-slate-700" {{ $field->is_required ? 'required' : '' }}>{{ old('fields.'.$field->name_key) }}</textarea>
                         @endif
                         <x-input-error :messages="$errors->get('fields.'.$field->name_key)" />
                     </div>

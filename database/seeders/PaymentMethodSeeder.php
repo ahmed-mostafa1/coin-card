@@ -17,18 +17,21 @@ class PaymentMethodSeeder extends Seeder
             [
                 'name' => 'فودافون كاش',
                 'slug' => 'vodafone-cash',
+                'account_number' => '0000000000',
                 'instructions' => "حول المبلغ إلى الرقم التالي ثم أرفق إثبات التحويل.\n01000000000",
                 'sort_order' => 1,
             ],
             [
                 'name' => 'انستا باي',
                 'slug' => 'instapay',
+                'account_number' => '0000000000',
                 'instructions' => "حوّل المبلغ إلى حساب InstaPay التالي ثم أرفق إثبات التحويل.\ninstapay@example",
                 'sort_order' => 2,
             ],
             [
                 'name' => 'تحويل بنكي',
                 'slug' => 'bank-transfer',
+                'account_number' => '0000000000',
                 'instructions' => "حوّل المبلغ إلى الحساب البنكي الموضح ثم أرفق إثبات التحويل.\nIBAN SA0000000000000000000000",
                 'sort_order' => 3,
             ],

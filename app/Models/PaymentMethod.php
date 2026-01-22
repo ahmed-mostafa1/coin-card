@@ -11,6 +11,7 @@ class PaymentMethod extends Model
         'name',
         'slug',
         'instructions',
+        'account_number',
         'icon_path',
         'is_active',
         'sort_order',

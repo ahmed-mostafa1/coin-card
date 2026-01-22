@@ -310,3 +310,32 @@
 ### أوامر التشغيل
 - الهجرات: `php artisan migrate`
 - الاختبارات: `php artisan test`
+
+## Updates Pack (Admin Credit + Auth Gate + Users + Payment Account + Service Create)
+### Routes/Pages
+- `/` (auth-gated, redirects guests to login)
+- `/categories/{category:slug}`, `/services/{service:slug}`, `/privacy-policy`, `/about`, `/agency-request` (auth-gated)
+- `/admin/users` (new list page)
+- `/admin/users/{user}` (updated with balance credit + status actions)
+- `/admin/users/{user}/ban`, `/admin/users/{user}/freeze`, `/admin/users/{user}/credit`, `DELETE /admin/users/{user}`
+- `/deposit/{paymentMethod:slug}` (updated to show account number + copy button)
+- `/admin/services/create` (updated to include variants + form fields in one create flow)
+- `POST /deposit/{paymentMethod:slug}` and `POST /services/{service:slug}/purchase` now block frozen users
+
+### DB migrations / columns
+- `database/migrations/2026_01_22_000001_add_user_status_fields_to_users_table.php` (users: `is_banned`, `banned_at`, `is_frozen`, `frozen_at`, `deleted_at`)
+- `database/migrations/2026_01_22_000002_add_account_number_to_payment_methods_table.php` (payment_methods: `account_number`)
+- `database/migrations/2026_01_22_000003_migrate_select_fields_to_textarea.php` (service_form_fields: `select` -> `textarea`, removes options)
+
+### Commands
+- `php artisan migrate`
+- `php artisan db:seed`
+- `php artisan test`
+
+### Business rules
+- Admin credit adds to available balance only and logs a `deposit` transaction with `reference_type=admin_manual_credit`.
+- All site pages require login; guests see `/login` first (auth routes and Google OAuth remain public).
+- Banned users cannot log in and are logged out on authenticated requests with Arabic notice.
+- Frozen users can browse but cannot create deposit requests or purchase services.
+- Service form fields only allow `text` or `textarea` (textarea rows=3). Legacy `select` fields are migrated to `textarea`.
+- Payment methods require `account_number`; deposit method page shows "رقم التحويل" with copy button and "تم النسخ".

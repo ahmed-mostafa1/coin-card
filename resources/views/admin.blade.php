@@ -12,6 +12,7 @@
             <a href="{{ route('admin.agency-requests.index') }}" class="cc-pill">طلبات الوكالة</a>
             <a href="{{ route('admin.payment-methods.index') }}" class="cc-pill">طرق الدفع</a>
             <a href="{{ route('admin.deposits.index') }}" class="cc-pill">طلبات الشحن</a>
+            <a href="{{ route('admin.users.index') }}" class="cc-pill">المستخدمون</a>
             <a href="{{ route('admin.categories.index') }}" class="cc-pill">التصنيفات</a>
             <a href="{{ route('admin.services.index') }}" class="cc-pill">الخدمات</a>
             <a href="{{ route('admin.orders.index') }}" class="cc-pill">الطلبات</a>

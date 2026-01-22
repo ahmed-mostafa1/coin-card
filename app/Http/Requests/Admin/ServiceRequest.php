@@ -25,6 +25,17 @@ class ServiceRequest extends FormRequest
             'image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'is_active' => ['nullable', 'boolean'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
+            'variants' => ['nullable', 'array'],
+            'variants.*.name' => ['required_with:variants', 'string', 'max:255'],
+            'variants.*.price' => ['required_with:variants', 'numeric', 'min:0.01'],
+            'variants.*.is_active' => ['nullable', 'boolean'],
+            'variants.*.sort_order' => ['nullable', 'integer', 'min:0'],
+            'fields' => ['nullable', 'array'],
+            'fields.*.label' => ['required_with:fields', 'string', 'max:255'],
+            'fields.*.name_key' => ['required_with:fields', 'string', 'max:100', 'regex:/^[a-z0-9_]+$/', 'distinct'],
+            'fields.*.type' => ['required_with:fields', 'in:text,textarea'],
+            'fields.*.is_required' => ['nullable', 'boolean'],
+            'fields.*.sort_order' => ['nullable', 'integer', 'min:0'],
         ];
     }
 

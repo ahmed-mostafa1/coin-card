@@ -16,6 +16,21 @@ class AuthAccessTest extends TestCase
         $this->get('/dashboard')->assertRedirect(route('login'));
     }
 
+    public function test_guest_is_redirected_from_home(): void
+    {
+        $this->get('/')->assertRedirect(route('login'));
+    }
+
+    public function test_authenticated_user_can_access_home(): void
+    {
+        Role::firstOrCreate(['name' => 'customer', 'guard_name' => 'web']);
+
+        $user = User::factory()->create();
+        $user->assignRole('customer');
+
+        $this->actingAs($user)->get('/')->assertOk();
+    }
+
     public function test_customer_cannot_access_admin(): void
     {
         Role::firstOrCreate(['name' => 'customer', 'guard_name' => 'web']);

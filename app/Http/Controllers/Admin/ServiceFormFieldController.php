@@ -40,8 +40,6 @@ class ServiceFormFieldController extends Controller
             abort(404);
         }
 
-        $field->load(['options' => fn ($query) => $query->orderBy('sort_order')]);
-
         return view('admin.services.fields.edit', compact('service', 'field'));
     }
 
@@ -79,46 +77,12 @@ class ServiceFormFieldController extends Controller
 
     public function storeOption(Service $service, ServiceFormField $field): RedirectResponse
     {
-        if ($field->service_id !== $service->id) {
-            abort(404);
-        }
-
-        if ($field->type !== ServiceFormField::TYPE_SELECT) {
-            abort(404);
-        }
-
-        request()->validate([
-            'value' => ['required', 'string', 'max:255'],
-            'label' => ['required', 'string', 'max:255'],
-            'sort_order' => ['nullable', 'integer', 'min:0'],
-        ], [
-            'value.required' => 'يرجى إدخال قيمة الخيار.',
-            'label.required' => 'يرجى إدخال عنوان الخيار.',
-        ]);
-
-        $field->options()->create([
-            'value' => request('value'),
-            'label' => request('label'),
-            'sort_order' => request('sort_order', 0),
-        ]);
-
-        return redirect()->route('admin.services.fields.edit', [$service, $field])
-            ->with('status', 'تم إضافة الخيار بنجاح.');
+        abort(404);
     }
 
     public function destroyOption(Service $service, ServiceFormField $field, ServiceFormOption $option): RedirectResponse
     {
-        if ($field->service_id !== $service->id) {
-            abort(404);
-        }
-
-        if ($option->field_id !== $field->id) {
-            abort(404);
-        }
-
-        $option->delete();
-
-        return redirect()->route('admin.services.fields.edit', [$service, $field])
-            ->with('status', 'تم حذف الخيار بنجاح.');
+        abort(404);
     }
 }
+

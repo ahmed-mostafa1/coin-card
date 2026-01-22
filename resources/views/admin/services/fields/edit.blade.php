@@ -24,7 +24,7 @@
                     <x-input-label for="type" value="نوع الحقل" />
                     <select id="type" name="type" class="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-2 text-sm text-slate-700" required>
                         <option value="text" @selected(old('type', $field->type) === 'text')>نصي</option>
-                        <option value="select" @selected(old('type', $field->type) === 'select')>قائمة اختيار</option>
+                        <option value="textarea" @selected(old('type', $field->type) === 'textarea')>نص متعدد الأسطر</option>
                     </select>
                     <x-input-error :messages="$errors->get('type')" />
                 </div>
@@ -71,49 +71,6 @@
                 @method('DELETE')
                 <button type="submit" class="rounded-full border border-rose-200 px-4 py-2 text-sm font-semibold text-rose-600">حذف الحقل</button>
             </form>
-        </div>
-
-        <div class="rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm">
-            <h2 class="text-lg font-semibold text-emerald-700">خيارات الحقل</h2>
-
-            @if ($field->type !== 'select')
-                <p class="mt-3 text-sm text-slate-500">الخيارات متاحة فقط لحقول القائمة.</p>
-            @else
-                <form method="POST" action="{{ route('admin.services.fields.options.store', [$service, $field]) }}" class="mt-4 space-y-3">
-                    @csrf
-                    <div>
-                        <x-input-label for="option_value" value="القيمة" />
-                        <x-text-input id="option_value" name="value" type="text" />
-                    </div>
-                    <div>
-                        <x-input-label for="option_label" value="العنوان" />
-                        <x-text-input id="option_label" name="label" type="text" />
-                    </div>
-                    <div>
-                        <x-input-label for="option_sort_order" value="ترتيب" />
-                        <x-text-input id="option_sort_order" name="sort_order" type="number" min="0" :value="0" />
-                    </div>
-                    <x-primary-button class="w-full">إضافة خيار</x-primary-button>
-                </form>
-
-                <div class="mt-6 space-y-3">
-                    @forelse ($field->options as $option)
-                        <div class="flex items-center justify-between rounded-2xl border border-slate-200 p-3 text-sm">
-                            <div>
-                                <p class="font-semibold text-slate-700">{{ $option->label }}</p>
-                                <p class="text-xs text-slate-500">{{ $option->value }}</p>
-                            </div>
-                            <form method="POST" action="{{ route('admin.services.fields.options.destroy', [$service, $field, $option]) }}">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-xs text-rose-600">حذف</button>
-                            </form>
-                        </div>
-                    @empty
-                        <p class="text-sm text-slate-500">لا توجد خيارات بعد.</p>
-                    @endforelse
-                </div>
-            @endif
         </div>
     </div>
 @endsection

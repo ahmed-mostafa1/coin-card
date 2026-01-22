@@ -40,6 +40,7 @@ class DepositWorkflowTest extends TestCase
         $method = PaymentMethod::create([
             'name' => 'فودافون كاش',
             'slug' => 'vodafone-cash',
+            'account_number' => '123',
             'instructions' => 'تحويل على الرقم 0100...',
             'is_active' => true,
             'sort_order' => 0,
@@ -77,6 +78,7 @@ class DepositWorkflowTest extends TestCase
         $method = PaymentMethod::create([
             'name' => 'انستا باي',
             'slug' => 'instapay',
+            'account_number' => '123',
             'instructions' => 'تحويل على الحساب...',
             'is_active' => true,
             'sort_order' => 0,
@@ -117,6 +119,7 @@ class DepositWorkflowTest extends TestCase
         $method = PaymentMethod::create([
             'name' => 'تحويل بنكي',
             'slug' => 'bank',
+            'account_number' => '123',
             'instructions' => 'تحويل على الحساب...',
             'is_active' => true,
             'sort_order' => 0,
@@ -183,6 +186,7 @@ class DepositWorkflowTest extends TestCase
         $method = PaymentMethod::create([
             'name' => 'فودافون كاش',
             'slug' => 'vodafone-cash',
+            'account_number' => '123',
             'instructions' => 'تحويل على الرقم 0100...',
             'is_active' => true,
             'sort_order' => 0,

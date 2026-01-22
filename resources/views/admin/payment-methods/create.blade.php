@@ -34,6 +34,13 @@
                 <x-input-error :messages="$errors->get('icon')" />
             </div>
 
+            <div>
+                <x-input-label for="account_number" value="رقم المحفظة أو الحساب" />
+                <x-text-input id="account_number" name="account_number" type="text" :value="old('account_number')" required />
+                <x-input-error :messages="$errors->get('account_number')" />
+            </div>
+
+
             <div class="flex items-center gap-3 text-sm text-slate-600">
                 <input id="is_active" name="is_active" type="checkbox" value="1" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500" checked>
                 <label for="is_active">تفعيل الطريقة</label>

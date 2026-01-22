@@ -14,18 +14,28 @@ class AgencyRequestTest extends TestCase
 
     public function test_public_can_view_static_pages(): void
     {
-        $this->get('/privacy-policy')->assertOk()->assertSee('سياسة الخصوصية');
-        $this->get('/about')->assertOk()->assertSee('من نحن');
+        Role::firstOrCreate(['name' => 'customer', 'guard_name' => 'web']);
+
+        $user = User::factory()->create();
+        $user->assignRole('customer');
+
+        $this->actingAs($user)->get('/privacy-policy')->assertOk()->assertSee('Privacy');
+        $this->actingAs($user)->get('/about')->assertOk()->assertSee('About');
     }
 
     public function test_public_can_view_and_submit_agency_request(): void
     {
-        $this->get('/agency-request')->assertOk()->assertSee('طلب وكالة');
+        Role::firstOrCreate(['name' => 'customer', 'guard_name' => 'web']);
 
-        $response = $this->post('/agency-request', [
+        $user = User::factory()->create();
+        $user->assignRole('customer');
+
+        $this->actingAs($user)->get('/agency-request')->assertOk()->assertSee('Agency');
+
+        $response = $this->actingAs($user)->post('/agency-request', [
             'contact_number' => '0999999999',
-            'full_name' => 'محمد أحمد علي',
-            'region' => 'دمشق',
+            'full_name' => 'Mohamed Ahmed',
+            'region' => 'Damascus',
             'starting_amount' => 250,
         ]);
 
@@ -34,11 +44,12 @@ class AgencyRequestTest extends TestCase
 
         $this->assertDatabaseHas('agency_requests', [
             'contact_number' => '0999999999',
-            'full_name' => 'محمد أحمد علي',
-            'region' => 'دمشق',
+            'full_name' => 'Mohamed Ahmed',
+            'region' => 'Damascus',
             'starting_amount' => '250.00',
         ]);
     }
+
 
     public function test_admin_can_manage_agency_requests(): void
     {

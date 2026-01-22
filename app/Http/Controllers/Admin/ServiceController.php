@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\ServiceRequest;
 use App\Models\Category;
 use App\Models\Service;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
@@ -35,10 +36,33 @@ class ServiceController extends Controller
     {
         $data = $this->prepareData($request);
 
-        Service::create($data);
+        $service = DB::transaction(function () use ($request, $data) {
+            $service = Service::create($data);
 
-        return redirect()->route('admin.services.index')
-            ->with('status', 'تم إضافة الخدمة بنجاح.');
+            foreach ($request->input('variants', []) as $index => $variant) {
+                $service->variants()->create([
+                    'name' => $variant['name'],
+                    'price' => $variant['price'],
+                    'is_active' => isset($variant['is_active']) ? (bool) $variant['is_active'] : true,
+                    'sort_order' => $variant['sort_order'] ?? $index,
+                ]);
+            }
+
+            foreach ($request->input('fields', []) as $index => $field) {
+                $service->formFields()->create([
+                    'type' => $field['type'],
+                    'label' => $field['label'],
+                    'name_key' => $field['name_key'],
+                    'is_required' => isset($field['is_required']) ? (bool) $field['is_required'] : false,
+                    'sort_order' => $field['sort_order'] ?? $index,
+                ]);
+            }
+
+            return $service;
+        });
+
+        return redirect()->route('admin.services.edit', $service)
+            ->with('status', '???? ?????????? ???????????? ??????????.');
     }
 
     public function edit(Service $service): View
