@@ -5,32 +5,11 @@ deployment:
     - export APPPATH=/home/coincard/coin-card_app
     - export PUBLICPATH=/home/coincard/public_html
 
-    # 1) Prepare folders
     - /bin/mkdir -p $APPPATH
-    - /bin/mkdir -p $APPPATH/storage $APPPATH/bootstrap/cache
-
-    # 2) Sync code into APPPATH (keep .env + storage persistent)
     - /usr/bin/rsync -a --delete \
         --exclude ".git/" \
         --exclude ".cpanel.yml" \
         --exclude ".env" \
-        --exclude "storage/" \
-        --exclude "bootstrap/cache/" \
         $REPOPATH/ $APPPATH/
 
-    # 3) Ensure writable dirs
-    - /bin/chmod -R 775 $APPPATH/storage $APPPATH/bootstrap/cache || true
-
-    # 4) Install Composer locally (inside APPPATH) if not available globally
-    - cd $APPPATH
-    - /usr/bin/php -v
-    - if [ ! -f composer.phar ]; then /usr/bin/php -r "copy('https://getcomposer.org/installer','composer-setup.php');" && /usr/bin/php composer-setup.php && /bin/rm -f composer-setup.php; fi
-    - /usr/bin/php composer.phar install --no-dev --optimize-autoloader --no-interaction
-
-    # 5) Laravel caches (will use APPPATH/.env)
-    - /usr/bin/php artisan config:cache
-    - /usr/bin/php artisan route:cache || true
-    - /usr/bin/php artisan view:cache
-
-    # 6) Deploy public/ to public_html
     - /usr/bin/rsync -a --delete $APPPATH/public/ $PUBLICPATH/
