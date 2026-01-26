@@ -19,6 +19,8 @@ use App\Http\Controllers\Admin\PaymentMethodController as AdminPaymentMethodCont
 use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
 use App\Http\Controllers\Admin\ServiceFormFieldController as AdminServiceFormFieldController;
 use App\Http\Controllers\Admin\ServiceVariantController as AdminServiceVariantController;
+use App\Http\Controllers\Admin\BannerController as AdminBannerController;
+use App\Http\Controllers\Admin\AppearanceController as AdminAppearanceController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
@@ -95,6 +97,9 @@ Route::middleware(['auth', 'not_banned', 'role:admin'])->prefix('admin')->name('
 
     Route::resource('categories', AdminCategoryController::class)->except(['show', 'destroy']);
     Route::resource('services', AdminServiceController::class)->except(['show', 'destroy']);
+    Route::resource('banners', AdminBannerController::class)->except(['show', 'destroy']);
+    Route::get('/appearance', [AdminAppearanceController::class, 'edit'])->name('appearance.edit');
+    Route::post('/appearance', [AdminAppearanceController::class, 'update'])->name('appearance.update');
     Route::get('services/{service}/variants', [AdminServiceVariantController::class, 'index'])->name('services.variants.index');
     Route::get('services/{service}/variants/create', [AdminServiceVariantController::class, 'create'])->name('services.variants.create');
     Route::post('services/{service}/variants', [AdminServiceVariantController::class, 'store'])->name('services.variants.store');

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
-use Illuminate\Authorize\Access\AuthorizationException;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\View\View;
 
 class AccountOrderController extends Controller

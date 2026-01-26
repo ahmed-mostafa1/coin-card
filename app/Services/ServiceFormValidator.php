@@ -36,7 +36,11 @@ class ServiceFormValidator
             }
 
             if ($field->validation_rules) {
-                $fieldRules = array_merge($fieldRules, explode('|', $field->validation_rules));
+                $extra = array_filter(explode('|', $field->validation_rules), function ($rule) {
+                    // Accept only Laravel-ish rule tokens (alpha/underscore + optional params) to avoid calling non-existent validators.
+                    return (bool) preg_match('/^[a-zA-Z][a-zA-Z0-9_]*(?::.*)?$/', trim($rule));
+                });
+                $fieldRules = array_merge($fieldRules, $extra);
             }
 
             $rules['fields.'.$field->name_key] = $fieldRules;
