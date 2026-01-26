@@ -22,7 +22,6 @@
             @endif
         </div>
     </div>
-    <div class="store-card-footer">{{ $subtitle }}</div>
     <div class="px-3 pb-4 pt-2 text-center">
         <div class="store-card-title">{{ $title }}</div>
     </div>

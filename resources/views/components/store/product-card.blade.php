@@ -23,7 +23,6 @@
             @endif
         </div>
     </div>
-    <div class="store-card-footer">{{ __('messages.store_marketing_tag') }}</div>
     <div class="px-3 pb-4 pt-2 text-center">
         <div class="store-card-title">{{ $service->name }}</div>
         <div class="text-[13px] text-slate-500">{{ $subtitle }}</div>

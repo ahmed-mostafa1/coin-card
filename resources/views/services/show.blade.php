@@ -144,7 +144,6 @@
                             <img src="{{ asset('storage/' . $service->image_path) }}" alt="{{ $service->name }}"
                                 class="h-48 w-full object-cover">
                         @endif
-                        <div class="store-card-footer">{{ __('messages.store_marketing_tag') }}</div>
                     </div>
 
                     <div class="pt-4 text-center">
