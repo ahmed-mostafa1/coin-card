@@ -27,7 +27,12 @@ class ServiceController extends Controller
 
     public function create(): View
     {
-        $categories = Category::query()->orderBy('name')->get();
+        $categories = Category::query()
+            ->with('parent')
+            ->orderBy('parent_id')
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->get();
 
         return view('admin.services.create', compact('categories'));
     }
@@ -68,7 +73,12 @@ class ServiceController extends Controller
     public function edit(Service $service): View
     {
         $service->load(['formFields.options' => fn($query) => $query->orderBy('sort_order')]);
-        $categories = Category::query()->orderBy('name')->get();
+        $categories = Category::query()
+            ->with('parent')
+            ->orderBy('parent_id')
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->get();
 
         return view('admin.services.edit', compact('service', 'categories'));
     }

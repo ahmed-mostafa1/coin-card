@@ -187,4 +187,10 @@ return [
     'search_placeholder' => 'Search for a service',
     'search_button' => 'Search',
     'no_services_available' => 'No services available currently.',
+    'wholesale_notice' => 'Note for shop owners: please contact admin for wholesale prices •',
+    'search_section_placeholder' => 'Search for a section',
+    'search_products_placeholder' => 'Search for a product',
+    'root_category_option' => 'Root category',
+    'store_marketing_tag' => 'MARKET CARD',
+    'default_delivery_eta' => 'Delivery takes 1 to 10 minutes',
 ];

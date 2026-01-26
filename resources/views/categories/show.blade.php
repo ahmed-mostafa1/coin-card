@@ -3,49 +3,62 @@
 @section('title', $category->name)
 
 @section('content')
-    <x-card :hover="false">
-        <div class="flex flex-wrap items-center justify-between gap-4">
-            <div class="flex items-center gap-4">
-                @if ($category->image_path)
-                    <img src="{{ asset('storage/' . $category->image_path) }}" alt="{{ $category->name }}"
-                        class="h-20 w-20 rounded-2xl object-cover">
-                @else
-                    <div class="flex h-20 w-20 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700">
-                        {{ mb_substr($category->name, 0, 1) }}</div>
-                @endif
-                <div>
-                    <h1 class="text-2xl font-bold text-slate-900">{{ $category->name }}</h1>
-                    <p class="mt-2 text-sm text-slate-600">
-                        {{ __('messages.services_count', ['count' => $services->count()]) }}</p>
-                </div>
-            </div>
-            <form method="GET" action="{{ route('categories.show', $category->slug) }}"
-                class="flex items-center gap-2 text-sm">
-                <input type="text" name="q" value="{{ $search }}" placeholder="{{ __('messages.search_placeholder') }}"
-                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm text-slate-700 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:w-64" />
-                <x-button type="submit" variant="secondary">{{ __('messages.search_button') }}</x-button>
-            </form>
-        </div>
+    @php
+        $heroImage = $category->image_path ? asset('storage/' . $category->image_path) : null;
+    @endphp
 
-        <div class="mt-6 grid gap-4 md:grid-cols-3">
-            @forelse ($services as $service)
-                <a href="{{ route('services.show', $service->slug) }}"
-                    class="group rounded-2xl border border-slate-200 p-4 cc-hover-lift">
-                    <div class="overflow-hidden rounded-xl">
-                        @if ($service->image_path)
-                            <img src="{{ asset('storage/' . $service->image_path) }}" alt="{{ $service->name }}"
-                                class="h-32 w-full object-cover transition duration-200 group-hover:scale-[1.02]">
-                        @else
-                            <div class="flex h-32 items-center justify-center bg-emerald-50 text-emerald-700">
-                                {{ mb_substr($service->name, 0, 1) }}</div>
-                        @endif
-                    </div>
-                    <h3 class="mt-4 text-sm font-semibold text-slate-800 group-hover:text-emerald-700">{{ $service->name }}</h3>
-                    <p class="mt-2 text-sm font-semibold text-emerald-700">{{ number_format($service->price, 2) }} USD</p>
-                </a>
-            @empty
-                <x-empty-state :message="__('messages.no_services_available')" />
-            @endforelse
-        </div>
-    </x-card>
+    <div class="store-shell space-y-6">
+        <x-store.hero :image="$heroImage" :alt="$category->name" />
+
+        <x-store.notice :text="__('messages.wholesale_notice')" />
+
+        @if ($hasChildren)
+            <form method="GET" class="space-y-3">
+                <x-store.search-bar :placeholder="__('messages.search_section_placeholder')" target="subcategories" :value="$search" />
+                <x-store.search-bar placeholder="" />
+            </form>
+
+            <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" data-filter-list="subcategories">
+                @forelse ($subcategories as $sub)
+                    <x-store.category-card :title="$sub->name" :href="route('categories.show', $sub->slug)"
+                        :image="$sub->image_path ? asset('storage/' . $sub->image_path) : null" searchTarget="subcategories" />
+                @empty
+                    <x-empty-state :message="__('messages.no_categories')" class="sm:col-span-2 lg:col-span-4" />
+                @endforelse
+            </div>
+        @else
+            <form method="GET" class="space-y-3">
+                <x-store.search-bar :placeholder="__('messages.search_products_placeholder')" target="products" :value="$search" />
+            </form>
+
+            <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-5" data-filter-list="products">
+                @forelse ($services as $service)
+                    <x-store.product-card :service="$service" searchTarget="products" />
+                @empty
+                    <x-empty-state :message="__('messages.no_services_available')" class="sm:col-span-2 lg:col-span-5" />
+                @endforelse
+            </div>
+        @endif
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const filterItems = () => {
+                document.querySelectorAll('[data-filter-target]').forEach((input) => {
+                    const term = (input.value || '').toLowerCase().trim();
+                    const target = input.dataset.filterTarget;
+                    document.querySelectorAll(`[data-filter-item=\"${target}\"]`).forEach((card) => {
+                        const haystack = `${card.dataset.filterName || ''} ${card.dataset.filterAlt || ''}`.toLowerCase();
+                        card.classList.toggle('hidden', term && !haystack.includes(term));
+                    });
+                });
+            };
+
+            document.querySelectorAll('[data-filter-target]').forEach((input) => {
+                input.addEventListener('input', filterItems);
+            });
+
+            filterItems();
+        });
+    </script>
 @endsection

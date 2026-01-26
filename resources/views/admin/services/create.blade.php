@@ -14,7 +14,10 @@
                 <select id="category_id" name="category_id" class="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-2 text-sm text-slate-700" required>
                     <option value="">اختر التصنيف</option>
                     @foreach ($categories as $category)
-                        <option value="{{ $category->id }}" @selected(old('category_id') == $category->id)>{{ $category->name }}</option>
+                        @php
+                            $label = $category->parent ? $category->parent->name . ' › ' . $category->name : $category->name;
+                        @endphp
+                        <option value="{{ $category->id }}" @selected(old('category_id') == $category->id)>{{ $label }}</option>
                     @endforeach
                 </select>
                 <x-input-error :messages="$errors->get('category_id')" />

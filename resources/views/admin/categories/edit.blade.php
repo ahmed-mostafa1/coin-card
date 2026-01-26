@@ -17,9 +17,21 @@
             </div>
 
             <div>
-                <x-input-label for="slug" value="المعرف المختصر" />
+                <x-input-label for="slug" value="المعرّف المختصر" />
                 <x-text-input id="slug" name="slug" type="text" :value="old('slug', $category->slug)" />
                 <x-input-error :messages="$errors->get('slug')" />
+            </div>
+
+            <div>
+                <x-input-label for="parent_id" value="التصنيف الأب (اختياري)" />
+                <select id="parent_id" name="parent_id"
+                        class="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-2 text-sm text-slate-700 focus:border-emerald-500 focus:ring-emerald-500">
+                    <option value="">{{ __('messages.root_category_option') }}</option>
+                    @foreach ($parents as $parent)
+                        <option value="{{ $parent->id }}" @selected(old('parent_id', $category->parent_id) == $parent->id)>{{ $parent->name }}</option>
+                    @endforeach
+                </select>
+                <x-input-error :messages="$errors->get('parent_id')" />
             </div>
 
             <div>

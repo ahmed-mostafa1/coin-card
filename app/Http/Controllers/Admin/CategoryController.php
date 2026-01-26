@@ -15,6 +15,7 @@ class CategoryController extends Controller
     public function index(): View
     {
         $categories = Category::query()
+            ->with('parent')
             ->orderBy('sort_order')
             ->orderBy('name')
             ->get();
@@ -24,7 +25,12 @@ class CategoryController extends Controller
 
     public function create(): View
     {
-        return view('admin.categories.create');
+        $parents = Category::query()
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->get();
+
+        return view('admin.categories.create', compact('parents'));
     }
 
     public function store(CategoryRequest $request): RedirectResponse
@@ -39,7 +45,13 @@ class CategoryController extends Controller
 
     public function edit(Category $category): View
     {
-        return view('admin.categories.edit', compact('category'));
+        $parents = Category::query()
+            ->where('id', '!=', $category->id)
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->get();
+
+        return view('admin.categories.edit', compact('category', 'parents'));
     }
 
     public function update(CategoryRequest $request, Category $category): RedirectResponse
@@ -65,6 +77,7 @@ class CategoryController extends Controller
         $data = $request->validated();
         $data['is_active'] = $request->boolean('is_active');
         $data['sort_order'] = $data['sort_order'] ?? 0;
+        $data['parent_id'] = $request->input('parent_id') ?: null;
 
         $slug = $data['slug'] ?? null;
         if (! $slug) {

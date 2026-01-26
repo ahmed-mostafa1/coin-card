@@ -187,4 +187,10 @@ return [
     'search_placeholder' => 'ابحث عن خدمة',
     'search_button' => 'بحث',
     'no_services_available' => 'لا توجد خدمات متاحة حالياً.',
+    'wholesale_notice' => 'ملاحظة لأصحاب المحلات يرجى التواصل مع الإدارة للحصول على أسعار الجملة •',
+    'search_section_placeholder' => 'ابحث عن قسم',
+    'search_products_placeholder' => 'ابحث عن منتج',
+    'root_category_option' => 'تصنيف رئيسي',
+    'store_marketing_tag' => 'MARKET CARD',
+    'default_delivery_eta' => 'يستغرق وقت الشحن من 1 إلى 10 دقائق',
 ];

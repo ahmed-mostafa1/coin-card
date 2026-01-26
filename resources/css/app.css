@@ -60,7 +60,7 @@
 
 @layer base {
     body {
-        @apply bg-slate-50 text-slate-900;
+        @apply bg-[#f6f8fa] text-slate-900;
     }
 }
 
@@ -91,5 +91,33 @@
 
     .cc-pill-active {
         @apply border-emerald-200 bg-emerald-100 text-emerald-800 hover:bg-emerald-200;
+    }
+
+    .store-shell {
+        @apply mx-auto w-full max-w-6xl;
+    }
+
+    .store-pill {
+        @apply flex w-full items-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-2 shadow-sm;
+    }
+
+    .store-search {
+        @apply w-full rounded-full border border-slate-300 bg-white px-5 py-3 text-sm text-slate-700 shadow-inner outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-300;
+    }
+
+    .store-card {
+        @apply rounded-xl border border-slate-300 bg-white shadow-[0_6px_12px_rgba(0,0,0,0.08)];
+    }
+
+    .store-card-footer {
+        @apply bg-[#111827] px-3 py-2 text-center text-[12px] font-semibold uppercase tracking-wide text-[#f2a900];
+    }
+
+    .store-card-title {
+        @apply text-[15px] font-semibold text-slate-800;
+    }
+
+    .store-input {
+        @apply w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-700 shadow-inner focus:border-emerald-400 focus:ring-2 focus:ring-emerald-300;
     }
 }

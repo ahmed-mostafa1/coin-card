@@ -8,7 +8,7 @@
         <div class="flex flex-wrap items-center justify-between gap-4">
             <div>
                 <h1 class="text-2xl font-semibold text-emerald-700">التصنيفات</h1>
-                <p class="mt-2 text-sm text-slate-600">إدارة تصنيفات الخدمات.</p>
+                <p class="mt-2 text-sm text-slate-600">إدارة التصنيفات الرئيسية والفرعية.</p>
             </div>
             <a href="{{ route('admin.categories.create') }}" class="rounded-full bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700">إضافة تصنيف</a>
         </div>
@@ -24,6 +24,7 @@
                 <thead class="border-b border-slate-200 text-slate-500">
                     <tr>
                         <th class="py-2">الاسم</th>
+                        <th class="py-2">التصنيف الأب</th>
                         <th class="py-2">المعرف</th>
                         <th class="py-2">الحالة</th>
                         <th class="py-2">الترتيب</th>
@@ -34,6 +35,7 @@
                     @forelse ($categories as $category)
                         <tr>
                             <td class="py-3 text-slate-700">{{ $category->name }}</td>
+                            <td class="py-3 text-slate-500">{{ $category->parent?->name ?? 'تصنيف رئيسي' }}</td>
                             <td class="py-3 text-slate-500">{{ $category->slug }}</td>
                             <td class="py-3">
                                 @if ($category->is_active)
@@ -49,7 +51,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="py-6 text-center text-slate-500">لا توجد تصنيفات بعد.</td>
+                            <td colspan="6" class="py-6 text-center text-slate-500">لا توجد تصنيفات بعد.</td>
                         </tr>
                     @endforelse
                 </tbody>

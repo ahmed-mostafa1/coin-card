@@ -13,13 +13,37 @@ class CategoryController extends Controller
 
         $search = request('q');
 
-        $services = $category->services()
-            ->where('is_active', true)
-            ->when($search, fn ($query) => $query->where('name', 'like', "%{$search}%"))
-            ->orderBy('sort_order')
-            ->orderBy('name')
-            ->get();
+        $childrenBaseQuery = $category->children()->active();
+        $hasChildren = $childrenBaseQuery->exists();
 
-        return view('categories.show', compact('category', 'services', 'search'));
+        $childrenQuery = (clone $childrenBaseQuery)
+            ->orderBy('sort_order')
+            ->orderBy('name');
+
+        if ($search) {
+            $childrenQuery->where('name', 'like', "%{$search}%");
+        }
+
+        $subcategories = $childrenQuery->get();
+
+        $services = collect();
+
+        if (! $hasChildren) {
+            $services = $category->services()
+                ->where('is_active', true)
+                ->when($search, fn ($query) => $query->where('name', 'like', "%{$search}%"))
+                ->with(['variants', 'category'])
+                ->orderBy('sort_order')
+                ->orderBy('name')
+                ->get();
+        }
+
+        return view('categories.show', [
+            'category' => $category,
+            'services' => $services,
+            'subcategories' => $subcategories,
+            'search' => $search,
+            'hasChildren' => $hasChildren,
+        ]);
     }
 }
