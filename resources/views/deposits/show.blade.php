@@ -56,6 +56,26 @@
                     <x-input-error :messages="$errors->get('amount')" />
                 </div>
 
+                @foreach ($paymentMethod->fields->sortBy('sort_order') as $field)
+                    <div class="space-y-1">
+                        <label for="field_{{ $field->name_key }}"
+                            class="block text-sm font-semibold text-slate-800">{{ $field->label }}</label>
+                        @if ($field->type === 'text')
+                            <input id="field_{{ $field->name_key }}"
+                                name="fields[{{ $field->name_key }}]"
+                                type="text"
+                                value="{{ old('fields.' . $field->name_key) }}"
+                                class="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-2 text-sm text-slate-700"
+                                {{ $field->is_required ? 'required' : '' }}>
+                        @else
+                            <textarea id="field_{{ $field->name_key }}" name="fields[{{ $field->name_key }}]" rows="3"
+                                class="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-2 text-sm text-slate-700"
+                                {{ $field->is_required ? 'required' : '' }}>{{ old('fields.' . $field->name_key) }}</textarea>
+                        @endif
+                        <x-input-error :messages="$errors->get('fields.' . $field->name_key)" />
+                    </div>
+                @endforeach
+
                 <div>
                     <x-input-label for="proof" :value="__('messages.transfer_proof')" />
                     <input id="proof" name="proof" type="file" required

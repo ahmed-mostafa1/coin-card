@@ -7,7 +7,7 @@
         <x-card :hover="false">
             <x-page-header title="لوحة العمليات" subtitle="إدارة سريعة للطلبات وطلبات الشحن." />
 
-            <div class="mt-6 grid gap-4 sm:grid-cols-3">
+            <div class="mt-6 grid gap-4 sm:grid-cols-4">
                 <div class="rounded-2xl border border-slate-200 p-4">
                     <p class="text-xs text-slate-500">طلبات الشحن</p>
                     <p class="mt-2 text-lg font-semibold text-emerald-700">{{ $pendingDepositsCount }}</p>
@@ -17,8 +17,12 @@
                     <p class="mt-2 text-lg font-semibold text-emerald-700">{{ $newOrdersCount }}</p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 p-4">
-                    <p class="text-xs text-slate-500">طلبات منتهية</p>
+                    <p class="text-xs text-slate-500">طلبات تحت التنفيذ</p>
                     <p class="mt-2 text-lg font-semibold text-emerald-700">{{ $processingOrdersCount }}</p>
+                </div>
+                <div class="rounded-2xl border border-slate-200 p-4">
+                    <p class="text-xs text-slate-500">طلبات منتهية</p>
+                    <p class="mt-2 text-lg font-semibold text-emerald-700">{{ $doneOrdersCount }}</p>
                 </div>
             </div>
         </x-card>
@@ -33,7 +37,9 @@
             <a href="{{ route('admin.ops.index', ['tab' => 'orders_new']) }}"
                 class="rounded-full border px-4 py-2 transition {{ $tab === 'orders_new' ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : 'border-slate-200 text-slate-600 hover:border-emerald-200' }}">طلبات جديدة</a>
             <a href="{{ route('admin.ops.index', ['tab' => 'orders_processing']) }}"
-                class="rounded-full border px-4 py-2 transition {{ $tab === 'orders_processing' ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : 'border-slate-200 text-slate-600 hover:border-emerald-200' }}">طلبات منتهية</a>
+                class="rounded-full border px-4 py-2 transition {{ $tab === 'orders_processing' ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : 'border-slate-200 text-slate-600 hover:border-emerald-200' }}">طلبات تحت التنفيذ</a>
+            <a href="{{ route('admin.ops.index', ['tab' => 'orders_done']) }}"
+                class="rounded-full border px-4 py-2 transition {{ $tab === 'orders_done' ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : 'border-slate-200 text-slate-600 hover:border-emerald-200' }}">طلبات منتهية</a>
         </div>
 
         @if ($tab === 'deposits')

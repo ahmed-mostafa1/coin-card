@@ -19,6 +19,7 @@ class DepositRequest extends Model
         'approved_amount',
         'status',
         'user_note',
+        'payload',
         'admin_note',
         'reviewed_by_user_id',
         'reviewed_at',
@@ -28,6 +29,7 @@ class DepositRequest extends Model
         'user_amount' => 'decimal:2',
         'approved_amount' => 'decimal:2',
         'reviewed_at' => 'datetime',
+        'payload' => 'array',
     ];
 
     public function user(): BelongsTo

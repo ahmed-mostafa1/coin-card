@@ -25,4 +25,9 @@ class PaymentMethod extends Model
     {
         return $this->hasMany(DepositRequest::class);
     }
+
+    public function fields(): HasMany
+    {
+        return $this->hasMany(PaymentMethodField::class);
+    }
 }

@@ -157,6 +157,7 @@ return [
     'price_label' => 'Price',
     'base_price_label' => 'Base Price',
     'order_data_label' => 'Order Data',
+    'additional_details_label' => 'Additional details',
     'no_additional_data' => 'No additional data.',
     'admin_note_label' => 'Admin Note: :note',
     'order_history_title' => 'Order History',

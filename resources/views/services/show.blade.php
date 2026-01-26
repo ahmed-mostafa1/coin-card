@@ -7,17 +7,12 @@
         $availableBalance = $wallet?->balance ?? 0;
         $basePrice = $service->variants->count() ? $service->variants->min('price') : $service->price;
         $isBaseInsufficient = $availableBalance < $basePrice;
-        $heroImage = $service->category->image_path
-            ? asset('storage/' . $service->category->image_path)
-            : ($service->image_path
-                ? asset('storage/' . $service->image_path)
-                : null);
     @endphp
 
     <div class="store-shell space-y-6">
-        <x-store.hero :image="$heroImage" :alt="$service->name" />
+        <x-store.hero :banners="$sharedBanners" :alt="$service->name" />
 
-        <x-store.notice :text="__('messages.wholesale_notice')" />
+        <x-store.notice :text="$sharedTickerText" />
 
         <div class="grid gap-6 lg:grid-cols-3">
             <div class="lg:col-span-2 space-y-4">

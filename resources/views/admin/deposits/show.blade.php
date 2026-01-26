@@ -47,6 +47,21 @@
                 </div>
             </div>
 
+
+            @if ($depositRequest->paymentMethod->fields->isNotEmpty())
+                <div class="mt-6 rounded-2xl border border-slate-200 p-4">
+                    <p class="text-xs text-slate-500">{{ __('messages.additional_details_label') }}</p>
+                    <div class="mt-3 space-y-2 text-sm text-slate-700">
+                        @foreach ($depositRequest->paymentMethod->fields->sortBy('sort_order') as $field)
+                            <div class="flex items-center justify-between gap-4">
+                                <p class="text-xs text-slate-500">{{ $field->label }}</p>
+                                <p class="text-sm font-semibold text-slate-700">{{ ($depositRequest->payload ?? [])[$field->name_key] ?? '-' }}</p>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
             <div class="mt-6 rounded-2xl border border-slate-200 p-4">
                 <p class="text-xs text-slate-500">إثبات التحويل</p>
                 @if ($depositRequest->evidence)

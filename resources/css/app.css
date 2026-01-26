@@ -120,16 +120,17 @@
     }
 
     .store-ticker-track {
-        @apply whitespace-nowrap text-[13px] font-semibold text-slate-700;
-        animation: marquee-ltr 18s linear infinite;
+        @apply inline-block whitespace-nowrap text-[13px] font-semibold text-slate-700;
+        animation: marquee-rtl 18s linear infinite;
+        will-change: transform;
     }
 }
 
-@keyframes marquee-ltr {
+@keyframes marquee-rtl {
     0% {
-        transform: translateX(-100%);
+        transform: translateX(100%);
     }
     100% {
-        transform: translateX(100%);
+        transform: translateX(-100%);
     }
 }

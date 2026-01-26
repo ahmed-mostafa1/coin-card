@@ -3,14 +3,10 @@
 @section('title', $category->name)
 
 @section('content')
-    @php
-        $heroImage = $category->image_path ? asset('storage/' . $category->image_path) : null;
-    @endphp
-
     <div class="store-shell space-y-6">
-        <x-store.hero :image="$heroImage" :alt="$category->name" />
+        <x-store.hero :banners="$sharedBanners" :alt="$category->name" />
 
-        <x-store.notice :text="__('messages.wholesale_notice')" />
+        <x-store.notice :text="$sharedTickerText" />
 
         @if ($hasChildren)
             <form method="GET" class="space-y-3">

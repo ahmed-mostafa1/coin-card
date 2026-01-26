@@ -1,16 +1,12 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', __('messages.home'))
 
 @section('content')
-    @php
-        $heroImage = $categories->first()?->image_path ? asset('storage/' . $categories->first()->image_path) : null;
-    @endphp
-
     <div class="store-shell space-y-6">
-        <x-store.hero :image="$heroImage" :alt="__('messages.home')" />
+        <x-store.hero :banners="$sharedBanners" :alt="__('messages.home')" />
 
-        <x-store.notice :text="__('messages.wholesale_notice')" />
+        <x-store.notice :text="$sharedTickerText" />
 
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" data-filter-list="categories">
             @forelse ($categories as $category)
@@ -24,39 +20,52 @@
 
         <div class="grid gap-4 pt-4 text-center text-sm text-slate-700 sm:grid-cols-2 lg:grid-cols-4">
             <div class="store-card flex flex-col items-center gap-2 p-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-amber-500" fill="none" viewBox="0 0 24 24"
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 text-amber-500" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                        d="M9 12h6m-3-3v6m-7 6h12a2 2 0 0 0 2-2V7.828a2 2 0 0 0-.586-1.414l-2.828-2.828A2 2 0 0 0 14.172 3H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2Z" />
+                        d="M3 7h18M6 7l2 12h8l2-12M9 11h6M9 15h6M8 7l1-3h6l1 3" />
                 </svg>
-                <p class="font-semibold">خدمة تصميم وبرمجة</p>
+                <p class="text-sm font-semibold text-amber-600">برمجة وتصميم</p>
+                <p class="text-xs text-slate-600">خدمة تصميم مواقع وتطبيقات</p>
             </div>
             <div class="store-card flex flex-col items-center gap-2 p-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-emerald-500" fill="none" viewBox="0 0 24 24"
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 text-emerald-500" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                        d="M12 6v6l4 2m5-2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                        d="M3 10h18M7 15h2M7 6h10M6 18h12a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2Z" />
                 </svg>
-                <p class="font-semibold">الدفع عند الاستلام</p>
+                <p class="text-sm font-semibold text-emerald-600">سهولة الدفع</p>
+                <p class="text-xs text-slate-600">طرق دفع متعددة وآمنة</p>
             </div>
             <div class="store-card flex flex-col items-center gap-2 p-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-500" fill="none" viewBox="0 0 24 24"
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 text-orange-500" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                        d="M9 11.25 11.25 9M12 15l3 3 6-6m-9 6H9l-6 6V3a2.25 2.25 0 0 1 2.25-2.25h9A2.25 2.25 0 0 1 16.5 3v4.5" />
+                        d="m12 2 7 7-7 7-7-7 7-7Zm0 0v20" />
                 </svg>
-                <p class="font-semibold">فروع على مستوى دولة</p>
+                <p class="text-sm font-semibold text-orange-600">سرعة وموثوقية</p>
+                <p class="text-xs text-slate-600">يتم معالجة الطلبات بشكل سريع وآمن</p>
             </div>
             <div class="store-card flex flex-col items-center gap-2 p-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-rose-500" fill="none" viewBox="0 0 24 24"
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 text-emerald-600" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                        d="m3.75 9 7.5-6 7.5 6v9.75A1.25 1.25 0 0 1 17.5 20H6.5a1.25 1.25 0 0 1-1.25-1.25V9Z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                        d="M9 20v-6h6v6" />
+                        d="M12 3 5 6v6c0 5 3.5 7.5 7 9 3.5-1.5 7-4 7-9V6l-7-3Z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m9 12 2 2 4-4" />
                 </svg>
-                <p class="font-semibold">تم معالجة الطلب بشكل سريع وآمن</p>
+                <p class="text-sm font-semibold text-emerald-700">الضمان</p>
+                <p class="text-xs text-slate-600">جميع البطاقات مضمونة ومن وكلاء رسميين</p>
             </div>
+        </div>
+
+        <div class="store-card border border-slate-200 bg-white/80 p-5 text-sm leading-7 text-slate-700">
+            يقدم موقع market-card99.com خدماته منذ عام 2018، ويعرض حالياً مجموعة متنوعة تشمل شحن 200 تطبيقاً ولعبة مختلفة، مع
+            استمرار إضافة المزيد. يمكن للاعبين والتجار بيع المنتجات مثل رموز coupon والشحن المباشر عبر معرف الحساب على مدار
+            24 ساعة حيث يتم تسليم أموال اللعبة خلال 10 دقائق بواسطة الموزعين المعتمدين. يقدم الموقع نظاماً للترتيب بين
+            الأعضاء مما يتيح الحصول على خصومات أكبر مع زيادة عمليات الشراء وأسعار خاصة لأصحاب المواقع والمتاجر. نقدم أيضاً
+            خدمات تصميم المواقع والتطبيقات. منذ انطلاق الخدمة يعمل فريق الدعم المباشر على مساعدة اللاعبين والوكلاء في جميع
+            جوانب الخدمة. يمكنكم الحصول على معلومات إضافية على مدار الساعة من خلال خط WhatsApp أو عبر البريد الإلكتروني
+            <a href="{{ route('about') }}" class="font-semibold text-emerald-700 hover:text-emerald-800">اضغط للتواصل</a>.
         </div>
     </div>
 @endsection

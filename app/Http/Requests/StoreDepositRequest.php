@@ -15,7 +15,7 @@ class StoreDepositRequest extends FormRequest
 
     public function rules(): array
     {
-        return [
+        $rules = [
             'amount' => [
                 'required',
                 'numeric',
@@ -24,6 +24,23 @@ class StoreDepositRequest extends FormRequest
             ],
             'proof' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:5120'],
         ];
+
+        $paymentMethod = $this->route('paymentMethod');
+        if ($paymentMethod) {
+            $paymentMethod->loadMissing('fields');
+            if ($paymentMethod->fields->isNotEmpty()) {
+                $rules['fields'] = ['array'];
+                foreach ($paymentMethod->fields as $field) {
+                    $fieldRules = ['nullable', 'string', 'max:1000'];
+                    if ($field->is_required) {
+                        $fieldRules[0] = 'required';
+                    }
+                    $rules['fields.'.$field->name_key] = $fieldRules;
+                }
+            }
+        }
+
+        return $rules;
     }
 
     public function messages(): array

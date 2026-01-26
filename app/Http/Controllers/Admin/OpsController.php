@@ -31,6 +31,9 @@ class OpsController extends Controller
         $processingOrdersCount = Order::query()
             ->where('status', Order::STATUS_PROCESSING)
             ->count();
+        $doneOrdersCount = Order::query()
+            ->where('status', Order::STATUS_DONE)
+            ->count();
 
         $deposits = collect();
         $orders = collect();
@@ -59,11 +62,13 @@ class OpsController extends Controller
                 ->withQueryString();
         } elseif ($tab === 'orders_processing') {
             $orderStatus = Order::STATUS_PROCESSING;
+        } elseif ($tab === 'orders_done') {
+            $orderStatus = Order::STATUS_DONE;
         } else {
             $orderStatus = Order::STATUS_NEW;
         }
 
-        if (in_array($tab, ['orders_new', 'orders_processing'], true)) {
+        if (in_array($tab, ['orders_new', 'orders_processing', 'orders_done'], true)) {
             $orders = Order::query()
                 ->with(['user', 'service', 'variant'])
                 ->where('status', $orderStatus)
@@ -100,7 +105,8 @@ class OpsController extends Controller
             'orderStatus',
             'pendingDepositsCount',
             'newOrdersCount',
-            'processingOrdersCount'
+            'processingOrdersCount',
+            'doneOrdersCount'
         ));
     }
 }

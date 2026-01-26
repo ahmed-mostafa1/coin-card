@@ -1,9 +1,10 @@
 @extends('layouts.app')
 
 @section('title', 'تعديل تصنيف')
+@section('mainWidth', 'max-w-none w-full')
 
 @section('content')
-    <div class="mx-auto max-w-2xl rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm">
+    <div class="w-full rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm">
         <h1 class="text-2xl font-semibold text-emerald-700">تعديل تصنيف</h1>
 
         <form method="POST" action="{{ route('admin.categories.update', $category) }}" enctype="multipart/form-data" class="mt-6 space-y-4">

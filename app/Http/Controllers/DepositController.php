@@ -41,18 +41,25 @@ class DepositController extends Controller
         abort_unless($paymentMethod->is_active, 404);
 
         $user = $request->user();
+        $paymentMethod->loadMissing('fields');
 
         $file = $request->file('proof');
         $fileHash = hash_file('sha256', $file->getRealPath());
 
         $deposit = null;
 
-        DB::transaction(function () use ($request, $paymentMethod, $user, $file, $fileHash, &$deposit) {
+        $payload = [];
+        foreach ($paymentMethod->fields as $field) {
+            $payload[$field->name_key] = $request->input('fields.'.$field->name_key);
+        }
+
+        DB::transaction(function () use ($request, $paymentMethod, $user, $file, $fileHash, $payload, &$deposit) {
             $deposit = DepositRequest::create([
                 'user_id' => $user->id,
                 'payment_method_id' => $paymentMethod->id,
                 'user_amount' => (string) $request->input('amount'),
                 'status' => DepositRequest::STATUS_PENDING,
+                'payload' => $payload,
             ]);
 
             $path = $file->store('deposit-evidences/'.$user->id, 'local');

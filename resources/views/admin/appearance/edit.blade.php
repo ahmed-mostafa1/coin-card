@@ -1,9 +1,10 @@
 @extends('layouts.app')
 
 @section('title', 'المظهر العام')
+@section('mainWidth', 'max-w-none w-full')
 
 @section('content')
-    <div class="mx-auto max-w-3xl rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm">
+    <div class="w-full rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm">
         <h1 class="text-2xl font-semibold text-emerald-700">المظهر العام</h1>
         <p class="mt-2 text-sm text-slate-600">تعديل شريط الملاحظة المتحرك.</p>
 
