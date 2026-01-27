@@ -121,9 +121,13 @@
 
     .store-ticker-track {
         @apply inline-block whitespace-nowrap text-[13px] font-semibold text-slate-700;
-        animation: marquee-rtl 18s linear infinite;
+        animation: marquee-ltr 18s linear infinite;
         will-change: transform;
     }
+}
+
+:root[dir='rtl'] .store-ticker-track {
+    animation-name: marquee-rtl;
 }
 
 @keyframes marquee-rtl {
@@ -132,5 +136,14 @@
     }
     100% {
         transform: translateX(-100%);
+    }
+}
+
+@keyframes marquee-ltr {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
     }
 }

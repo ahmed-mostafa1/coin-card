@@ -48,9 +48,11 @@
                     if (!track || slides.length <= 1) return;
 
                     let index = 0;
+                    const isRtl = getComputedStyle(slider).direction === 'rtl';
 
                     const update = () => {
-                        track.style.transform = `translateX(-${index * 100}%)`;
+                        const offset = index * 100;
+                        track.style.transform = `translateX(${isRtl ? offset : -offset}%)`;
                         dots.forEach((dot, i) => {
                             dot.style.opacity = i === index ? '1' : '0.4';
                         });
