@@ -28,4 +28,16 @@ class AccountNotificationController extends Controller
 
         return redirect()->route('account.notifications')->with('status', 'تم تعليم جميع الإشعارات كمقروءة.');
     }
+
+    public function markAsRead(string $id): \Illuminate\Http\JsonResponse
+    {
+        $user = auth()->user();
+        $notification = $user->notifications()->find($id);
+
+        if ($notification) {
+            $notification->markAsRead();
+        }
+
+        return response()->json(['success' => true]);
+    }
 }

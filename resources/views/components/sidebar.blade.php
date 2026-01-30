@@ -38,7 +38,7 @@
                          </div>
                     </div>
                     <div>
-                         <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('messages.welcome') ?? 'أهلا بك :' }}</p>
+                         <!-- <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('messages.welcome') ?? 'أهلا بك :' }}</p> -->
                          <p class="font-bold text-slate-800 dark:text-white">{{ auth()->user()->name }}</p>
                     </div>
                  @else

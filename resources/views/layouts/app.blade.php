@@ -70,7 +70,7 @@
                     <!-- Center (Logo) -->
                     <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                         <a href="{{ route('home') }}" class="flex items-center justify-center">
-                            <span class="text-xl font-bold text-emerald-700 dark:text-emerald-400">Arab 8BP</span>
+                            <span class="text-xl font-bold text-emerald-700 dark:text-emerald-400">8BP</span>
                         </a>
                     </div>
                     
@@ -79,7 +79,7 @@
                         @auth
                             <a href="{{ route('account.wallet') }}" class="flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50 px-3 py-1.5 transition hover:bg-orange-100 dark:border-orange-900/50 dark:bg-orange-900/20 dark:hover:bg-orange-900/30">
                                 <i class="fa-solid fa-wallet text-orange-500 text-sm"></i>
-                                <span class="text-sm font-bold text-orange-600 dark:text-orange-500" dir="ltr">{{ number_format(auth()->user()->balance, 2) }} $</span>
+                                <span class="text-sm font-bold text-orange-600 dark:text-orange-500" dir="ltr">{{ number_format(auth()->user()->available_balance, 2) }} $</span>
                             </a>
                         @endauth
                     </div>
@@ -92,7 +92,7 @@
                         @auth
                             <a href="{{ route('account.wallet') }}" class="flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50 px-3 py-1.5 transition hover:bg-orange-100 dark:border-orange-900/50 dark:bg-orange-900/20 dark:hover:bg-orange-900/30">
                                 <i class="fa-solid fa-wallet text-orange-500 text-sm"></i>
-                                <span class="text-sm font-bold text-orange-600 dark:text-orange-500" dir="ltr">{{ number_format(auth()->user()->balance, 2) }} $</span>
+                                <span class="text-sm font-bold text-orange-600 dark:text-orange-500" dir="ltr">{{ number_format(auth()->user()->available_balance, 2) }} $</span>
                             </a>
                         @endauth
                     </div>
@@ -100,7 +100,7 @@
                     <!-- Center (Logo) -->
                     <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                         <a href="{{ route('home') }}" class="flex items-center justify-center">
-                            <span class="text-xl font-bold text-emerald-700 dark:text-emerald-400">Arab 8BP</span>
+                            <span class="text-xl font-bold text-emerald-700 dark:text-emerald-400">8BP</span>
                         </a>
                     </div>
 
@@ -155,8 +155,8 @@
 
                     <!-- Home (Center) -->
                     <a href="{{ route('home') }}" class="flex flex-col items-center justify-center gap-1 group">
-                         <div class="{{ request()->routeIs('home') ? 'bg-orange-500 text-white shadow-lg ring-4 ring-white dark:ring-slate-800 scale-110' : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600 hover:text-slate-800 dark:hover:text-slate-200' }} flex h-14 w-14 items-center justify-center rounded-full transition group-hover:scale-110">
-                            <i class="fa-solid fa-home text-2xl"></i>
+                         <div class="{{ request()->routeIs('home') ? 'bg-orange-500 text-white shadow-lg ring-4 ring-white dark:ring-slate-800 scale-110' : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600 hover:text-slate-800 dark:hover:text-slate-200' }} flex h-12 w-12 items-center justify-center rounded-full transition group-hover:scale-110">
+                            <i class="fa-solid fa-home text-xl"></i>
                          </div>
                          <span class="{{ request()->routeIs('home') ? 'text-orange-500' : 'text-slate-500 dark:text-slate-400' }} text-xs font-bold">{{ __('messages.home') }}</span>
                     </a>
@@ -184,8 +184,8 @@
                         @if(request()->routeIs('account.orders*'))
                             <div class="relative -top-6">
                                 <a href="{{ route('account.orders') }}" class="flex flex-col items-center justify-center gap-1">
-                                    <div class="flex h-14 w-14 items-center justify-center rounded-full bg-orange-400 shadow-lg ring-4 ring-white dark:ring-slate-800 transition active:scale-95">
-                                        <i class="fa-solid fa-basket-shopping text-2xl text-white"></i>
+                                    <div class="flex h-11 w-11 items-center justify-center rounded-full bg-orange-400 shadow-lg ring-4 ring-white dark:ring-slate-800 transition active:scale-95">
+                                        <i class="fa-solid fa-basket-shopping text-lg text-white"></i>
                                     </div>
                                     <span class="text-[10px] font-bold text-orange-400">Orders</span>
                                 </a>
@@ -202,8 +202,8 @@
                         @if(request()->routeIs('account.notifications*'))
                              <div class="relative -top-6">
                                 <a href="{{ route('account.notifications') }}" class="flex flex-col items-center justify-center gap-1">
-                                    <div class="flex h-14 w-14 items-center justify-center rounded-full bg-orange-400 shadow-lg ring-4 ring-white dark:ring-slate-800 transition active:scale-95">
-                                        <i class="fa-solid fa-bell text-2xl text-white"></i>
+                                    <div class="flex h-11 w-11 items-center justify-center rounded-full bg-orange-400 shadow-lg ring-4 ring-white dark:ring-slate-800 transition active:scale-95">
+                                        <i class="fa-solid fa-bell text-lg text-white"></i>
                                     </div>
                                     <span class="text-[10px] font-bold text-orange-400">Alerts</span>
                                 </a>
@@ -223,8 +223,8 @@
                         @if(request()->routeIs('home'))
                              <div class="relative -top-6">
                                 <a href="{{ route('home') }}" class="flex flex-col items-center justify-center gap-1">
-                                     <div class="flex h-14 w-14 items-center justify-center rounded-full bg-orange-400 shadow-lg ring-4 ring-white dark:ring-slate-800 transition active:scale-95">
-                                         <i class="fa-solid fa-home text-2xl text-white"></i>
+                                     <div class="flex h-11 w-11 items-center justify-center rounded-full bg-orange-400 shadow-lg ring-4 ring-white dark:ring-slate-800 transition active:scale-95">
+                                         <i class="fa-solid fa-home text-lg text-white"></i>
                                      </div>
                                      <span class="text-[10px] font-bold text-orange-400">{{ __('messages.home') }}</span>
                                 </a>
@@ -241,8 +241,8 @@
                          @if(request()->routeIs('account.wallet*'))
                              <div class="relative -top-6">
                                 <a href="{{ route('account.wallet') }}" class="flex flex-col items-center justify-center gap-1">
-                                     <div class="flex h-14 w-14 items-center justify-center rounded-full bg-orange-400 shadow-lg ring-4 ring-white dark:ring-slate-800 transition active:scale-95">
-                                         <i class="fa-solid fa-wallet text-2xl text-white"></i>
+                                     <div class="flex h-11 w-11 items-center justify-center rounded-full bg-orange-400 shadow-lg ring-4 ring-white dark:ring-slate-800 transition active:scale-95">
+                                         <i class="fa-solid fa-wallet text-lg text-white"></i>
                                      </div>
                                      <span class="text-[10px] font-bold text-orange-400">Balance</span>
                                 </a>
@@ -259,8 +259,8 @@
                          @if(request()->routeIs('account') && !request()->routeIs('account.orders*') && !request()->routeIs('account.notifications*') && !request()->routeIs('account.wallet*'))
                              <div class="relative -top-6">
                                 <a href="{{ route('account') }}" class="flex flex-col items-center justify-center gap-1">
-                                     <div class="flex h-14 w-14 items-center justify-center rounded-full bg-orange-400 shadow-lg ring-4 ring-white dark:ring-slate-800 transition active:scale-95">
-                                         <i class="fa-solid fa-user text-2xl text-white"></i>
+                                     <div class="flex h-11 w-11 items-center justify-center rounded-full bg-orange-400 shadow-lg ring-4 ring-white dark:ring-slate-800 transition active:scale-95">
+                                         <i class="fa-solid fa-user text-lg text-white"></i>
                                      </div>
                                      <span class="text-[10px] font-bold text-orange-400">Account</span>
                                 </a>

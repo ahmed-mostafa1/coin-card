@@ -56,6 +56,7 @@ Route::middleware(['auth', 'not_banned'])->group(function () {
     Route::get('/account/vip', [AccountVipController::class, 'show'])->name('account.vip');
     Route::get('/account/notifications', [AccountNotificationController::class, 'index'])->name('account.notifications');
     Route::post('/account/notifications/mark-all-read', [AccountNotificationController::class, 'markAllRead'])->name('account.notifications.mark-all-read');
+    Route::post('/account/notifications/{id}/mark-read', [AccountNotificationController::class, 'markAsRead'])->name('account.notifications.mark-read');
     Route::get('/account/change-password', [AccountController::class, 'changePassword'])->name('account.password.change');
     Route::post('/account/change-password', [AccountController::class, 'updatePassword'])->name('account.password.update');
 

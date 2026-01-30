@@ -86,6 +86,26 @@ class User extends Authenticatable
         return $this->hasOne(UserVipStatus::class);
     }
 
+    /**
+     * Get the user's wallet balance
+     */
+    public function getBalanceAttribute(): float
+    {
+        return $this->wallet?->balance ?? 0.0;
+    }
+
+    /**
+     * Get the user's available balance (balance - held_balance)
+     */
+    public function getAvailableBalanceAttribute(): float
+    {
+        $wallet = $this->wallet;
+        if (!$wallet) {
+            return 0.0;
+        }
+        return $wallet->balance - ($wallet->held_balance ?? 0.0);
+    }
+
     protected static function booted(): void
     {
         static::created(function (User $user): void {

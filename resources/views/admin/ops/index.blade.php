@@ -76,14 +76,14 @@
                     <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
                         @forelse ($deposits as $deposit)
                             <tr class="transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
-                                <td class="py-3 text-slate-500 dark:text-slate-400">#{{ $deposit->id }}</td>
-                                <td class="py-3 text-slate-700 dark:text-slate-300">
+                                <td class="py-3 text-slate-500 dark:text-slate-400" data-label="رقم الطلب">#{{ $deposit->id }}</td>
+                                <td class="py-3 text-slate-700 dark:text-slate-300" data-label="المستخدم">
                                     {{ $deposit->user->name }}
                                     <div class="text-xs text-slate-500 dark:text-slate-400">{{ $deposit->user->email }}</div>
                                 </td>
-                                <td class="py-3 text-slate-700 dark:text-slate-300">{{ $deposit->paymentMethod->name }}</td>
-                                <td class="py-3 text-slate-700 dark:text-slate-300">{{ number_format($deposit->user_amount, 2) }} USD</td>
-                                <td class="py-3">
+                                <td class="py-3 text-slate-700 dark:text-slate-300" data-label="الطريقة">{{ $deposit->paymentMethod->name }}</td>
+                                <td class="py-3 text-slate-700 dark:text-slate-300" data-label="المبلغ">{{ number_format($deposit->user_amount, 2) }} USD</td>
+                                <td class="py-3" data-label="الحالة">
                                     @if ($deposit->status === 'pending')
                                         <x-badge type="pending">قيد المراجعة</x-badge>
                                     @elseif ($deposit->status === 'approved')
@@ -92,8 +92,8 @@
                                         <x-badge type="rejected">مرفوض</x-badge>
                                     @endif
                                 </td>
-                                <td class="py-3 text-slate-500 dark:text-slate-400">{{ $deposit->created_at->format('Y-m-d H:i') }}</td>
-                                <td class="py-3">
+                                <td class="py-3 text-slate-500 dark:text-slate-400" data-label="التاريخ">{{ $deposit->created_at->format('Y-m-d H:i') }}</td>
+                                <td class="py-3" data-label="عرض">
                                     <a href="{{ route('admin.deposits.show', $deposit) }}" class="text-emerald-700 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">عرض</a>
                                 </td>
                             </tr>
@@ -136,15 +136,15 @@
                     <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
                         @forelse ($orders as $order)
                             <tr class="transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
-                                <td class="py-3 text-slate-500 dark:text-slate-400">#{{ $order->id }}</td>
-                                <td class="py-3 text-slate-700 dark:text-slate-300">
+                                <td class="py-3 text-slate-500 dark:text-slate-400" data-label="رقم الطلب">#{{ $order->id }}</td>
+                                <td class="py-3 text-slate-700 dark:text-slate-300" data-label="المستخدم">
                                     {{ $order->user->name }}
                                     <div class="text-xs text-slate-500 dark:text-slate-400">{{ $order->user->email }}</div>
                                 </td>
-                                <td class="py-3 text-slate-700 dark:text-slate-300">{{ $order->service->name }}</td>
-                                <td class="py-3 text-slate-700 dark:text-slate-300">{{ $order->variant?->name ?? '-' }}</td>
-                                <td class="py-3 text-slate-700 dark:text-slate-300">{{ number_format($order->amount_held, 2) }} USD</td>
-                                <td class="py-3">
+                                <td class="py-3 text-slate-700 dark:text-slate-300" data-label="الخدمة">{{ $order->service->name }}</td>
+                                <td class="py-3 text-slate-700 dark:text-slate-300" data-label="الباقة">{{ $order->variant?->name ?? '-' }}</td>
+                                <td class="py-3 text-slate-700 dark:text-slate-300" data-label="المبلغ المعلّق">{{ number_format($order->amount_held, 2) }} USD</td>
+                                <td class="py-3" data-label="الحالة">
                                     @if ($order->status === 'new')
                                         <x-badge type="new">جديد</x-badge>
                                     @elseif ($order->status === 'processing')
@@ -155,8 +155,8 @@
                                         <x-badge type="rejected">مرفوض</x-badge>
                                     @endif
                                 </td>
-                                <td class="py-3 text-slate-500 dark:text-slate-400">{{ $order->created_at->format('Y-m-d H:i') }}</td>
-                                <td class="py-3">
+                                <td class="py-3 text-slate-500 dark:text-slate-400" data-label="التاريخ">{{ $order->created_at->format('Y-m-d H:i') }}</td>
+                                <td class="py-3" data-label="الإجراء">
                                     <div class="flex flex-wrap gap-2 text-xs">
                                         <a href="{{ route('admin.orders.show', $order) }}" class="text-emerald-700 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">عرض</a>
                                         @if ($order->status === 'new')

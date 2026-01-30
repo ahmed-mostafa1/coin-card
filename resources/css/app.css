@@ -69,12 +69,31 @@
 
     /* Dark mode styles */
     .dark body {
-        @apply bg-slate-900 text-slate-100;
+        @apply bg-slate-900;
+        color: white !important;
     }
 
     .dark {
         color-scheme: dark;
     }
+
+
+    /* Force all text to white in dark mode */
+    .dark *:not(svg):not(path):not(circle):not(rect):not(line):not(polyline):not(polygon) {
+        color: white !important;
+    }
+
+    /* Keep icon colors */
+    .dark svg,
+    .dark svg * {
+        color: inherit !important;
+    }
+
+    .dark thead {
+        @apply bg-slate-900;
+        color: #064e3b !important; /* emerald-900 */
+    }
+
 }
 
 @layer components {
@@ -174,6 +193,116 @@
 
     .dark .store-ticker-track {
         @apply text-slate-300;
+    }
+
+    /* Responsive Table Component */
+    .rt-table {
+        @apply w-full text-right text-sm;
+    }
+
+    /* Desktop/Tablet: Normal table behavior (>=640px) */
+    @media (min-width: 640px) {
+        .rt-table thead {
+            @apply table-header-group;
+        }
+
+        .rt-table tbody {
+            @apply table-row-group;
+        }
+
+        .rt-table tr {
+            @apply table-row;
+        }
+
+        .rt-table th,
+        .rt-table td {
+            @apply table-cell;
+        }
+
+        .rt-table td::before {
+            content: none;
+        }
+    }
+
+    /* Mobile: Card layout (<640px) */
+    @media (max-width: 639px) {
+        /* Hide table header on mobile */
+        .rt-table thead {
+            @apply hidden;
+        }
+
+        /* Each row becomes a card */
+        .rt-table tbody {
+            @apply block space-y-5;
+        }
+
+        .rt-table tr {
+            @apply block rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-md;
+        }
+
+        /* Each cell becomes a vertical stack: label on top, value below */
+        .rt-table td {
+            @apply block border-b border-slate-100 dark:border-slate-700/50 py-3.5 text-sm;
+        }
+
+        .rt-table td:first-child {
+            @apply pt-0;
+        }
+
+        .rt-table td:last-child {
+            @apply border-b-0 pb-0;
+        }
+
+        /* Label from data-label attribute - displayed above value */
+        .rt-table td::before {
+            content: attr(data-label);
+            @apply block text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-1.5;
+        }
+
+        /* Value styling - more prominent */
+        .rt-table td > * {
+            @apply text-slate-900 dark:text-slate-100;
+        }
+
+        /* Ensure proper text sizing for values */
+        .rt-table td {
+            @apply text-base font-medium;
+        }
+
+        /* Handle flex containers in cells (like action buttons) */
+        .rt-table td > .flex {
+            @apply justify-start;
+        }
+
+        /* Badge styling in mobile cards */
+        .rt-table td > span[class*="badge"],
+        .rt-table td > .inline-flex {
+            @apply mt-0.5;
+        }
+    }
+
+    /* RTL Support */
+    :root[dir='rtl'] .rt-table,
+    [dir='rtl'] .rt-table {
+        @apply text-right;
+    }
+
+    :root[dir='ltr'] .rt-table,
+    [dir='ltr'] .rt-table {
+        @apply text-left;
+    }
+
+    /* RTL Mobile adjustments */
+    @media (max-width: 639px) {
+        :root[dir='rtl'] .rt-table td::before,
+        [dir='rtl'] .rt-table td::before {
+            @apply text-right;
+        }
+
+        :root[dir='ltr'] .rt-table td::before,
+        [dir='ltr'] .rt-table td::before {
+            @apply text-left;
+        }
     }
 }
 
