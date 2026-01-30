@@ -1,7 +1,7 @@
 @props([
     'image' => null,
     'alt' => '',
-    'height' => 'h-[260px]',
+    'height' => 'h-48 sm:h-[260px]',
     'banners' => collect(),
 ])
 
@@ -17,12 +17,14 @@
     <div class="flex h-full w-full transition-transform duration-700 ease-in-out" data-hero-track>
         @foreach ($bannerItems as $banner)
             @php
+                $rawPath = is_array($banner) ? ($banner['image_path'] ?? '') : ($banner->image_path ?? '');
+                $isAbsolute =  preg_match('/^https?:\/\//', $rawPath);
                 $src = $isAbsolute ? $rawPath : asset('storage/' . ltrim($rawPath, '/'));
             @endphp
             <div class="min-w-full h-full shrink-0">
                 <img src="{{ $src }}"
                     alt="{{ is_array($banner) ? ($banner['title'] ?? '') : ($banner->localized_title ?? $banner->title ?? '') }}"
-                    class="h-full w-full object-cover">
+                    class="h-full w-full object-contain md:object-cover">
             </div>
         @endforeach
     </div>

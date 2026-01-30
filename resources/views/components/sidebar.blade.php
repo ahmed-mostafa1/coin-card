@@ -2,7 +2,7 @@
 
 <div x-cloak
      x-show="sidebarOpen"
-     class="fixed inset-0 z-[60] flex justify-end"
+     class="fixed inset-0 z-[60] flex {{ app()->getLocale() == 'ar' ? 'justify-start' : 'justify-end' }}"
      role="dialog"
      aria-modal="true">
 
@@ -20,11 +20,11 @@
     <!-- Sidebar Panel -->
     <div x-show="sidebarOpen"
          x-transition:enter="transition ease-in-out duration-300 transform"
-         x-transition:enter-start="{{ app()->getLocale() == 'ar' ? '-translate-x-full' : 'translate-x-full' }}"
+         x-transition:enter-start="translate-x-full"
          x-transition:enter-end="translate-x-0"
          x-transition:leave="transition ease-in-out duration-300 transform"
          x-transition:leave-start="translate-x-0"
-         x-transition:leave-end="{{ app()->getLocale() == 'ar' ? '-translate-x-full' : 'translate-x-full' }}"
+         x-transition:leave-end="translate-x-full"
          class="relative flex w-full max-w-xs flex-col overflow-y-auto bg-slate-100 dark:bg-slate-900 shadow-xl transition-all h-full">
 
         <!-- Header -->
@@ -54,6 +54,13 @@
         <!-- Navigation -->
         <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
             
+            @if(auth()->user()?->hasRole('admin'))
+            <a href="{{ route('admin.index') }}" class="flex items-center gap-3 rounded-lg border border-slate-400 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-700">
+                <i class="fa-solid fa-tachometer-alt text-orange-400 w-5"></i>
+                <span>{{ __('messages.admin_dashboard') ?? 'Admin Dashboard' }}</span>
+            </a>
+            @endif
+
             <a href="{{ route('home') }}" class="flex items-center gap-3 rounded-lg border border-slate-400 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-700">
                 <i class="fa-solid fa-home text-orange-400 w-5"></i>
                 <span>{{ __('messages.home') }}</span>

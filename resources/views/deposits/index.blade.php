@@ -4,9 +4,9 @@
 @section('mainWidth', 'w-full max-w-full')
 
 @section('content')
-    <div class="rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm">
-        <h1 class="text-2xl font-semibold text-emerald-700 text-center">{{ __('messages.deposit_title') }}</h1>
-        <p class="mt-2 text-sm text-slate-600 text-center">{{ __('messages.deposit_desc') }}</p>
+    <div class="rounded-3xl border border-emerald-100 bg-white dark:bg-slate-800 p-8 shadow-sm">
+        <h1 class="text-2xl font-semibold text-emerald-700 dark:text-emerald-400 text-center">{{ __('messages.deposit_title') }}</h1>
+        <p class="mt-2 text-sm text-slate-600 dark:text-slate-300 text-center">{{ __('messages.deposit_desc') }}</p>
 
         <div class="mt-6 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
             @forelse ($methods as $method)
@@ -18,7 +18,7 @@
                         <div class="absolute inset-1.5 rounded-full border-[5px] border-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.3)]"></div>
                         
                     {{-- Logo Container --}}
-                        <div class="relative z-10 flex h-[55%] w-[55%] items-center justify-center rounded-full bg-white p-2 shadow-sm">
+                        <div class="relative z-10 flex h-[55%] w-[55%] items-center justify-center rounded-full bg-white dark:bg-slate-700 p-2 shadow-sm">
                             @if ($method->icon_path)
                                 <img src="{{ asset('storage/' . $method->icon_path) }}" alt="{{ $method->localized_name }}"
                                     class="h-full w-full object-contain">
@@ -36,12 +36,12 @@
                     </div>
                     
                     {{-- Method Name --}}
-                    <h2 class="text-center text-xs font-bold text-slate-800 group-hover:text-emerald-700 sm:text-sm">
+                    <h2 class="text-center text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-emerald-700 sm:text-sm">
                         {{ $method->localized_name }}
                     </h2>
                 </a>
             @empty
-                <div class="col-span-full rounded-2xl border border-dashed border-slate-200 p-12 text-center text-sm text-slate-500">
+                <div class="col-span-full rounded-2xl border border-dashed border-slate-200 p-12 text-center text-sm text-slate-500 dark:text-slate-400">
                     {{ __('messages.no_payment_methods') }}
                 </div>
             @endforelse

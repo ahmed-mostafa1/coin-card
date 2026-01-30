@@ -4,10 +4,10 @@
 
 @section('content')
     <div class="grid gap-6 lg:grid-cols-3">
-        <div class="rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm lg:col-span-2">
+        <div class="rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm lg:col-span-2 transition-colors duration-200">
             <div class="flex items-center justify-between">
-                <h1 class="text-2xl font-semibold text-emerald-700">{{ __('messages.edit_service') }}</h1>
-                <a href="{{ route('admin.services.index') }}" class="text-sm text-emerald-700">{{ __('messages.back_to_services') }}</a>
+                <h1 class="text-2xl font-semibold text-emerald-700 dark:text-emerald-400">{{ __('messages.edit_service') }}</h1>
+                <a href="{{ route('admin.services.index') }}" class="text-sm text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300">{{ __('messages.back_to_services') }}</a>
             </div>
 
             @if (session('status'))
@@ -22,7 +22,7 @@
 
                 <div>
                     <x-input-label for="category_id" :value="__('messages.category')" />
-                    <select id="category_id" name="category_id" class="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-2 text-sm text-slate-700" required>
+                    <select id="category_id" name="category_id" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500" required>
                         @foreach ($categories as $category)
                             @php
                                 $label = $category->parent ? $category->parent->name . ' › ' . $category->name : $category->name;
@@ -53,13 +53,13 @@
 
                 <div>
                     <x-input-label for="description" :value="__('messages.description_ar')" />
-                    <textarea id="description" name="description" rows="4" class="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-2 text-sm text-slate-700">{{ old('description', $service->description) }}</textarea>
+                    <textarea id="description" name="description" rows="4" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">{{ old('description', $service->description) }}</textarea>
                     <x-input-error :messages="$errors->get('description')" />
                 </div>
 
                 <div>
                     <x-input-label for="description_en" :value="__('messages.description_en')" />
-                    <textarea id="description_en" name="description_en" rows="4" class="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-2 text-sm text-slate-700">{{ old('description_en', $service->description_en) }}</textarea>
+                    <textarea id="description_en" name="description_en" rows="4" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">{{ old('description_en', $service->description_en) }}</textarea>
                     <x-input-error :messages="$errors->get('description_en')" />
                 </div>
 
@@ -71,15 +71,15 @@
 
                 <div>
                     <x-input-label for="image" :value="__('messages.image_optional')" />
-                    <input id="image" name="image" type="file" class="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-2 text-sm text-slate-600 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-700">
+                    <input id="image" name="image" type="file" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-600 dark:text-slate-300 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-800 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-700 dark:file:text-emerald-300">
                     <x-input-error :messages="$errors->get('image')" />
                     @if ($service->image_path)
-                        <p class="mt-2 text-xs text-slate-500">{{ __('messages.current_image_saved') }}</p>
+                        <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">{{ __('messages.current_image_saved') }}</p>
                     @endif
                 </div>
 
-                <div class="flex items-center gap-3 text-sm text-slate-600">
-                    <input id="is_active" name="is_active" type="checkbox" value="1" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500" {{ $service->is_active ? 'checked' : '' }}>
+                <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
+                    <input id="is_active" name="is_active" type="checkbox" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" {{ $service->is_active ? 'checked' : '' }}>
                     <label for="is_active">{{ __('messages.activate_service') }}</label>
                 </div>
 
@@ -95,32 +95,32 @@
         </div>
 
         <div class="space-y-6">
-            <div class="rounded-3xl border border-emerald-100 bg-white p-6 shadow-sm">
+            <div class="rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm transition-colors duration-200">
                 <div class="flex items-center justify-between">
-                    <h2 class="text-lg font-semibold text-emerald-700">الباقات</h2>
-                    <a href="{{ route('admin.services.variants.index', $service) }}" class="text-sm text-emerald-700">إدارة الباقات</a>
+                    <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">{{ __('messages.variants') }}</h2>
+                    <a href="{{ route('admin.services.variants.index', $service) }}" class="text-sm text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300">{{ __('messages.manage_variants') }}</a>
                 </div>
-                <p class="mt-3 text-sm text-slate-600">يمكنك إضافة خيارات متعددة بسعر مختلف لكل باقة.</p>
+                <p class="mt-3 text-sm text-slate-600 dark:text-slate-400">{{ __('messages.variants_hint') }}</p>
             </div>
 
-            <div class="rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm">
+            <div class="rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm transition-colors duration-200">
             <div class="flex items-center justify-between">
-                <h2 class="text-lg font-semibold text-emerald-700">حقول النموذج</h2>
-                <a href="{{ route('admin.services.fields.create', $service) }}" class="text-sm text-emerald-700">إضافة حقل</a>
+                <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">{{ __('messages.form_fields') }}</h2>
+                <a href="{{ route('admin.services.fields.create', $service) }}" class="text-sm text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300">{{ __('messages.add_field') }}</a>
             </div>
             <div class="mt-4 space-y-3">
                 @forelse ($service->formFields->sortBy('sort_order') as $field)
-                    <div class="rounded-2xl border border-slate-200 p-3">
+                    <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-3">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-sm font-semibold text-slate-700">{{ $field->label }}</p>
-                                <p class="text-xs text-slate-500">{{ $field->name_key }} - {{ $field->type }}</p>
+                                <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $field->label }}</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">{{ $field->name_key }} - {{ $field->type }}</p>
                             </div>
-                            <a href="{{ route('admin.services.fields.edit', [$service, $field]) }}" class="text-xs text-emerald-700">تعديل</a>
+                            <a href="{{ route('admin.services.fields.edit', [$service, $field]) }}" class="text-xs text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300">{{ __('messages.edit') }}</a>
                         </div>
                     </div>
                 @empty
-                    <p class="text-sm text-slate-500">لم يتم إضافة حقول بعد.</p>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">{{ __('messages.no_fields_yet') }}</p>
                 @endforelse
             </div>
             </div>
