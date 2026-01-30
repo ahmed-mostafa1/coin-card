@@ -12,7 +12,7 @@
     }
 @endphp
 
-<div class="relative overflow-hidden rounded-2xl border border-slate-300 bg-gradient-to-tr from-slate-800 via-slate-700 to-slate-600 shadow-md {{ $height }}"
+<div class="relative overflow-hidden rounded-2xl border border-slate-300 bg-gradient-to-tr from-slate-800 via-slate-700 to-slate-600 shadow-md {{ $height }} w-[80%] mx-auto"
     data-hero-slider>
     <div class="flex h-full w-full transition-transform duration-700 ease-in-out" data-hero-track>
         @foreach ($bannerItems as $banner)
@@ -24,7 +24,7 @@
             <div class="min-w-full h-full shrink-0">
                 <img src="{{ $src }}"
                     alt="{{ is_array($banner) ? ($banner['title'] ?? '') : ($banner->localized_title ?? $banner->title ?? '') }}"
-                    class="h-full w-full object-contain md:object-cover">
+                    class="h-full w-full object-contain">
             </div>
         @endforeach
     </div>
