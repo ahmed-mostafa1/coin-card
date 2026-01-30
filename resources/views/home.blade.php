@@ -8,8 +8,8 @@
 
         <x-store.notice :text="$sharedTickerText" />
 
-        <div class="w-full sm:w-4/5 mx-auto">
-            <div class="grid gap-3 sm:gap-4 grid-cols-2 sm:grid-cols-2 lg:grid-cols-4" data-filter-list="categories">
+        <div class="w-full lg:w-4/5 lg:mx-auto">
+            <div class="grid gap-2 sm:gap-3 lg:gap-4 grid-cols-2 lg:grid-cols-4" data-filter-list="categories">
                 @forelse ($categories as $category)
                     <x-store.category-card :title="$category->localized_name" :href="route('categories.show', $category->slug)"
                         :image="$category->image_path ? asset('storage/' . $category->image_path) : null"

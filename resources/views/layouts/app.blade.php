@@ -41,37 +41,37 @@
     <div class="min-h-screen flex flex-col">
         <!-- Fixed Navbar - Mobile Optimized -->
         <nav class="border-b border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm transition-colors duration-200 sticky top-0 z-50">
-            <div class="mx-auto flex h-14 items-center justify-between gap-2 px-3 {{ $containerWidth }}">
+            <div class="mx-auto flex h-14 items-center justify-between gap-1.5 px-2.5 sm:gap-2 sm:px-3 {{ $containerWidth }}">
                 
                 <!-- Left Group: Menu Button + Theme Toggle (shrink-0) -->
-                <div class="flex shrink-0 items-center gap-2">
+                <div class="flex shrink-0 items-center gap-1 sm:gap-2">
                     <button type="button" @click="sidebarOpen = true" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-700 transition">
-                        <i class="fa-solid fa-bars text-xl"></i>
+                        <i class="fa-solid fa-bars text-lg sm:text-xl"></i>
                     </button>
 
                     <!-- Theme Toggle (always visible) -->
                     <button type="button" @click="darkMode = !darkMode" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-700 transition">
-                        <i class="fa-solid fa-sun text-base" x-show="!darkMode" x-cloak></i>
-                        <i class="fa-solid fa-moon text-base" x-show="darkMode" x-cloak></i>
+                        <i class="fa-solid fa-sun text-sm sm:text-base" x-show="!darkMode" x-cloak></i>
+                        <i class="fa-solid fa-moon text-sm sm:text-base" x-show="darkMode" x-cloak></i>
                     </button>
                 </div>
 
                 <!-- Center: Logo (min-w-0 allows truncation) -->
-                <div class="flex min-w-0 flex-1 items-center justify-center">
-                    <a href="{{ route('home') }}" class="min-w-0 truncate">
-                        <span class="truncate text-base font-bold text-emerald-700 dark:text-emerald-400 sm:text-lg">Arab 8BP.in</span>
+                <div class="flex min-w-0 flex-1 items-center justify-center px-1 sm:px-2">
+                    <a href="{{ route('home') }}" class="min-w-0 max-w-full truncate">
+                        <span class="truncate text-sm font-bold text-emerald-700 dark:text-emerald-400 sm:text-base lg:text-lg">Arab 8BP.in</span>
                     </a>
                 </div>
                 
                 <!-- Right Group: Balance (shrink-0) -->
                 <div class="flex shrink-0 items-center">
                     @auth
-                        <a href="{{ route('account.wallet') }}" class="flex shrink-0 items-center gap-1.5 rounded-full border border-orange-200 bg-orange-50 px-2 py-1 transition hover:bg-orange-100 dark:border-orange-900/50 dark:bg-orange-900/20 dark:hover:bg-orange-900/30 sm:gap-2 sm:px-3 sm:py-1.5">
-                            <i class="fa-solid fa-wallet text-orange-500 text-xs sm:text-sm"></i>
-                            <span class="text-xs font-bold text-orange-600 dark:text-orange-500 sm:text-sm" dir="ltr">{{ number_format(auth()->user()->available_balance, 2) }} $</span>
+                        <a href="{{ route('account.wallet') }}" class="flex shrink-0 items-center gap-1 rounded-full border border-orange-200 bg-orange-50 px-1.5 py-0.5 transition hover:bg-orange-100 dark:border-orange-900/50 dark:bg-orange-900/20 dark:hover:bg-orange-900/30 sm:gap-1.5 sm:px-2 sm:py-1 lg:gap-2 lg:px-3 lg:py-1.5">
+                            <i class="fa-solid fa-wallet text-orange-500 text-[10px] sm:text-xs lg:text-sm"></i>
+                            <span class="text-[10px] font-bold text-orange-600 dark:text-orange-500 sm:text-xs lg:text-sm whitespace-nowrap" dir="ltr">{{ number_format(auth()->user()->available_balance, 2) }} $</span>
                         </a>
                     @else
-                        <a href="{{ route('login') }}" class="flex shrink-0 items-center rounded-full bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-emerald-700 sm:px-4 sm:text-sm">
+                        <a href="{{ route('login') }}" class="flex shrink-0 items-center rounded-full bg-emerald-600 px-2.5 py-1 text-[10px] font-semibold text-white hover:bg-emerald-700 sm:px-3 sm:py-1.5 sm:text-xs lg:px-4 lg:text-sm">
                             {{ __('messages.login') }}
                         </a>
                     @endauth
@@ -80,7 +80,7 @@
             </div>
         </nav>
 
-        <main class="mx-auto {{ $mainWidth }} flex-1 px-3 py-4 pb-24 sm:px-4 sm:py-6 md:pb-28">
+        <main class="mx-auto {{ $mainWidth }} flex-1 px-3 py-4 pb-32 sm:px-4 sm:py-6 md:pb-28">
             @yield('content')
         </main>
 

@@ -1,7 +1,7 @@
 @props([
     'image' => null,
     'alt' => '',
-    'height' => 'h-48 sm:h-[260px]',
+    'height' => 'h-40 sm:h-48 md:h-[260px]',
     'banners' => collect(),
 ])
 
