@@ -142,7 +142,7 @@
     }
 
     .store-shell {
-        @apply w-full max-w-6xl px-3 sm:px-4 lg:mx-auto;
+        @apply w-full max-w-6xl lg:mx-auto;
     }
 
     .store-pill {

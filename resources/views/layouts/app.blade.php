@@ -117,7 +117,7 @@
 
         </nav>
 
-        <main class="mx-auto {{ $mainWidth }} flex-1 px-3 py-4 pb-32 sm:px-4 sm:py-6 md:pb-28">
+        <main class="flex-1 py-4 pb-32 sm:py-6 md:pb-28">
             @yield('content')
         </main>
 
