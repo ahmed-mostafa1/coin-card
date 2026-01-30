@@ -70,7 +70,7 @@
                     <!-- Center (Logo) -->
                     <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                         <a href="{{ route('home') }}" class="flex items-center justify-center">
-                            <span class="text-xl font-bold text-emerald-700 dark:text-emerald-400">8BP</span>
+                            <span class="text-xl font-bold text-emerald-700 dark:text-emerald-400">Arab 8BP.in</span>
                         </a>
                     </div>
                     
@@ -100,7 +100,7 @@
                     <!-- Center (Logo) -->
                     <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                         <a href="{{ route('home') }}" class="flex items-center justify-center">
-                            <span class="text-xl font-bold text-emerald-700 dark:text-emerald-400">8BP</span>
+                            <span class="text-xl font-bold text-emerald-700 dark:text-emerald-400"> Arab 8BP.in</span>
                         </a>
                     </div>
 

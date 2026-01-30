@@ -290,16 +290,13 @@ return [
     'image_replaceable' => 'Image (Replaceable)',
     'activate_banner' => 'Activate Banner',
     'current_image_in_slider' => 'Current image is shown in slider.',
+    'dont_have_account' => 'Don\'t have an account?',
 
     // Homepage Features
-    'programming_design' => 'Programming & Design',
-    'service_design_desc' => 'Website and application design service',
+    'programming_design' => 'All cards are from official agents',
     'easy_payment' => 'Easy Payment',
-    'payment_desc' => 'Multiple and secure payment methods',
     'fast_reliable' => 'Fast & Reliable',
-    'fast_process_desc' => 'Orders are processed quickly and securely',
     'guarantee' => 'Guarantee',
-    'guarantee_desc' => 'All cards are guaranteed from official agents',
     'contact_us' => 'Contact Us',
     'store_description' => 'Since 2018, 8bp.in has been providing services, currently offering a variety of 200 different apps and games, with more being added. Players and merchants can sell products like coupon codes and direct top-up via ID 24/7, with game currency delivered within 10 minutes by authorized distributors. The site offers a ranking system for members, allowing for greater discounts with increased purchases, and special rates for site and store owners. We also offer website and application design services. Our live support team has been helping players and agents with all aspects of the service since launch. You can get additional information 24/7 via WhatsApp or email.',
     'services_page_title' => 'Services',
