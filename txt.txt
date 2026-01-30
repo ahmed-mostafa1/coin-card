@@ -2,4 +2,16 @@
 Google Client ID: 1041031292395-ds0tn2o095oabfbgogv06aili9n13pf8.apps.googleusercontent.com
  and Secret: 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
 
- 
+
+#pull to host
+
+cd ~/laravel-app
+git fetch origin
+
+git reset --hard origin/main
+
+git clean -fd \
+  -e .env \
+  -e storage \
+  -e vendor \
+  -e public/storage
