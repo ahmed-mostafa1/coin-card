@@ -21,10 +21,21 @@
     </script>
 </head>
 
-<body class="min-h-screen bg-slate-50 dark:bg-slate-900 pb-20 md:pb-24 transition-colors duration-200" x-data="{ sidebarOpen: false }">
+<body class="min-h-screen bg-slate-50 dark:bg-slate-900 pb-20 md:pb-24 transition-colors duration-200" 
+      x-data="{ 
+          sidebarOpen: false, 
+          darkMode: localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+      }"
+      x-init="$watch('darkMode', val => {
+          localStorage.theme = val ? 'dark' : 'light';
+          if(val) document.documentElement.classList.add('dark');
+          else document.documentElement.classList.remove('dark');
+      })">
+
     @php
         $containerWidth = request()->routeIs('admin.*') ? 'max-w-7xl' : 'max-w-6xl';
         $mainWidth = trim($__env->yieldContent('mainWidth', $containerWidth));
+        $isAr = app()->getLocale() == 'ar';
     @endphp
 
     <div class="min-h-screen flex flex-col">
@@ -32,42 +43,89 @@
         <nav class="border-b border-slate-200 dark:border-slate-700 bg-white/90 dark:bg-slate-800/90 backdrop-blur transition-colors duration-200 sticky top-0 z-40">
             <div class="mx-auto flex {{ $containerWidth }} items-center justify-between px-4 py-3">
                 
-                <!-- Left Side (Balance/Lang) -->
-                <div class="flex items-center gap-3">
-                    @auth
-                        <a href="{{ route('account.wallet') }}" class="flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50 px-3 py-1.5 transition hover:bg-orange-100 dark:border-orange-900/50 dark:bg-orange-900/20 dark:hover:bg-orange-900/30">
-                            <i class="fa-solid fa-wallet text-orange-500 text-sm"></i>
-                            <span class="text-sm font-bold text-orange-600 dark:text-orange-500" dir="ltr">{{ number_format(auth()->user()->balance, 2) }} $</span>
-                        </a>
-                    @else
+                @if($isAr)
+                    <!-- ARABIC LAYOUT: Menu Group (Right/Start) - Logo - Balance (Left/End) -->
+                    
+                    <!-- Right Group (Menu + Theme + Lang) -->
+                    <div class="flex items-center gap-3">
+                         <!-- Hamburger Menu -->
+                        <button type="button" @click="sidebarOpen = true" class="p-2 text-slate-700 dark:text-slate-200 hover:text-emerald-600 dark:hover:text-emerald-400 transition">
+                            <i class="fa-solid fa-bars text-2xl"></i>
+                        </button>
+
+                        <!-- Theme Toggle -->
+                        <button type="button" @click="darkMode = !darkMode" class="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition">
+                            <i class="fa-solid fa-sun text-lg" x-show="!darkMode" x-cloak></i>
+                            <i class="fa-solid fa-moon text-lg" x-show="darkMode" x-cloak></i>
+                        </button>
+
+                        <!-- Language Switch (Moved here) -->
                         @if(app()->getLocale() == 'ar')
                             <a href="{{ route('lang.switch', 'en') }}" class="text-sm font-bold text-emerald-600 hover:text-emerald-700">English</a>
                         @else
                             <a href="{{ route('lang.switch', 'ar') }}" class="text-sm font-bold text-emerald-600 hover:text-emerald-700">العربية</a>
                         @endif
-                    @endauth
-                </div>
+                    </div>
 
-                <!-- Center (Logo) -->
-                <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                    <a href="{{ route('home') }}" class="flex items-center justify-center">
-                        <span class="text-xl font-bold text-emerald-700 dark:text-emerald-400">Arab 8BP</span>
-                    </a>
-                </div>
+                    <!-- Center (Logo) -->
+                    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                        <a href="{{ route('home') }}" class="flex items-center justify-center">
+                            <span class="text-xl font-bold text-emerald-700 dark:text-emerald-400">Arab 8BP</span>
+                        </a>
+                    </div>
+                    
+                    <!-- Left Group (Balance) -->
+                    <div class="flex items-center gap-3">
+                        @auth
+                            <a href="{{ route('account.wallet') }}" class="flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50 px-3 py-1.5 transition hover:bg-orange-100 dark:border-orange-900/50 dark:bg-orange-900/20 dark:hover:bg-orange-900/30">
+                                <i class="fa-solid fa-wallet text-orange-500 text-sm"></i>
+                                <span class="text-sm font-bold text-orange-600 dark:text-orange-500" dir="ltr">{{ number_format(auth()->user()->balance, 2) }} $</span>
+                            </a>
+                        @endauth
+                    </div>
 
-                <!-- Right Side (Theme/Menu) -->
-                <div class="flex items-center gap-3">
-                    <!-- Theme Toggle -->
-                    <button type="button" id="theme-toggle" class="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition">
-                        <i class="fa-solid fa-sun dark:hidden text-lg"></i>
-                        <i class="fa-solid fa-moon hidden dark:inline text-lg"></i>
-                    </button>
+                @else
+                    <!-- ENGLISH LAYOUT: Balance (Left/Start) - Logo - Menu Group (Right/End) -->
 
-                    <!-- Hamburger Menu -->
-                    <button type="button" @click="sidebarOpen = true" class="p-2 text-slate-700 dark:text-slate-200 hover:text-emerald-600 dark:hover:text-emerald-400 transition">
-                        <i class="fa-solid fa-bars text-2xl"></i>
-                    </button>
-                </div>
+                     <!-- Left Group (Balance) -->
+                     <div class="flex items-center gap-3">
+                        @auth
+                            <a href="{{ route('account.wallet') }}" class="flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50 px-3 py-1.5 transition hover:bg-orange-100 dark:border-orange-900/50 dark:bg-orange-900/20 dark:hover:bg-orange-900/30">
+                                <i class="fa-solid fa-wallet text-orange-500 text-sm"></i>
+                                <span class="text-sm font-bold text-orange-600 dark:text-orange-500" dir="ltr">{{ number_format(auth()->user()->balance, 2) }} $</span>
+                            </a>
+                        @endauth
+                    </div>
+
+                    <!-- Center (Logo) -->
+                    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                        <a href="{{ route('home') }}" class="flex items-center justify-center">
+                            <span class="text-xl font-bold text-emerald-700 dark:text-emerald-400">Arab 8BP</span>
+                        </a>
+                    </div>
+
+                    <!-- Right Group (Menu + Theme + Lang) -->
+                    <div class="flex items-center gap-3">
+                         <!-- Language Switch -->
+                         @if(app()->getLocale() == 'ar')
+                            <a href="{{ route('lang.switch', 'en') }}" class="text-sm font-bold text-emerald-600 hover:text-emerald-700">English</a>
+                        @else
+                            <a href="{{ route('lang.switch', 'ar') }}" class="text-sm font-bold text-emerald-600 hover:text-emerald-700">العربية</a>
+                        @endif
+
+                        <!-- Theme Toggle -->
+                        <button type="button" @click="darkMode = !darkMode" class="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition">
+                            <i class="fa-solid fa-sun text-lg" x-show="!darkMode" x-cloak></i>
+                            <i class="fa-solid fa-moon text-lg" x-show="darkMode" x-cloak></i>
+                        </button>
+
+                         <!-- Hamburger Menu -->
+                        <button type="button" @click="sidebarOpen = true" class="p-2 text-slate-700 dark:text-slate-200 hover:text-emerald-600 dark:hover:text-emerald-400 transition">
+                            <i class="fa-solid fa-bars text-2xl"></i>
+                        </button>
+                    </div>
+                @endif
+                
             </div>
         </nav>
 
@@ -234,30 +292,7 @@
         {{ __('messages.contact_whatsapp') }}
     </a>
 
-    <!-- Theme Toggle Script -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const themeToggle = document.getElementById('theme-toggle');
-            // themeToggleMobile removed as it's no longer in the mobile menu
-
-            function toggleTheme() {
-                const html = document.documentElement;
-                const isDark = html.classList.contains('dark');
-                
-                if (isDark) {
-                    html.classList.remove('dark');
-                    localStorage.theme = 'light';
-                } else {
-                    html.classList.add('dark');
-                    localStorage.theme = 'dark';
-                }
-            }
-
-            if (themeToggle) {
-                themeToggle.addEventListener('click', toggleTheme);
-            }
-        });
-    </script>
+    {{-- Script tag removed since functionality is now in Alpine x-data --}}
     @stack('scripts')
 </body>
 
