@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>@yield('title', 'Arab 8BP')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -21,7 +21,7 @@
     </script>
 </head>
 
-<body class="min-h-screen bg-slate-50 dark:bg-slate-900 pb-20 md:pb-24 transition-colors duration-200" 
+<body class="min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors duration-200" 
       x-data="{ 
           sidebarOpen: false, 
           darkMode: localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
@@ -39,83 +39,48 @@
     @endphp
 
     <div class="min-h-screen flex flex-col">
-        <!-- New Navbar -->
-        <nav class="border-b border-slate-200 dark:border-slate-700 bg-white/90 dark:bg-slate-800/90 backdrop-blur transition-colors duration-200 sticky top-0 z-40">
-            <div class="mx-auto flex {{ $containerWidth }} items-center justify-between px-4 py-3">
+        <!-- Fixed Navbar - Mobile Optimized -->
+        <nav class="border-b border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm transition-colors duration-200 sticky top-0 z-50">
+            <div class="mx-auto flex h-14 items-center justify-between gap-2 px-3 {{ $containerWidth }}">
                 
-                @if($isAr)
-                    <!-- ARABIC LAYOUT: Menu Group (Right/Start) - Logo - Balance (Left/End) -->
-                    
-                    <!-- Right Group (Menu + Theme + Lang) -->
-                    <div class="flex items-center gap-3">
-                         <!-- Hamburger Menu -->
-                        <button type="button" @click="sidebarOpen = true" class="p-2 text-slate-700 dark:text-slate-200 hover:text-emerald-600 dark:hover:text-emerald-400 transition">
-                            <i class="fa-solid fa-bars text-2xl"></i>
-                        </button>
+                <!-- Left Group: Menu Button + Theme Toggle (shrink-0) -->
+                <div class="flex shrink-0 items-center gap-2">
+                    <button type="button" @click="sidebarOpen = true" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-700 transition">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
 
-                        <!-- Theme Toggle -->
-                        <button type="button" @click="darkMode = !darkMode" class="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition">
-                            <i class="fa-solid fa-sun text-lg" x-show="!darkMode" x-cloak></i>
-                            <i class="fa-solid fa-moon text-lg" x-show="darkMode" x-cloak></i>
-                        </button>
-                    </div>
+                    <!-- Theme Toggle (always visible) -->
+                    <button type="button" @click="darkMode = !darkMode" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-700 transition">
+                        <i class="fa-solid fa-sun text-base" x-show="!darkMode" x-cloak></i>
+                        <i class="fa-solid fa-moon text-base" x-show="darkMode" x-cloak></i>
+                    </button>
+                </div>
 
-                    <!-- Center (Logo) -->
-                    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                        <a href="{{ route('home') }}" class="flex items-center justify-center">
-                            <span class="text-xl font-bold text-emerald-700 dark:text-emerald-400">Arab 8BP.in</span>
+                <!-- Center: Logo (min-w-0 allows truncation) -->
+                <div class="flex min-w-0 flex-1 items-center justify-center">
+                    <a href="{{ route('home') }}" class="min-w-0 truncate">
+                        <span class="truncate text-base font-bold text-emerald-700 dark:text-emerald-400 sm:text-lg">Arab 8BP.in</span>
+                    </a>
+                </div>
+                
+                <!-- Right Group: Balance (shrink-0) -->
+                <div class="flex shrink-0 items-center">
+                    @auth
+                        <a href="{{ route('account.wallet') }}" class="flex shrink-0 items-center gap-1.5 rounded-full border border-orange-200 bg-orange-50 px-2 py-1 transition hover:bg-orange-100 dark:border-orange-900/50 dark:bg-orange-900/20 dark:hover:bg-orange-900/30 sm:gap-2 sm:px-3 sm:py-1.5">
+                            <i class="fa-solid fa-wallet text-orange-500 text-xs sm:text-sm"></i>
+                            <span class="text-xs font-bold text-orange-600 dark:text-orange-500 sm:text-sm" dir="ltr">{{ number_format(auth()->user()->available_balance, 2) }} $</span>
                         </a>
-                    </div>
-                    
-                    <!-- Left Group (Balance) -->
-                    <div class="flex items-center gap-3">
-                        @auth
-                            <a href="{{ route('account.wallet') }}" class="flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50 px-3 py-1.5 transition hover:bg-orange-100 dark:border-orange-900/50 dark:bg-orange-900/20 dark:hover:bg-orange-900/30">
-                                <i class="fa-solid fa-wallet text-orange-500 text-sm"></i>
-                                <span class="text-sm font-bold text-orange-600 dark:text-orange-500" dir="ltr">{{ number_format(auth()->user()->available_balance, 2) }} $</span>
-                            </a>
-                        @endauth
-                    </div>
-
-                @else
-                    <!-- ENGLISH LAYOUT: Balance (Left/Start) - Logo - Menu Group (Right/End) -->
-
-                     <!-- Left Group (Balance) -->
-                     <div class="flex items-center gap-3">
-                        @auth
-                            <a href="{{ route('account.wallet') }}" class="flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50 px-3 py-1.5 transition hover:bg-orange-100 dark:border-orange-900/50 dark:bg-orange-900/20 dark:hover:bg-orange-900/30">
-                                <i class="fa-solid fa-wallet text-orange-500 text-sm"></i>
-                                <span class="text-sm font-bold text-orange-600 dark:text-orange-500" dir="ltr">{{ number_format(auth()->user()->available_balance, 2) }} $</span>
-                            </a>
-                        @endauth
-                    </div>
-
-                    <!-- Center (Logo) -->
-                    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                        <a href="{{ route('home') }}" class="flex items-center justify-center">
-                            <span class="text-xl font-bold text-emerald-700 dark:text-emerald-400"> Arab 8BP.in</span>
+                    @else
+                        <a href="{{ route('login') }}" class="flex shrink-0 items-center rounded-full bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-emerald-700 sm:px-4 sm:text-sm">
+                            {{ __('messages.login') }}
                         </a>
-                    </div>
-
-                    <!-- Right Group (Menu + Theme) -->
-                    <div class="flex items-center gap-3">
-                        <!-- Theme Toggle -->
-                        <button type="button" @click="darkMode = !darkMode" class="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition">
-                            <i class="fa-solid fa-sun text-lg" x-show="!darkMode" x-cloak></i>
-                            <i class="fa-solid fa-moon text-lg" x-show="darkMode" x-cloak></i>
-                        </button>
-
-                         <!-- Hamburger Menu -->
-                        <button type="button" @click="sidebarOpen = true" class="p-2 text-slate-700 dark:text-slate-200 hover:text-emerald-600 dark:hover:text-emerald-400 transition">
-                            <i class="fa-solid fa-bars text-2xl"></i>
-                        </button>
-                    </div>
-                @endif
+                    @endauth
+                </div>
                 
             </div>
         </nav>
 
-        <main class="mx-auto {{ $mainWidth }} flex-1 px-4 py-8">
+        <main class="mx-auto {{ $mainWidth }} flex-1 px-3 py-4 pb-24 sm:px-4 sm:py-6 md:pb-28">
             @yield('content')
         </main>
 
@@ -162,7 +127,7 @@
             </div>
 
             <!-- Mobile Layout -->
-             <div class="flex md:hidden h-16 w-full items-center justify-between px-2">
+             <div class="flex md:hidden h-16 w-full items-center justify-between px-2 pb-[env(safe-area-inset-bottom)]">
                 <div class="grid grid-cols-5 w-full items-center justify-items-center">
                     
                     <!-- Orders -->

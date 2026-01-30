@@ -12,22 +12,35 @@
     }
 @endphp
 
-<div class="relative overflow-hidden rounded-2xl border border-slate-300 bg-gradient-to-tr from-slate-800 via-slate-700 to-slate-600 shadow-md {{ $height }} w-[80%] mx-auto"
+<div class="relative w-full overflow-hidden rounded-xl border border-slate-300 bg-gradient-to-tr from-slate-800 via-slate-700 to-slate-600 shadow-md {{ $height }} sm:w-4/5 sm:mx-auto"
     data-hero-slider>
-    <div class="flex h-full w-full transition-transform duration-700 ease-in-out" data-hero-track>
-        @foreach ($bannerItems as $banner)
-            @php
-                $rawPath = is_array($banner) ? ($banner['image_path'] ?? '') : ($banner->image_path ?? '');
-                $isAbsolute =  preg_match('/^https?:\/\//', $rawPath);
-                $src = $isAbsolute ? $rawPath : asset('storage/' . ltrim($rawPath, '/'));
-            @endphp
-            <div class="min-w-full h-full shrink-0">
-                <img src="{{ $src }}"
-                    alt="{{ is_array($banner) ? ($banner['title'] ?? '') : ($banner->localized_title ?? $banner->title ?? '') }}"
-                    class="h-full w-full object-contain">
+    @if($bannerItems->isNotEmpty())
+        <div class="flex h-full w-full transition-transform duration-700 ease-in-out" data-hero-track>
+            @foreach ($bannerItems as $banner)
+                @php
+                    $rawPath = is_array($banner) ? ($banner['image_path'] ?? '') : ($banner->image_path ?? '');
+                    $isAbsolute = preg_match('/^https?:\/\//', $rawPath);
+                    $src = $isAbsolute ? $rawPath : asset('storage/' . ltrim($rawPath, '/'));
+                    $fallback = asset('img/placeholder-banner.jpg');
+                @endphp
+                <div class="min-w-full h-full shrink-0 flex items-center justify-center">
+                    <img src="{{ $src }}"
+                        alt="{{ is_array($banner) ? ($banner['title'] ?? '') : ($banner->localized_title ?? $banner->title ?? '') }}"
+                        onerror="this.onerror=null;this.src='{{ $fallback }}';"
+                        class="h-full w-full object-cover">
+                </div>
+            @endforeach
+        </div>
+    @else
+        <!-- Fallback when no banners -->
+        <div class="flex h-full w-full items-center justify-center">
+            <div class="text-center text-slate-400">
+                <i class="fa-solid fa-image text-4xl mb-2"></i>
+                <p class="text-sm">{{ __('messages.no_banner') ?? 'No banner available' }}</p>
             </div>
-        @endforeach
-    </div>
+        </div>
+    @endif
+    
     @if ($bannerItems->count() > 1)
         <div class="absolute inset-x-0 bottom-2 flex justify-center gap-2">
         </div>
