@@ -21,48 +21,46 @@
             </div>
         @endif
 
-        <div class="mt-6 overflow-x-auto">
-            <table class="w-full text-right text-sm">
-                <thead class="border-b border-slate-200 text-slate-500">
+        <x-table class="mt-6">
+            <thead class="border-b border-slate-200 text-slate-500">
+                <tr>
+                    <th class="py-2">الاسم</th>
+                    <th class="py-2">السعر</th>
+                    <th class="py-2">الحالة</th>
+                    <th class="py-2">الترتيب</th>
+                    <th class="py-2">إجراءات</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+                @forelse ($variants as $variant)
                     <tr>
-                        <th class="py-2">الاسم</th>
-                        <th class="py-2">السعر</th>
-                        <th class="py-2">الحالة</th>
-                        <th class="py-2">الترتيب</th>
-                        <th class="py-2">إجراءات</th>
+                        <td class="py-3 text-slate-700">{{ $variant->name }}</td>
+                        <td class="py-3 text-slate-700">{{ number_format($variant->price, 2) }} USD</td>
+                        <td class="py-3">
+                            @if ($variant->is_active)
+                                <span class="rounded-full bg-emerald-100 px-3 py-1 text-xs text-emerald-700">مفعلة</span>
+                            @else
+                                <span class="rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-700">متوقفة</span>
+                            @endif
+                        </td>
+                        <td class="py-3 text-slate-500">{{ $variant->sort_order }}</td>
+                        <td class="py-3">
+                            <div class="flex flex-wrap gap-3">
+                                <a href="{{ route('admin.services.variants.edit', [$service, $variant]) }}" class="text-emerald-700">تعديل</a>
+                                <form method="POST" action="{{ route('admin.services.variants.destroy', [$service, $variant]) }}" onsubmit="return confirm('هل أنت متأكد من حذف الباقة؟')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-rose-600">حذف</button>
+                                </form>
+                            </div>
+                        </td>
                     </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100">
-                    @forelse ($variants as $variant)
-                        <tr>
-                            <td class="py-3 text-slate-700">{{ $variant->name }}</td>
-                            <td class="py-3 text-slate-700">{{ number_format($variant->price, 2) }} USD</td>
-                            <td class="py-3">
-                                @if ($variant->is_active)
-                                    <span class="rounded-full bg-emerald-100 px-3 py-1 text-xs text-emerald-700">مفعلة</span>
-                                @else
-                                    <span class="rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-700">متوقفة</span>
-                                @endif
-                            </td>
-                            <td class="py-3 text-slate-500">{{ $variant->sort_order }}</td>
-                            <td class="py-3">
-                                <div class="flex flex-wrap gap-3">
-                                    <a href="{{ route('admin.services.variants.edit', [$service, $variant]) }}" class="text-emerald-700">تعديل</a>
-                                    <form method="POST" action="{{ route('admin.services.variants.destroy', [$service, $variant]) }}" onsubmit="return confirm('هل أنت متأكد من حذف الباقة؟')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-rose-600">حذف</button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" class="py-6 text-center text-slate-500">لا توجد باقات بعد.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+                @empty
+                    <tr>
+                        <td colspan="5" class="py-6 text-center text-slate-500">لا توجد باقات بعد.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </x-table>
     </div>
 @endsection

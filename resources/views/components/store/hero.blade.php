@@ -30,9 +30,6 @@
     </div>
     @if ($bannerItems->count() > 1)
         <div class="absolute inset-x-0 bottom-2 flex justify-center gap-2">
-            @foreach ($bannerItems as $idx => $banner)
-                <span class="h-2 w-2 rounded-full bg-white/70" data-hero-dot="{{ $idx }}"></span>
-            @endforeach
         </div>
     @endif
 </div>
@@ -43,7 +40,6 @@
             document.addEventListener('DOMContentLoaded', () => {
                 document.querySelectorAll('[data-hero-slider]').forEach((slider) => {
                     const track = slider.querySelector('[data-hero-track]');
-                    const dots = slider.querySelectorAll('[data-hero-dot]');
                     const slides = track ? Array.from(track.children) : [];
                     if (!track || slides.length <= 1) return;
 

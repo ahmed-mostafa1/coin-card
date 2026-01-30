@@ -61,9 +61,9 @@
 
                         <!-- Language Switch (Moved here) -->
                         @if(app()->getLocale() == 'ar')
-                            <a href="{{ route('lang.switch', 'en') }}" class="text-sm font-bold text-emerald-600 dark:text-white hover:text-emerald-700">English</a>
+                            <a href="{{ route('lang.switch', 'en') }}" class="text-sm font-bold text-emerald-600 dark:text-white">English</a>
                         @else
-                            <a href="{{ route('lang.switch', 'ar') }}" class="text-sm font-bold text-gray-900 dark:text-white hover:text-emerald-700">العربية</a>
+                            <a href="{{ route('lang.switch', 'ar') }}" class="text-sm font-bold text-gray-900 dark:text-white">العربية</a>
                         @endif
                     </div>
 

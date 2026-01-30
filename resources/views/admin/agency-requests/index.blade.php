@@ -18,38 +18,36 @@
             </div>
         @endif
 
-        <div class="mt-6 overflow-x-auto">
-            <table class="w-full text-right text-sm">
-                <thead class="border-b border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400">
+        <x-table class="mt-6">
+            <thead class="border-b border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400">
+                <tr>
+                    <th class="py-2">الاسم</th>
+                    <th class="py-2">رقم التواصل</th>
+                    <th class="py-2">المنطقة</th>
+                    <th class="py-2">المبلغ</th>
+                    <th class="py-2">التاريخ</th>
+                    <th class="py-2">عرض</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+                @forelse ($requests as $request)
                     <tr>
-                        <th class="py-2">الاسم</th>
-                        <th class="py-2">رقم التواصل</th>
-                        <th class="py-2">المنطقة</th>
-                        <th class="py-2">المبلغ</th>
-                        <th class="py-2">التاريخ</th>
-                        <th class="py-2">عرض</th>
+                        <td class="py-3 text-slate-700 dark:text-white">{{ $request->full_name }}</td>
+                        <td class="py-3 text-slate-700 dark:text-white">{{ $request->contact_number }}</td>
+                        <td class="py-3 text-slate-700 dark:text-white">{{ $request->region }}</td>
+                        <td class="py-3 text-slate-700 dark:text-white">{{ number_format($request->starting_amount, 2) }} USD</td>
+                        <td class="py-3 text-slate-500 dark:text-slate-400">{{ $request->created_at->format('Y-m-d H:i') }}</td>
+                        <td class="py-3">
+                            <a href="{{ route('admin.agency-requests.show', $request) }}" class="text-emerald-700 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">عرض</a>
+                        </td>
                     </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
-                    @forelse ($requests as $request)
-                        <tr>
-                            <td class="py-3 text-slate-700 dark:text-white">{{ $request->full_name }}</td>
-                            <td class="py-3 text-slate-700 dark:text-white">{{ $request->contact_number }}</td>
-                            <td class="py-3 text-slate-700 dark:text-white">{{ $request->region }}</td>
-                            <td class="py-3 text-slate-700 dark:text-white">{{ number_format($request->starting_amount, 2) }} USD</td>
-                            <td class="py-3 text-slate-500 dark:text-slate-400">{{ $request->created_at->format('Y-m-d H:i') }}</td>
-                            <td class="py-3">
-                                <a href="{{ route('admin.agency-requests.show', $request) }}" class="text-emerald-700 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">عرض</a>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" class="py-6 text-center text-slate-500 dark:text-slate-400">لا توجد طلبات بعد.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+                @empty
+                    <tr>
+                        <td colspan="6" class="py-6 text-center text-slate-500 dark:text-slate-400">لا توجد طلبات بعد.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </x-table>
 
         <div class="mt-6">{{ $requests->links() }}</div>
     </div>

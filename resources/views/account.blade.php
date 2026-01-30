@@ -81,8 +81,7 @@
                 <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">{{ __('messages.latest_orders') }}</h2>
                 <a href="{{ route('account.orders') }}" class="text-sm text-emerald-700 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">{{ __('messages.view_all') }}</a>
             </div>
-            <div class="mt-4 overflow-x-auto">
-                <table class="w-full text-right text-sm">
+            <x-table class="mt-4">
                     <thead class="border-b border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400">
                         <tr>
                             <th class="py-2">{{ __('messages.service') }}</th>
@@ -117,8 +116,7 @@
                             </tr>
                         @endforelse
                     </tbody>
-                </table>
-            </div>
+                </x-table>
         </x-card>
 
         <x-card class="p-8" :hover="false">
@@ -126,8 +124,7 @@
                 <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">{{ __('messages.latest_deposits') }}</h2>
                 <a href="{{ route('account.deposits') }}" class="text-sm text-emerald-700 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">{{ __('messages.view_all') }}</a>
             </div>
-            <div class="mt-4 overflow-x-auto">
-                <table class="w-full text-right text-sm">
+            <x-table class="mt-4">
                     <thead class="border-b border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400">
                         <tr>
                             <th class="py-2">{{ __('messages.method') }}</th>
@@ -158,8 +155,7 @@
                             </tr>
                         @endforelse
                     </tbody>
-                </table>
-            </div>
+                </x-table>
         </x-card>
     </div>
     </div>

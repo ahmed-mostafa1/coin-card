@@ -19,41 +19,39 @@
             </div>
         @endif
 
-        <div class="mt-6 overflow-x-auto">
-            <table class="w-full text-right text-sm">
-                <thead class="border-b border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400">
-                    <tr>
-                        <th class="py-2">{{ __('messages.name_label') }}</th>
-                        <th class="py-2">{{ __('messages.category') }}</th>
-                        <th class="py-2">{{ __('messages.price') }}</th>
-                        <th class="py-2">{{ __('messages.status') }}</th>
-                        <th class="py-2">{{ __('messages.actions') }}</th>
+        <x-table class="mt-6">
+            <thead class="border-b border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400">
+                <tr>
+                    <th class="py-2">{{ __('messages.name_label') }}</th>
+                    <th class="py-2">{{ __('messages.category') }}</th>
+                    <th class="py-2">{{ __('messages.price') }}</th>
+                    <th class="py-2">{{ __('messages.status') }}</th>
+                    <th class="py-2">{{ __('messages.actions') }}</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+                @forelse ($services as $service)
+                    <tr class="transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
+                        <td class="py-3 text-slate-700 dark:text-white">{{ $service->name }}</td>
+                        <td class="py-3 text-slate-500 dark:text-slate-400">{{ $service->category?->name }}</td>
+                        <td class="py-3 text-slate-700 dark:text-white">{{ number_format($service->price, 2) }} USD</td>
+                        <td class="py-3">
+                            @if ($service->is_active)
+                                <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/50 px-3 py-1 text-xs text-emerald-700 dark:text-emerald-400">{{ __('messages.status_active') }}</span>
+                            @else
+                                <span class="rounded-full bg-rose-100 dark:bg-rose-900/50 px-3 py-1 text-xs text-rose-700 dark:text-rose-400">{{ __('messages.status_inactive') }}</span>
+                            @endif
+                        </td>
+                        <td class="py-3">
+                            <a href="{{ route('admin.services.edit', $service) }}" class="text-emerald-700 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">{{ __('messages.edit') }}</a>
+                        </td>
                     </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
-                    @forelse ($services as $service)
-                        <tr class="transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
-                            <td class="py-3 text-slate-700 dark:text-white">{{ $service->name }}</td>
-                            <td class="py-3 text-slate-500 dark:text-slate-400">{{ $service->category?->name }}</td>
-                            <td class="py-3 text-slate-700 dark:text-white">{{ number_format($service->price, 2) }} USD</td>
-                            <td class="py-3">
-                                @if ($service->is_active)
-                                    <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/50 px-3 py-1 text-xs text-emerald-700 dark:text-emerald-400">{{ __('messages.status_active') }}</span>
-                                @else
-                                    <span class="rounded-full bg-rose-100 dark:bg-rose-900/50 px-3 py-1 text-xs text-rose-700 dark:text-rose-400">{{ __('messages.status_inactive') }}</span>
-                                @endif
-                            </td>
-                            <td class="py-3">
-                                <a href="{{ route('admin.services.edit', $service) }}" class="text-emerald-700 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">{{ __('messages.edit') }}</a>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" class="py-6 text-center text-slate-500 dark:text-slate-400">{{ __('messages.no_services_yet') }}</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+                @empty
+                    <tr>
+                        <td colspan="5" class="py-6 text-center text-slate-500 dark:text-slate-400">{{ __('messages.no_services_yet') }}</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </x-table>
     </div>
 @endsection
