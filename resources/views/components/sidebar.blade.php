@@ -51,6 +51,21 @@
             </button>
         </div>
 
+        <!-- Language Switcher (Below User Name) -->
+        <div class="px-4 pb-4 border-b border-slate-200 dark:border-slate-800">
+            @if(app()->getLocale() == 'ar')
+                <a href="{{ route('lang.switch', 'en') }}" class="flex items-center justify-center gap-2 rounded-lg border border-slate-400 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fa-solid fa-language text-emerald-600 dark:text-emerald-400"></i>
+                    <span>English</span>
+                </a>
+            @else
+                <a href="{{ route('lang.switch', 'ar') }}" class="flex items-center justify-center gap-2 rounded-lg border border-slate-400 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fa-solid fa-language text-emerald-600 dark:text-emerald-400"></i>
+                    <span>العربية</span>
+                </a>
+            @endif
+        </div>
+
         <!-- Navigation -->
         <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
             

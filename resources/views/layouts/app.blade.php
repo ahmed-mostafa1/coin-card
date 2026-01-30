@@ -58,13 +58,6 @@
                             <i class="fa-solid fa-sun text-lg" x-show="!darkMode" x-cloak></i>
                             <i class="fa-solid fa-moon text-lg" x-show="darkMode" x-cloak></i>
                         </button>
-
-                        <!-- Language Switch (Moved here) -->
-                        @if(app()->getLocale() == 'ar')
-                            <a href="{{ route('lang.switch', 'en') }}" class="text-sm font-bold text-emerald-600 dark:text-white">English</a>
-                        @else
-                            <a href="{{ route('lang.switch', 'ar') }}" class="text-sm font-bold text-gray-900 dark:text-white">العربية</a>
-                        @endif
                     </div>
 
                     <!-- Center (Logo) -->
@@ -104,15 +97,8 @@
                         </a>
                     </div>
 
-                    <!-- Right Group (Menu + Theme + Lang) -->
+                    <!-- Right Group (Menu + Theme) -->
                     <div class="flex items-center gap-3">
-                         <!-- Language Switch -->
-                         @if(app()->getLocale() == 'ar')
-                            <a href="{{ route('lang.switch', 'en') }}" class="text-sm font-bold text-emerald-600 dark:text-white hover:text-white-500">English</a>
-                        @else
-                            <a href="{{ route('lang.switch', 'ar') }}" class="text-sm font-bold text-gray-900 dark:text-white hover:text-white-500">العربية</a>
-                        @endif
-
                         <!-- Theme Toggle -->
                         <button type="button" @click="darkMode = !darkMode" class="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition">
                             <i class="fa-solid fa-sun text-lg" x-show="!darkMode" x-cloak></i>
