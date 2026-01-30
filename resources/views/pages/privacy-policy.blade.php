@@ -13,7 +13,7 @@
                 نلتزم التزامًا تامًا بحماية بياناتك الشخصية والحفاظ على سريّتها ضمن أعلى معايير الأمان والشفافية.
                 تهدف هذه السياسة إلى توضيح كيفية جمع بياناتك واستخدامها وحمايتها أثناء تفاعلك مع موقعنا وخدماتنا الإلكترونية عبر
                 الرابط الرسمي:
-                🔗 www.market-card99.com
+                🔗 www.Arab 8BP.com
 
                 وباستخدامك لموقعنا، فإنك تؤكد موافقتك الكاملة على بنود هذه السياسة وشروطها.
 
@@ -78,7 +78,7 @@
                 📞 رقم الإدارة وتساب : +963991195136
                 🌐 الموقع الرسمي :
 
-                https://market-card99.com
+                https://Arab 8BP.com
 
                 ✅ ثامنًا :
                 إن ثقتك بنا هي أساس نجاحنا.
@@ -92,7 +92,7 @@
                 standards of security and transparency.
                 This policy aims to clarify how we collect, use, and protect your data while you interact with our website and
                 electronic services via the official link:
-                🔗 www.market-card99.com
+                🔗 www.Arab 8BP.com
 
                 By using our website, you confirm your full agreement to the terms and conditions of this policy.
 
@@ -163,7 +163,7 @@
                 📞 Admin WhatsApp: +963991195136
                 🌐 Official Website:
 
-                https://market-card99.com
+                https://Arab 8BP.com
 
                 ✅ Eighth:
                 Your trust in us is the foundation of our success.

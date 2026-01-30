@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', __('messages.deposit_title'))
+@section('mainWidth', 'w-full max-w-full')
 
 @section('content')
     <div class="rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm">
