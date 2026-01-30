@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $service->name)
+@section('title', $service->localized_name)
 @section('mainWidth', 'w-full max-w-full')
 
 @section('content')
@@ -11,7 +11,7 @@
     @endphp
 
     <div class="store-shell space-y-6">
-        <x-store.hero :banners="$sharedBanners" :alt="$service->name" />
+        <x-store.hero :banners="$sharedBanners" :alt="$service->localized_name" />
 
         <x-store.notice :text="$sharedTickerText" />
 
@@ -32,12 +32,12 @@
                 <div class="store-card p-6">
                     <div class="flex flex-wrap items-center gap-3 border-b border-slate-100 pb-4">
                         @if ($service->image_path)
-                            <img src="{{ asset('storage/' . $service->image_path) }}" alt="{{ $service->name }}"
+                            <img src="{{ asset('storage/' . $service->image_path) }}" alt="{{ $service->localized_name }}"
                                 class="h-16 w-16 rounded-xl object-cover">
                         @endif
                         <div class="space-y-1">
-                            <h1 class="text-xl font-bold text-slate-900">{{ $service->name }}</h1>
-                            <p class="text-sm text-slate-600">{{ $service->category->name }}</p>
+                            <h1 class="text-xl font-bold text-slate-900">{{ $service->localized_name }}</h1>
+                            <p class="text-sm text-slate-600">{{ $service->category->localized_name }}</p>
                             @auth
                                 <p class="text-xs text-slate-500">
                                     {{ __('messages.available_balance_text') }}:
@@ -63,7 +63,7 @@
                                                     data-price="{{ $variant->price }}"
                                                     class="text-emerald-600 focus:ring-emerald-500"
                                                     @checked(old('variant_id') == $variant->id) required>
-                                                <span>{{ $variant->name }}</span>
+                                                <span>{{ $variant->localized_name }}</span>
                                             </span>
                                             <span class="font-semibold text-emerald-700">${{ number_format($variant->price, 2) }}</span>
                                         </label>
@@ -88,18 +88,18 @@
                         @forelse ($service->formFields->sortBy('sort_order') as $field)
                             <div class="space-y-1">
                                 <label for="field_{{ $field->name_key }}"
-                                    class="block text-sm font-semibold text-slate-800">{{ $field->label }}</label>
+                                    class="block text-sm font-semibold text-slate-800">{{ $field->localized_label }}</label>
                                 @if ($field->type === 'text')
                                     <input id="field_{{ $field->name_key }}"
                                         name="fields[{{ $field->name_key }}]"
                                         type="text"
                                         value="{{ old('fields.' . $field->name_key) }}"
-                                        placeholder="{{ $field->placeholder }}"
+                                        placeholder="{{ $field->localized_placeholder }}"
                                         class="store-input"
                                         {{ $field->is_required ? 'required' : '' }}>
                                 @else
                                     <textarea id="field_{{ $field->name_key }}" name="fields[{{ $field->name_key }}]" rows="3"
-                                        placeholder="{{ $field->placeholder }}" class="store-input"
+                                        placeholder="{{ $field->localized_placeholder }}" class="store-input"
                                         {{ $field->is_required ? 'required' : '' }}>{{ old('fields.' . $field->name_key) }}</textarea>
                                 @endif
                                 <x-input-error :messages="$errors->get('fields.' . $field->name_key)" />
@@ -137,15 +137,15 @@
 
                     <div class="overflow-hidden rounded-xl border border-slate-200">
                         @if ($service->image_path)
-                            <img src="{{ asset('storage/' . $service->image_path) }}" alt="{{ $service->name }}"
+                            <img src="{{ asset('storage/' . $service->image_path) }}" alt="{{ $service->localized_name }}"
                                 class="h-48 w-full object-cover">
                         @endif
                     </div>
 
                     <div class="pt-4 text-center">
-                        <p class="text-base font-semibold text-slate-900">{{ $service->name }}</p>
+                        <p class="text-base font-semibold text-slate-900">{{ $service->localized_name }}</p>
                         <p class="mt-1 text-xs text-slate-600">
-                            {{ $service->description ?: __('messages.default_delivery_eta') }}</p>
+                            {{ $service->localized_description ?: __('messages.default_delivery_eta') }}</p>
                     </div>
                 </div>
             </div>

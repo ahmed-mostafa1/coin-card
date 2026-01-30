@@ -10,6 +10,7 @@ class ServiceVariant extends Model
     protected $fillable = [
         'service_id',
         'name',
+        'name_en',
         'price',
         'is_active',
         'sort_order',
@@ -19,6 +20,17 @@ class ServiceVariant extends Model
         'price' => 'decimal:2',
         'is_active' => 'boolean',
     ];
+
+    /**
+     * Get the localized name based on current locale
+     */
+    public function getLocalizedNameAttribute(): string
+    {
+        $locale = app()->getLocale();
+        return $locale === 'en' && $this->name_en 
+            ? $this->name_en 
+            : $this->name;
+    }
 
     public function service(): BelongsTo
     {

@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'تعديل خدمة')
+@section('title', __('messages.edit_service'))
 
 @section('content')
     <div class="grid gap-6 lg:grid-cols-3">
         <div class="rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm lg:col-span-2">
             <div class="flex items-center justify-between">
-                <h1 class="text-2xl font-semibold text-emerald-700">تعديل خدمة</h1>
-                <a href="{{ route('admin.services.index') }}" class="text-sm text-emerald-700">عودة للخدمات</a>
+                <h1 class="text-2xl font-semibold text-emerald-700">{{ __('messages.edit_service') }}</h1>
+                <a href="{{ route('admin.services.index') }}" class="text-sm text-emerald-700">{{ __('messages.back_to_services') }}</a>
             </div>
 
             @if (session('status'))
@@ -21,11 +21,11 @@
                 @method('PUT')
 
                 <div>
-                    <x-input-label for="category_id" value="التصنيف" />
+                    <x-input-label for="category_id" :value="__('messages.category')" />
                     <select id="category_id" name="category_id" class="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-2 text-sm text-slate-700" required>
                         @foreach ($categories as $category)
                             @php
-                                $label = $category->parent ? $category->parent->name . ' ? ' . $category->name : $category->name;
+                                $label = $category->parent ? $category->parent->name . ' › ' . $category->name : $category->name;
                             @endphp
                             <option value="{{ $category->id }}" @selected(old('category_id', $service->category_id) == $category->id)>{{ $label }}</option>
                         @endforeach
@@ -34,50 +34,62 @@
                 </div>
 
                 <div>
-                    <x-input-label for="name" value="اسم الخدمة" />
+                    <x-input-label for="name" :value="__('messages.service_name_ar')" />
                     <x-text-input id="name" name="name" type="text" :value="old('name', $service->name)" required />
                     <x-input-error :messages="$errors->get('name')" />
                 </div>
 
                 <div>
-                    <x-input-label for="slug" value="المعرف المختصر" />
+                    <x-input-label for="name_en" :value="__('messages.service_name_en')" />
+                    <x-text-input id="name_en" name="name_en" type="text" :value="old('name_en', $service->name_en)" />
+                    <x-input-error :messages="$errors->get('name_en')" />
+                </div>
+
+                <div>
+                    <x-input-label for="slug" :value="__('messages.slug')" />
                     <x-text-input id="slug" name="slug" type="text" :value="old('slug', $service->slug)" />
                     <x-input-error :messages="$errors->get('slug')" />
                 </div>
 
                 <div>
-                    <x-input-label for="description" value="الوصف" />
+                    <x-input-label for="description" :value="__('messages.description_ar')" />
                     <textarea id="description" name="description" rows="4" class="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-2 text-sm text-slate-700">{{ old('description', $service->description) }}</textarea>
                     <x-input-error :messages="$errors->get('description')" />
                 </div>
 
                 <div>
-                    <x-input-label for="price" value="السعر" />
+                    <x-input-label for="description_en" :value="__('messages.description_en')" />
+                    <textarea id="description_en" name="description_en" rows="4" class="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-2 text-sm text-slate-700">{{ old('description_en', $service->description_en) }}</textarea>
+                    <x-input-error :messages="$errors->get('description_en')" />
+                </div>
+
+                <div>
+                    <x-input-label for="price" :value="__('messages.price')" />
                     <x-text-input id="price" name="price" type="number" step="0.01" min="1" :value="old('price', $service->price)" required />
                     <x-input-error :messages="$errors->get('price')" />
                 </div>
 
                 <div>
-                    <x-input-label for="image" value="صورة (اختياري)" />
+                    <x-input-label for="image" :value="__('messages.image_optional')" />
                     <input id="image" name="image" type="file" class="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-2 text-sm text-slate-600 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-700">
                     <x-input-error :messages="$errors->get('image')" />
                     @if ($service->image_path)
-                        <p class="mt-2 text-xs text-slate-500">الصورة الحالية محفوظة.</p>
+                        <p class="mt-2 text-xs text-slate-500">{{ __('messages.current_image_saved') }}</p>
                     @endif
                 </div>
 
                 <div class="flex items-center gap-3 text-sm text-slate-600">
                     <input id="is_active" name="is_active" type="checkbox" value="1" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500" {{ $service->is_active ? 'checked' : '' }}>
-                    <label for="is_active">تفعيل الخدمة</label>
+                    <label for="is_active">{{ __('messages.activate_service') }}</label>
                 </div>
 
                 <div>
-                    <x-input-label for="sort_order" value="ترتيب العرض" />
+                    <x-input-label for="sort_order" :value="__('messages.sort_order')" />
                     <x-text-input id="sort_order" name="sort_order" type="number" min="0" :value="old('sort_order', $service->sort_order)" />
                 </div>
 
                 <div class="flex gap-3">
-                    <x-primary-button>تحديث</x-primary-button>
+                    <x-primary-button>{{ __('messages.update') }}</x-primary-button>
                 </div>
             </form>
         </div>

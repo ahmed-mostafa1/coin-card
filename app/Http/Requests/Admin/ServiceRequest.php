@@ -19,8 +19,10 @@ class ServiceRequest extends FormRequest
         return [
             'category_id' => ['required', 'exists:categories,id'],
             'name' => ['required', 'string', 'max:255'],
+            'name_en' => ['nullable', 'string', 'max:255'],
             'slug' => ['nullable', 'string', 'max:100', 'regex:/^[a-z0-9-]+$/', Rule::unique('services', 'slug')->ignore($serviceId)],
             'description' => ['nullable', 'string'],
+            'description_en' => ['nullable', 'string'],
             'price' => ['required', 'numeric', 'min:1'],
             'image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'is_active' => ['nullable', 'boolean'],

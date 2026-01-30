@@ -19,13 +19,13 @@
         </form>
 
         @if (session('status'))
-            <div class="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+            <div class="mt-6 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400">
                 {{ session('status') }}
             </div>
         @endif
 
         <x-table class="mt-6">
-            <thead class="bg-slate-50 text-slate-500">
+            <thead class="bg-slate-50 dark:bg-slate-700/50 text-slate-500 dark:text-slate-400">
                     <tr>
                         <th class="py-2">المستخدم</th>
                         <th class="py-2">الطريقة</th>
@@ -35,12 +35,12 @@
                         <th class="py-2">إجراءات</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100">
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
                     @forelse ($deposits as $deposit)
-                        <tr class="transition hover:bg-slate-50">
-                            <td class="py-3 text-slate-700">{{ $deposit->user->name }}<div class="text-xs text-slate-500">{{ $deposit->user->email }}</div></td>
-                            <td class="py-3 text-slate-700">{{ $deposit->paymentMethod->name }}</td>
-                            <td class="py-3 text-slate-700">{{ number_format($deposit->user_amount, 2) }} USD</td>
+                        <tr class="transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
+                            <td class="py-3 text-slate-700 dark:text-white">{{ $deposit->user->name }}<div class="text-xs text-slate-500 dark:text-slate-400">{{ $deposit->user->email }}</div></td>
+                            <td class="py-3 text-slate-700 dark:text-white">{{ $deposit->paymentMethod->name }}</td>
+                            <td class="py-3 text-slate-700 dark:text-white">{{ number_format($deposit->user_amount, 2) }} USD</td>
                             <td class="py-3">
                                 @if ($deposit->status === 'pending')
                                     <x-badge type="pending">قيد المراجعة</x-badge>
@@ -50,14 +50,14 @@
                                     <x-badge type="rejected">مرفوض</x-badge>
                                 @endif
                             </td>
-                            <td class="py-3 text-slate-500">{{ $deposit->created_at->format('Y-m-d') }}</td>
+                            <td class="py-3 text-slate-500 dark:text-slate-400">{{ $deposit->created_at->format('Y-m-d') }}</td>
                             <td class="py-3">
-                                <a href="{{ route('admin.deposits.show', $deposit) }}" class="text-emerald-700 hover:text-emerald-900">عرض</a>
+                                <a href="{{ route('admin.deposits.show', $deposit) }}" class="text-emerald-700 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">عرض</a>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="py-6 text-center text-slate-500">لا توجد طلبات.</td>
+                            <td colspan="6" class="py-6 text-center text-slate-500 dark:text-slate-400">لا توجد طلبات.</td>
                         </tr>
                     @endforelse
                 </tbody>

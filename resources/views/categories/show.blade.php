@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', $category->name)
+@section('title', $category->localized_name)
 @section('mainWidth', 'w-full max-w-full')
 
 @section('content')
     <div class="store-shell space-y-6">
-        <x-store.hero :banners="$sharedBanners" :alt="$category->name" />
+        <x-store.hero :banners="$sharedBanners" :alt="$category->localized_name" />
 
         <x-store.notice :text="$sharedTickerText" />
 
@@ -17,7 +17,7 @@
 
             <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" data-filter-list="subcategories">
                 @forelse ($subcategories as $sub)
-                    <x-store.category-card :title="$sub->name" :href="route('categories.show', $sub->slug)"
+                    <x-store.category-card :title="$sub->localized_name" :href="route('categories.show', $sub->slug)"
                         :image="$sub->image_path ? asset('storage/' . $sub->image_path) : null" searchTarget="subcategories" />
                 @empty
                     <x-empty-state :message="__('messages.no_categories')" class="sm:col-span-2 lg:col-span-4" />

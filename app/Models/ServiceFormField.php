@@ -15,9 +15,11 @@ class ServiceFormField extends Model
         'service_id',
         'type',
         'label',
+        'label_en',
         'name_key',
         'is_required',
         'placeholder',
+        'placeholder_en',
         'sort_order',
         'validation_rules',
     ];
@@ -25,6 +27,28 @@ class ServiceFormField extends Model
     protected $casts = [
         'is_required' => 'boolean',
     ];
+
+    /**
+     * Get the localized label based on current locale
+     */
+    public function getLocalizedLabelAttribute(): string
+    {
+        $locale = app()->getLocale();
+        return $locale === 'en' && $this->label_en 
+            ? $this->label_en 
+            : $this->label;
+    }
+
+    /**
+     * Get the localized placeholder based on current locale
+     */
+    public function getLocalizedPlaceholderAttribute(): ?string
+    {
+        $locale = app()->getLocale();
+        return $locale === 'en' && $this->placeholder_en 
+            ? $this->placeholder_en 
+            : $this->placeholder;
+    }
 
     public function service(): BelongsTo
     {

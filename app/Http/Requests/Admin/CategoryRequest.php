@@ -23,6 +23,7 @@ class CategoryRequest extends FormRequest
 
         return [
             'name' => ['required', 'string', 'max:255'],
+            'name_en' => ['nullable', 'string', 'max:255'],
             'slug' => ['nullable', 'string', 'max:100', 'regex:/^[a-z0-9-]+$/', Rule::unique('categories', 'slug')->ignore($categoryId)],
             'parent_id' => $parentRule,
             'image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:2048'],

@@ -6,6 +6,8 @@
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
+@variant dark (&:where(.dark, .dark *));
+
 @theme {
     --font-sans: 'Cairo', ui-sans-serif, system-ui, sans-serif;
     --radius-lg: 1rem;
@@ -62,7 +64,16 @@
 
 @layer base {
     body {
-        @apply bg-[#f3f6f5] text-slate-900;
+        @apply bg-[#f3f6f5] text-slate-900 transition-colors duration-200;
+    }
+
+    /* Dark mode styles */
+    .dark body {
+        @apply bg-slate-900 text-slate-100;
+    }
+
+    .dark {
+        color-scheme: dark;
     }
 }
 
@@ -83,16 +94,32 @@
         @apply rounded-full border border-emerald-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:-translate-y-0.5 hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 motion-reduce:transform-none;
     }
 
+    .dark .cc-nav-link {
+        @apply border-emerald-700 bg-slate-800 text-slate-200 hover:border-emerald-600 hover:bg-slate-700 hover:text-emerald-400;
+    }
+
     .cc-nav-link-pill {
         @apply border-emerald-200 bg-emerald-100 text-emerald-800 hover:bg-emerald-200;
+    }
+
+    .dark .cc-nav-link-pill {
+        @apply border-emerald-600 bg-emerald-900 text-emerald-300 hover:bg-emerald-800;
     }
 
     .cc-pill {
         @apply rounded-full border border-emerald-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 motion-reduce:transition-none;
     }
 
+    .dark .cc-pill {
+        @apply border-emerald-700 bg-slate-800 text-slate-200 hover:border-emerald-600 hover:bg-slate-700 hover:text-emerald-400;
+    }
+
     .cc-pill-active {
         @apply border-emerald-200 bg-emerald-100 text-emerald-800 hover:bg-emerald-200;
+    }
+
+    .dark .cc-pill-active {
+        @apply border-emerald-600 bg-emerald-900 text-emerald-300 hover:bg-emerald-800;
     }
 
     .store-shell {
@@ -103,26 +130,50 @@
         @apply relative flex w-full items-center gap-2 overflow-hidden rounded-full border border-slate-300 bg-white px-5 py-2 shadow-sm;
     }
 
+    .dark .store-pill {
+        @apply border-slate-600 bg-slate-800 text-slate-200;
+    }
+
     .store-search {
         @apply w-full rounded-full border border-slate-300 bg-white px-5 py-3 text-sm text-slate-700 shadow-inner outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-300;
+    }
+
+    .dark .store-search {
+        @apply border-slate-600 bg-slate-800 text-slate-200 focus:border-emerald-500 focus:ring-emerald-600;
     }
 
     .store-card {
         @apply rounded-xl border border-slate-300 bg-white shadow-[0_6px_12px_rgba(0,0,0,0.08)];
     }
 
+    .dark .store-card {
+        @apply border-slate-700 bg-slate-800 shadow-[0_6px_12px_rgba(0,0,0,0.3)];
+    }
+
     .store-card-title {
         @apply text-[15px] font-semibold text-slate-800;
+    }
+
+    .dark .store-card-title {
+        @apply text-slate-200;
     }
 
     .store-input {
         @apply w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-700 shadow-inner focus:border-emerald-400 focus:ring-2 focus:ring-emerald-300;
     }
 
+    .dark .store-input {
+        @apply border-slate-600 bg-slate-800 text-slate-200 focus:border-emerald-500 focus:ring-emerald-600;
+    }
+
     .store-ticker-track {
         @apply inline-block whitespace-nowrap text-[13px] font-semibold text-slate-700;
         animation: marquee-rtl 18s linear infinite;
         will-change: transform;
+    }
+
+    .dark .store-ticker-track {
+        @apply text-slate-300;
     }
 }
 

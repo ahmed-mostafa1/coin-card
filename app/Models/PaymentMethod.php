@@ -9,8 +9,10 @@ class PaymentMethod extends Model
 {
     protected $fillable = [
         'name',
+        'name_en',
         'slug',
         'instructions',
+        'instructions_en',
         'account_number',
         'icon_path',
         'is_active',
@@ -20,6 +22,28 @@ class PaymentMethod extends Model
     protected $casts = [
         'is_active' => 'boolean',
     ];
+
+    /**
+     * Get the localized name based on current locale
+     */
+    public function getLocalizedNameAttribute(): string
+    {
+        $locale = app()->getLocale();
+        return $locale === 'en' && $this->name_en 
+            ? $this->name_en 
+            : $this->name;
+    }
+
+    /**
+     * Get the localized instructions based on current locale
+     */
+    public function getLocalizedInstructionsAttribute(): string
+    {
+        $locale = app()->getLocale();
+        return $locale === 'en' && $this->instructions_en 
+            ? $this->instructions_en 
+            : $this->instructions;
+    }
 
     public function depositRequests(): HasMany
     {

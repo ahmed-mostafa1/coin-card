@@ -1,30 +1,36 @@
 @extends('layouts.app')
 
-@section('title', 'تعديل تصنيف')
+@section('title', __('messages.edit_category'))
 @section('mainWidth', 'max-w-none w-full')
 
 @section('content')
     <div class="w-full rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm">
-        <h1 class="text-2xl font-semibold text-emerald-700">تعديل تصنيف</h1>
+        <h1 class="text-2xl font-semibold text-emerald-700">{{ __('messages.edit_category') }}</h1>
 
         <form method="POST" action="{{ route('admin.categories.update', $category) }}" enctype="multipart/form-data" class="mt-6 space-y-4">
             @csrf
             @method('PUT')
 
             <div>
-                <x-input-label for="name" value="اسم التصنيف" />
+                <x-input-label for="name" :value="__('messages.category_name_ar')" />
                 <x-text-input id="name" name="name" type="text" :value="old('name', $category->name)" required />
                 <x-input-error :messages="$errors->get('name')" />
             </div>
 
             <div>
-                <x-input-label for="slug" value="المعرّف المختصر" />
+                <x-input-label for="name_en" :value="__('messages.category_name_en')" />
+                <x-text-input id="name_en" name="name_en" type="text" :value="old('name_en', $category->name_en)" />
+                <x-input-error :messages="$errors->get('name_en')" />
+            </div>
+
+            <div>
+                <x-input-label for="slug" :value="__('messages.slug')" />
                 <x-text-input id="slug" name="slug" type="text" :value="old('slug', $category->slug)" />
                 <x-input-error :messages="$errors->get('slug')" />
             </div>
 
             <div>
-                <x-input-label for="parent_id" value="التصنيف الأب (اختياري)" />
+                <x-input-label for="parent_id" :value="__('messages.parent_category_optional')" />
                 <select id="parent_id" name="parent_id"
                         class="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-2 text-sm text-slate-700 focus:border-emerald-500 focus:ring-emerald-500">
                     <option value="">{{ __('messages.root_category_option') }}</option>
@@ -36,27 +42,27 @@
             </div>
 
             <div>
-                <x-input-label for="image" value="صورة (اختياري)" />
+                <x-input-label for="image" :value="__('messages.image_optional')" />
                 <input id="image" name="image" type="file" class="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-2 text-sm text-slate-600 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-700">
                 <x-input-error :messages="$errors->get('image')" />
                 @if ($category->image_path)
-                    <p class="mt-2 text-xs text-slate-500">الصورة الحالية محفوظة.</p>
+                    <p class="mt-2 text-xs text-slate-500">{{ __('messages.current_image_saved') }}</p>
                 @endif
             </div>
 
             <div class="flex items-center gap-3 text-sm text-slate-600">
                 <input id="is_active" name="is_active" type="checkbox" value="1" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500" {{ $category->is_active ? 'checked' : '' }}>
-                <label for="is_active">تفعيل التصنيف</label>
+                <label for="is_active">{{ __('messages.activate_category') }}</label>
             </div>
 
             <div>
-                <x-input-label for="sort_order" value="ترتيب العرض" />
+                <x-input-label for="sort_order" :value="__('messages.sort_order')" />
                 <x-text-input id="sort_order" name="sort_order" type="number" min="0" :value="old('sort_order', $category->sort_order)" />
             </div>
 
             <div class="flex gap-3">
-                <x-primary-button>تحديث</x-primary-button>
-                <a href="{{ route('admin.categories.index') }}" class="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700">عودة</a>
+                <x-primary-button>{{ __('messages.update') }}</x-primary-button>
+                <a href="{{ route('admin.categories.index') }}" class="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700">{{ __('messages.back') }}</a>
             </div>
         </form>
     </div>

@@ -16,8 +16,10 @@ class ServiceFormFieldRequest extends FormRequest
         return [
             'type' => ['required', 'in:text,textarea'],
             'label' => ['required', 'string', 'max:255'],
+            'label_en' => ['nullable', 'string', 'max:255'],
             'name_key' => ['required', 'string', 'max:100', 'regex:/^[a-z0-9_]+$/'],
             'placeholder' => ['nullable', 'string', 'max:255'],
+            'placeholder_en' => ['nullable', 'string', 'max:255'],
             'is_required' => ['nullable', 'boolean'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
             'validation_rules' => ['nullable', 'string', 'max:255'],

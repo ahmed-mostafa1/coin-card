@@ -17,8 +17,10 @@ class UpdatePaymentMethodRequest extends FormRequest
 
         return [
             'name' => ['required', 'string', 'max:255'],
+            'name_en' => ['nullable', 'string', 'max:255'],
             'slug' => ['required', 'string', 'max:100', 'regex:/^[a-z0-9-]+$/', 'unique:payment_methods,slug,'.$methodId],
             'instructions' => ['required', 'string'],
+            'instructions_en' => ['nullable', 'string'],
             'account_number' => ['required', 'string', 'max:255'],
             'icon' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'is_active' => ['nullable', 'boolean'],

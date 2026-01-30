@@ -17,13 +17,11 @@
     <div class="flex h-full w-full transition-transform duration-700 ease-in-out" data-hero-track>
         @foreach ($bannerItems as $banner)
             @php
-                $rawPath = is_array($banner) ? ($banner['image_path'] ?? '') : ($banner->image_path ?? '');
-                $isAbsolute = str_starts_with($rawPath, 'http://') || str_starts_with($rawPath, 'https://') || str_starts_with($rawPath, '//');
                 $src = $isAbsolute ? $rawPath : asset('storage/' . ltrim($rawPath, '/'));
             @endphp
             <div class="min-w-full h-full shrink-0">
                 <img src="{{ $src }}"
-                    alt="{{ is_array($banner) ? ($banner['title'] ?? '') : ($banner->title ?? '') }}"
+                    alt="{{ is_array($banner) ? ($banner['title'] ?? '') : ($banner->localized_title ?? $banner->title ?? '') }}"
                     class="h-full w-full object-cover">
             </div>
         @endforeach

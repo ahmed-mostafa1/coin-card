@@ -15,6 +15,7 @@ class ServiceVariantRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
+            'name_en' => ['nullable', 'string', 'max:255'],
             'price' => ['required', 'numeric', 'min:0.01'],
             'is_active' => ['nullable', 'boolean'],
             'sort_order' => ['nullable', 'integer', 'min:0'],

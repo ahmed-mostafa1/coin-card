@@ -11,6 +11,7 @@ class Category extends Model
     protected $fillable = [
         'parent_id',
         'name',
+        'name_en',
         'slug',
         'image_path',
         'is_active',
@@ -20,6 +21,17 @@ class Category extends Model
     protected $casts = [
         'is_active' => 'boolean',
     ];
+
+    /**
+     * Get the localized name based on current locale
+     */
+    public function getLocalizedNameAttribute(): string
+    {
+        $locale = app()->getLocale();
+        return $locale === 'en' && $this->name_en 
+            ? $this->name_en 
+            : $this->name;
+    }
 
     public function parent(): BelongsTo
     {

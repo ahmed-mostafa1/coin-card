@@ -17,14 +17,14 @@
                         {{-- Yellow Ring --}}
                         <div class="absolute inset-1.5 rounded-full border-[5px] border-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.3)]"></div>
                         
-                        {{-- Logo Container --}}
+                    {{-- Logo Container --}}
                         <div class="relative z-10 flex h-[55%] w-[55%] items-center justify-center rounded-full bg-white p-2 shadow-sm">
                             @if ($method->icon_path)
-                                <img src="{{ asset('storage/' . $method->icon_path) }}" alt="{{ $method->name }}"
+                                <img src="{{ asset('storage/' . $method->icon_path) }}" alt="{{ $method->localized_name }}"
                                     class="h-full w-full object-contain">
                             @else
                                 <div class="flex h-full w-full items-center justify-center rounded-full bg-slate-100 text-xl font-bold text-slate-600">
-                                    {{ mb_substr($method->name, 0, 1) }}
+                                    {{ mb_substr($method->localized_name, 0, 1) }}
                                 </div>
                             @endif
                         </div>
@@ -37,7 +37,7 @@
                     
                     {{-- Method Name --}}
                     <h2 class="text-center text-xs font-bold text-slate-800 group-hover:text-emerald-700 sm:text-sm">
-                        {{ $method->name }}
+                        {{ $method->localized_name }}
                     </h2>
                 </a>
             @empty
