@@ -8,7 +8,7 @@
 
         <x-store.notice :text="$sharedTickerText" />
 
-        <div class="w-4/5 mx-auto">
+        <div class="w-full sm:w-4/5 mx-auto">
             <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" data-filter-list="categories">
                 @forelse ($categories as $category)
                     <x-store.category-card :title="$category->localized_name" :href="route('categories.show', $category->slug)"

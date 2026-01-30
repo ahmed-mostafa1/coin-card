@@ -16,7 +16,7 @@
     data-filter-name="{{ $title }}"
     data-filter-alt="{{ $subtitle }}">
     <div class="relative">
-        <div class="aspect-[4/3] sm:aspect-[1/1] overflow-hidden bg-gradient-to-br from-slate-200 to-slate-300">
+        <div class="aspect-[16/9] sm:aspect-[1/1] overflow-hidden bg-gradient-to-br from-slate-200 to-slate-300">
             @if ($image)
                 <img src="{{ $image }}" alt="{{ $title }}" class="h-full w-full object-cover transition duration-200 group-hover:scale-[1.02]">
             @endif
