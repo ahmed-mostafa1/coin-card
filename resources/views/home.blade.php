@@ -8,14 +8,16 @@
 
         <x-store.notice :text="$sharedTickerText" />
 
-        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" data-filter-list="categories">
-            @forelse ($categories as $category)
-                <x-store.category-card :title="$category->localized_name" :href="route('categories.show', $category->slug)"
-                    :image="$category->image_path ? asset('storage/' . $category->image_path) : null"
-                    searchTarget="categories" />
-            @empty
-                <x-empty-state :message="__('messages.no_categories')" class="sm:col-span-2 lg:col-span-4" />
-            @endforelse
+        <div class="w-4/5 mx-auto">
+            <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" data-filter-list="categories">
+                @forelse ($categories as $category)
+                    <x-store.category-card :title="$category->localized_name" :href="route('categories.show', $category->slug)"
+                        :image="$category->image_path ? asset('storage/' . $category->image_path) : null"
+                        searchTarget="categories" />
+                @empty
+                    <x-empty-state :message="__('messages.no_categories')" class="sm:col-span-2 lg:col-span-4" />
+                @endforelse
+            </div>
         </div>
 
         <div class="grid gap-4 pt-4 text-center text-sm text-slate-700 dark:text-slate-300 sm:grid-cols-2 lg:grid-cols-4">
