@@ -7,7 +7,7 @@
         <x-page-header :title="__('messages.about_us')" />
         <div class="mt-6 whitespace-pre-line text-sm leading-7 text-slate-700">
             @if(app()->getLocale() == 'ar')
-                يقدم موقع Arab 8BP.com خدماته منذ عام 2018، ويعرض حاليًا مجموعة متنوعة تشمل شحن 200 تطبيقًا ولعبة مختلفة،
+                يقدم موقع 8bp.in خدماته منذ عام 2018، ويعرض حاليًا مجموعة متنوعة تشمل شحن 200 تطبيقًا ولعبة مختلفة،
                 مع إستمرار إضافة المزيد
 
                 يمكن للاعبين والتجار بيع المنتجات مثل رموز coupon والشحن المباشر عبر معرف الحساب على مدار 24 ساعة حيث يتم تسليم
@@ -21,7 +21,7 @@
                 منذ انطلاق الخدمة، يعمل فريق الدعم المباشر على مساعدة اللاعبين والوكلاء في جميع جوانب الخدمة . يمكنكم الحصول على
                 معلومات إضافية على مدار الساعة من خلال خط WhatsApp أو عبر البريد الإلكتروني
             @else
-                Arab 8BP.com has been serving customers since 2018, currently offering a diverse range of top-ups for over
+                8bp.in has been serving customers since 2018, currently offering a diverse range of top-ups for over
                 200 different apps and games, with more being added continuously.
 
                 Players and merchants can sell products like coupon codes and direct top-ups via Account ID 24/7, with game

@@ -192,6 +192,6 @@ return [
     'search_section_placeholder' => 'Search for a section',
     'search_products_placeholder' => 'Search for a product',
     'root_category_option' => 'Root category',
-    'store_marketing_tag' => 'MARKET CARD',
+    'store_marketing_tag' => 'Arab 8bp',
     'default_delivery_eta' => 'Delivery takes 1 to 10 minutes',
 ];

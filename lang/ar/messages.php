@@ -192,6 +192,6 @@ return [
     'search_section_placeholder' => 'ابحث عن قسم',
     'search_products_placeholder' => 'ابحث عن منتج',
     'root_category_option' => 'تصنيف رئيسي',
-    'store_marketing_tag' => 'MARKET CARD',
+    'store_marketing_tag' => 'Arab 8bp',
     'default_delivery_eta' => 'يستغرق وقت الشحن من 1 إلى 10 دقائق',
 ];

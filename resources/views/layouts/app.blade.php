@@ -164,9 +164,8 @@
         <footer class="fixed bottom-0 left-0 right-0 z-50 border-t border-slate-200 bg-white shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
             
             <!-- Desktop Layout -->
-            <div class="hidden md:flex mx-auto {{ $containerWidth }} h-20 items-center justify-between px-4">
-                <!-- Left Section: Cart & Notification -->
-                <div class="flex items-center gap-8 text-slate-500">
+            <div class="hidden md:flex mx-auto {{ $containerWidth }} h-20 items-center px-4">
+                <div class="flex items-center justify-between w-full gap-6 text-slate-500">
                     <!-- Orders/Cart -->
                     <a href="{{ route('account.orders') }}" 
                        class="{{ request()->routeIs('account.orders*') ? 'bg-orange-500 text-white shadow-lg ring-4 ring-white scale-110' : 'bg-slate-100 hover:bg-slate-200 hover:text-slate-800' }} group relative flex h-10 w-10 items-center justify-center rounded-full transition">
@@ -181,28 +180,23 @@
                             <span class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[10px] text-white">{{ $navUnreadCount }}</span>
                         @endif
                     </a>
-                </div>
 
-                <!-- Center Section: Home -->
-                <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                    <!-- Home (Center) -->
                     <a href="{{ route('home') }}" class="flex flex-col items-center justify-center gap-1 group">
                          <div class="{{ request()->routeIs('home') ? 'bg-orange-500 text-white shadow-lg ring-4 ring-white scale-110' : 'bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-800' }} flex h-14 w-14 items-center justify-center rounded-full transition group-hover:scale-110">
                             <i class="fa-solid fa-home text-2xl"></i>
                          </div>
                          <span class="{{ request()->routeIs('home') ? 'text-orange-500' : 'text-slate-500' }} text-xs font-bold">{{ __('messages.home') }}</span>
                     </a>
-                </div>
 
-                <!-- Right Section: Balance & Account -->
-                 <div class="flex items-center gap-8 text-slate-500">
                     <!-- Balance -->
-                     <a href="{{ route('account.wallet') }}" 
+                    <a href="{{ route('account.wallet') }}" 
                         class="{{ request()->routeIs('account.wallet*') ? 'bg-orange-500 text-white shadow-lg ring-4 ring-white scale-110' : 'bg-slate-100 hover:bg-slate-200 hover:text-slate-800' }} group relative flex h-10 w-10 items-center justify-center rounded-full transition">
                         <i class="fa-solid fa-wallet text-xl"></i>
                     </a>
 
-                     <!-- Account -->
-                     <a href="{{ route('account') }}" 
+                    <!-- Account -->
+                    <a href="{{ route('account') }}" 
                         class="{{ request()->routeIs('account') ? 'bg-orange-500 text-white shadow-lg ring-4 ring-white scale-110' : 'bg-slate-100 hover:bg-slate-200 hover:text-slate-800' }} group relative flex h-10 w-10 items-center justify-center rounded-full transition">
                         <i class="fa-solid fa-user text-xl"></i>
                     </a>

@@ -7,13 +7,13 @@
         <x-page-header :title="__('messages.privacy_policy')" />
         <div class="mt-6 whitespace-pre-line text-sm leading-7 text-slate-700">
             @if(app()->getLocale() == 'ar')
-                سياسة الخصوصية – Market Card
+                سياسة الخصوصية – Arab 8bp
 
-                في ماركت كارد (Market Card) نُقدّر خصوصيتك ونحترم ثقتك الغالية.
+                في ماركت كارد (Arab 8bp) نُقدّر خصوصيتك ونحترم ثقتك الغالية.
                 نلتزم التزامًا تامًا بحماية بياناتك الشخصية والحفاظ على سريّتها ضمن أعلى معايير الأمان والشفافية.
                 تهدف هذه السياسة إلى توضيح كيفية جمع بياناتك واستخدامها وحمايتها أثناء تفاعلك مع موقعنا وخدماتنا الإلكترونية عبر
                 الرابط الرسمي:
-                🔗 www.Arab 8BP.com
+                🔗 www.8bp.in
 
                 وباستخدامك لموقعنا، فإنك تؤكد موافقتك الكاملة على بنود هذه السياسة وشروطها.
 
@@ -47,7 +47,7 @@
                 👤 رابعًا: الحساب والمسؤولية
                 يُعتبر المستخدم مسؤولًا عن الحفاظ على سرّية بيانات الدخول الخاصة بحسابه.
 
-                لا يتحمل موقع Market Card أي مسؤولية عن أي أضرار أو خسائر ناتجة عن إهمال المستخدم، أو مشاركة بياناته مع الآخرين،
+                لا يتحمل موقع Arab 8bp أي مسؤولية عن أي أضرار أو خسائر ناتجة عن إهمال المستخدم، أو مشاركة بياناته مع الآخرين،
                 أو عدم تفعيل خاصية المصادقة الثنائية لحسابه لضمان أعلى درجات الأمان.
 
                 لا نتحمل مسؤولية الأمان في الحسابات أو المنصات الخارجية (مثل حسابات الألعاب أو التطبيقات)، ويُنصح باستخدامها
@@ -78,21 +78,21 @@
                 📞 رقم الإدارة وتساب : +963991195136
                 🌐 الموقع الرسمي :
 
-                https://Arab 8BP.com
+                https://8bp.in
 
                 ✅ ثامنًا :
                 إن ثقتك بنا هي أساس نجاحنا.
                 وباستخدامك ماركت كارد، فإنك تؤكد إدراكك التام والتزامك ببنود هذه السياسة،
                 ونتعهد بدورنا بتقديم تجربة رقمية راقية، آمنة، وسريعة تليق بعالم الفخامة الرقمية.
             @else
-                Privacy Policy – Market Card
+                Privacy Policy – Arab 8bp
 
-                At Market Card, we value your privacy and respect your trust.
+                At Arab 8bp, we value your privacy and respect your trust.
                 We are fully committed to protecting your personal data and maintaining its confidentiality within the highest
                 standards of security and transparency.
                 This policy aims to clarify how we collect, use, and protect your data while you interact with our website and
                 electronic services via the official link:
-                🔗 www.Arab 8BP.com
+                🔗 www.8bp.in
 
                 By using our website, you confirm your full agreement to the terms and conditions of this policy.
 
@@ -122,21 +122,21 @@
                 🚫 We confirm that we do not share your personal data with any unreliable third party.
 
                 🛡️ Third: Protection and Security of Information
-                Market Card follows advanced security protocols and encryption technologies (SSL) to ensure the confidentiality
+                Arab 8bp follows advanced security protocols and encryption technologies (SSL) to ensure the confidentiality
                 and security of data.
                 All information is stored in a secure environment protected against unauthorized access or illegal use.
 
                 👤 Fourth: Account and Responsibility
                 The user is responsible for maintaining the confidentiality of their account login data.
 
-                Market Card bears no responsibility for any damages or losses resulting from user negligence, sharing data with
+                Arab 8bp bears no responsibility for any damages or losses resulting from user negligence, sharing data with
                 others, or not activating two-factor authentication for their account to ensure the highest levels of security.
 
                 We do not bear responsibility for security in external accounts or platforms (such as game accounts or apps),
                 and it is advised to use them with caution.
 
                 🚫 Fifth: General Terms
-                By using Market Card services, you acknowledge and agree to abide by the terms of service and usage policies,
+                By using Arab 8bp services, you acknowledge and agree to abide by the terms of service and usage policies,
                 including:
 
                 All digital top-up operations are considered final and non-cancellable or refundable after successful execution.
@@ -163,11 +163,11 @@
                 📞 Admin WhatsApp: +963991195136
                 🌐 Official Website:
 
-                https://Arab 8BP.com
+                https://8bp.in
 
                 ✅ Eighth:
                 Your trust in us is the foundation of our success.
-                By using Market Card, you confirm your full awareness and commitment to the terms of this policy,
+                By using Arab 8bp, you confirm your full awareness and commitment to the terms of this policy,
                 and we pledge in turn to provide a sophisticated, safe, and fast digital experience befitting the world of
                 digital luxury.
             @endif
