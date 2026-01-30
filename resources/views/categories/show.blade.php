@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', $category->name)
+@section('mainWidth', 'w-full max-w-full')
 
 @section('content')
     <div class="store-shell space-y-6">

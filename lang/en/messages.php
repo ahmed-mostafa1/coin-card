@@ -41,6 +41,8 @@ return [
     'forgot_password' => 'Forgot your password?',
     'create_new_account' => 'Create new account',
     'login_google' => 'Login with Google',
+    'signup_google' => 'Sign up with Google',
+    'or' => 'or',
     'register_desc' => 'Start your journey with us with simple details.',
     'full_name' => 'Full Name',
     'confirm_password' => 'Confirm Password',

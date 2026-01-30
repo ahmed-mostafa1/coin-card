@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', $service->name)
+@section('mainWidth', 'w-full max-w-full')
 
 @section('content')
     @php

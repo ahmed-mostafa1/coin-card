@@ -41,6 +41,8 @@ return [
     'forgot_password' => 'نسيت كلمة المرور؟',
     'create_new_account' => 'إنشاء حساب جديد',
     'login_google' => 'تسجيل الدخول عبر Google',
+    'signup_google' => 'إنشاء حساب عبر Google',
+    'or' => 'أو',
     'register_desc' => 'ابدأ رحلتك معنا ببيانات بسيطة.',
     'full_name' => 'الاسم الكامل',
     'confirm_password' => 'تأكيد كلمة المرور',

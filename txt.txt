@@ -1,0 +1,5 @@
+
+Google Client ID: 1041031292395-ds0tn2o095oabfbgogv06aili9n13pf8.apps.googleusercontent.com
+ and Secret: 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
+
+ 
