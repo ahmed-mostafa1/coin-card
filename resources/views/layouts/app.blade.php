@@ -41,7 +41,7 @@
     <div class="min-h-screen flex flex-col">
         <!-- Fixed Navbar - Mobile Optimized -->
         <nav class="border-b border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm transition-colors duration-200 sticky top-0 z-50">
-            <div class="mx-auto flex h-14 items-center justify-between gap-1.5 px-2.5 sm:gap-2 sm:px-3 {{ $containerWidth }}">
+            <div class="flex h-14 items-center justify-between gap-1.5 px-2.5 sm:gap-2 sm:px-3">
                 
                 <!-- Left Group: Menu Button + Theme Toggle (shrink-0) -->
                 <div class="flex shrink-0 items-center gap-1 sm:gap-2">
@@ -87,7 +87,7 @@
         <!-- New Sticky Footer -->
         <footer class="fixed bottom-0 left-0 right-0 z-40 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] transition-colors duration-200">
              <!-- Desktop Layout -->
-            <div class="hidden md:flex mx-auto {{ $containerWidth }} h-20 items-center px-4">
+            <div class="hidden md:flex h-20 items-center px-4">
                 <div class="flex items-center justify-between w-full gap-6 text-slate-500 dark:text-slate-400">
                     <!-- Orders/Cart -->
                     <a href="{{ route('account.orders') }}" 
