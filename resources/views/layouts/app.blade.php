@@ -6,9 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'Arab 8BP')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
-<body class="min-h-screen bg-slate-50">
+<body class="min-h-screen bg-slate-50 pb-20 md:pb-24">
     @php
         $containerWidth = request()->routeIs('admin.*') ? 'max-w-7xl' : 'max-w-6xl';
         $mainWidth = trim($__env->yieldContent('mainWidth', $containerWidth));
@@ -159,10 +160,152 @@
             @yield('content')
         </main>
 
-        <footer class="border-t border-slate-200 bg-white py-6">
-            <div
-                class="mx-auto flex {{ $containerWidth }} flex-wrap items-center justify-between gap-3 px-4 text-sm text-slate-600">
-                <p>{{ __('messages.all_rights_reserved') }}</p>
+        <!-- New Sticky Footer -->
+        <footer class="fixed bottom-0 left-0 right-0 z-50 border-t border-slate-200 bg-white shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+            
+            <!-- Desktop Layout -->
+            <div class="hidden md:flex mx-auto {{ $containerWidth }} h-20 items-center justify-between px-4">
+                <!-- Left Section: Cart & Notification -->
+                <div class="flex items-center gap-8 text-slate-500">
+                    <!-- Orders/Cart -->
+                    <a href="{{ route('account.orders') }}" 
+                       class="{{ request()->routeIs('account.orders*') ? 'bg-orange-500 text-white shadow-lg ring-4 ring-white scale-110' : 'bg-slate-100 hover:bg-slate-200 hover:text-slate-800' }} group relative flex h-10 w-10 items-center justify-center rounded-full transition">
+                        <i class="fa-solid fa-basket-shopping text-xl"></i>
+                    </a>
+
+                    <!-- Notifications -->
+                    <a href="{{ route('account.notifications') }}" 
+                       class="{{ request()->routeIs('account.notifications*') ? 'bg-orange-500 text-white shadow-lg ring-4 ring-white scale-110' : 'bg-slate-100 hover:bg-slate-200 hover:text-slate-800' }} group relative flex h-10 w-10 items-center justify-center rounded-full transition">
+                        <i class="fa-solid fa-bell text-xl"></i>
+                        @if (!empty($navUnreadCount ?? 0))
+                            <span class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[10px] text-white">{{ $navUnreadCount }}</span>
+                        @endif
+                    </a>
+                </div>
+
+                <!-- Center Section: Home -->
+                <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                    <a href="{{ route('home') }}" class="flex flex-col items-center justify-center gap-1 group">
+                         <div class="{{ request()->routeIs('home') ? 'bg-orange-500 text-white shadow-lg ring-4 ring-white scale-110' : 'bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-800' }} flex h-14 w-14 items-center justify-center rounded-full transition group-hover:scale-110">
+                            <i class="fa-solid fa-home text-2xl"></i>
+                         </div>
+                         <span class="{{ request()->routeIs('home') ? 'text-orange-500' : 'text-slate-500' }} text-xs font-bold">{{ __('messages.home') }}</span>
+                    </a>
+                </div>
+
+                <!-- Right Section: Balance & Account -->
+                 <div class="flex items-center gap-8 text-slate-500">
+                    <!-- Balance -->
+                     <a href="{{ route('account.wallet') }}" 
+                        class="{{ request()->routeIs('account.wallet*') ? 'bg-orange-500 text-white shadow-lg ring-4 ring-white scale-110' : 'bg-slate-100 hover:bg-slate-200 hover:text-slate-800' }} group relative flex h-10 w-10 items-center justify-center rounded-full transition">
+                        <i class="fa-solid fa-wallet text-xl"></i>
+                    </a>
+
+                     <!-- Account -->
+                     <a href="{{ route('account') }}" 
+                        class="{{ request()->routeIs('account') ? 'bg-orange-500 text-white shadow-lg ring-4 ring-white scale-110' : 'bg-slate-100 hover:bg-slate-200 hover:text-slate-800' }} group relative flex h-10 w-10 items-center justify-center rounded-full transition">
+                        <i class="fa-solid fa-user text-xl"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Mobile Layout -->
+             <div class="flex md:hidden h-16 w-full items-center justify-between px-2">
+                <div class="grid grid-cols-5 w-full items-center justify-items-center">
+                    
+                    <!-- Orders -->
+                    <div class="relative w-full flex justify-center">
+                        @if(request()->routeIs('account.orders*'))
+                            <div class="relative -top-6">
+                                <a href="{{ route('account.orders') }}" class="flex flex-col items-center justify-center gap-1">
+                                    <div class="flex h-14 w-14 items-center justify-center rounded-full bg-orange-400 shadow-lg ring-4 ring-white transition active:scale-95">
+                                        <i class="fa-solid fa-basket-shopping text-2xl text-white"></i>
+                                    </div>
+                                    <span class="text-[10px] font-bold text-orange-400">Orders</span>
+                                </a>
+                            </div>
+                        @else
+                            <a href="{{ route('account.orders') }}" class="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition active:scale-95">
+                                <i class="fa-solid fa-basket-shopping text-lg"></i>
+                            </a>
+                        @endif
+                    </div>
+
+                    <!-- Notifications -->
+                    <div class="relative w-full flex justify-center">
+                        @if(request()->routeIs('account.notifications*'))
+                             <div class="relative -top-6">
+                                <a href="{{ route('account.notifications') }}" class="flex flex-col items-center justify-center gap-1">
+                                    <div class="flex h-14 w-14 items-center justify-center rounded-full bg-orange-400 shadow-lg ring-4 ring-white transition active:scale-95">
+                                        <i class="fa-solid fa-bell text-2xl text-white"></i>
+                                    </div>
+                                    <span class="text-[10px] font-bold text-orange-400">Alerts</span>
+                                </a>
+                             </div>
+                        @else
+                             <a href="{{ route('account.notifications') }}" class="relative flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition active:scale-95">
+                                <i class="fa-solid fa-bell text-lg"></i>
+                                 @if (!empty($navUnreadCount ?? 0))
+                                    <span class="absolute top-0 right-0 flex h-3 w-3 items-center justify-center rounded-full bg-rose-500 text-[8px] text-white">{{ $navUnreadCount }}</span>
+                                @endif
+                            </a>
+                        @endif
+                    </div>
+
+                    <!-- Home -->
+                    <div class="relative w-full flex justify-center">
+                        @if(request()->routeIs('home'))
+                             <div class="relative -top-6">
+                                <a href="{{ route('home') }}" class="flex flex-col items-center justify-center gap-1">
+                                     <div class="flex h-14 w-14 items-center justify-center rounded-full bg-orange-400 shadow-lg ring-4 ring-white transition active:scale-95">
+                                         <i class="fa-solid fa-home text-2xl text-white"></i>
+                                     </div>
+                                     <span class="text-[10px] font-bold text-orange-400">{{ __('messages.home') }}</span>
+                                </a>
+                             </div>
+                        @else
+                            <a href="{{ route('home') }}" class="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition active:scale-95">
+                                <i class="fa-solid fa-home text-lg"></i>
+                            </a>
+                        @endif
+                    </div>
+
+                    <!-- Balance -->
+                    <div class="relative w-full flex justify-center">
+                         @if(request()->routeIs('account.wallet*'))
+                             <div class="relative -top-6">
+                                <a href="{{ route('account.wallet') }}" class="flex flex-col items-center justify-center gap-1">
+                                     <div class="flex h-14 w-14 items-center justify-center rounded-full bg-orange-400 shadow-lg ring-4 ring-white transition active:scale-95">
+                                         <i class="fa-solid fa-wallet text-2xl text-white"></i>
+                                     </div>
+                                     <span class="text-[10px] font-bold text-orange-400">Balance</span>
+                                </a>
+                             </div>
+                        @else
+                            <a href="{{ route('account.wallet') }}" class="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition active:scale-95">
+                                <i class="fa-solid fa-wallet text-lg"></i>
+                            </a>
+                        @endif
+                    </div>
+
+                    <!-- Account -->
+                    <div class="relative w-full flex justify-center">
+                         @if(request()->routeIs('account') && !request()->routeIs('account.orders*') && !request()->routeIs('account.notifications*') && !request()->routeIs('account.wallet*'))
+                             <div class="relative -top-6">
+                                <a href="{{ route('account') }}" class="flex flex-col items-center justify-center gap-1">
+                                     <div class="flex h-14 w-14 items-center justify-center rounded-full bg-orange-400 shadow-lg ring-4 ring-white transition active:scale-95">
+                                         <i class="fa-solid fa-user text-2xl text-white"></i>
+                                     </div>
+                                     <span class="text-[10px] font-bold text-orange-400">Account</span>
+                                </a>
+                             </div>
+                        @else
+                            <a href="{{ route('account') }}" class="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition active:scale-95">
+                                <i class="fa-solid fa-user text-lg"></i>
+                            </a>
+                        @endif
+                    </div>
+                </div>
             </div>
         </footer>
     </div>
@@ -172,7 +315,7 @@
     </form>
 
     <a href="https://wa.me/963991195136" target="_blank" rel="noopener noreferrer"
-        class="fixed bottom-4 {{ app()->getLocale() == 'ar' ? 'left-4' : 'right-4' }} z-50 inline-flex items-center gap-2 rounded-full bg-emerald-600 px-4 py-3 text-sm font-semibold text-white shadow-lg transition duration-200 hover:brightness-105 motion-reduce:transition-none">
+        class="fixed bottom-24 {{ app()->getLocale() == 'ar' ? 'left-4' : 'right-4' }} z-50 inline-flex items-center gap-2 rounded-full bg-emerald-600 px-4 py-3 text-sm font-semibold text-white shadow-lg transition duration-200 hover:brightness-105 motion-reduce:transition-none">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="h-5 w-5 fill-current" aria-hidden="true">
             <path
                 d="M16 3.2a12.8 12.8 0 0 0-11.1 19.2L3.2 28.8l6.6-1.7A12.8 12.8 0 1 0 16 3.2Zm7.5 17.7c-.3.8-1.5 1.5-2.3 1.6-.6.1-1.4.2-4.7-1-4.1-1.6-6.7-5.8-6.9-6.1-.2-.3-1.7-2.2-1.7-4.2s1-3 1.3-3.4c.3-.3.6-.4.9-.4h.7c.2 0 .5 0 .8.6.3.6 1 2.4 1.1 2.6.1.2.1.5 0 .7-.1.2-.2.4-.4.6-.2.2-.4.4-.6.6-.2.2-.4.4-.2.7.2.3.9 1.5 2 2.4 1.4 1.2 2.5 1.6 2.9 1.8.4.2.6.2.8 0 .2-.2 1-1.1 1.2-1.5.2-.4.5-.3.8-.2.3.1 2.1 1 2.4 1.2.3.2.5.3.6.5.1.2.1.9-.2 1.7Z" />

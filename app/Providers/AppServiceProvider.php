@@ -23,15 +23,20 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $sharedBanners = Cache::remember('shared_banners', 300, function () {
-            return Banner::query()
-                ->where('is_active', true)
-                ->orderBy('sort_order')
-                ->orderBy('id')
-                ->get();
-        });
+        try {
+            $sharedBanners = Cache::remember('shared_banners', 300, function () {
+                return Banner::query()
+                    ->where('is_active', true)
+                    ->orderBy('sort_order')
+                    ->orderBy('id')
+                    ->get();
+            });
 
-        $sharedTickerText = Cache::remember('shared_ticker', 300, fn () => SiteSetting::get('ticker_text', 'ملاحظة لأصحاب المحلات يرجى التواصل مع الإدارة للحصول على أسعار الجملة •'));
+            $sharedTickerText = Cache::remember('shared_ticker', 300, fn () => SiteSetting::get('ticker_text', 'ملاحظة لأصحاب المحلات يرجى التواصل مع الإدارة للحصول على أسعار الجملة •'));
+        } catch (\Throwable $e) {
+            $sharedBanners = collect();
+            $sharedTickerText = 'ملاحظة لأصحاب المحلات يرجى التواصل مع الإدارة للحصول على أسعار الجملة •';
+        }
 
         View::share('sharedBanners', $sharedBanners);
         View::share('sharedTickerText', $sharedTickerText);
