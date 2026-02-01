@@ -30,7 +30,7 @@ class CategoryController extends Controller
 
         if (! $hasChildren) {
             $services = $category->services()
-                ->where('is_active', true)
+                // ->where('is_active', true) // Show all services including inactive
                 ->when($search, fn ($query) => $query->where('name', 'like', "%{$search}%"))
                 ->with(['variants', 'category'])
                 ->orderBy('sort_order')

@@ -26,8 +26,11 @@
             <div>
                 <x-input-label for="image" :value="__('messages.image_replaceable')" />
                 <input id="image" name="image" type="file" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-600 dark:text-slate-300 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-800 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-700 dark:file:text-emerald-300">
+                <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">
+                    <i class="fa-solid fa-info-circle ml-1"></i>
+                    المقاس المفضل: عرض 1400 بكسل × طول 400 بكسل
+                </p>
                 <x-input-error :messages="$errors->get('image')" />
-                <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">{{ __('messages.current_image_in_slider') }}</p>
             </div>
 
             <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">

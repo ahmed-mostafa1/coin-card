@@ -289,7 +289,6 @@ return [
     'image' => 'الصورة',
     'image_replaceable' => 'الصورة (يمكن استبدالها)',
     'activate_banner' => 'تفعيل البانر',
-    'current_image_in_slider' => 'الصورة الحالية تظهر في السلايدر.',
     'dont_have_account' => 'لا تمتلك حساباً؟',
 
     // Homepage Features

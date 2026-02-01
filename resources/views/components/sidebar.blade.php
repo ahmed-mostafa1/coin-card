@@ -20,11 +20,11 @@
     <!-- Sidebar Panel -->
     <div x-show="sidebarOpen"
          x-transition:enter="transition ease-in-out duration-300 transform"
-         x-transition:enter-start="translate-x-full"
+         x-transition:enter-start="{{ app()->getLocale() == 'ar' ? '-translate-x-full' : 'translate-x-full' }}"
          x-transition:enter-end="translate-x-0"
          x-transition:leave="transition ease-in-out duration-300 transform"
          x-transition:leave-start="translate-x-0"
-         x-transition:leave-end="translate-x-full"
+         x-transition:leave-end="{{ app()->getLocale() == 'ar' ? '-translate-x-full' : 'translate-x-full' }}"
          class="relative flex w-full max-w-xs flex-col overflow-y-auto bg-slate-100 dark:bg-slate-900 shadow-xl transition-all h-full">
 
         <!-- Header -->
@@ -40,6 +40,16 @@
                     <div>
                          <!-- <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('messages.welcome') ?? 'أهلا بك :' }}</p> -->
                          <p class="font-bold text-slate-800 dark:text-white">{{ auth()->user()->name }}</p>
+                          @if(auth()->user()->vipStatus?->vipTier)
+                              <div class="flex items-center gap-1 mt-1">
+                                  @if(auth()->user()->vipStatus->vipTier->image_path)
+                                    <img src="{{ asset('storage/' . auth()->user()->vipStatus->vipTier->image_path) }}" alt="VIP" class="w-4 h-4 object-contain">
+                                  @endif
+                                  <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                                      {{ app()->getLocale() == 'ar' ? auth()->user()->vipStatus->vipTier->title_ar : auth()->user()->vipStatus->vipTier->title_en }}
+                                  </span>
+                              </div>
+                          @endif
                     </div>
                  @else
                     <a href="{{ route('login') }}" class="font-bold text-slate-800 dark:text-white">{{ __('messages.login') }}</a>
@@ -93,6 +103,7 @@
                 <span>{{ __('messages.my_account') }}</span>
             </a>
 
+            @if(!auth()->user()?->hasRole('admin'))
             <a href="{{ route('account.orders') }}" class="flex items-center gap-3 rounded-lg border border-slate-400 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-700">
                 <i class="fa-solid fa-shopping-cart text-orange-400 w-5"></i>
                 <span>{{ __('messages.my_orders') ?? 'المشتريات' }}</span>
@@ -102,6 +113,7 @@
                 <i class="fa-solid fa-wallet text-orange-400 w-5"></i>
                 <span>{{ __('messages.wallet') ?? 'شحن الرصيد' }}</span>
             </a>
+            @endif
 
             <!-- Other links based on image/routes -->
             {{-- <a href="#" class="flex items-center gap-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-700">
@@ -115,6 +127,7 @@
             </a>
             @endauth
 
+             @if(!auth()->user()?->hasRole('admin'))
              <a href="{{ route('about') }}" class="flex items-center gap-3 rounded-lg border border-slate-400 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-700">
                 <i class="fa-solid fa-info-circle text-orange-400 w-5"></i>
                 <span>{{ __('messages.about_us') }}</span>
@@ -124,11 +137,14 @@
                 <i class="fa-solid fa-shield-alt text-orange-400 w-5"></i>
                 <span>{{ __('messages.privacy_policy') }}</span>
             </a>
+            @endif
             
-             <a href="https://wa.me/963991195136" target="_blank" class="flex items-center gap-3 rounded-lg border border-slate-400 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-700">
+            @if($sharedWhatsappLink)
+             <a href="{{ $sharedWhatsappLink }}" target="_blank" class="flex items-center gap-3 rounded-lg border border-slate-400 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-700">
                 <i class="fa-brands fa-whatsapp text-green-500 w-5 text-lg"></i>
                 <span>{{ __('messages.contact_whatsapp') ?? 'تواصل مع الإدارة' }}</span>
             </a>
+            @endif
 
             @auth
                  <form method="POST" action="{{ route('logout') }}">
@@ -145,18 +161,33 @@
         <!-- Footer Socials -->
         <div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
             <div class="flex justify-center gap-6">
-                 <a href="https://wa.me/963991195136" target="_blank" class="text-green-500 hover:scale-110 transition">
+                @if($sharedWhatsappLink)
+                 <a href="{{ $sharedWhatsappLink }}" target="_blank" class="text-green-500 hover:scale-110 transition">
                     <i class="fa-brands fa-whatsapp text-3xl"></i>
                 </a>
-                <a href="#" class="text-pink-600 hover:scale-110 transition">
+                @endif
+                @if($sharedInstagramLink)
+                <a href="{{ $sharedInstagramLink }}" target="_blank" class="text-pink-600 hover:scale-110 transition">
                     <i class="fa-brands fa-instagram text-3xl"></i>
                 </a>
-                <a href="#" class="text-blue-500 hover:scale-110 transition">
+                @endif
+                @if($sharedTelegramLink)
+                <a href="{{ $sharedTelegramLink }}" target="_blank" class="text-blue-500 hover:scale-110 transition">
                     <i class="fa-brands fa-telegram text-3xl"></i>
                 </a>
-                <a href="#" class="text-blue-700 hover:scale-110 transition">
+                @endif
+                @if($sharedFacebookLink)
+                <a href="{{ $sharedFacebookLink }}" target="_blank" class="text-blue-700 hover:scale-110 transition">
                     <i class="fa-brands fa-facebook text-3xl"></i>
                 </a>
+                @endif
+                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="text-slate-600 dark:text-slate-400 hover:scale-110 transition" title="UpScrolled">
+                    @if(isset($sharedUpscrollImage) && $sharedUpscrollImage)
+                        <img src="{{ asset('storage/' . $sharedUpscrollImage) }}" alt="UpScrolled" class="w-8 h-8 object-contain">
+                    @else
+                        <img src="{{ asset('assets/img/upscrolled.png') }}" alt="UpScrolled" class="w-8 h-8">
+                    @endif
+                </button>
             </div>
         </div>
 

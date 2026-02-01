@@ -289,7 +289,6 @@ return [
     'image' => 'Image',
     'image_replaceable' => 'Image (Replaceable)',
     'activate_banner' => 'Activate Banner',
-    'current_image_in_slider' => 'Current image is shown in slider.',
     'dont_have_account' => 'Don\'t have an account?',
 
     // Homepage Features

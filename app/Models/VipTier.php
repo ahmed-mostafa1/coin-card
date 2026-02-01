@@ -8,15 +8,16 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class VipTier extends Model
 {
     protected $fillable = [
-        'name',
+        'title_ar',
+        'title_en',
         'rank',
-        'threshold_amount',
-        'badge_image_path',
+        'deposits_required',
+        'image_path',
         'is_active',
     ];
 
     protected $casts = [
-        'threshold_amount' => 'decimal:2',
+        'deposits_required' => 'decimal:2',
         'is_active' => 'boolean',
     ];
 

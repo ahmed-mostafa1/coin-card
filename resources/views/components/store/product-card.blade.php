@@ -11,8 +11,8 @@
     $subtitle ??= $service->category->localized_name ?? '';
 @endphp
 
-<a href="{{ $href ?? route('services.show', $service->slug) }}"
-    class="store-card group overflow-hidden"
+<a href="{{ $service->is_active ? ($href ?? route('services.show', $service->slug)) : '#' }}"
+    class="store-card group overflow-hidden {{ !$service->is_active ? 'opacity-75 grayscale cursor-not-allowed' : '' }}"
     data-filter-item="{{ $searchTarget }}"
     data-filter-name="{{ $service->localized_name }}"
     data-filter-alt="{{ $subtitle }}">
@@ -20,6 +20,13 @@
         <div class="aspect-[4/5] overflow-hidden bg-gradient-to-br from-slate-200 to-slate-300">
             @if ($image)
                 <img src="{{ $image }}" alt="{{ $service->localized_name }}" class="h-full w-full object-cover transition duration-200 group-hover:scale-[1.02]">
+            @endif
+            @if(!$service->is_active)
+                <div class="absolute inset-0 flex items-center justify-center bg-black/10">
+                    <span class="bg-slate-800/80 text-white px-3 py-1 rounded-full text-xs font-bold transform -rotate-12">
+                        غير متاحة حاليا
+                    </span>
+                </div>
             @endif
         </div>
     </div>

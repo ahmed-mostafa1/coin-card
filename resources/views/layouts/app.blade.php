@@ -59,8 +59,12 @@
                 
                 <!-- CENTER: Logo -->
                 <div class="flex-1 flex justify-center px-2">
-                    <a href="{{ route('home') }}" class="min-w-0 max-w-full">
-                        <span class="truncate text-sm font-bold text-emerald-700 dark:text-emerald-400">Arab 8BP.in</span>
+                    <a href="{{ route('home') }}" class="min-w-0 max-w-full flex items-center justify-center">
+                        @if($sharedLogoType === 'image' && $sharedLogoImage)
+                            <img src="{{ asset('storage/' . $sharedLogoImage) }}" alt="Logo" class="h-8 object-contain">
+                        @else
+                            <span class="truncate text-sm font-bold text-emerald-700 dark:text-emerald-400">{{ $sharedLogoText }}</span>
+                        @endif
                     </a>
                 </div>
                 
@@ -94,8 +98,12 @@
 
                 <!-- Center: Logo (min-w-0 allows truncation) -->
                 <div class="flex min-w-0 flex-1 items-center justify-center px-1 sm:px-2">
-                    <a href="{{ route('home') }}" class="min-w-0 max-w-full truncate">
-                        <span class="truncate text-sm font-bold text-emerald-700 dark:text-emerald-400 sm:text-base lg:text-lg">Arab 8BP.in</span>
+                    <a href="{{ route('home') }}" class="min-w-0 max-w-full flex items-center justify-center">
+                        @if($sharedLogoType === 'image' && $sharedLogoImage)
+                            <img src="{{ asset('storage/' . $sharedLogoImage) }}" alt="Logo" class="h-8 sm:h-10 lg:h-12 object-contain">
+                        @else
+                            <span class="truncate text-sm font-bold text-emerald-700 dark:text-emerald-400 sm:text-base lg:text-lg">{{ $sharedLogoText }}</span>
+                        @endif
                     </a>
                 </div>
                 
@@ -241,15 +249,6 @@
     <form id="logout-form" method="POST" action="{{ route('logout') }}" class="hidden">
         @csrf
     </form>
-
-    <a href="https://wa.me/963991195136" target="_blank" rel="noopener noreferrer"
-        class="fixed bottom-24 {{ app()->getLocale() == 'ar' ? 'left-4' : 'right-4' }} z-50 inline-flex items-center gap-2 rounded-full bg-emerald-600 dark:bg-emerald-700 px-4 py-3 text-sm font-semibold text-white shadow-lg transition duration-200 hover:brightness-105 dark:hover:bg-emerald-600 motion-reduce:transition-none">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="h-5 w-5 fill-current" aria-hidden="true">
-            <path
-                d="M16 3.2a12.8 12.8 0 0 0-11.1 19.2L3.2 28.8l6.6-1.7A12.8 12.8 0 1 0 16 3.2Zm7.5 17.7c-.3.8-1.5 1.5-2.3 1.6-.6.1-1.4.2-4.7-1-4.1-1.6-6.7-5.8-6.9-6.1-.2-.3-1.7-2.2-1.7-4.2s1-3 1.3-3.4c.3-.3.6-.4.9-.4h.7c.2 0 .5 0 .8.6.3.6 1 2.4 1.1 2.6.1.2.1.5 0 .7-.1.2-.2.4-.4.6-.2.2-.4.4-.2.7.2.3.9 1.5 2 2.4 1.4 1.2 2.5 1.6 2.9 1.8.4.2.6.2.8 0 .2-.2 1-1.1 1.2-1.5.2-.4.5-.3.8-.2.3.1 2.1 1 2.4 1.2.3.2.5.3.6.5.1.2.1.9-.2 1.7Z" />
-        </svg>
-        {{ __('messages.contact_whatsapp') }}
-    </a>
 
     {{-- Script tag removed since functionality is now in Alpine x-data --}}
     @stack('scripts')

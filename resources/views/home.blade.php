@@ -3,10 +3,86 @@
 @section('title', __('messages.home'))
 
 @section('content')
+    @if(isset($activePopups) && $activePopups->isNotEmpty())
+        <div x-data="popupManager({{ $activePopups->toJson() }})" x-show="currentPopup" x-cloak 
+             class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 scale-90"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-90">
+            
+            <div class="relative w-full max-w-md bg-white dark:bg-slate-800 rounded-2xl shadow-2xl overflow-hidden transform transition-all">
+                <button @click="closePopup()" class="absolute top-3 right-3 z-10 p-2 bg-white/80 dark:bg-slate-700/80 rounded-full text-slate-500 hover:text-red-500 transition shadow-sm flex items-center gap-1">
+                    <span class="text-sm font-bold px-1">إغلاق</span>
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+
+                <template x-if="currentPopup.image_path">
+                    <img :src="'/storage/' + currentPopup.image_path" class="w-full h-auto max-h-60 object-cover" :alt="currentPopup.localized_title">
+                </template>
+
+                <div class="p-6 text-center">
+                    <h3 x-text="currentPopup.localized_title" class="text-xl font-bold text-slate-800 dark:text-white mb-2"></h3>
+                    <p x-text="currentPopup.localized_content" class="text-slate-600 dark:text-slate-300 whitespace-pre-wrap"></p>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('alpine:init', () => {
+                Alpine.data('popupManager', (popups) => ({
+                    popups: popups,
+                    currentIndex: 0,
+                    currentPopup: null,
+
+                    init() {
+                        this.checkPopup();
+                    },
+
+                    checkPopup() {
+                        if (this.popups.length > 0) {
+                            // Check if this specific popup was already closed in this session
+                            // Show once per session
+                             if (sessionStorage.getItem('popup_closed_' + this.popups[0].id)) return;
+                            
+                            this.currentPopup = this.popups[this.currentIndex];
+                        }
+                    },
+
+                    closePopup() {
+                        // Mark as seen for this session
+                         sessionStorage.setItem('popup_closed_' + this.currentPopup.id, 'true');
+                        
+                        this.currentPopup = null;
+                        
+                        // Show next popup if exists
+                        this.currentIndex++;
+                        if (this.currentIndex < this.popups.length) {
+                            setTimeout(() => {
+                                this.currentPopup = this.popups[this.currentIndex];
+                            }, 500);
+                        }
+                    },
+                    
+                    // Helper to get localized text
+                    get localized_title() {
+                        return this.currentPopup ? ('{{ app()->getLocale() }}' === 'en' && this.currentPopup.title_en ? this.currentPopup.title_en : this.currentPopup.title) : '';
+                    },
+                    
+                    get localized_content() {
+                        return this.currentPopup ? ('{{ app()->getLocale() }}' === 'en' && this.currentPopup.content_en ? this.currentPopup.content_en : this.currentPopup.content) : '';
+                    }
+                }));
+            });
+        </script>
+    @endif
+
     <div class="store-shell space-y-4 sm:space-y-6">
         <x-store.hero :banners="$sharedBanners" :alt="__('messages.home')" />
 
-        <x-store.notice :text="$sharedTickerText" />
+        <x-store.notice :text="(app()->getLocale() === 'en' && !empty($sharedTickerTextEn)) ? $sharedTickerTextEn : $sharedTickerText" />
 
         <div class="w-full px-3 lg:w-4/5 lg:mx-auto">
             <div class="grid gap-2 sm:gap-3 lg:gap-4 grid-cols-2 lg:grid-cols-4" data-filter-list="categories">
@@ -40,7 +116,7 @@
         </div>
 
         <div class="store-card border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-800/80 p-4 mx-3 text-base leading-6 text-slate-700 dark:text-slate-300 sm:p-5 sm:text-lg sm:leading-7 break-words">
-            {{ __('messages.store_description') }}
+            {{ $sharedStoreDescription }}
             <a href="{{ route('about') }}" class="font-semibold text-orange-700 dark:text-orange-400 hover:text-orange-800 dark:hover:text-orange-300">{{ __('messages.contact_us') }}</a>.
         </div>
     </div>

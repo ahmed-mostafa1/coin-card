@@ -16,8 +16,7 @@
             <a href="{{ route('admin.categories.index') }}" class="cc-pill">التصنيفات</a>
             <a href="{{ route('admin.services.index') }}" class="cc-pill">الخدمات</a>
             <a href="{{ route('admin.orders.index') }}" class="cc-pill">الطلبات</a>
-            <a href="{{ route('admin.banners.index') }}" class="cc-pill">البانرات</a>
-            <a href="{{ route('admin.appearance.edit') }}" class="cc-pill">الشريط المتحرك</a>
+            <a href="{{ route('admin.site-settings.edit') }}" class="cc-pill">إدارة الموقع</a>
         </div>
     </div>
 @endsection

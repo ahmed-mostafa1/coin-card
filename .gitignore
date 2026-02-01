@@ -28,6 +28,4 @@ Homestead.json
 .env.production
 .phpactor.json
 auth.json
-README.md
-RESPONSIVE_TABLES_SUMMARY.md
-RESPONSIVE_TABLES.md
+*.md

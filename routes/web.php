@@ -21,6 +21,8 @@ use App\Http\Controllers\Admin\ServiceFormFieldController as AdminServiceFormFie
 use App\Http\Controllers\Admin\ServiceVariantController as AdminServiceVariantController;
 use App\Http\Controllers\Admin\BannerController as AdminBannerController;
 use App\Http\Controllers\Admin\AppearanceController as AdminAppearanceController;
+use App\Http\Controllers\Admin\SiteSettingsController as AdminSiteSettingsController;
+use App\Http\Controllers\Admin\PopupController as AdminPopupController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
@@ -99,8 +101,12 @@ Route::middleware(['auth', 'not_banned', 'role:admin'])->prefix('admin')->name('
     Route::resource('categories', AdminCategoryController::class)->except(['show', 'destroy']);
     Route::resource('services', AdminServiceController::class)->except(['show', 'destroy']);
     Route::resource('banners', AdminBannerController::class)->except(['show', 'destroy']);
+    Route::resource('popups', AdminPopupController::class);
+    Route::resource('vip-tiers', \App\Http\Controllers\Admin\VipTierController::class)->except(['show']);
     Route::get('/appearance', [AdminAppearanceController::class, 'edit'])->name('appearance.edit');
     Route::post('/appearance', [AdminAppearanceController::class, 'update'])->name('appearance.update');
+    Route::get('/site-settings', [AdminSiteSettingsController::class, 'edit'])->name('site-settings.edit');
+    Route::post('/site-settings', [AdminSiteSettingsController::class, 'update'])->name('site-settings.update');
     Route::get('services/{service}/variants', [AdminServiceVariantController::class, 'index'])->name('services.variants.index');
     Route::get('services/{service}/variants/create', [AdminServiceVariantController::class, 'create'])->name('services.variants.create');
     Route::post('services/{service}/variants', [AdminServiceVariantController::class, 'store'])->name('services.variants.store');
