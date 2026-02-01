@@ -18,19 +18,19 @@
         <div class="grid gap-6 lg:grid-cols-3">
             <div class="lg:col-span-2 space-y-4">
                 @if (session('status'))
-                    <div class="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+                    <div class="rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400">
                         {{ session('status') }}
                     </div>
                 @endif
 
                 @if ($errors->has('balance'))
-                    <div class="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+                    <div class="rounded-xl border border-rose-200 dark:border-rose-800 bg-rose-50 dark:bg-rose-900/30 px-4 py-3 text-sm text-rose-700 dark:text-rose-400">
                         {{ $errors->first('balance') }}
                     </div>
                 @endif
 
                 <div class="store-card p-6">
-                    <div class="flex flex-wrap items-center gap-3 border-b border-slate-100 pb-4">
+                    <div class="flex flex-wrap items-center gap-3 border-b border-slate-100 dark:border-slate-700 pb-4">
                         @if ($service->image_path)
                             <img src="{{ asset('storage/' . $service->image_path) }}" alt="{{ $service->localized_name }}"
                                 class="h-16 w-16 rounded-xl object-cover">
@@ -57,7 +57,7 @@
                                 <div class="space-y-2">
                                     @foreach ($service->variants->sortBy('sort_order') as $variant)
                                         <label
-                                            class="flex items-center justify-between rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700 transition hover:border-emerald-200">
+                                            class="flex items-center justify-between rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 transition hover:border-emerald-200 dark:hover:border-emerald-500">
                                             <span class="flex items-center gap-2">
                                                 <input type="radio" name="variant_id" value="{{ $variant->id }}"
                                                     data-price="{{ $variant->price }}"
@@ -73,7 +73,7 @@
                             </div>
                         @endif
 
-                        <div class="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">
+                        <div class="rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-3 text-sm text-slate-700 dark:text-slate-200">
                             <p>{{ __('messages.current_price') }}:
                                 <span id="current-price" class="font-semibold text-emerald-700">
                                     {{ number_format($service->variants->count() ? $service->variants->min('price') : $service->price, 2) }}
@@ -135,7 +135,7 @@
                         ${{ number_format($displayPrice, 2) }}
                     </span>
 
-                    <div class="overflow-hidden rounded-xl border border-slate-200">
+                    <div class="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700">
                         @if ($service->image_path)
                             <img src="{{ asset('storage/' . $service->image_path) }}" alt="{{ $service->localized_name }}"
                                 class="h-48 w-full object-cover">

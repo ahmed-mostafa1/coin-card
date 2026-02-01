@@ -10,30 +10,33 @@
         <x-store.notice :text="$sharedTickerText" />
 
         @if ($hasChildren)
-            <form method="GET" class="space-y-3">
-                <x-store.search-bar :placeholder="__('messages.search_section_placeholder')" target="subcategories" :value="$search" />
-                <x-store.search-bar placeholder="" />
-            </form>
+            <div class="w-full px-3 lg:w-4/5 lg:mx-auto space-y-4">
+                <form method="GET" class="space-y-3">
+                    <x-store.search-bar :placeholder="__('messages.search_section_placeholder')" target="subcategories" :value="$search" />
+                </form>
 
-            <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" data-filter-list="subcategories">
-                @forelse ($subcategories as $sub)
-                    <x-store.category-card :title="$sub->localized_name" :href="route('categories.show', $sub->slug)"
-                        :image="$sub->image_path ? asset('storage/' . $sub->image_path) : null" searchTarget="subcategories" />
-                @empty
-                    <x-empty-state :message="__('messages.no_categories')" class="sm:col-span-2 lg:col-span-4" />
-                @endforelse
+                <div class="grid gap-2 sm:gap-3 lg:gap-4 grid-cols-2 lg:grid-cols-4" data-filter-list="subcategories">
+                    @forelse ($subcategories as $sub)
+                        <x-store.category-card :title="$sub->localized_name" :href="route('categories.show', $sub->slug)"
+                            :image="$sub->image_path ? asset('storage/' . $sub->image_path) : null" searchTarget="subcategories" />
+                    @empty
+                        <x-empty-state :message="__('messages.no_categories')" class="col-span-2 lg:col-span-4" />
+                    @endforelse
+                </div>
             </div>
         @else
-            <form method="GET" class="space-y-3">
-                <x-store.search-bar :placeholder="__('messages.search_products_placeholder')" target="products" :value="$search" />
-            </form>
+            <div class="w-full px-3 lg:w-4/5 lg:mx-auto space-y-4">
+                <form method="GET" class="space-y-3">
+                    <x-store.search-bar :placeholder="__('messages.search_products_placeholder')" target="products" :value="$search" />
+                </form>
 
-            <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-5" data-filter-list="products">
-                @forelse ($services as $service)
-                    <x-store.product-card :service="$service" searchTarget="products" />
-                @empty
-                    <x-empty-state :message="__('messages.no_services_available')" class="sm:col-span-2 lg:col-span-5" />
-                @endforelse
+                <div class="grid gap-2 sm:gap-3 lg:gap-4 grid-cols-2 lg:grid-cols-5" data-filter-list="products">
+                    @forelse ($services as $service)
+                        <x-store.product-card :service="$service" searchTarget="products" />
+                    @empty
+                        <x-empty-state :message="__('messages.no_services_available')" class="col-span-2 lg:col-span-5" />
+                    @endforelse
+                </div>
             </div>
         @endif
     </div>
