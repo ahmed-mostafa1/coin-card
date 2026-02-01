@@ -42,7 +42,11 @@
     @endif
     
     @if ($bannerItems->count() > 1)
-        <div class="absolute inset-x-0 bottom-2 flex justify-center gap-2">
+        <div class="absolute inset-x-0 bottom-2 flex justify-center gap-2" data-hero-dots>
+            @foreach ($bannerItems as $index => $banner)
+                <button type="button" class="h-2 w-2 rounded-full bg-white transition-opacity duration-300 shadow-sm"
+                    aria-label="Slide {{ $index + 1 }}"></button>
+            @endforeach
         </div>
     @endif
 </div>
@@ -53,15 +57,34 @@
             document.addEventListener('DOMContentLoaded', () => {
                 document.querySelectorAll('[data-hero-slider]').forEach((slider) => {
                     const track = slider.querySelector('[data-hero-track]');
+                    const dotsContainer = slider.querySelector('[data-hero-dots]');
+                    const dots = dotsContainer ? Array.from(dotsContainer.children) : [];
                     const slides = track ? Array.from(track.children) : [];
+
                     if (!track || slides.length <= 1) return;
 
                     let index = 0;
-                    const isRtl = getComputedStyle(slider).direction === 'rtl';
+                    
+                    // Detect direction directly from HTML tag or fallback to slider computed style
+                    const htmlDir = document.documentElement.getAttribute('dir');
+                    const isRtl = htmlDir === 'rtl' || getComputedStyle(slider).direction === 'rtl';
 
                     const update = () => {
+                        // In RTL, we want positive translateX to move items into view if they are stacked LTR
+                        // But flex-direction handles the layout. 
+                        // If flex-direction is row (default), items are laid out left-to-right.
+                        // transform: translateX(-100%) moves to the second item (which is on the right).
+                        // If direction is RTL, flex items might be right-to-left?
+                        // Let's assume standard behavior: 
+                        // non-RTL: translate -100% * index
+                        // RTL: translate 100% * index might be needed if the track origin is different.
+                        
+                        // simpler approach: use percentage based on direction
                         const offset = index * 100;
-                        track.style.transform = `translateX(${isRtl ? offset : -offset}%)`;
+                        const translateValue = isRtl ? offset : -offset;
+                        
+                        track.style.transform = `translateX(${translateValue}%)`;
+                        
                         dots.forEach((dot, i) => {
                             dot.style.opacity = i === index ? '1' : '0.4';
                         });
@@ -72,11 +95,23 @@
                         update();
                     };
 
+                    // Add click handlers for dots
+                    dots.forEach((dot, i) => {
+                        dot.addEventListener('click', () => {
+                            index = i;
+                            update();
+                            // Reset timer on manual interaction
+                            clearInterval(timer);
+                            timer = setInterval(next, 5000);
+                        });
+                    });
+
                     update();
                     let timer = setInterval(next, 5000);
 
                     slider.addEventListener('mouseenter', () => clearInterval(timer));
                     slider.addEventListener('mouseleave', () => {
+                        clearInterval(timer); // ensure clear before restart
                         timer = setInterval(next, 5000);
                     });
 

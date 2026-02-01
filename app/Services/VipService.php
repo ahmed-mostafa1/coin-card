@@ -32,8 +32,8 @@ class VipService
     {
         return VipTier::query()
             ->where('is_active', true)
-            ->where('threshold_amount', '<=', $spent)
-            ->orderByDesc('threshold_amount')
+            ->where('deposits_required', '<=', $spent)
+            ->orderByDesc('deposits_required')
             ->orderByDesc('rank')
             ->first();
     }
@@ -99,7 +99,7 @@ class VipService
             ];
         }
 
-        $nextThreshold = (float) $nextTier->threshold_amount;
+        $nextThreshold = (float) $nextTier->deposits_required;
         $remaining = max(0.0, $nextThreshold - $spent);
         $progress = $nextThreshold > 0 ? min(100.0, ($spent / $nextThreshold) * 100) : 0.0;
 
