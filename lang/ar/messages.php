@@ -290,6 +290,7 @@ return [
     'image_replaceable' => 'الصورة (يمكن استبدالها)',
     'activate_banner' => 'تفعيل البانر',
     'dont_have_account' => 'لا تمتلك حساباً؟',
+    'return_to_dashboard' => 'عودة للوحة التحكم',
 
     // Homepage Features
     'programming_design' => 'جميع البطاقات من وكلاء رسميين',

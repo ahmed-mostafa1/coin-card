@@ -19,7 +19,7 @@ class SiteSettingsController extends Controller
         $logoText = SiteSetting::get('logo_text', 'Arab 8BP.in');
         $logoText = SiteSetting::get('logo_text', 'Arab 8BP.in');
         $logoImage = SiteSetting::get('logo_image', null);
-        $upscrollImage = SiteSetting::get('upscroll_image', null);
+        $upscrollLink = SiteSetting::get('upscroll_link', '#');
         $storeDescription = SiteSetting::get('store_description', 'متجر عربي متخصص في بيع بطاقات الألعاب والخدمات الرقمية بأسعار تنافسية وجودة عالية. نحن نقدم خدمة سريعة وموثوقة لجميع عملائنا. للاستفسارات أو الدعم، يرجى');
         
         $whatsappLink = SiteSetting::get('whatsapp_link', 'https://wa.me/963991195136');
@@ -35,8 +35,9 @@ class SiteSettingsController extends Controller
             'logoType',
             'logoText',
             'logoText',
+            'logoText',
             'logoImage',
-            'upscrollImage',
+            'upscrollLink',
             'storeDescription',
             'whatsappLink',
             'instagramLink',
@@ -59,7 +60,7 @@ class SiteSettingsController extends Controller
             'instagram_link' => ['nullable', 'url'],
             'telegram_link' => ['nullable', 'url'],
             'facebook_link' => ['nullable', 'url'],
-            'upscroll_image' => ['nullable', 'image', 'max:2048'], // 2MB max
+            'upscroll_link' => ['nullable', 'url'],
         ]);
 
         // Update ticker text
@@ -89,16 +90,9 @@ class SiteSettingsController extends Controller
             SiteSetting::set('logo_image', $path);
         }
 
-        // Update Upscroll Image
-        if ($request->hasFile('upscroll_image')) {
-            $oldUpscroll = SiteSetting::get('upscroll_image');
-            if ($oldUpscroll && Storage::disk('public')->exists($oldUpscroll)) {
-                Storage::disk('public')->delete($oldUpscroll);
-            }
-            $upscrollPath = $request->file('upscroll_image')->store('assets', 'public');
-            SiteSetting::set('upscroll_image', $upscrollPath);
-            cache()->forget('shared_upscroll_image');
-        }
+        // Update Upscroll Link
+        SiteSetting::set('upscroll_link', $data['upscroll_link']);
+        cache()->forget('shared_upscroll_link');
 
         // Update store description
         SiteSetting::set('store_description', $data['store_description']);

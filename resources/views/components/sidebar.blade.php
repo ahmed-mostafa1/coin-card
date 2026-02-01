@@ -181,13 +181,9 @@
                     <i class="fa-brands fa-facebook text-3xl"></i>
                 </a>
                 @endif
-                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="text-slate-600 dark:text-slate-400 hover:scale-110 transition" title="UpScrolled">
-                    @if(isset($sharedUpscrollImage) && $sharedUpscrollImage)
-                        <img src="{{ asset('storage/' . $sharedUpscrollImage) }}" alt="UpScrolled" class="w-8 h-8 object-contain">
-                    @else
-                        <img src="{{ asset('assets/img/upscrolled.png') }}" alt="UpScrolled" class="w-8 h-8">
-                    @endif
-                </button>
+                <a href="{{ $sharedUpscrollLink }}" target="_blank" class="text-slate-600 dark:text-slate-400 hover:scale-110 transition" title="UpScrolled">
+                    <img src="{{ asset('assets/img/upscrolled.png') }}" alt="UpScrolled" class="w-8 h-8">
+                </a>
             </div>
         </div>
 

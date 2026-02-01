@@ -16,6 +16,7 @@
             <a href="{{ route('admin.categories.index') }}" class="cc-pill">التصنيفات</a>
             <a href="{{ route('admin.services.index') }}" class="cc-pill">الخدمات</a>
             <a href="{{ route('admin.orders.index') }}" class="cc-pill">الطلبات</a>
+            <a href="{{ route('admin.vip-tiers.index') }}" class="cc-pill">مستويات VIP</a>
             <a href="{{ route('admin.site-settings.edit') }}" class="cc-pill">إدارة الموقع</a>
         </div>
     </div>

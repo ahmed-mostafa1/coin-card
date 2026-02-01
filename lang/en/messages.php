@@ -290,6 +290,7 @@ return [
     'image_replaceable' => 'Image (Replaceable)',
     'activate_banner' => 'Activate Banner',
     'dont_have_account' => 'Don\'t have an account?',
+    'return_to_dashboard' => 'Return to Dashboard'
 
     // Homepage Features
     'programming_design' => 'All cards are from official agents',

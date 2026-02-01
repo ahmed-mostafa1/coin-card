@@ -139,31 +139,7 @@
                 </div>
             </div>
 
-            <!-- Upscroll Image Section -->
-            <div class="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 p-6">
-                <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">صورة زر الصعود (Upscroll)</h2>
-                
-                <div class="space-y-4">
-                     <div>
-                        <x-input-label for="upscroll_image" value="صورة الزر" />
-                        
-                        @if($upscrollImage)
-                            <div class="mt-2 mb-3">
-                                <p class="text-sm text-slate-600 dark:text-slate-400 mb-2">الصورة الحالية:</p>
-                                <img src="{{ asset('storage/' . $upscrollImage) }}" alt="Upscroll" class="w-12 h-12 object-contain border border-slate-200 dark:border-slate-600 rounded-lg p-2 bg-white dark:bg-slate-800">
-                            </div>
-                        @endif
-                        
-                        <input type="file" id="upscroll_image" name="upscroll_image" accept="image/*"
-                            class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500">
-                        <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">
-                            <i class="fa-solid fa-info-circle ml-1"></i>
-                            المقاس المفضل: 64x64 بكسل (PNG بخلفية شفافة)
-                        </p>
-                        <x-input-error :messages="$errors->get('upscroll_image')" />
-                    </div>
-                </div>
-            </div>
+
 
             <!-- Store Description Section -->
             <div class="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 p-6">
@@ -222,13 +198,14 @@
 
                     <div>
                         <x-input-label for="facebook_link" value="رابط فيسبوك" />
-                        <div class="relative mt-1 rounded-md shadow-sm">
-                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                <i class="fa-brands fa-facebook text-slate-400"></i>
-                            </div>
-                            <x-text-input id="facebook_link" name="facebook_link" type="url" :value="old('facebook_link', $facebookLink)" class="pl-10 text-left" dir="ltr" />
-                        </div>
-                        <x-input-error :messages="$errors->get('facebook_link')" />
+                        <x-text-input id="facebook_link" name="facebook_link" type="url" class="mt-1 block w-full" :value="old('facebook_link', $facebookLink)" placeholder="https://facebook.com/..." />
+                        <x-input-error :messages="$errors->get('facebook_link')" class="mt-2" />
+                    </div>
+
+                    <div>
+                        <x-input-label for="upscroll_link" value="رابط Upscroll" />
+                        <x-text-input id="upscroll_link" name="upscroll_link" type="url" class="mt-1 block w-full" :value="old('upscroll_link', $upscrollLink)" placeholder="https://..." />
+                        <x-input-error :messages="$errors->get('upscroll_link')" class="mt-2" />
                     </div>
                 </div>
             </div>
