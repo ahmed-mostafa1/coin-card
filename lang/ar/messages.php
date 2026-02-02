@@ -291,7 +291,7 @@ return [
     'activate_banner' => 'تفعيل البانر',
     'dont_have_account' => 'لا تمتلك حساباً؟',
     'return_to_dashboard' => 'عودة للوحة التحكم',
-
+    'member' => ' عضو جديد',
     // Homepage Features
     'programming_design' => 'جميع البطاقات من وكلاء رسميين',
     'easy_payment' => 'يتم معالجة الطلبات بشكل سريع وآمن',
@@ -359,4 +359,8 @@ return [
     'messages.remove_all' => 'حذف جميع الرسائل',
     'messages.welcome' => 'مرحبا بك في موقع 8bp.in',
     'messages.welcome_desc' => 'مرحبا بك في موقع 8bp.in',
+    'remaining' => 'باقي',
+    'to_reach' => 'للوصول إلى',
+    'max_level' => 'وصلت لأعلى مستوى!',
+    'currency' => '$',
 ];

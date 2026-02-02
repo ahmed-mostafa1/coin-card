@@ -18,4 +18,11 @@ git clean -fd \
 
 php artisan optimize:clear
 
-php artisan optimize
+
+
+The VIP badges feature the following gradient styles based on tier rank:
+Rank 1: Slate/Silver Gradient
+Rank 2: Gold/Yellow Gradient
+Rank 3: Emerald/Platinum Gradient
+Rank 4: Purple/Diamond Gradient
+Rank 5: Rose/Mythic Gradient

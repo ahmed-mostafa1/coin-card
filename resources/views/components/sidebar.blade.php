@@ -38,18 +38,72 @@
                          </div>
                     </div>
                     <div>
-                         <!-- <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('messages.welcome') ?? 'أهلا بك :' }}</p> -->
+                    <!-- <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('messages.welcome') ?? 'أهلا بك :' }}</p> -->
                          <p class="font-bold text-slate-800 dark:text-white">{{ auth()->user()->name }}</p>
-                          @if(auth()->user()->vipStatus?->vipTier)
-                              <div class="flex items-center gap-1 mt-1">
-                                  @if(auth()->user()->vipStatus->vipTier->image_path)
-                                    <img src="{{ asset('storage/' . auth()->user()->vipStatus->vipTier->image_path) }}" alt="VIP" class="w-4 h-4 object-contain">
-                                  @endif
-                                  <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400">
-                                      {{ app()->getLocale() == 'ar' ? auth()->user()->vipStatus->vipTier->title_ar : auth()->user()->vipStatus->vipTier->title_en }}
-                                  </span>
-                              </div>
-                          @endif
+                         
+                         @inject('vipService', 'App\Services\VipService')
+                         @php
+                             $vipData = $vipService->getVipSummary(auth()->user());
+                             $currentTier = $vipData['current_tier'];
+                             $nextTier = $vipData['next_tier'];
+                             $remaining = $vipData['remaining_to_next'];
+                             $progress = $vipData['progress_percent'];
+                             
+                             // Tier specific styling based on rank or default
+                             $tierStyles = [
+                                 0 => 'bg-slate-200 text-slate-600 ring-slate-300 dark:bg-slate-700 dark:text-slate-300 dark:ring-slate-600', // Basic/Member
+                                 1 => 'bg-gradient-to-r from-slate-400 to-slate-600 text-white ring-slate-300', // Silver/Basic
+                                 2 => 'bg-gradient-to-r from-yellow-400 to-yellow-600 text-white ring-yellow-300', // Gold
+                                 3 => 'bg-gradient-to-r from-emerald-400 to-emerald-600 text-white ring-emerald-300', // Platinum/Emerald
+                                 4 => 'bg-gradient-to-r from-purple-500 to-indigo-600 text-white ring-purple-400', // Diamond
+                                 5 => 'bg-gradient-to-r from-rose-500 to-red-600 text-white ring-rose-300', // Mythic
+                             ];
+                             
+                             $rank = $currentTier?->rank ?? 0;
+                             $currentStyle = $tierStyles[$rank] ?? $tierStyles[1];
+                         @endphp
+
+                         <div class="mt-2">
+                             <!-- VIP Badge -->
+                             <div class="flex items-center gap-2 mb-1.5">
+                                  <div class="px-2.5 py-0.5 rounded-full text-[10px] uppercase tracking-wider font-bold shadow-sm ring-1 ring-inset {{ $currentStyle }}">
+                                      <div class="flex items-center gap-1">
+                                          @if($currentTier && $currentTier->image_path)
+                                            <img src="{{ asset('storage/' . $currentTier->image_path) }}" alt="VIP" class="w-3 h-3 object-contain invert brightness-0">
+                                          @elseif($currentTier)
+                                            <i class="fa-solid fa-crown text-[10px]"></i>
+                                          @else
+                                            <i class="fa-solid fa-user text-[10px]"></i>
+                                          @endif
+                                          <span>
+                                              @if($currentTier)
+                                                  {{ app()->getLocale() == 'ar' ? $currentTier->title_ar : $currentTier->title_en }}
+                                              @else
+                                                  {{ __('messages.member') ?? (app()->getLocale() == 'ar' ? 'عضو' : 'Member') }}
+                                              @endif
+                                          </span>
+                                      </div>
+                                  </div>
+                             </div>
+                             
+                             <!-- Next Level Progress -->
+                             @if($nextTier)
+                                 <div class="bg-gray-200 dark:bg-slate-700 rounded-full h-1.5 w-full max-w-[120px] mb-1 overflow-hidden">
+                                     <div class="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full transition-all duration-500" style="width: {{ $progress }}%"></div>
+                                 </div>
+                                 <p class="text-[10px] text-slate-500 dark:text-slate-400 leading-tight">
+                                     {{ __('messages.remaining') ?? (app()->getLocale() == 'ar' ? 'باقي' : 'Remaining') }}: 
+                                     <span class="font-bold text-slate-700 dark:text-slate-300">{{ number_format($remaining, 2) }}</span>
+                                     {{ __('messages.currency') ?? '$' }} 
+                                     {{ __('messages.to_reach') ?? (app()->getLocale() == 'ar' ? 'للوصول إلى' : 'to reach') }}
+                                     <span class="text-emerald-600 dark:text-emerald-400 font-bold">{{ app()->getLocale() == 'ar' ? $nextTier->title_ar : $nextTier->title_en }}</span>
+                                 </p>
+                             @else
+                                 <p class="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">
+                                     {{ __('messages.max_level') ?? (app()->getLocale() == 'ar' ? 'وصلت لأعلى مستوى!' : 'Max Level Reached!') }} <i class="fa-solid fa-star text-yellow-400"></i>
+                                 </p>
+                             @endif
+                         </div>
                     </div>
                  @else
                     <a href="{{ route('login') }}" class="font-bold text-slate-800 dark:text-white">{{ __('messages.login') }}</a>
@@ -182,7 +236,7 @@
                 </a>
                 @endif
                 <a href="{{ $sharedUpscrollLink }}" target="_blank" class="text-slate-600 dark:text-slate-400 hover:scale-110 transition" title="UpScrolled">
-                    <img src="{{ asset('assets/img/upscrolled.png') }}" alt="UpScrolled" class="w-8 h-8">
+                    <img src="{{ asset('img/upscrolled.png') }}" alt="UpScrolled" class="w-8 h-8">
                 </a>
             </div>
         </div>

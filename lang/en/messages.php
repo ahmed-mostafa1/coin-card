@@ -291,6 +291,7 @@ return [
     'activate_banner' => 'Activate Banner',
     'dont_have_account' => 'Don\'t have an account?',
     'return_to_dashboard' => 'Return to Dashboard',
+    'member'=> 'New Member',
 
     // Homepage Features
     'programming_design' => 'All cards are from official agents',
@@ -362,5 +363,8 @@ return [
     'deposit_request_deleted' => 'Deposit request deleted successfully.',
     'messages.welcome' => 'Welcome to 8bp.in',
     'messages.welcome_desc' => 'Welcome to 8bp.in',
-    
+    'remaining' => 'Remaining',
+    'to_reach' => 'to reach',
+    'max_level' => 'Max Level Reached!',
+    'currency' => '$',
 ];

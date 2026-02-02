@@ -11,21 +11,25 @@ use Illuminate\Support\Facades\DB;
 
 class VipService
 {
-    public function calculateLifetimeSpent(User $user): string
+    public function calculateTotalDeposits(User $user): string
     {
-        $spent = Order::query()
-            ->where('user_id', $user->id)
-            ->where(function (Builder $query): void {
-                $query->whereNotNull('settled_at')
-                    ->orWhere('status', Order::STATUS_DONE);
-            })
-            ->sum(DB::raw('COALESCE(price_at_purchase, amount_held)'));
-
-        if ($spent === null || $spent === '') {
+        $wallet = $user->wallet;
+        
+        if (!$wallet) {
             return '0.00';
         }
 
-        return number_format((float) $spent, 2, '.', '');
+        $deposited = \App\Models\WalletTransaction::query()
+            ->where('wallet_id', $wallet->id)
+            ->where('type', \App\Models\WalletTransaction::TYPE_DEPOSIT)
+            ->where('status', \App\Models\WalletTransaction::STATUS_APPROVED)
+            ->sum('amount');
+
+        if ($deposited === null || $deposited === '') {
+            return '0.00';
+        }
+
+        return number_format((float) $deposited, 2, '.', '');
     }
 
     public function determineTier(float $spent): ?VipTier
@@ -55,7 +59,7 @@ class VipService
 
     public function updateUserVipStatus(User $user): UserVipStatus
     {
-        $spent = $this->calculateLifetimeSpent($user);
+        $spent = $this->calculateTotalDeposits($user);
         $computedTier = $this->determineTier((float) $spent);
 
         $existing = UserVipStatus::query()
