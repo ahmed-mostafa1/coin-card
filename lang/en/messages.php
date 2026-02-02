@@ -366,6 +366,7 @@ return [
     'remaining' => 'Remaining',
     'to_reach' => 'to reach',
     'max_level' => 'Max Level Reached!',
+    'remove' => 'Remove',
     'currency' => '$',
     'offer_settings' => 'Offer Settings',
     'offer_settings_desc' => 'Offer Settings',

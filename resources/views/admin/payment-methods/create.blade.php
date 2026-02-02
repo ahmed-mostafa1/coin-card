@@ -83,6 +83,11 @@
                                     <x-input-label value="{{ __('messages.field_label') }}" />
                                     <x-text-input name="fields[{{ $index }}][label]" type="text" :value="$field['label'] ?? ''" required data-field-label-input />
                                     <x-input-error :messages="$errors->get('fields.'.$index.'.label')" />
+                                    
+                                    <div class="mt-2">
+                                        <x-input-label value="{{ __('messages.field_label') }} (EN)" />
+                                        <x-text-input name="fields[{{ $index }}][label_en]" type="text" :value="$field['label_en'] ?? ''" />
+                                    </div>
                                 </div>
                                 <div>
                                     <x-input-label value="{{ __('messages.field_key') }}" />
@@ -153,6 +158,9 @@
                                 <div class="lg:col-span-2">
                                     <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ __('messages.field_label') }}</label>
                                     <input name="fields[${index}][label]" type="text" required data-field-label-input class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
+                                    
+                                    <label class="mt-2 block text-sm font-semibold text-slate-700 dark:text-slate-300">{{ __('messages.field_label') }} (EN)</label>
+                                    <input name="fields[${index}][label_en]" type="text" class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
                                 <div>
                                     <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ __('messages.field_key') }}</label>

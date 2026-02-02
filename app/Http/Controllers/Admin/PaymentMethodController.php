@@ -83,6 +83,7 @@ class PaymentMethodController extends Controller
             $paymentMethod->fields()->create([
                 'type' => $field['type'],
                 'label' => $field['label'],
+                'label_en' => $field['label_en'] ?? null,
                 'name_key' => $field['name_key'],
                 'is_required' => isset($field['is_required']) ? (bool) $field['is_required'] : false,
                 'sort_order' => $field['sort_order'] ?? $index,

@@ -14,6 +14,7 @@ class PaymentMethodField extends Model
         'payment_method_id',
         'type',
         'label',
+        'label_en',
         'name_key',
         'is_required',
         'sort_order',
@@ -22,6 +23,17 @@ class PaymentMethodField extends Model
     protected $casts = [
         'is_required' => 'boolean',
     ];
+
+    /**
+     * Get the localized label based on current locale
+     */
+    public function getLocalizedLabelAttribute(): string
+    {
+        $locale = app()->getLocale();
+        return $locale === 'en' && $this->label_en 
+            ? $this->label_en 
+            : $this->label;
+    }
 
     public function paymentMethod(): BelongsTo
     {

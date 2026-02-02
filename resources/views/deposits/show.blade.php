@@ -29,7 +29,7 @@
                 <div class="flex items-center justify-between gap-4">
                     <div>
                         <p class="text-sm text-slate-500 dark:text-slate-400">{{ __('messages.account_number_label') }}</p>
-                        <p class="mt-2 text-lg font-semibold text-slate-700 dark:text-slate-200" data-account-number>
+                        <p class="mt-2 text-lg font-semibold text-slate-700 dark:text-slate-200 break-all" data-account-number>
                             {{ $paymentMethod->account_number }}</p>
                         <p class="mt-1 text-xs text-emerald-600 dark:text-emerald-400 hidden" data-copy-feedback>
                             {{ __('messages.copied_feedback') }}</p>

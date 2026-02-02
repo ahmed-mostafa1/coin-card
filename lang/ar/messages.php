@@ -280,6 +280,7 @@ return [
     'no_fields_yet' => 'لم يتم إضافة حقول بعد.',
     'variants_hint' => 'يمكنك إضافة خيارات متعددة بسعر مختلف لكل باقة.',
     'variant_name' => 'اسم الباقة',
+    'remove' => 'حذف',
 
     // Admin - Banners
     'add_banner' => 'إضافة بانر',

@@ -13,7 +13,7 @@
 @endphp
 
 <div class="relative w-full overflow-hidden rounded-xl border border-slate-300 bg-gradient-to-tr from-slate-800 via-slate-700 to-slate-600 shadow-md {{ $height }} sm:w-4/5 sm:mx-auto"
-    data-hero-slider>
+    dir="ltr" data-hero-slider>
     @if($bannerItems->isNotEmpty())
         <div class="flex h-full w-full transition-transform duration-700 ease-in-out" data-hero-track>
             @foreach ($bannerItems as $banner)
@@ -65,23 +65,9 @@
 
                     let index = 0;
                     
-                    // Detect direction directly from HTML tag or fallback to slider computed style
-                    const htmlDir = document.documentElement.getAttribute('dir');
-                    const isRtl = htmlDir === 'rtl' || getComputedStyle(slider).direction === 'rtl';
-
                     const update = () => {
-                        // In RTL, we want positive translateX to move items into view if they are stacked LTR
-                        // But flex-direction handles the layout. 
-                        // If flex-direction is row (default), items are laid out left-to-right.
-                        // transform: translateX(-100%) moves to the second item (which is on the right).
-                        // If direction is RTL, flex items might be right-to-left?
-                        // Let's assume standard behavior: 
-                        // non-RTL: translate -100% * index
-                        // RTL: translate 100% * index might be needed if the track origin is different.
-                        
-                        // simpler approach: use percentage based on direction
                         const offset = index * 100;
-                        const translateValue = isRtl ? offset : -offset;
+                        const translateValue = -offset;
                         
                         track.style.transform = `translateX(${translateValue}%)`;
                         
