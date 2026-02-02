@@ -292,6 +292,7 @@ return [
     'dont_have_account' => 'لا تمتلك حساباً؟',
     'return_to_dashboard' => 'عودة للوحة التحكم',
     'member' => ' عضو جديد',
+    
     // Homepage Features
     'programming_design' => 'جميع البطاقات من وكلاء رسميين',
     'easy_payment' => 'يتم معالجة الطلبات بشكل سريع وآمن',
@@ -363,4 +364,16 @@ return [
     'to_reach' => 'للوصول إلى',
     'max_level' => 'وصلت لأعلى مستوى!',
     'currency' => '$',
+    'offer_settings' => 'إعدادات العروض',
+    'offer_settings_desc' => 'إعدادات العروض',
+    'offer_image' => 'صورة العرض',
+    'recommended_size' => 'الحجم الموصى به',
+    'activate_offer' => 'تفعيل العرض',
+    'deactivate_offer' => 'إلغاء تفعيل العرض',
+    'offer_activated' => 'تم تفعيل العرض بنجاح.',
+    'offer_deactivated' => 'تم إلغاء تفعيل العرض بنجاح.',
+    'offer_image_updated' => 'تم تحديث صورة العرض بنجاح.',
+    'offer_image_deleted' => 'تم حذف صورة العرض بنجاح.',
+    'offer_image_uploaded' => 'تم رفع صورة العرض بنجاح.',
+    'offer_image_not_uploaded' => 'لم يتم رفع صورة العرض.',
 ];

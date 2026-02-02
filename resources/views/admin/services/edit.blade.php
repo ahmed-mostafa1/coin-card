@@ -73,8 +73,8 @@
                     <x-input-label for="image" :value="__('messages.image_optional')" />
                     <input id="image" name="image" type="file" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-600 dark:text-slate-300 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-800 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-700 dark:file:text-emerald-300">
                     <x-input-error :messages="$errors->get('image')" />
+                    <p class="mt-1 text-xs text-slate-500">{{ __('messages.recommended_size') }}: 300x200 px</p>
                     @if ($service->image_path)
-                        <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">{{ __('messages.current_image_saved') }}</p>
                     @endif
                 </div>
 
@@ -98,7 +98,7 @@
                                     <img src="{{ asset('storage/' . $service->offer_image_path) }}" alt="Offer Image" class="mt-2 h-20 rounded-lg object-cover">
                                 </div>
                             @endif
-                            <p class="mt-1 text-xs text-slate-500">{{ __('messages.recommended_size') ?? (app()->getLocale() == 'ar' ? 'الحجم الموصى به: 300x200 بكسل' : 'Recommended size: 300x200 px') }}</p>
+                            <p class="mt-1 text-xs text-slate-500">{{ __('messages.recommended_size') }}: 300x200 px</p>
                         </div>
 
                         <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
