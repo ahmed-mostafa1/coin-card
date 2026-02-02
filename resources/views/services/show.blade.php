@@ -16,6 +16,32 @@
         <x-store.notice :text="$sharedTickerText" />
 
         <div class="grid gap-6 lg:grid-cols-3">
+            <div>
+                <div class="store-card relative overflow-hidden p-4">
+                    @php
+                        $displayPrice = $service->variants->count()
+                            ? $service->variants->min('price')
+                            : $service->price;
+                    @endphp
+                    <span
+                        class="absolute right-3 top-3 rounded-full bg-amber-400 px-3 py-1 text-xs font-semibold text-white shadow">
+                        ${{ number_format($displayPrice, 2) }}
+                    </span>
+
+                    <div class="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700">
+                        @if ($service->image_path)
+                            <img src="{{ asset('storage/' . $service->image_path) }}" alt="{{ $service->localized_name }}"
+                                class="h-48 w-full object-cover">
+                        @endif
+                    </div>
+
+                    <div class="pt-4 text-center">
+                        <p class="text-base font-semibold text-slate-900">{{ $service->localized_name }}</p>
+                        <p class="mt-1 text-xs text-slate-600">
+                            {{ $service->localized_description ?: __('messages.default_delivery_eta') }}</p>
+                    </div>
+                </div>
+            </div>
             <div class="lg:col-span-2 space-y-4">
                 @if (session('status'))
                     <div class="rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400">
@@ -123,32 +149,7 @@
                 </div>
             </div>
 
-            <div>
-                <div class="store-card relative overflow-hidden p-4">
-                    @php
-                        $displayPrice = $service->variants->count()
-                            ? $service->variants->min('price')
-                            : $service->price;
-                    @endphp
-                    <span
-                        class="absolute right-3 top-3 rounded-full bg-amber-400 px-3 py-1 text-xs font-semibold text-white shadow">
-                        ${{ number_format($displayPrice, 2) }}
-                    </span>
-
-                    <div class="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700">
-                        @if ($service->image_path)
-                            <img src="{{ asset('storage/' . $service->image_path) }}" alt="{{ $service->localized_name }}"
-                                class="h-48 w-full object-cover">
-                        @endif
-                    </div>
-
-                    <div class="pt-4 text-center">
-                        <p class="text-base font-semibold text-slate-900">{{ $service->localized_name }}</p>
-                        <p class="mt-1 text-xs text-slate-600">
-                            {{ $service->localized_description ?: __('messages.default_delivery_eta') }}</p>
-                    </div>
-                </div>
-            </div>
+            
         </div>
     </div>
 

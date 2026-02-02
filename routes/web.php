@@ -82,6 +82,9 @@ Route::middleware(['auth', 'not_banned', 'role:admin'])->prefix('admin')->name('
     Route::post('/users/{user}/ban', [AdminUserController::class, 'toggleBan'])->name('users.ban');
     Route::post('/users/{user}/freeze', [AdminUserController::class, 'toggleFreeze'])->name('users.freeze');
     Route::post('/users/{user}/credit', [AdminUserController::class, 'credit'])->name('users.credit');
+    Route::post('/users/{user}/debit', [AdminUserController::class, 'debit'])->name('users.debit');
+    Route::post('/users/{user}/send-email', [AdminUserController::class, 'sendEmail'])->name('users.send-email');
+    Route::post('/users/{user}/send-notification', [AdminUserController::class, 'sendNotification'])->name('users.send-notification');
     Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
     Route::get('/agency-requests', [AdminAgencyRequestController::class, 'index'])->name('agency-requests.index');
     Route::get('/agency-requests/{agencyRequest}', [AdminAgencyRequestController::class, 'show'])->name('agency-requests.show');
@@ -102,6 +105,10 @@ Route::middleware(['auth', 'not_banned', 'role:admin'])->prefix('admin')->name('
     Route::resource('services', AdminServiceController::class)->except(['show', 'destroy']);
     Route::resource('banners', AdminBannerController::class)->except(['show', 'destroy']);
     Route::resource('popups', AdminPopupController::class);
+    
+    Route::get('/notifications/create', [\App\Http\Controllers\Admin\NotificationController::class, 'create'])->name('notifications.create');
+    Route::post('/notifications', [\App\Http\Controllers\Admin\NotificationController::class, 'store'])->name('notifications.store');
+
     Route::resource('vip-tiers', \App\Http\Controllers\Admin\VipTierController::class)->except(['show']);
     Route::get('/appearance', [AdminAppearanceController::class, 'edit'])->name('appearance.edit');
     Route::post('/appearance', [AdminAppearanceController::class, 'update'])->name('appearance.update');

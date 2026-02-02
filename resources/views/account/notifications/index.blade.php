@@ -10,12 +10,19 @@
                 <h1 class="text-2xl font-semibold text-emerald-700 dark:text-emerald-400">{{ __('messages.notifications') }}</h1>
                 <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">{{ __('messages.notifications_desc') }}</p>
             </div>
-            <form method="POST" action="{{ route('account.notifications.mark-all-read') }}">
-                @csrf
-                <button type="submit" class="rounded-full border border-emerald-200 dark:border-emerald-700 px-4 py-2 text-sm font-semibold text-emerald-700 dark:text-emerald-400 transition hover:bg-emerald-50 dark:hover:bg-emerald-900/30">
-                    {{ __('messages.mark_all_read') }}
-                </button>
-            </form>
+            <div class="flex items-center gap-3">
+                @if(auth()->user()->hasRole('admin'))
+                    <a href="{{ route('admin.notifications.create') }}" class="rounded-full border border-orange-200 dark:border-orange-700 px-4 py-2 text-sm font-semibold text-orange-700 dark:text-orange-400 transition hover:bg-orange-50 dark:hover:bg-orange-900/30">
+                        {{ __('messages.send_general_notification') ?? (app()->getLocale() == 'ar' ? 'أرسال إشعار لجميع المستخدمين' : 'Send Notification to All Users') }}
+                    </a>
+                @endif
+                <form method="POST" action="{{ route('account.notifications.mark-all-read') }}">
+                    @csrf
+                    <button type="submit" class="rounded-full border border-emerald-200 dark:border-emerald-700 px-4 py-2 text-sm font-semibold text-emerald-700 dark:text-emerald-400 transition hover:bg-emerald-50 dark:hover:bg-emerald-900/30">
+                        {{ __('messages.mark_all_read') }}
+                    </button>
+                </form>
+            </div>
         </div>
 
         @if (session('status'))

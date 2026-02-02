@@ -23,6 +23,20 @@
                     {{ session('status') }}
                 </div>
             @endif
+            @if (session('error'))
+                <div class="mt-6 rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+                    {{ session('error') }}
+                </div>
+            @endif
+            @if ($errors->any())
+                <div class="mt-6 rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+                    <ul class="list-disc list-inside">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
             <div class="mt-4 flex flex-wrap gap-2 text-xs">
                 @if ($user->is_banned)
@@ -76,21 +90,81 @@
                     </div>
                 </div>
 
+                </div>
+
                 <div class="rounded-3xl border border-emerald-100 bg-white p-6 shadow-sm">
-                    <h2 class="text-lg font-semibold text-emerald-700">إضافة رصيد</h2>
-                    <form method="POST" action="{{ route('admin.users.credit', $user) }}" class="mt-4 space-y-4">
+                    <h2 class="text-lg font-semibold text-emerald-700">إضافة/خصم رصيد</h2>
+                    
+                    <div class="mt-4 border-b border-slate-100 pb-4">
+                        <h3 class="text-sm font-bold text-emerald-600 mb-2">إضافة رصيد</h3>
+                        <form method="POST" action="{{ route('admin.users.credit', $user) }}" class="space-y-4">
+                            @csrf
+                            <div>
+                                <x-input-label for="credit_amount" value="المبلغ" />
+                                <x-text-input id="credit_amount" name="amount" type="number" step="0.01" min="0.01" max="100000" :value="old('amount')" required />
+                            </div>
+                            <div>
+                                <x-input-label for="credit_note" value="ملاحظة (اختياري)" />
+                                <textarea id="credit_note" name="note" rows="2" class="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-2 text-sm text-slate-700">{{ old('note') }}</textarea>
+                            </div>
+                            <x-primary-button class="w-full">إضافة الرصيد</x-primary-button>
+                        </form>
+                    </div>
+
+                    <div class="mt-4 pt-2">
+                        <h3 class="text-sm font-bold text-rose-600 mb-2">خصم رصيد</h3>
+                        <form method="POST" action="{{ route('admin.users.debit', $user) }}" class="space-y-4">
+                            @csrf
+                            <div>
+                                <x-input-label for="debit_amount" value="المبلغ" />
+                                <x-text-input id="debit_amount" name="amount" type="number" step="0.01" min="0.01" max="100000" :value="old('amount')" required />
+                            </div>
+                            <div>
+                                <x-input-label for="debit_note" value="ملاحظة (اختياري)" />
+                                <textarea id="debit_note" name="note" rows="2" class="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-2 text-sm text-slate-700">{{ old('note') }}</textarea>
+                            </div>
+                            <button type="submit" class="w-full rounded-lg bg-rose-600 px-4 py-2 text-sm font-medium text-white hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2">خصم الرصيد</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="rounded-3xl border border-emerald-100 bg-white p-6 shadow-sm">
+                    <h2 class="text-lg font-semibold text-emerald-700">إرسال بريد إلكتروني</h2>
+                    <form method="POST" action="{{ route('admin.users.send-email', $user) }}" class="mt-4 space-y-4">
                         @csrf
                         <div>
-                            <x-input-label for="credit_amount" value="المبلغ" />
-                            <x-text-input id="credit_amount" name="amount" type="number" step="0.01" min="0.01" max="100000" :value="old('amount')" required />
-                            <x-input-error :messages="$errors->get('amount')" />
+                            <x-input-label for="email_subject" value="الموضوع" />
+                            <x-text-input id="email_subject" name="subject" type="text" class="w-full" :value="old('subject')" required />
                         </div>
                         <div>
-                            <x-input-label for="credit_note" value="ملاحظة (اختياري)" />
-                            <textarea id="credit_note" name="note" rows="3" class="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-2 text-sm text-slate-700">{{ old('note') }}</textarea>
-                            <x-input-error :messages="$errors->get('note')" />
+                            <x-input-label for="email_message" value="الرسالة" />
+                            <textarea id="email_message" name="message" rows="4" class="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-2 text-sm text-slate-700" required>{{ old('message') }}</textarea>
                         </div>
-                        <x-primary-button class="w-full">تحويل الرصيد</x-primary-button>
+                        <x-primary-button class="w-full">إرسال بريد</x-primary-button>
+                    </form>
+                </div>
+
+                <div class="rounded-3xl border border-emerald-100 bg-white p-6 shadow-sm">
+                    <h2 class="text-lg font-semibold text-emerald-700">إرسال إشعار</h2>
+                    <form method="POST" action="{{ route('admin.users.send-notification', $user) }}" class="mt-4 space-y-4">
+                        @csrf
+                        <div>
+                            <x-input-label for="notif_title_ar" value="العنوان (عربي)" />
+                            <x-text-input id="notif_title_ar" name="title_ar" type="text" class="w-full" :value="old('title_ar')" required />
+                        </div>
+                        <div>
+                            <x-input-label for="notif_title_en" value="العنوان (إنجليزي)" />
+                            <x-text-input id="notif_title_en" name="title_en" type="text" class="w-full" :value="old('title_en')" required />
+                        </div>
+                        <div>
+                            <x-input-label for="notif_content_ar" value="المحتوى (عربي)" />
+                            <textarea id="notif_content_ar" name="content_ar" rows="2" class="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-2 text-sm text-slate-700" required>{{ old('content_ar') }}</textarea>
+                        </div>
+                        <div>
+                            <x-input-label for="notif_content_en" value="المحتوى (إنجليزي)" />
+                            <textarea id="notif_content_en" name="content_en" rows="2" class="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-2 text-sm text-slate-700" required>{{ old('content_en') }}</textarea>
+                        </div>
+                        <x-primary-button class="w-full">إرسال إشعار</x-primary-button>
                     </form>
                 </div>
             </div>

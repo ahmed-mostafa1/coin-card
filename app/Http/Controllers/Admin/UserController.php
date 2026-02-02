@@ -105,6 +105,77 @@ class UserController extends Controller
             ->with('status', 'تمت إضافة الرصيد بنجاح.');
     }
 
+    public function debit(User $user, Request $request, WalletService $walletService): RedirectResponse
+    {
+        $data = $request->validate([
+            'amount' => ['required', 'numeric', 'min:0.01', 'max:100000'],
+            'note' => ['nullable', 'string', 'max:500'],
+        ]);
+
+        $wallet = $user->wallet()->firstOrCreate([]);
+
+        // Check balance
+        if ($wallet->balance < $data['amount']) {
+             return redirect()->route('admin.users.show', $user)
+                ->withErrors(['amount' => 'رصيد المستخدم غير كافٍ للخصم.']); // Insufficient balance
+        }
+
+        $walletService->debit($wallet, (string) $data['amount'], [
+            'type' => 'manual_withdraw', // Custom type for manual admin debit
+            'reference_type' => 'admin_manual_debit',
+            'note' => $data['note'] ?? null,
+            'created_by_user_id' => $request->user()?->id,
+            'approved_by_user_id' => $request->user()?->id,
+            'approved_at' => now(),
+        ]);
+
+        return redirect()->route('admin.users.show', $user)
+            ->with('status', 'تم خصم الرصيد بنجاح.');
+    }
+
+    public function sendEmail(User $user, Request $request): RedirectResponse
+    {
+        if (!$user->email) {
+            return redirect()->route('admin.users.show', $user)
+                ->with('error', 'حساب هذا المستخدم ليس مربوط بأي بريد إلكتروني');
+        }
+
+        $data = $request->validate([
+            'subject' => ['required', 'string', 'max:255'],
+            'message' => ['required', 'string'],
+        ]);
+
+        try {
+            \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\AdminUserMessage($data['subject'], $data['message']));
+        } catch (\Exception $e) {
+            return redirect()->route('admin.users.show', $user)
+                ->with('error', 'فشل إرسال البريد الإلكتروني: ' . $e->getMessage());
+        }
+
+        return redirect()->route('admin.users.show', $user)
+            ->with('status', 'تم إرسال البريد الإلكتروني بنجاح.');
+    }
+
+    public function sendNotification(User $user, Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'title_ar' => ['required', 'string', 'max:255'],
+            'title_en' => ['required', 'string', 'max:255'],
+            'content_ar' => ['required', 'string'],
+            'content_en' => ['required', 'string'],
+        ]);
+
+        $user->notify(new \App\Notifications\AdminGeneralNotification(
+            $data['title_ar'],
+            $data['title_en'],
+            $data['content_ar'],
+            $data['content_en']
+        ));
+
+        return redirect()->route('admin.users.show', $user)
+            ->with('status', 'تم إرسال الإشعار بنجاح.');
+    }
+
     public function destroy(User $user): RedirectResponse
     {
         $user->delete();
