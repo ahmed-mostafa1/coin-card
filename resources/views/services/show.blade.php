@@ -15,8 +15,9 @@
 
         <x-store.notice :text="$sharedTickerText" />
 
-        <div class="grid gap-6 lg:grid-cols-3">
-            <div>
+        <div class="w-full sm:w-4/5 sm:mx-auto flex flex-col gap-4">
+            @if ($service->is_offer_active)
+            <div class="order-1 w-full">
                 <div class="store-card relative overflow-hidden p-4">
                     @php
                         $displayPrice = $service->variants->count()
@@ -29,8 +30,11 @@
                     </span>
 
                     <div class="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700">
-                        @if ($service->image_path)
-                            <img src="{{ asset('storage/' . $service->image_path) }}" alt="{{ $service->localized_name }}"
+                        @if ($service->offer_image_path)
+                            <img src="{{ asset('storage/' . $service->offer_image_path) }}" alt="{{ $service->localized_name }}"
+                                class="h-48 w-full object-cover">
+                        @elseif ($service->image_path)
+                             <img src="{{ asset('storage/' . $service->image_path) }}" alt="{{ $service->localized_name }}"
                                 class="h-48 w-full object-cover">
                         @endif
                     </div>
@@ -42,7 +46,8 @@
                     </div>
                 </div>
             </div>
-            <div class="lg:col-span-2 space-y-4">
+            @endif
+            <div class="order-2 w-full space-y-4">
                 @if (session('status'))
                     <div class="rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400">
                         {{ session('status') }}
@@ -56,7 +61,7 @@
                 @endif
 
                 <div class="store-card p-6">
-                    <div class="flex flex-wrap items-center gap-3 border-b border-slate-100 dark:border-slate-700 pb-4">
+                    <div class="flex flex-wrap items-center justify-center gap-3 border-b border-slate-100 dark:border-slate-700 pb-4">
                         @if ($service->image_path)
                             <img src="{{ asset('storage/' . $service->image_path) }}" alt="{{ $service->localized_name }}"
                                 class="h-16 w-16 rounded-xl object-cover">
@@ -148,8 +153,6 @@
                     </form>
                 </div>
             </div>
-
-            
         </div>
     </div>
 

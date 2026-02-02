@@ -95,6 +95,14 @@ class ServiceController extends Controller
             $data['image_path'] = $request->file('image')->store('services', 'public');
         }
 
+        if ($request->hasFile('offer_image')) {
+            if ($service->offer_image_path) {
+                Storage::disk('public')->delete($service->offer_image_path);
+            }
+
+            $data['offer_image_path'] = $request->file('offer_image')->store('services/offers', 'public');
+        }
+
         $service->update($data);
 
         return redirect()->route('admin.services.edit', $service)
@@ -105,6 +113,7 @@ class ServiceController extends Controller
     {
         $data = $request->validated();
         $data['is_active'] = $request->boolean('is_active');
+        $data['is_offer_active'] = $request->boolean('is_offer_active');
         $data['sort_order'] = $data['sort_order'] ?? 0;
 
         $slug = $data['slug'] ?? null;
@@ -124,6 +133,10 @@ class ServiceController extends Controller
 
         if ($request->hasFile('image') && !$service) {
             $data['image_path'] = $request->file('image')->store('services', 'public');
+        }
+
+        if ($request->hasFile('offer_image') && !$service) {
+            $data['offer_image_path'] = $request->file('offer_image')->store('services/offers', 'public');
         }
 
         return $data;

@@ -64,10 +64,14 @@ class AdminGeneralNotification extends Notification
 
         return (new MailMessage)
             ->subject($subject)
-            ->line($this->contentEn)
-            ->line('---')
-            ->line($this->contentAr);
-            // ->action('Visit Dashboard', url('/dashboard'));
+            ->view('emails.layout', [
+                'title' => $subject,
+                'slot' => new \Illuminate\Support\HtmlString(
+                    '<div style="text-align: left; direction: ltr; margin-bottom: 20px;">' . nl2br(e($this->contentEn)) . '</div>' .
+                    '<hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">' .
+                    '<div style="text-align: right; direction: rtl;">' . nl2br(e($this->contentAr)) . '</div>'
+                )
+            ]);
     }
 
     /**

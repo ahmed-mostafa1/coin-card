@@ -19,11 +19,14 @@ class Service extends Model
         'price',
         'is_active',
         'sort_order',
+        'offer_image_path',
+        'is_offer_active',
     ];
 
     protected $casts = [
         'price' => 'decimal:2',
         'is_active' => 'boolean',
+        'is_offer_active' => 'boolean',
     ];
 
     /**

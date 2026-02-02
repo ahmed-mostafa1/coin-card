@@ -83,6 +83,31 @@
                     <label for="is_active">{{ __('messages.activate_service') }}</label>
                 </div>
 
+                <div class="mt-4 border-t border-slate-100 dark:border-slate-700 pt-4">
+                     <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400 mb-4">{{ __('messages.offer_settings') ?? (app()->getLocale() == 'ar' ? 'إعدادات العرض' : 'Offer Settings') }}</h2>
+                     
+                     <div class="space-y-4">
+                        <div>
+                            <x-input-label for="offer_image" :value="__('messages.offer_image') ?? (app()->getLocale() == 'ar' ? 'صورة العرض' : 'Offer Image')" />
+                            <input id="offer_image" name="offer_image" type="file" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-600 dark:text-slate-300 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-800 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-700 dark:file:text-emerald-300">
+                            <x-input-error :messages="$errors->get('offer_image')" />
+                            
+                            @if ($service->offer_image_path)
+                                <div class="mt-2">
+                                    <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('messages.current_offer_image') ?? (app()->getLocale() == 'ar' ? 'صورة العرض الحالية:' : 'Current Offer Image:') }}</p>
+                                    <img src="{{ asset('storage/' . $service->offer_image_path) }}" alt="Offer Image" class="mt-2 h-20 rounded-lg object-cover">
+                                </div>
+                            @endif
+                            <p class="mt-1 text-xs text-slate-500">{{ __('messages.recommended_size') ?? (app()->getLocale() == 'ar' ? 'الحجم الموصى به: 300x200 بكسل' : 'Recommended size: 300x200 px') }}</p>
+                        </div>
+
+                        <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
+                            <input id="is_offer_active" name="is_offer_active" type="checkbox" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" {{ $service->is_offer_active ? 'checked' : '' }}>
+                            <label for="is_offer_active">{{ __('messages.activate_offer') ?? (app()->getLocale() == 'ar' ? 'تفعيل العرض' : 'Activate Offer') }}</label>
+                        </div>
+                     </div>
+                </div>
+
                 <div>
                     <x-input-label for="sort_order" :value="__('messages.sort_order')" />
                     <x-text-input id="sort_order" name="sort_order" type="number" min="0" :value="old('sort_order', $service->sort_order)" />
