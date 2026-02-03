@@ -51,7 +51,6 @@ class AppServiceProvider extends ServiceProvider
             $sharedTickerTextEn = Cache::remember('shared_ticker_en', 300, fn () => SiteSetting::get('ticker_text_en', ''));
             
             $sharedWhatsappLink = Cache::remember('shared_whatsapp_link', 300, fn () => SiteSetting::get('whatsapp_link', 'https://wa.me/963991195136'));
-            $sharedWhatsappNumber = Cache::remember('shared_whatsapp_number', 300, fn () => SiteSetting::get('whatsapp_number', ''));
             $sharedInstagramLink = Cache::remember('shared_instagram_link', 300, fn () => SiteSetting::get('instagram_link', '#'));
             $sharedTelegramLink = Cache::remember('shared_telegram_link', 300, fn () => SiteSetting::get('telegram_link', '#'));
             $sharedFacebookLink = Cache::remember('shared_facebook_link', 300, fn () => SiteSetting::get('facebook_link', '#'));
@@ -95,7 +94,6 @@ class AppServiceProvider extends ServiceProvider
         
         View::share('sharedTickerTextEn', $sharedTickerTextEn);
         View::share('sharedWhatsappLink', $sharedWhatsappLink);
-        View::share('sharedWhatsappNumber', $sharedWhatsappNumber);
         View::share('sharedInstagramLink', $sharedInstagramLink);
         View::share('sharedTelegramLink', $sharedTelegramLink);
         View::share('sharedFacebookLink', $sharedFacebookLink);

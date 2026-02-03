@@ -32,6 +32,8 @@ class User extends Authenticatable
         'banned_at',
         'is_frozen',
         'frozen_at',
+        'otp_code',
+        'otp_expires_at',
     ];
 
     /**
@@ -58,6 +60,7 @@ class User extends Authenticatable
             'banned_at' => 'datetime',
             'is_frozen' => 'boolean',
             'frozen_at' => 'datetime',
+            'otp_expires_at' => 'datetime',
         ];
     }
 

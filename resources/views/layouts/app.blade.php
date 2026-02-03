@@ -125,7 +125,7 @@
 
         </nav>
 
-        <main class="flex-1 py-4 pb-32 sm:py-6 md:pb-28">
+        <main class="flex-1 py-4 pb-32 sm:py-6 md:pb-28 {{ $mainWidth }}">
             @yield('content')
         </main>
 
@@ -251,6 +251,8 @@
     </form>
 
     {{-- Script tag removed since functionality is now in Alpine x-data --}}
+    <x-otp-verify-popup :open="session('show_otp_verify', false)" />
+
     @stack('scripts')
 </body>
 

@@ -84,6 +84,23 @@
 
         <x-store.notice :text="(app()->getLocale() === 'en' && !empty($sharedTickerTextEn)) ? $sharedTickerTextEn : $sharedTickerText" />
 
+        @if(auth()->check() && !auth()->user()->email_verified_at)
+            <div class="w-full px-3 lg:w-4/5 lg:mx-auto">
+                <div class="flex items-center justify-between rounded-lg bg-red-100 p-4 text-red-700 dark:bg-red-900/30 dark:text-red-400">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-triangle-exclamation text-xl"></i>
+                        <div>
+                            <p class="font-bold">{{ __('messages.account_activation_required') }}</p>
+                            <p class="text-sm">{{ __('messages.otp_sent_email_instruction') }}</p>
+                        </div>
+                    </div>
+                    <button @click="$dispatch('open-otp-popup')" class="rounded-lg bg-red-600 px-4 py-2 text-sm font-bold text-white hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600">
+                        {{ __('messages.verify') }}
+                    </button>
+                </div>
+            </div>
+        @endif
+
         <div class="w-full px-3 lg:w-4/5 lg:mx-auto">
             <div class="grid gap-2 sm:gap-3 lg:gap-4 grid-cols-2 lg:grid-cols-4" data-filter-list="categories">
                 @forelse ($categories as $category)
@@ -118,8 +135,8 @@
         <div class="store-card border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-800/80 p-4 mx-3 text-base leading-6 text-slate-700 dark:text-slate-300 sm:p-5 sm:text-lg sm:leading-7 break-words">
             {{ (app()->getLocale() === 'en' && !empty($sharedStoreDescriptionEn)) ? $sharedStoreDescriptionEn : $sharedStoreDescription }}
             
-            @if(!empty($sharedWhatsappNumber))
-                <a href="https://wa.me/{{ $sharedWhatsappNumber }}" target="_blank" class="font-semibold text-orange-700 dark:text-orange-400 hover:text-orange-800 dark:hover:text-orange-300">{{ __('messages.contact_us') }}</a>.
+            @if(!empty($sharedWhatsappLink))
+                <a href="{{ $sharedWhatsappLink }}" target="_blank" class="font-semibold text-orange-700 dark:text-orange-400 hover:text-orange-800 dark:hover:text-orange-300">{{ __('messages.contact_us') }}</a>.
             @else
                 <a href="{{ route('about') }}" class="font-semibold text-orange-700 dark:text-orange-400 hover:text-orange-800 dark:hover:text-orange-300">{{ __('messages.contact_us') }}</a>.
             @endif

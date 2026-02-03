@@ -44,7 +44,9 @@ class SiteSettingsController extends Controller
             'logoImage',
             'upscrollLink',
             'storeDescription',
+            'storeDescriptionEn',
             'whatsappLink',
+            'whatsappNumber',
             'instagramLink',
             'telegramLink',
             'facebookLink',
@@ -53,90 +55,81 @@ class SiteSettingsController extends Controller
         ));
     }
 
-    public function update(Request $request): RedirectResponse
+    public function updateGeneral(Request $request): RedirectResponse
     {
         $data = $request->validate([
             'ticker_text' => ['required', 'string', 'max:500'],
             'ticker_text_en' => ['nullable', 'string', 'max:500'],
-            'logo_type' => ['required', 'in:text,image'],
-            'logo_text' => ['nullable', 'string', 'max:100'],
-            'logo_image' => ['nullable', 'image', 'max:2048'], // 2MB max
             'store_description' => ['required', 'string', 'max:1000'],
             'store_description_en' => ['nullable', 'string', 'max:1000'],
-            'whatsapp_number' => ['nullable', 'string', 'max:20'],
-            'whatsapp_link' => ['nullable', 'url'],
-            'instagram_link' => ['nullable', 'url'],
-            'telegram_link' => ['nullable', 'url'],
-            'facebook_link' => ['nullable', 'url'],
-            'upscroll_link' => ['nullable', 'url'],
-            'about_ar' => ['nullable', 'string'],
-            'about_en' => ['nullable', 'string'],
-            'privacy_ar' => ['nullable', 'string'],
-            'privacy_en' => ['nullable', 'string'],
+            'upscroll_link' => ['nullable', 'string'],
         ]);
 
-        // Update ticker text
         SiteSetting::set('ticker_text', $data['ticker_text']);
         SiteSetting::set('ticker_text_en', $data['ticker_text_en'] ?? '');
+        SiteSetting::set('store_description', $data['store_description']);
+        SiteSetting::set('store_description_en', $data['store_description_en'] ?? '');
+        SiteSetting::set('upscroll_link', $data['upscroll_link']);
 
-        // Update social links
-        SiteSetting::set('whatsapp_link', $data['whatsapp_link']);
-        SiteSetting::set('whatsapp_number', $data['whatsapp_number']);
-        SiteSetting::set('instagram_link', $data['instagram_link']);
-        SiteSetting::set('telegram_link', $data['telegram_link']);
-        SiteSetting::set('facebook_link', $data['facebook_link']);
+        cache()->forget('shared_ticker');
+        cache()->forget('shared_ticker_en');
+        cache()->forget('shared_store_description');
+        cache()->forget('shared_store_description_en');
+        cache()->forget('shared_upscroll_link');
 
-        // Update logo settings
+        return redirect()->route('admin.site-settings.edit')->with('status', 'تم تحديث الإعدادات العامة بنجاح.');
+    }
+
+    public function updateLogo(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'logo_type' => ['required', 'in:text,image'],
+            'logo_text' => ['nullable', 'string', 'max:100'],
+            'logo_image' => ['nullable', 'image', 'max:2048'],
+        ]);
+
         SiteSetting::set('logo_type', $data['logo_type']);
 
         if ($data['logo_type'] === 'text') {
             SiteSetting::set('logo_text', $data['logo_text'] ?? 'Arab 8BP.in');
         } elseif ($data['logo_type'] === 'image' && $request->hasFile('logo_image')) {
-            // Delete old logo image if exists
             $oldLogoImage = SiteSetting::get('logo_image');
             if ($oldLogoImage && Storage::disk('public')->exists($oldLogoImage)) {
                 Storage::disk('public')->delete($oldLogoImage);
             }
-
-            // Store new logo image
             $path = $request->file('logo_image')->store('logos', 'public');
             SiteSetting::set('logo_image', $path);
         }
 
-        // Update Upscroll Link
-        SiteSetting::set('upscroll_link', $data['upscroll_link']);
-        cache()->forget('shared_upscroll_link');
-
-        // Update store description
-        SiteSetting::set('store_description', $data['store_description']);
-        SiteSetting::set('store_description_en', $data['store_description_en'] ?? '');
-
-        // Update Pages Content
-        SiteSetting::set('about_ar', $data['about_ar'] ?? '');
-        SiteSetting::set('about_en', $data['about_en'] ?? '');
-        SiteSetting::set('privacy_ar', $data['privacy_ar'] ?? '');
-        SiteSetting::set('privacy_en', $data['privacy_en'] ?? '');
-
-        // Clear all related caches
-        cache()->forget('shared_ticker');
-        cache()->forget('shared_ticker_en');
         cache()->forget('shared_logo_type');
         cache()->forget('shared_logo_text');
         cache()->forget('shared_logo_image');
-        cache()->forget('shared_store_description');
-        cache()->forget('shared_store_description_en');
-        
+
+        return redirect()->route('admin.site-settings.edit')->with('status', 'تم تحديث الشعار بنجاح.');
+    }
+
+    public function updateSocial(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'whatsapp_link' => ['nullable', 'string'],
+            'instagram_link' => ['nullable', 'string'],
+            'telegram_link' => ['nullable', 'string'],
+            'facebook_link' => ['nullable', 'string'],
+        ]);
+
+        SiteSetting::set('whatsapp_link', $data['whatsapp_link']);
+        SiteSetting::set('instagram_link', $data['instagram_link']);
+        SiteSetting::set('telegram_link', $data['telegram_link']);
+        SiteSetting::set('facebook_link', $data['facebook_link']);
+
         cache()->forget('shared_whatsapp_link');
-        cache()->forget('shared_whatsapp_number');
         cache()->forget('shared_instagram_link');
         cache()->forget('shared_telegram_link');
         cache()->forget('shared_facebook_link');
+        
+        // Remove old whatsapp_number cache if it exists, as it is no longer used
+        cache()->forget('shared_whatsapp_number');
 
-        cache()->forget('shared_about_ar');
-        cache()->forget('shared_about_en');
-        cache()->forget('shared_privacy_ar');
-        cache()->forget('shared_privacy_en');
-
-        return redirect()->route('admin.site-settings.edit')->with('status', 'تم تحديث إعدادات الموقع بنجاح.');
+        return redirect()->route('admin.site-settings.edit')->with('status', 'تم تحديث روابط التواصل بنجاح.');
     }
 }

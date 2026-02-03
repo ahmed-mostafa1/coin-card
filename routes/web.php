@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\OpsController as AdminOpsController;
 use App\Http\Controllers\Admin\OpsOrderController as AdminOpsOrderController;
+use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\Admin\AgencyRequestController as AdminAgencyRequestController;
 use App\Http\Controllers\Admin\ReportsController as AdminReportsController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
@@ -39,6 +40,9 @@ Route::get('/lang/{locale}', function ($locale) {
 })->name('lang.switch');
 
 Route::middleware(['auth', 'not_banned'])->group(function () {
+    Route::post('/otp/verify', [\App\Http\Controllers\Auth\OtpController::class, 'verify'])->name('otp.verify');
+    Route::post('/otp/resend', [\App\Http\Controllers\Auth\OtpController::class, 'resend'])->name('otp.resend');
+
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/categories/{category:slug}', [CategoryController::class, 'show'])->name('categories.show');
     Route::get('/services/{service:slug}', [ServiceController::class, 'show'])->name('services.show');
@@ -65,9 +69,9 @@ Route::middleware(['auth', 'not_banned'])->group(function () {
 
     Route::get('/deposit', [DepositController::class, 'index'])->name('deposit.index');
     Route::get('/deposit/{paymentMethod:slug}', [DepositController::class, 'show'])->name('deposit.show');
-    Route::post('/deposit/{paymentMethod:slug}', [DepositController::class, 'store'])->name('deposit.store')->middleware('not_frozen');
+    Route::post('/deposit/{paymentMethod:slug}', [DepositController::class, 'store'])->name('deposit.store')->middleware(['not_frozen', \App\Http\Middleware\EnsureAccountVerified::class]);
 
-    Route::post('/services/{service:slug}/purchase', [ServiceController::class, 'purchase'])->name('services.purchase')->middleware('not_frozen');
+    Route::post('/services/{service:slug}/purchase', [ServiceController::class, 'purchase'])->name('services.purchase')->middleware(['not_frozen', \App\Http\Middleware\EnsureAccountVerified::class]);
 });
 
 Route::middleware(['auth', 'not_banned', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
@@ -112,8 +116,16 @@ Route::middleware(['auth', 'not_banned', 'role:admin'])->prefix('admin')->name('
     Route::resource('vip-tiers', \App\Http\Controllers\Admin\VipTierController::class)->except(['show']);
     Route::get('/appearance', [AdminAppearanceController::class, 'edit'])->name('appearance.edit');
     Route::post('/appearance', [AdminAppearanceController::class, 'update'])->name('appearance.update');
+    // Site Settings Routes
     Route::get('/site-settings', [AdminSiteSettingsController::class, 'edit'])->name('site-settings.edit');
-    Route::post('/site-settings', [AdminSiteSettingsController::class, 'update'])->name('site-settings.update');
+    Route::post('/site-settings/general', [AdminSiteSettingsController::class, 'updateGeneral'])->name('site-settings.update-general');
+    Route::post('/site-settings/logo', [AdminSiteSettingsController::class, 'updateLogo'])->name('site-settings.update-logo');
+    Route::post('/site-settings/social', [AdminSiteSettingsController::class, 'updateSocial'])->name('site-settings.update-social');
+    
+    // Pages Management Routes
+    Route::get('/pages', [AdminPageController::class, 'edit'])->name('pages.edit');
+    Route::put('/pages', [AdminPageController::class, 'update'])->name('pages.update');
+
     Route::get('services/{service}/variants', [AdminServiceVariantController::class, 'index'])->name('services.variants.index');
     Route::get('services/{service}/variants/create', [AdminServiceVariantController::class, 'create'])->name('services.variants.create');
     Route::post('services/{service}/variants', [AdminServiceVariantController::class, 'store'])->name('services.variants.store');

@@ -4,8 +4,8 @@
 
 @section('content')
     <x-card :hover="false">
-        <x-page-header :title="__('messages.privacy_policy')" />
-        <div class="mt-6 whitespace-pre-line text-sm leading-7 text-slate-700 dark:text-white">
+        <x-page-header :title="__('messages.privacy_policy')" :center="true" />
+        <div class="mt-6 whitespace-pre-line text-sm leading-7 text-slate-700 dark:text-white text-center">
             @if(app()->getLocale() == 'ar')
                 @if(!empty($sharedPrivacyAr))
                      {!! nl2br(e($sharedPrivacyAr)) !!}

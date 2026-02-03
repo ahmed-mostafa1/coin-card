@@ -57,9 +57,7 @@
                          @if($currentTier && $currentTier->image_path)
                              <img src="{{ asset('storage/' . $currentTier->image_path) }}" alt="{{ auth()->user()->name }}" class="h-full w-full object-cover">
                          @else
-                            <div class="flex h-full w-full items-center justify-center text-slate-500 dark:text-slate-300 font-bold">
-                                {{ substr(auth()->user()->name, 0, 1) }}
-                            </div>
+                            <img src="{{ asset('img/vip0.png') }}" alt="{{ auth()->user()->name }}" class="h-full w-full object-cover">
                          @endif
                     </div>
                     <div>
@@ -140,6 +138,11 @@
             <a href="{{ route('admin.index') }}" class="flex items-center gap-3 rounded-lg border border-slate-400 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-700">
                 <i class="fa-solid fa-tachometer-alt text-orange-400 w-5"></i>
                 <span>{{ __('messages.admin_dashboard') ?? 'Admin Dashboard' }}</span>
+            </a>
+            
+             <a href="{{ route('admin.pages.edit') }}" class="flex items-center gap-3 rounded-lg border border-slate-400 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-700">
+                <i class="fa-solid fa-file-contract text-orange-400 w-5"></i>
+                <span>إدارة الصفحات</span>
             </a>
             @endif
 

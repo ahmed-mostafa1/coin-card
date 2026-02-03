@@ -1,6 +1,6 @@
-@props(['title', 'subtitle' => null])
+@props(['title', 'subtitle' => null, 'center' => false])
 
-<div {{ $attributes->merge(['class' => 'flex flex-wrap items-center justify-between gap-4']) }}>
+<div {{ $attributes->merge(['class' => 'flex flex-wrap items-center gap-4 ' . ($center ? 'justify-center text-center flex-col' : 'justify-between')]) }}>
     <div>
         <h1 class="text-2xl font-bold text-slate-900 dark:text-white">{{ $title }}</h1>
         @if ($subtitle)
