@@ -12,18 +12,15 @@
             @forelse ($methods as $method)
                 <a href="{{ route('deposit.show', $method->slug) }}" class="group flex flex-col items-center gap-2">
                     {{-- Card Container --}}
-                    <div class="relative flex aspect-square w-full flex-col items-center justify-center overflow-hidden rounded-2xl bg-zinc-900 shadow-md transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl group-hover:ring-2 group-hover:ring-emerald-500/20">
+                    <div class="relative flex aspect-square w-full flex-col items-center justify-center overflow-hidden rounded-2xl transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl group-hover:ring-2 group-hover:ring-emerald-500/20">
                         
-                        {{-- Yellow Ring --}}
-                        <div class="absolute inset-1.5 rounded-full border-[5px] border-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.3)]"></div>
-                        
-                    {{-- Logo Container --}}
-                        <div class="relative z-10 flex h-[55%] w-[55%] items-center justify-center rounded-full bg-white dark:bg-slate-700 p-2 shadow-sm">
+                    {{-- Image Container (Ring + Logo) --}}
+                        <div class="absolute inset-2 z-10 flex items-center justify-center overflow-hidden rounded-full border-[5px] border-yellow-400 bg-white shadow-[0_0_10px_rgba(250,204,21,0.3)] dark:bg-slate-700">
                             @if ($method->icon_path)
                                 <img src="{{ asset('storage/' . $method->icon_path) }}" alt="{{ $method->localized_name }}"
-                                    class="h-full w-full object-contain">
+                                    class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110">
                             @else
-                                <div class="flex h-full w-full items-center justify-center rounded-full bg-slate-100 text-xl font-bold text-slate-600">
+                                <div class="flex h-full w-full items-center justify-center bg-slate-100 text-3xl font-bold text-slate-600">
                                     {{ mb_substr($method->localized_name, 0, 1) }}
                                 </div>
                             @endif

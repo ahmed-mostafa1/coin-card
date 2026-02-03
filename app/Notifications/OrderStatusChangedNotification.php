@@ -16,7 +16,24 @@ class OrderStatusChangedNotification extends Notification
 
     public function via(object $notifiable): array
     {
-        return ['database'];
+        return ['database', 'mail'];
+    }
+
+    /**
+     * Get the mail representation of the notification.
+     */
+    public function toMail(object $notifiable): \Illuminate\Notifications\Messages\MailMessage
+    {
+        $data = $this->toDatabase($notifiable);
+        $title = __($data['title'], $data['title_params'] ?? []);
+        $description = __($data['description'], $data['description_params'] ?? []);
+
+        return (new \Illuminate\Notifications\Messages\MailMessage)
+            ->subject($title)
+            ->view('emails.layout', [
+                'title' => $title,
+                'slot' => new \Illuminate\Support\HtmlString(nl2br(e($description)))
+            ]);
     }
 
     public function toDatabase(object $notifiable): array
