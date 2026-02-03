@@ -18,6 +18,8 @@ git clean -fd \
 
 php artisan optimize:clear
 
+php artisan optimize
+
 
 
 The VIP badges feature the following gradient styles based on tier rank:
