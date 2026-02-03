@@ -380,4 +380,7 @@ return [
     'offer_image_deleted' => 'Offer image deleted successfully.',
     'offer_image_uploaded' => 'Offer image uploaded successfully.',
     'offer_image_not_uploaded' => 'Offer image not uploaded.',
+    'request_agency' => "Request Agency"
+
+
 ];

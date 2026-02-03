@@ -101,8 +101,8 @@ Route::middleware(['auth', 'not_banned', 'role:admin'])->prefix('admin')->name('
     Route::post('/deposits/{depositRequest}/reject', [AdminDepositController::class, 'reject'])->name('deposits.reject');
     Route::get('/deposits/{depositRequest}/evidence', [AdminDepositController::class, 'downloadEvidence'])->name('deposits.evidence');
 
-    Route::resource('categories', AdminCategoryController::class)->except(['show', 'destroy']);
-    Route::resource('services', AdminServiceController::class)->except(['show', 'destroy']);
+    Route::resource('categories', AdminCategoryController::class)->except(['show']);
+    Route::resource('services', AdminServiceController::class)->except(['show']);
     Route::resource('banners', AdminBannerController::class)->except(['show', 'destroy']);
     Route::resource('popups', AdminPopupController::class);
     

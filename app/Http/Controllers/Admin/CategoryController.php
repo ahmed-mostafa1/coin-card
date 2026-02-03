@@ -72,6 +72,26 @@ class CategoryController extends Controller
             ->with('status', 'تم تحديث التصنيف بنجاح.');
     }
 
+    public function destroy(Category $category): RedirectResponse
+    {
+        if ($category->children()->exists()) {
+            return back()->with('error', 'لا يمكن حذف تصنيف يحتوي على تصنيفات فرعية.');
+        }
+
+        if ($category->services()->exists()) {
+            return back()->with('error', 'لا يمكن حذف تصنيف يحتوي على خدمات.');
+        }
+
+        if ($category->image_path) {
+            Storage::disk('public')->delete($category->image_path);
+        }
+
+        $category->delete();
+
+        return redirect()->route('admin.categories.index')
+            ->with('status', 'تم حذف التصنيف بنجاح.');
+    }
+
     private function prepareData(CategoryRequest $request, ?Category $category = null): array
     {
         $data = $request->validated();

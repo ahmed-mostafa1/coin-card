@@ -141,4 +141,19 @@ class ServiceController extends Controller
 
         return $data;
     }
+    public function destroy(Service $service): RedirectResponse
+    {
+        if ($service->image_path) {
+            Storage::disk('public')->delete($service->image_path);
+        }
+
+        if ($service->offer_image_path) {
+            Storage::disk('public')->delete($service->offer_image_path);
+        }
+
+        $service->delete();
+
+        return redirect()->route('admin.services.index')
+            ->with('status', 'تم حذف الخدمة بنجاح.');
+    }
 }

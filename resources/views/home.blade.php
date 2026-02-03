@@ -116,8 +116,13 @@
         </div>
 
         <div class="store-card border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-800/80 p-4 mx-3 text-base leading-6 text-slate-700 dark:text-slate-300 sm:p-5 sm:text-lg sm:leading-7 break-words">
-            {{ $sharedStoreDescription }}
-            <a href="{{ route('about') }}" class="font-semibold text-orange-700 dark:text-orange-400 hover:text-orange-800 dark:hover:text-orange-300">{{ __('messages.contact_us') }}</a>.
+            {{ (app()->getLocale() === 'en' && !empty($sharedStoreDescriptionEn)) ? $sharedStoreDescriptionEn : $sharedStoreDescription }}
+            
+            @if(!empty($sharedWhatsappNumber))
+                <a href="https://wa.me/{{ $sharedWhatsappNumber }}" target="_blank" class="font-semibold text-orange-700 dark:text-orange-400 hover:text-orange-800 dark:hover:text-orange-300">{{ __('messages.contact_us') }}</a>.
+            @else
+                <a href="{{ route('about') }}" class="font-semibold text-orange-700 dark:text-orange-400 hover:text-orange-800 dark:hover:text-orange-300">{{ __('messages.contact_us') }}</a>.
+            @endif
         </div>
     </div>
 @endsection

@@ -377,4 +377,6 @@ return [
     'offer_image_deleted' => 'تم حذف صورة العرض بنجاح.',
     'offer_image_uploaded' => 'تم رفع صورة العرض بنجاح.',
     'offer_image_not_uploaded' => 'لم يتم رفع صورة العرض.',
+    'request_agency' => 'طلب وكالة',
+
 ];

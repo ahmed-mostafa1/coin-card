@@ -42,8 +42,14 @@
                                 <span class="rounded-full bg-rose-100 dark:bg-rose-900/50 px-3 py-1 text-xs text-rose-700 dark:text-rose-400">{{ __('messages.status_inactive') }}</span>
                             @endif
                         </td>
-                        <td class="py-3">
+                        <td class="py-3 flex items-center gap-3">
                             <a href="{{ route('admin.services.edit', $service) }}" class="text-emerald-700 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">{{ __('messages.edit') }}</a>
+                            
+                            <form action="{{ route('admin.services.destroy', $service) }}" method="POST" onsubmit="return confirm('{{ __('messages.confirm_delete') }}');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-rose-700 dark:text-rose-400 hover:text-rose-900 dark:hover:text-rose-300">{{ __('messages.delete') }}</button>
+                            </form>
                         </td>
                     </tr>
                 @empty

@@ -146,15 +146,65 @@
                 <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">وصف المتجر</h2>
                 
                 <div>
-                    <x-input-label for="store_description" value="نص الوصف" />
+                    <x-input-label for="store_description" value="نص الوصف (عربي)" />
                     <textarea id="store_description" name="store_description" rows="4" 
                         class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500" 
                         required>{{ old('store_description', $storeDescription) }}</textarea>
-                    <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">
-                        <i class="fa-solid fa-info-circle ml-1"></i>
-                        ملاحظة: سيتم إضافة رابط "اتصل بنا" تلقائياً في نهاية النص
-                    </p>
                     <x-input-error :messages="$errors->get('store_description')" />
+                </div>
+
+                <div class="mt-4">
+                    <x-input-label for="store_description_en" value="نص الوصف (إنجليزي)" />
+                    <textarea id="store_description_en" name="store_description_en" rows="4" 
+                        class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500" 
+                        dir="ltr">{{ old('store_description_en', $storeDescriptionEn ?? '') }}</textarea>
+                    <x-input-error :messages="$errors->get('store_description_en')" />
+                </div>
+            </div>
+
+            <!-- صفحات المحتوى Section -->
+             <div class="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 p-6" x-data="{ tab: 'about' }">
+                <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">صفحات المحتوى</h2>
+                
+                <div class="flex gap-2 mb-4 border-b border-slate-200 dark:border-slate-700 pb-2">
+                    <button type="button" @click="tab = 'about'" :class="{ 'text-emerald-600 border-b-2 border-emerald-600 font-bold': tab === 'about', 'text-slate-500 hover:text-slate-700': tab !== 'about' }" class="px-4 py-2 text-sm transition">من نحن (About Us)</button>
+                    <button type="button" @click="tab = 'privacy'" :class="{ 'text-emerald-600 border-b-2 border-emerald-600 font-bold': tab === 'privacy', 'text-slate-500 hover:text-slate-700': tab !== 'privacy' }" class="px-4 py-2 text-sm transition">سياسة الخصوصية (Privacy)</button>
+                </div>
+
+                <!-- About Us Tab -->
+                <div x-show="tab === 'about'" class="space-y-4">
+                    <div>
+                        <x-input-label for="about_ar" value="من نحن (عربي)" />
+                        <textarea id="about_ar" name="about_ar" rows="6" 
+                            class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500" 
+                            >{{ old('about_ar', $aboutAr ?? '') }}</textarea>
+                        <x-input-error :messages="$errors->get('about_ar')" />
+                    </div>
+                    <div>
+                        <x-input-label for="about_en" value="من نحن (إنجليزي)" />
+                        <textarea id="about_en" name="about_en" rows="6" 
+                            class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500" 
+                            dir="ltr">{{ old('about_en', $aboutEn ?? '') }}</textarea>
+                        <x-input-error :messages="$errors->get('about_en')" />
+                    </div>
+                </div>
+
+                <!-- Privacy Tab -->
+                <div x-show="tab === 'privacy'" class="space-y-4" style="display: none;">
+                    <div>
+                        <x-input-label for="privacy_ar" value="سياسة الخصوصية (عربي)" />
+                        <textarea id="privacy_ar" name="privacy_ar" rows="6" 
+                            class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500" 
+                            >{{ old('privacy_ar', $privacyAr ?? '') }}</textarea>
+                        <x-input-error :messages="$errors->get('privacy_ar')" />
+                    </div>
+                    <div>
+                        <x-input-label for="privacy_en" value="سياسة الخصوصية (إنجليزي)" />
+                        <textarea id="privacy_en" name="privacy_en" rows="6" 
+                            class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500" 
+                            dir="ltr">{{ old('privacy_en', $privacyEn ?? '') }}</textarea>
+                        <x-input-error :messages="$errors->get('privacy_en')" />
+                    </div>
                 </div>
             </div>
 
@@ -172,6 +222,18 @@
                             <x-text-input id="whatsapp_link" name="whatsapp_link" type="url" :value="old('whatsapp_link', $whatsappLink)" class="pl-10 text-left" dir="ltr" />
                         </div>
                         <x-input-error :messages="$errors->get('whatsapp_link')" />
+                    </div>
+
+                    <div>
+                        <x-input-label for="whatsapp_number" value="رقم واتساب (بدون +)" />
+                        <div class="relative mt-1 rounded-md shadow-sm">
+                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                <i class="fa-solid fa-phone text-slate-400"></i>
+                            </div>
+                            <x-text-input id="whatsapp_number" name="whatsapp_number" type="text" :value="old('whatsapp_number', $whatsappNumber)" class="pl-10 text-left" dir="ltr" placeholder="963991195136" />
+                        </div>
+                        <p class="mt-1 text-xs text-slate-500">يستخدم لإنشاء رابط المحادثة المباشرة (wa.me)</p>
+                        <x-input-error :messages="$errors->get('whatsapp_number')" />
                     </div>
 
                     <div>

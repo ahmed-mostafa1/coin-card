@@ -51,8 +51,12 @@
     <main class="mx-auto flex min-h-screen w-full max-w-md flex-col justify-start px-4 py-10 md:py-16">
         {{-- Logo & Theme Toggle --}}
         <div class="mb-8 flex items-center justify-center relative">
-            <a href="{{ route('home') }}" class="text-2xl font-bold text-emerald-700 dark:text-emerald-400 transition hover:text-emerald-800 dark:hover:text-emerald-300">
-                8BP
+            <a href="{{ route('home') }}" class="flex items-center justify-center">
+                @if($sharedLogoType === 'image' && $sharedLogoImage)
+                    <img src="{{ asset('storage/' . $sharedLogoImage) }}" alt="Logo" class="h-12 object-contain">
+                @else
+                    <span class="text-2xl font-bold text-emerald-700 dark:text-emerald-400 transition hover:text-emerald-800 dark:hover:text-emerald-300">{{ $sharedLogoText }}</span>
+                @endif
             </a>
             
             {{-- Theme Toggle (Absolute positioned to the right) --}}

@@ -2,7 +2,7 @@
 
 <div x-cloak
      x-show="sidebarOpen"
-     class="fixed inset-0 z-[60] flex {{ app()->getLocale() == 'ar' ? 'justify-start' : 'justify-end' }}"
+     class="fixed inset-0 z-[60] flex justify-start"
      role="dialog"
      aria-modal="true">
 
@@ -20,27 +20,17 @@
     <!-- Sidebar Panel -->
     <div x-show="sidebarOpen"
          x-transition:enter="transition ease-in-out duration-300 transform"
-         x-transition:enter-start="{{ app()->getLocale() == 'ar' ? '-translate-x-full' : 'translate-x-full' }}"
+         x-transition:enter-start="{{ app()->getLocale() == 'ar' ? 'translate-x-full' : '-translate-x-full' }}"
          x-transition:enter-end="translate-x-0"
          x-transition:leave="transition ease-in-out duration-300 transform"
          x-transition:leave-start="translate-x-0"
-         x-transition:leave-end="{{ app()->getLocale() == 'ar' ? '-translate-x-full' : 'translate-x-full' }}"
+         x-transition:leave-end="{{ app()->getLocale() == 'ar' ? 'translate-x-full' : '-translate-x-full' }}"
          class="relative flex w-full max-w-xs flex-col overflow-y-auto bg-slate-100 dark:bg-slate-900 shadow-xl transition-all h-full">
 
         <!-- Header -->
         <div class="flex items-center justify-between px-4 py-6 border-b border-slate-200 dark:border-slate-800">
              <div class="flex items-center gap-3">
                  @auth
-                    <div class="h-10 w-10 overflow-hidden rounded-full ring-2 ring-emerald-500 bg-slate-200 dark:bg-slate-700">
-                         <!-- Placeholder for user avatar or initial -->
-                         <div class="flex h-full w-full items-center justify-center text-slate-500 dark:text-slate-300 font-bold">
-                             {{ substr(auth()->user()->name, 0, 1) }}
-                         </div>
-                    </div>
-                    <div>
-                    <!-- <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('messages.welcome') ?? 'أهلا بك :' }}</p> -->
-                         <p class="font-bold text-slate-800 dark:text-white">{{ auth()->user()->name }}</p>
-                         
                          @inject('vipService', 'App\Services\VipService')
                          @php
                              $vipData = $vipService->getVipSummary(auth()->user());
@@ -52,16 +42,29 @@
                              // Tier specific styling based on rank or default
                              $tierStyles = [
                                  0 => 'bg-slate-200 text-slate-600 ring-slate-300 dark:bg-slate-700 dark:text-slate-300 dark:ring-slate-600', // Basic/Member
-                                 1 => 'bg-gradient-to-r from-slate-400 to-slate-600 text-white ring-slate-300', // Silver/Basic
-                                 2 => 'bg-gradient-to-r from-yellow-400 to-yellow-600 text-white ring-yellow-300', // Gold
-                                 3 => 'bg-gradient-to-r from-emerald-400 to-emerald-600 text-white ring-emerald-300', // Platinum/Emerald
-                                 4 => 'bg-gradient-to-r from-purple-500 to-indigo-600 text-white ring-purple-400', // Diamond
-                                 5 => 'bg-gradient-to-r from-rose-500 to-red-600 text-white ring-rose-300', // Mythic
+                                 1 => 'bg-slate-500 text-white ring-slate-300', // Silver/Basic
+                                 2 => 'bg-yellow-500 text-white ring-yellow-300', // Gold
+                                 3 => 'bg-emerald-500 text-white ring-emerald-300', // Platinum/Emerald
+                                 4 => 'bg-purple-600 text-white ring-purple-400', // Diamond
+                                 5 => 'bg-rose-600 text-white ring-rose-300', // Mythic
                              ];
                              
                              $rank = $currentTier?->rank ?? 0;
                              $currentStyle = $tierStyles[$rank] ?? $tierStyles[1];
                          @endphp
+
+                    <div class="h-10 w-10 overflow-hidden rounded-full ring-2 ring-emerald-500 bg-slate-200 dark:bg-slate-700 flex items-center justify-center">
+                         @if($currentTier && $currentTier->image_path)
+                             <img src="{{ asset('storage/' . $currentTier->image_path) }}" alt="{{ auth()->user()->name }}" class="h-full w-full object-cover">
+                         @else
+                            <div class="flex h-full w-full items-center justify-center text-slate-500 dark:text-slate-300 font-bold">
+                                {{ substr(auth()->user()->name, 0, 1) }}
+                            </div>
+                         @endif
+                    </div>
+                    <div>
+                    <!-- <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('messages.welcome') ?? 'أهلا بك :' }}</p> -->
+                         <p class="font-bold text-slate-800 dark:text-white">{{ auth()->user()->name }}</p>
 
                          <div class="mt-2">
                              <!-- VIP Badge -->
@@ -166,6 +169,13 @@
              <a href="{{ route('account.wallet') }}" class="flex items-center gap-3 rounded-lg border border-slate-400 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-700">
                 <i class="fa-solid fa-wallet text-orange-400 w-5"></i>
                 <span>{{ __('messages.wallet') ?? 'شحن الرصيد' }}</span>
+            </a>
+            @endif
+
+            @if(!auth()->user()?->hasRole('admin'))
+            <a href="{{ route('agency-requests.create') }}" class="flex items-center gap-3 rounded-lg border border-slate-400 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-700">
+                <i class="fa-solid fa-handshake text-orange-400 w-5"></i>
+                <span>{{ __('messages.request_agency') ?? (app()->getLocale() == 'ar' ? 'طلب الوكالة' : 'Request Agency') }}</span>
             </a>
             @endif
 
