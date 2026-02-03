@@ -47,10 +47,10 @@
                         <td class="py-3 flex items-center gap-3">
                             <a href="{{ route('admin.categories.edit', $category) }}" class="text-emerald-700 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">تعديل</a>
                             
-                            <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" onsubmit="return confirm('هل أنت متأكد من الحذف؟');">
+                            <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="delete-form">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="text-rose-700 dark:text-rose-400 hover:text-rose-900 dark:hover:text-rose-300">حذف</button>
+                                <button type="button" onclick="confirmDelete(this)" class="text-rose-700 dark:text-rose-400 hover:text-rose-900 dark:hover:text-rose-300">حذف</button>
                             </form>
                         </td>
                     </tr>

@@ -10,6 +10,7 @@
     <style>
         [x-cloak] { display: none !important; }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
     <script>
         // Initialize theme before page renders to prevent flash
@@ -33,7 +34,7 @@
       })">
 
     @php
-        $containerWidth = request()->routeIs('admin.*') ? 'max-w-7xl' : 'max-w-6xl';
+        $containerWidth = 'w-[95%] md:w-[80%] mx-auto';
         $mainWidth = trim($__env->yieldContent('mainWidth', $containerWidth));
         $isAr = app()->getLocale() == 'ar';
     @endphp
@@ -254,6 +255,24 @@
     <x-otp-verify-popup :open="session('show_otp_verify', false)" />
 
     @stack('scripts')
+    <script>
+        function confirmDelete(button) {
+            Swal.fire({
+                title: '{{ app()->getLocale() == "ar" ? "هل أنت متأكد؟" : "Are you sure?" }}',
+                text: '{{ app()->getLocale() == "ar" ? "لن تتمكن من التراجع عن هذا!" : "You won'\''t be able to revert this!" }}',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: '{{ app()->getLocale() == "ar" ? "نعم، احذف!" : "Yes, delete it!" }}',
+                cancelButtonText: '{{ app()->getLocale() == "ar" ? "إلغاء" : "Cancel" }}'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    button.closest('form').submit();
+                }
+            })
+        }
+    </script>
 </body>
 
 </html>

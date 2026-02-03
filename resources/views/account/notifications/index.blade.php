@@ -49,7 +49,10 @@
                    class="block rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 transition hover:border-emerald-200 dark:hover:border-emerald-700 cursor-pointer">
                     <div class="flex items-start justify-between gap-2">
                         @php
-                            $title = $notification->data['title'] ?? __('messages.new_notification');
+                            $locale = app()->getLocale();
+                            // Try localized title first, then default title
+                            $titleKey = 'title_' . $locale;
+                            $title = $notification->data[$titleKey] ?? $notification->data['title'] ?? __('messages.new_notification');
                             $titleParams = $notification->data['title_params'] ?? [];
                             
                             // Check if title is a translation key
@@ -63,7 +66,10 @@
                         @endif
                     </div>
                         @php
-                            $description = $notification->data['description'] ?? '';
+                            // Try localized content first
+                            $contentKey = 'content_' . $locale;
+                            // Fallback to description, then body (for backward compatibility)
+                            $description = $notification->data[$contentKey] ?? $notification->data['description'] ?? $notification->data['body'] ?? '';
                             $descriptionParams = $notification->data['description_params'] ?? [];
                             
                             // Check if description is a translation key

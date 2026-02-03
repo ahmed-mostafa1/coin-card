@@ -378,8 +378,9 @@ return [
     'offer_image_uploaded' => 'تم رفع صورة العرض بنجاح.',
     'offer_image_not_uploaded' => 'لم يتم رفع صورة العرض.',
     'request_agency' => 'طلب وكالة',
+    'pages_management' => 'إدارة الصفحات',
     'dashboard' => 'لوحة التحكم',
-    'account_activation_required' => 'تفعيل الحساب مطلوب',
+    'account_activation_required' => 'يرجى تفعيل حسابك',
     'otp_sent_email_instruction' => 'تم إرسال رمز التحقق إلى بريدك الإلكتروني. يرجى إدخاله لتفعيل حسابك.',
     'verify' => 'تحقق',
     'resend_otp' => 'إعادة إرسال رمز التحقق',
@@ -411,5 +412,7 @@ return [
     'otp_sent_email_sent_expired' => 'رمز التحقق منتهي الصلاحية.',
     'otp_sent_email_sent_already_verified' => 'تم تفعيل حسابك بالفعل.',
     'otp_sent_email_sent_sent' => 'تم إرسال رمز التحقق إلى بريدك الإلكتروني.',
+    'account_activation' => 'تفعيل الحساب',
+    'send_general_notification' => 'إرسال إشعار لجميع المستخدمين'
 
 ];

@@ -29,10 +29,10 @@ class PageController extends Controller
             'privacy_en' => ['nullable', 'string'],
         ]);
 
-        SiteSetting::set('about_ar', $data['about_ar'] ?? '');
-        SiteSetting::set('about_en', $data['about_en'] ?? '');
-        SiteSetting::set('privacy_ar', $data['privacy_ar'] ?? '');
-        SiteSetting::set('privacy_en', $data['privacy_en'] ?? '');
+        SiteSetting::set('about_ar', trim($data['about_ar'] ?? ''));
+        SiteSetting::set('about_en', trim($data['about_en'] ?? ''));
+        SiteSetting::set('privacy_ar', trim($data['privacy_ar'] ?? ''));
+        SiteSetting::set('privacy_en', trim($data['privacy_en'] ?? ''));
 
         // Clear caches
         cache()->forget('shared_about_ar');

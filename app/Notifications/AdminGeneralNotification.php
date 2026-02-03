@@ -83,8 +83,8 @@ class AdminGeneralNotification extends Notification
     {
         return [
             'id' => $this->id,
-            'title' => $this->titleEn, // Default key for simple display
-            'body' => $this->contentEn, // Default key
+            'title' => $this->titleEn, // Default key
+            'description' => $this->contentEn, // Default key
             'title_ar' => $this->titleAr,
             'title_en' => $this->titleEn,
             'content_ar' => $this->contentAr,

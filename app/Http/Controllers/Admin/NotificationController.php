@@ -31,7 +31,12 @@ class NotificationController extends Controller
         // If queue is configured, Notification implements ShouldQueue logic if the notification class uses Queueable.
         // AdminGeneralNotification uses Queueable.
 
-        Notification::send(User::all(), new AdminGeneralNotification(
+        // Filter out admin users
+        $users = User::whereDoesntHave('roles', function ($query) {
+            $query->where('name', 'admin');
+        })->get();
+
+        Notification::send($users, new AdminGeneralNotification(
             $data['title_ar'],
             $data['title_en'],
             $data['content_ar'],

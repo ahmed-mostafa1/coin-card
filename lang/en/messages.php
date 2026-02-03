@@ -197,6 +197,7 @@ return [
     'store_marketing_tag' => 'Arab 8bp',
     'default_delivery_eta' => 'Delivery takes 1 to 10 minutes',
     'admin_dashboard' => 'Admin Dashboard',
+    'pages_management' => 'Pages Management',
     'wallet' => 'Wallet',
     // Admin - Category Management
     'add_category' => 'Add Category',
@@ -414,6 +415,15 @@ return [
     'otp_sent_email_sent_expired' => 'OTP has expired.',
     'otp_sent_email_sent_already_verified' => 'Your account has already been activated.',
     'otp_sent_email_sent_sent' => 'OTP sent to your email address.',
-
-
+    'account_activation' => 'Account Activation',
+    'please_activate_your_account' => 'Please activate your account',
+    'account_activated' => 'Account activated successfully.',
+    'account_not_activated' => 'Account not activated.',
+    'account_already_activated' => 'Account already activated.',
+    'account_already_activated_success' => 'Account already activated successfully.',
+    'account_already_activated_failed' => 'Account already activated failed.',
+    'account_already_activated_expired' => 'Account already activated expired.',
+    'account_already_activated_already_verified' => 'Account already activated already verified.',
+    'account_already_activated_sent' => 'Account already activated sent.',
+    'send_general_notification' => 'Send Notification to All Users'
 ];

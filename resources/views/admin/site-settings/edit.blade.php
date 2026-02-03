@@ -70,11 +70,7 @@
                         <x-input-error :messages="$errors->get('store_description_en')" />
                     </div>
 
-                     <div>
-                        <x-input-label for="upscroll_link" value="رابط زر الصعود (UP)" />
-                        <x-text-input id="upscroll_link" name="upscroll_link" type="text" :value="old('upscroll_link', $upscrollLink)" class="w-full text-left" dir="ltr" />
-                        <x-input-error :messages="$errors->get('upscroll_link')" />
-                    </div>
+
                 </div>
 
                 <div class="mt-6 flex justify-end">
@@ -180,6 +176,17 @@
                         </div>
                         <x-input-error :messages="$errors->get('facebook_link')" />
                     </div>
+                    
+                    <div>
+                        <x-input-label for="upscroll_link" value="رابط UpScrolled" />
+                        <div class="relative mt-1 rounded-md shadow-sm">
+                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                <i class="fa-solid fa-link text-slate-400"></i>
+                            </div>
+                            <x-text-input id="upscroll_link" name="upscroll_link" type="text" :value="old('upscroll_link', $upscrollLink)" class="pl-10 text-left" dir="ltr" />
+                        </div>
+                        <x-input-error :messages="$errors->get('upscroll_link')" />
+                    </div>
                 </div>
 
                 <div class="mt-6 flex justify-end">
@@ -187,5 +194,7 @@
                 </div>
             </div>
         </form>
+
+
     </div>
 @endsection

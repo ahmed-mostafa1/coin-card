@@ -62,20 +62,17 @@ class SiteSettingsController extends Controller
             'ticker_text_en' => ['nullable', 'string', 'max:500'],
             'store_description' => ['required', 'string', 'max:1000'],
             'store_description_en' => ['nullable', 'string', 'max:1000'],
-            'upscroll_link' => ['nullable', 'string'],
         ]);
 
         SiteSetting::set('ticker_text', $data['ticker_text']);
         SiteSetting::set('ticker_text_en', $data['ticker_text_en'] ?? '');
         SiteSetting::set('store_description', $data['store_description']);
         SiteSetting::set('store_description_en', $data['store_description_en'] ?? '');
-        SiteSetting::set('upscroll_link', $data['upscroll_link']);
 
         cache()->forget('shared_ticker');
         cache()->forget('shared_ticker_en');
         cache()->forget('shared_store_description');
         cache()->forget('shared_store_description_en');
-        cache()->forget('shared_upscroll_link');
 
         return redirect()->route('admin.site-settings.edit')->with('status', 'تم تحديث الإعدادات العامة بنجاح.');
     }
@@ -115,17 +112,20 @@ class SiteSettingsController extends Controller
             'instagram_link' => ['nullable', 'string'],
             'telegram_link' => ['nullable', 'string'],
             'facebook_link' => ['nullable', 'string'],
+            'upscroll_link' => ['nullable', 'string'],
         ]);
 
         SiteSetting::set('whatsapp_link', $data['whatsapp_link']);
         SiteSetting::set('instagram_link', $data['instagram_link']);
         SiteSetting::set('telegram_link', $data['telegram_link']);
         SiteSetting::set('facebook_link', $data['facebook_link']);
+        SiteSetting::set('upscroll_link', $data['upscroll_link']);
 
         cache()->forget('shared_whatsapp_link');
         cache()->forget('shared_instagram_link');
         cache()->forget('shared_telegram_link');
         cache()->forget('shared_facebook_link');
+        cache()->forget('shared_upscroll_link');
         
         // Remove old whatsapp_number cache if it exists, as it is no longer used
         cache()->forget('shared_whatsapp_number');
