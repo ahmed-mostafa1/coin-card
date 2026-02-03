@@ -43,19 +43,18 @@
         <!-- Fixed Navbar - Mobile Optimized -->
         <nav class="border-b border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm transition-colors duration-200 sticky top-0 z-50">
             
-            <!-- MOBILE LAYOUT: Balance LEFT, Logo CENTER, Controls RIGHT -->
+            <!-- MOBILE LAYOUT: Menu (Start), Logo (Center), Balance (End) -->
             <div class="flex md:hidden h-14 items-center justify-between px-3">
-                <!-- LEFT: Balance Badge -->
-                <div class="shrink-0">
-                    @auth
-                        <a href="{{ route('account.wallet') }}" class="flex items-center gap-1 rounded-full border border-orange-200 bg-orange-50 px-2 py-1 transition hover:bg-orange-100 dark:border-orange-900/50 dark:bg-orange-900/20 dark:hover:bg-orange-900/30">
-                            <span class="text-xs font-bold text-orange-600 dark:text-orange-500 whitespace-nowrap" dir="ltr">{{ number_format(auth()->user()->available_balance, 2) }} $</span>
-                        </a>
-                    @else
-                        <a href="{{ route('login') }}" class="flex items-center rounded-full bg-emerald-600 px-2.5 py-1 text-xs font-semibold text-white hover:bg-emerald-700">
-                            {{ __('messages.login') }}
-                        </a>
-                    @endauth
+                
+                <!-- START: Theme + Menu -->
+                <div class="flex shrink-0 items-center gap-2">
+                    <button type="button" @click="sidebarOpen = true" class="flex h-9 w-9 items-center justify-center rounded-lg text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-700 transition">
+                        <i class="fa-solid fa-bars text-lg"></i>
+                    </button>
+                    <button type="button" @click="darkMode = !darkMode" class="flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-700 transition">
+                        <i class="fa-solid fa-sun text-sm" x-show="!darkMode" x-cloak></i>
+                        <i class="fa-solid fa-moon text-sm" x-show="darkMode" x-cloak></i>
+                    </button>
                 </div>
                 
                 <!-- CENTER: Logo -->
@@ -68,16 +67,19 @@
                         @endif
                     </a>
                 </div>
-                
-                <!-- RIGHT: Theme + Menu -->
-                <div class="flex shrink-0 items-center gap-2">
-                    <button type="button" @click="darkMode = !darkMode" class="flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-700 transition">
-                        <i class="fa-solid fa-sun text-sm" x-show="!darkMode" x-cloak></i>
-                        <i class="fa-solid fa-moon text-sm" x-show="darkMode" x-cloak></i>
-                    </button>
-                    <button type="button" @click="sidebarOpen = true" class="flex h-9 w-9 items-center justify-center rounded-lg text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-700 transition">
-                        <i class="fa-solid fa-bars text-lg"></i>
-                    </button>
+
+                <!-- END: Balance Badge -->
+                <div class="shrink-0">
+                    @auth
+                        <a href="{{ route('account.wallet') }}" class="flex items-center gap-1 rounded-full border border-orange-200 bg-orange-50 px-2 py-1 transition hover:bg-orange-100 dark:border-orange-900/50 dark:bg-orange-900/20 dark:hover:bg-orange-900/30">
+                             <i class="fa-solid fa-wallet text-orange-500 text-xs"></i>
+                            <span class="text-xs font-bold text-orange-600 dark:text-orange-500 whitespace-nowrap" dir="ltr">{{ number_format(auth()->user()->available_balance, 2) }} $</span>
+                        </a>
+                    @else
+                        <a href="{{ route('login') }}" class="flex items-center rounded-full bg-emerald-600 px-2.5 py-1 text-xs font-semibold text-white hover:bg-emerald-700">
+                            {{ __('messages.login') }}
+                        </a>
+                    @endauth
                 </div>
             </div>
 
@@ -131,7 +133,7 @@
         </main>
 
         <!-- New Sticky Footer -->
-        <footer class="fixed bottom-0 left-0 right-0 z-40 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] transition-colors duration-200">
+        <footer class="fixed bottom-0 inset-x-0 z-40 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] transition-colors duration-200">
              <!-- Desktop Layout -->
             <div class="hidden md:flex h-20 items-center px-4">
                 <div class="flex items-center justify-between w-full gap-6 text-slate-500 dark:text-slate-400">
@@ -146,7 +148,7 @@
                        class="{{ request()->routeIs('account.notifications*') ? 'bg-orange-500 text-white shadow-lg ring-4 ring-white dark:ring-slate-800 scale-110' : 'bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 hover:text-slate-800 dark:hover:text-slate-200' }} group relative flex h-10 w-10 items-center justify-center rounded-full transition">
                         <i class="fa-solid fa-bell text-xl"></i>
                         @if (!empty($navUnreadCount ?? 0))
-                            <span class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[10px] text-white">{{ $navUnreadCount }}</span>
+                            <span class="absolute -top-1 -end-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[10px] text-white">{{ $navUnreadCount }}</span>
                         @endif
                     </a>
 
@@ -198,7 +200,7 @@
                          @else
                              <i class="fa-solid fa-bell text-lg text-slate-500 dark:text-slate-400"></i>
                              @if (!empty($navUnreadCount ?? 0))
-                                 <span class="absolute top-0 right-0 flex h-3 w-3 items-center justify-center rounded-full bg-rose-500 text-[8px] text-white">{{ $navUnreadCount }}</span>
+                                 <span class="absolute top-0 end-0 flex h-3 w-3 items-center justify-center rounded-full bg-rose-500 text-[8px] text-white">{{ $navUnreadCount }}</span>
                              @endif
                          @endif
                      </a>

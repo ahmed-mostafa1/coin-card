@@ -425,5 +425,7 @@ return [
     'account_already_activated_expired' => 'Account already activated expired.',
     'account_already_activated_already_verified' => 'Account already activated already verified.',
     'account_already_activated_sent' => 'Account already activated sent.',
-    'send_general_notification' => 'Send Notification to All Users'
+    'send_general_notification' => 'Send Notification to All Users',
+    'current_offer_image' => 'Current Offer Image',
+    'service-offer-card' => 'Limited Time Offer',
 ];

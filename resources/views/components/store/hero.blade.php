@@ -15,7 +15,7 @@
 <div class="relative w-full overflow-hidden rounded-xl border border-slate-300 bg-gradient-to-tr from-slate-800 via-slate-700 to-slate-600 shadow-md {{ $height }} sm:w-4/5 sm:mx-auto"
     dir="ltr" data-hero-slider>
     @if($bannerItems->isNotEmpty())
-        <div class="flex h-full w-full transition-transform duration-700 ease-in-out" data-hero-track>
+        <div class="flex h-full w-full transition-transform duration-700 ease-in-out" data-hero-track dir="ltr">
             @foreach ($bannerItems as $banner)
                 @php
                     $rawPath = is_array($banner) ? ($banner['image_path'] ?? '') : ($banner->image_path ?? '');
@@ -23,11 +23,11 @@
                     $src = $isAbsolute ? $rawPath : asset('storage/' . ltrim($rawPath, '/'));
                     $fallback = asset('img/placeholder-banner.jpg');
                 @endphp
-                <div class="min-w-full h-full shrink-0 flex items-center justify-center">
+                <div class="w-full h-full shrink-0 flex-[0_0_100%] flex items-center justify-center">
                     <img src="{{ $src }}"
                         alt="{{ is_array($banner) ? ($banner['title'] ?? '') : ($banner->localized_title ?? $banner->title ?? '') }}"
                         onerror="this.onerror=null;this.src='{{ $fallback }}';"
-                        class="h-full w-full object-cover">
+                        class="h-full w-full object-fill md:object-cover">
                 </div>
             @endforeach
         </div>

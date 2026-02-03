@@ -40,9 +40,7 @@
                     </div>
 
                     <div class="pt-4 text-center">
-                        <p class="text-base font-semibold text-slate-900">{{ $service->localized_name }}</p>
-                        <p class="mt-1 text-xs text-slate-600">
-                            {{ $service->localized_description ?: __('messages.default_delivery_eta') }}</p>
+                        <p class="text-base font-semibold text-emerald-900">{{ __('messages.service-offer-card') }}</p>
                     </div>
                 </div>
             </div>

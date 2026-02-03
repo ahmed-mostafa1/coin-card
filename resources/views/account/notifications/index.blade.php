@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', __('messages.notifications'))
-@section('mainWidth', 'max-w-none w-full')
+
 
 @section('content')
     <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-8 shadow-sm">

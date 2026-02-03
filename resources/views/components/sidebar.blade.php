@@ -20,11 +20,11 @@
     <!-- Sidebar Panel -->
     <div x-show="sidebarOpen"
          x-transition:enter="transition ease-in-out duration-300 transform"
-         x-transition:enter-start="{{ app()->getLocale() == 'ar' ? 'translate-x-full' : '-translate-x-full' }}"
+         x-transition:enter-start="ltr:-translate-x-full rtl:translate-x-full"
          x-transition:enter-end="translate-x-0"
          x-transition:leave="transition ease-in-out duration-300 transform"
          x-transition:leave-start="translate-x-0"
-         x-transition:leave-end="{{ app()->getLocale() == 'ar' ? 'translate-x-full' : '-translate-x-full' }}"
+         x-transition:leave-end="ltr:-translate-x-full rtl:translate-x-full"
          class="relative flex w-full max-w-xs flex-col overflow-y-auto bg-slate-100 dark:bg-slate-900 shadow-xl transition-all h-full">
 
         <!-- Header -->
@@ -217,7 +217,7 @@
                  <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="w-full flex items-center gap-3 rounded-lg border border-slate-400 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-700">
-                        <i class="fa-solid fa-arrow-right-from-bracket text-orange-400 w-5"></i>
+                        <i class="fa-solid fa-arrow-right-from-bracket text-orange-400 w-5 rtl:rotate-180"></i>
                         <span>{{ __('messages.logout') }}</span>
                     </button>
                 </form>

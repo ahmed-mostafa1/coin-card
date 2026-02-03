@@ -413,6 +413,7 @@ return [
     'otp_sent_email_sent_already_verified' => 'تم تفعيل حسابك بالفعل.',
     'otp_sent_email_sent_sent' => 'تم إرسال رمز التحقق إلى بريدك الإلكتروني.',
     'account_activation' => 'تفعيل الحساب',
-    'send_general_notification' => 'إرسال إشعار لجميع المستخدمين'
-
+    'send_general_notification' => 'إرسال إشعار لجميع المستخدمين',
+    'current_offer_image' => 'صورة العرض الحالي',
+    'service-offer-card' => 'عرض خاص لفترة محدودة',
 ];
