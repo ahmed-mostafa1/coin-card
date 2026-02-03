@@ -58,6 +58,7 @@
                     </div>
                 @endif
                 <input type="file" id="image_path" name="image_path" accept="image/*" class="mt-1 block w-full rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-3 py-2 text-sm text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500">
+                <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">المقاس المفضل: 200×200 بكسل</p>
                 <x-input-error :messages="$errors->get('image_path')" class="mt-2" />
             </div>
 

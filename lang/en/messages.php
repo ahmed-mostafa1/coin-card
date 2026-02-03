@@ -428,4 +428,6 @@ return [
     'send_general_notification' => 'Send Notification to All Users',
     'current_offer_image' => 'Current Offer Image',
     'service-offer-card' => 'Limited Time Offer',
+    'otp_sent' => 'OTP sent to your email address.',
+    'sending' => 'Sending...',
 ];

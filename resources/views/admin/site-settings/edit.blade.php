@@ -115,6 +115,7 @@
                                 </div>
                             @endif
                             <input type="file" id="logo_image" name="logo_image" accept="image/*" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 dark:file:bg-emerald-900/50 dark:file:text-emerald-400">
+                            <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">المقاس المفضل: 200×60 بكسل</p>
                         </div>
                         <x-input-error :messages="$errors->get('logo_image')" />
                     </div>

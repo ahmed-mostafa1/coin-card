@@ -45,6 +45,7 @@
             <div>
                 <x-input-label for="icon" :value="__('messages.icon_optional')" />
                 <input id="icon" name="icon" type="file" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-600 dark:text-slate-300 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-800 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-700 dark:file:text-emerald-300">
+                <p class="mt-1 text-xs text-slate-500">{{ __('messages.recommended_size') }}: 200x200 px</p>
                 <x-input-error :messages="$errors->get('icon')" />
                 @if ($paymentMethod->icon_path)
                 @endif

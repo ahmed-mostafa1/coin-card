@@ -140,10 +140,7 @@
                 <span>{{ __('messages.admin_dashboard') ?? 'Admin Dashboard' }}</span>
             </a>
             
-            <a href="{{ route('admin.pages.edit') }}" class="flex items-center gap-3 rounded-lg border border-slate-400 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-700">
-                <i class="fa-solid fa-file-contract text-orange-400 w-5"></i>
-                <span>{{ __('messages.pages_management') }}</span>
-            </a>
+
             @endif
 
             <a href="{{ route('home') }}" class="flex items-center gap-3 rounded-lg border border-slate-400 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-700">

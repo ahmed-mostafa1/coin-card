@@ -416,4 +416,6 @@ return [
     'send_general_notification' => 'إرسال إشعار لجميع المستخدمين',
     'current_offer_image' => 'صورة العرض الحالي',
     'service-offer-card' => 'عرض خاص لفترة محدودة',
+    'otp_sent' => 'تم إرسال رمز التحقق إلى بريدك الإلكتروني.',
+    'sending' => 'جاري الإرسال...',
 ];
