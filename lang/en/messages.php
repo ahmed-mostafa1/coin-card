@@ -432,4 +432,5 @@ return [
     'otp_sent' => 'OTP sent to your email address.',
     'sending' => 'Sending...',
     'discount' => 'Discount',
+    'select_package_first' => 'Select Package First'
 ];
