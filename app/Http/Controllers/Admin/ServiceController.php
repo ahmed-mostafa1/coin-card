@@ -117,6 +117,7 @@ class ServiceController extends Controller
         $data = $request->validated();
         $data['is_active'] = $request->boolean('is_active');
         $data['is_offer_active'] = $request->boolean('is_offer_active');
+        $data['is_quantity_based'] = $request->boolean('is_quantity_based');
         $data['sort_order'] = $data['sort_order'] ?? 0;
 
         $slug = $data['slug'] ?? null;

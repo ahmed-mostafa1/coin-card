@@ -6,7 +6,18 @@
 ])
 
 @php
-    $price = $service->variants->count() ? $service->variants->min('price') : $service->price;
+    // Calculate price based on service type
+    if ($service->variants->count()) {
+        // Variant-based service
+        $price = $service->variants->min('price');
+    } elseif ($service->is_quantity_based && $service->price_per_unit) {
+        // Quantity-based service
+        $price = $service->price_per_unit;
+    } else {
+        // Regular service
+        $price = $service->price;
+    }
+    
     $image = $service->image_path ? asset('storage/' . $service->image_path) : null;
     $subtitle ??= $service->category->localized_name ?? '';
 @endphp

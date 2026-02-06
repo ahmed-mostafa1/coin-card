@@ -82,7 +82,7 @@
 
             <div>
                 <x-input-label for="price" :value="__('messages.price')" />
-                <x-text-input id="price" name="price" type="number" step="0.01" min="1" :value="old('price')" required />
+                <x-text-input id="price" name="price" type="number" step="0.01" min="0.01" :value="old('price')" />
                 <x-input-error :messages="$errors->get('price')" />
                 <p class="mt-1 text-xs text-slate-500">السعر الافتراضي (يتم تجاهله إذا كانت الخدمة بالكمية أو لديها باقات)</p>
             </div>

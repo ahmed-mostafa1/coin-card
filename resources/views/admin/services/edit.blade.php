@@ -64,9 +64,37 @@
                 </div>
 
                 <div>
+                    <x-input-label for="additional_rules" value="قواعد إضافية (عربي)" />
+                    <textarea id="additional_rules" name="additional_rules" rows="3" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">{{ old('additional_rules', $service->additional_rules) }}</textarea>
+                    <x-input-error :messages="$errors->get('additional_rules')" />
+                </div>
+
+                <div>
+                    <x-input-label for="additional_rules_en" value="قواعد إضافية (English)" />
+                    <textarea id="additional_rules_en" name="additional_rules_en" rows="3" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500" dir="ltr">{{ old('additional_rules_en', $service->additional_rules_en) }}</textarea>
+                    <x-input-error :messages="$errors->get('additional_rules_en')" />
+                </div>
+
+                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4 space-y-4">
+                    <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
+                        <input id="is_quantity_based" name="is_quantity_based" type="checkbox" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" {{ $service->is_quantity_based ? 'checked' : '' }} onchange="toggleQuantityFields(this)">
+                        <label for="is_quantity_based">خدمة بالكمية (سعر ثابت للقطعة)</label>
+                    </div>
+                    <div id="quantity-fields" class="{{ $service->is_quantity_based ? '' : 'hidden' }} space-y-4">
+                        <div>
+                            <x-input-label for="price_per_unit" value="السعر لكل قطعة" />
+                            <x-text-input id="price_per_unit" name="price_per_unit" type="number" step="0.01" min="0.01" :value="old('price_per_unit', $service->price_per_unit)" />
+                            <x-input-error :messages="$errors->get('price_per_unit')" />
+                            <p class="mt-1 text-xs text-slate-500">سيتم حساب السعر الإجمالي تلقائياً بناءً على الكمية</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
                     <x-input-label for="price" :value="__('messages.price')" />
-                    <x-text-input id="price" name="price" type="number" step="0.01" min="1" :value="old('price', $service->price)" required />
+                    <x-text-input id="price" name="price" type="number" step="0.01" min="0.01" :value="old('price', $service->price)" />
                     <x-input-error :messages="$errors->get('price')" />
+                    <p class="mt-1 text-xs text-slate-500">السعر الافتراضي (يتم تجاهله إذا كانت الخدمة بالكمية أو لديها باقات)</p>
                 </div>
 
                 <div>
@@ -151,4 +179,15 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function toggleQuantityFields(checkbox) {
+            const quantityFields = document.getElementById('quantity-fields');
+            if (checkbox.checked) {
+                quantityFields.classList.remove('hidden');
+            } else {
+                quantityFields.classList.add('hidden');
+            }
+        }
+    </script>
 @endsection
