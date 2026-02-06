@@ -160,25 +160,38 @@
                         @endif
 
                         <div class="rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-3 text-sm text-slate-700 dark:text-slate-200">
-                            <p>{{ __('messages.current_price') }}:
-                                @if ($vipDiscount > 0 && !$service->variants->count() && !$service->is_quantity_based)
-                                    <span class="text-xs text-slate-500 line-through">${{ number_format($service->price, 2) }}</span>
-                                @endif
-                                <span id="current-price" class="font-semibold text-emerald-700">
-                                    @if ($service->variants->count())
-                                        {{ __('messages.select_package_first') ?? (app()->getLocale() == 'ar' ? 'اختر باقة أولاً' : 'Select a package first') }}
-                                    @elseif ($service->is_quantity_based)
-                                        {{ __('messages.enter_quantity_first') ?? (app()->getLocale() == 'ar' ? 'أدخل الكمية أولاً' : 'Enter quantity first') }}
-                                    @else
-                                        @php
-                                            $displayPrice = $vipDiscount > 0 ? $service->price * (1 - $vipDiscount / 100) : $service->price;
-                                        @endphp
-                                        {{ number_format($displayPrice, 2) }}
+                            <p >{{ __('messages.current_price') }}:
+                                @if ($service->variants->count())
+                                    @php
+                                        // Get the first variant (which is auto-selected)
+                                        $firstVariant = $service->variants->sortBy('sort_order')->first();
+                                        $originalPrice = $firstVariant->price;
+                                        $displayPrice = $vipDiscount > 0 ? $originalPrice * (1 - $vipDiscount / 100) : $originalPrice;
+                                    @endphp
+                                    @if ($vipDiscount > 0)
+                                        <span class="text-xs text-slate-500 line-through">${{ number_format($originalPrice, 2) }}</span>
                                     @endif
-                                </span>
-                                <span id="price-currency" class="{{ ($service->variants->count() || $service->is_quantity_based) ? 'hidden' : '' }}">USD</span>
+                                    <span id="current-price" class="font-semibold text-emerald-700">${{ number_format($displayPrice, 2) }}</span>
+                                @elseif ($service->is_quantity_based)
+                                    @php
+                                        $displayPrice = $vipDiscount > 0 ? $service->price_per_unit * (1 - $vipDiscount / 100) : $service->price_per_unit;
+                                    @endphp
+                                    @if ($vipDiscount > 0)
+                                        <span class="text-xs text-slate-500 line-through">${{ number_format($service->price_per_unit, 2) }}</span>
+                                    @endif
+                                    <span id="current-price" class="font-semibold text-emerald-700">${{ number_format($displayPrice, 2) }}</span>
+                                @else
+                                    @php
+                                        $displayPrice = $vipDiscount > 0 ? $service->price * (1 - $vipDiscount / 100) : $service->price;
+                                    @endphp
+                                    @if ($vipDiscount > 0)
+                                        <span class="text-xs text-slate-500 line-through">${{ number_format($service->price, 2) }}</span>
+                                    @endif
+                                    <span id="current-price" class="font-semibold text-emerald-700">${{ number_format($displayPrice, 2) }}</span>
+                                @endif
+                                <span id="price-currency">USD</span>
                             </p>
-                            <input type="hidden" name="selected_price" id="selected-price-input" value="{{ $service->variants->count() || $service->is_quantity_based ? '' : ($vipDiscount > 0 ? $service->price * (1 - $vipDiscount / 100) : $service->price) }}">
+                            <input type="hidden" name="selected_price" id="selected-price-input" value="@if ($service->variants->count()){{ $displayPrice }}@elseif ($service->is_quantity_based){{ $displayPrice }}@else{{ $vipDiscount > 0 ? $service->price * (1 - $vipDiscount / 100) : $service->price }}@endif">
                             <input type="hidden" name="vip_discount" value="{{ $vipDiscount }}">
                             <p id="insufficient-message"
                                 class="mt-2 text-xs text-rose-600 {{ $isBaseInsufficient ? '' : 'hidden' }}">
