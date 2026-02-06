@@ -54,7 +54,10 @@
                          @endphp
 
                     <div class="h-10 w-10 overflow-hidden rounded-full ring-2 ring-emerald-500 bg-slate-200 dark:bg-slate-700 flex items-center justify-center">
-                         @if($currentTier && $currentTier->image_path)
+                         @php
+                             $hasTierImage = $currentTier ? ($currentTier->image_path ? true : false) : false;
+                         @endphp
+                         @if($hasTierImage)
                              <img src="{{ asset('storage/' . $currentTier->image_path) }}" alt="{{ auth()->user()->name }}" class="h-full w-full object-cover">
                          @else
                             <img src="{{ asset('img/vip0.png') }}" alt="{{ auth()->user()->name }}" class="h-full w-full object-cover">
@@ -69,7 +72,10 @@
                              <div class="flex items-center gap-2 mb-1.5">
                                   <div class="px-2.5 py-0.5 rounded-full text-[10px] uppercase tracking-wider font-bold shadow-sm ring-1 ring-inset {{ $currentStyle }}">
                                       <div class="flex items-center gap-1">
-                                          @if($currentTier && $currentTier->image_path)
+                                          @php
+                                              $hasBadgeImage = $currentTier ? ($currentTier->image_path ? true : false) : false;
+                                          @endphp
+                                          @if($hasBadgeImage)
                                             <img src="{{ asset('storage/' . $currentTier->image_path) }}" alt="VIP" class="w-3 h-3 object-contain invert brightness-0">
                                           @elseif($currentTier)
                                             <i class="fa-solid fa-crown text-[10px]"></i>

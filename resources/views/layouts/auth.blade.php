@@ -9,7 +9,8 @@
 
     <script>
         // Initialize theme before page renders
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        const isDark = localStorage.theme === 'dark' || (!('theme' in localStorage) ? window.matchMedia('(prefers-color-scheme: dark)').matches : false);
+        if (isDark) {
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark');
@@ -41,7 +42,7 @@
 </head>
 
 <body class="min-h-screen bg-transparent transition-colors duration-200" 
-      x-data="{ darkMode: localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches) }"
+      x-data="{ darkMode: localStorage.theme === 'dark' || (localStorage.theme ? false : window.matchMedia('(prefers-color-scheme: dark)').matches) }"
       x-init="$watch('darkMode', val => {
           localStorage.theme = val ? 'dark' : 'light';
           if(val) document.documentElement.classList.add('dark');
@@ -52,7 +53,10 @@
         {{-- Logo & Theme Toggle --}}
         <div class="mb-8 flex items-center justify-center relative">
             <a href="{{ route('home') }}" class="flex items-center justify-center">
-                @if($sharedLogoType === 'image' && $sharedLogoImage)
+                @php
+                    $hasLogoImage = ($sharedLogoType === 'image') ? ($sharedLogoImage ? true : false) : false;
+                @endphp
+                @if($hasLogoImage)
                     <img src="{{ asset('storage/' . $sharedLogoImage) }}" alt="Logo" class="h-12 object-contain">
                 @else
                     <span class="text-2xl font-bold text-emerald-700 dark:text-emerald-400 transition hover:text-emerald-800 dark:hover:text-emerald-300">{{ $sharedLogoText }}</span>
@@ -104,9 +108,9 @@
             document.querySelectorAll('body *').forEach((el) => {
                 const rect = el.getBoundingClientRect();
                 const style = getComputedStyle(el);
-                const isFullScreen = rect.width >= window.innerWidth && rect.height >= window.innerHeight;
+                const isFullScreen = (rect.width >= window.innerWidth) ? (rect.height >= window.innerHeight) : false;
                 const isFixed = style.position === 'fixed';
-                const isOverlayCandidate = isFullScreen && isFixed && !['HTML', 'BODY', 'MAIN'].includes(el.tagName);
+                const isOverlayCandidate = isFullScreen ? (isFixed ? (!['HTML', 'BODY', 'MAIN'].includes(el.tagName)) : false) : false;
 
                 if (isOverlayCandidate) {
                     el.style.pointerEvents = 'none';

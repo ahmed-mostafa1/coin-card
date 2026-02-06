@@ -14,7 +14,8 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
     <script>
         // Initialize theme before page renders to prevent flash
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        const isDark = localStorage.theme === 'dark' || (!('theme' in localStorage) ? window.matchMedia('(prefers-color-scheme: dark)').matches : false);
+        if (isDark) {
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark');
@@ -25,7 +26,7 @@
 <body class="min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors duration-200" 
       x-data="{ 
           sidebarOpen: false, 
-          darkMode: localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+          darkMode: localStorage.theme === 'dark' || (localStorage.theme ? false : window.matchMedia('(prefers-color-scheme: dark)').matches)
       }"
       x-init="$watch('darkMode', val => {
           localStorage.theme = val ? 'dark' : 'light';
@@ -231,7 +232,13 @@
                      
                      <!-- Account -->
                      <a href="{{ route('account') }}" class="flex flex-col items-center gap-1">
-                         @if(request()->routeIs('account') && !request()->routeIs('account.orders*') && !request()->routeIs('account.notifications*') && !request()->routeIs('account.wallet*'))
+                         @php
+                             $isAccountActive = request()->routeIs('account') 
+                                 && !request()->routeIs('account.orders*') 
+                                 && !request()->routeIs('account.notifications*') 
+                                 && !request()->routeIs('account.wallet*');
+                         @endphp
+                         @if($isAccountActive)
                              <div class="bg-orange-500 rounded-full p-2.5">
                                  <i class="fa-solid fa-user text-sm text-white"></i>
                              </div>
