@@ -169,7 +169,7 @@
                                         $displayPrice = $vipDiscount > 0 ? $originalPrice * (1 - $vipDiscount / 100) : $originalPrice;
                                     @endphp
                                     @if ($vipDiscount > 0)
-                                        <span class="text-xs text-slate-500 line-through">${{ number_format($originalPrice, 2) }}</span>
+                                        <span id="original-price" class="text-xs text-slate-500 line-through">${{ number_format($originalPrice, 2) }}</span>
                                     @endif
                                     <span id="current-price" class="font-semibold text-emerald-700">${{ number_format($displayPrice, 2) }}</span>
                                 @elseif ($service->is_quantity_based)
@@ -244,6 +244,7 @@
             document.addEventListener('DOMContentLoaded', () => {
                 const availableBalance = parseFloat({{ json_encode($availableBalance) }} || 0);
                 const priceElement = document.getElementById('current-price');
+                const originalPriceElement = document.getElementById('original-price');
                 const priceCurrency = document.getElementById('price-currency');
                 const priceInput = document.getElementById('selected-price-input');
                 const insufficientMessage = document.getElementById('insufficient-message');
@@ -281,17 +282,44 @@
                     return price;
                 };
 
+                const getOriginalPrice = () => {
+                    // For variant-based services
+                    const checked = document.querySelector('input[name="variant_id"]:checked');
+                    if (checked && checked.dataset.originalPrice) {
+                        return parseFloat(checked.dataset.originalPrice);
+                    }
+                    
+                    // For quantity-based services
+                    if (isQuantityBased && quantityInput) {
+                        const quantity = parseInt(quantityInput.value) || 1;
+                        const pricePerUnit = parseFloat(quantityInput.dataset.pricePerUnit);
+                        return quantity * pricePerUnit;
+                    }
+                    
+                    return null;
+                };
+
                 const updateState = () => {
                     const price = getSelectedPrice();
+                    const originalPrice = getOriginalPrice();
                     
                     if (priceElement && price !== null && !Number.isNaN(price)) {
-                        priceElement.textContent = price.toFixed(2);
+                        priceElement.textContent = '$' + price.toFixed(2);
                         if (priceCurrency) priceCurrency.classList.remove('hidden');
                         if (priceInput) priceInput.value = price.toFixed(2);
+                        
+                        // Update original price if VIP discount is active
+                        if (vipDiscount > 0 && originalPriceElement && originalPrice !== null) {
+                            originalPriceElement.textContent = '$' + originalPrice.toFixed(2);
+                            originalPriceElement.classList.remove('hidden');
+                        } else if (originalPriceElement) {
+                            originalPriceElement.classList.add('hidden');
+                        }
                     } else if (hasVariants && price === null) {
                         priceElement.textContent = '{{ __("messages.select_package_first") ?? (app()->getLocale() == "ar" ? "اختر باقة أولاً" : "Select a package first") }}';
                         if (priceCurrency) priceCurrency.classList.add('hidden');
                         if (priceInput) priceInput.value = '';
+                        if (originalPriceElement) originalPriceElement.classList.add('hidden');
                     }
 
                     if (!purchaseButton) {
