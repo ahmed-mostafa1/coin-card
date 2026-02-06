@@ -245,7 +245,7 @@
         @endphp
         <script>
             document.addEventListener('DOMContentLoaded', () => {
-                const availableBalance = parseFloat({{ json_encode($availableBalance) }} || 0);
+                const availableBalance = parseFloat({{ $availableBalance }} || 0);
                 const priceElement = document.getElementById('current-price');
                 const originalPriceElement = document.getElementById('original-price');
                 const priceCurrency = document.getElementById('price-currency');
