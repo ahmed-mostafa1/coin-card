@@ -93,10 +93,12 @@
                             <div class="space-y-2">
                                 <p class="text-sm font-semibold text-slate-800">{{ __('messages.choose_package') }}</p>
                                 <div class="space-y-2">
-                                    @foreach ($service->variants->sortBy('sort_order') as $variant)
+                                    @foreach ($service->variants->sortBy('sort_order') as $index => $variant)
                                         @php
                                             $originalPrice = $variant->price;
                                             $discountedPrice = $vipDiscount > 0 ? $originalPrice * (1 - $vipDiscount / 100) : $originalPrice;
+                                            // Auto-select first variant if no old value
+                                            $isChecked = old('variant_id') ? old('variant_id') == $variant->id : $index === 0;
                                         @endphp
                                         <label
                                             class="flex items-center justify-between rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 transition hover:border-emerald-200 dark:hover:border-emerald-500">
@@ -106,7 +108,7 @@
                                                     data-original-price="{{ $originalPrice }}"
                                                     data-discount="{{ $vipDiscount }}"
                                                     class="text-emerald-600 focus:ring-emerald-500"
-                                                    @checked(old('variant_id') == $variant->id) required>
+                                                    @checked($isChecked) required>
                                                 <span>{{ $variant->localized_name }}</span>
                                             </span>
                                             <span class="flex items-center gap-2">
