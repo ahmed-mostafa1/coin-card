@@ -257,27 +257,33 @@
 
                 const getSelectedPrice = () => {
                     // Handle quantity-based services
-                    if (isQuantityBased && quantityInput) {
-                        const quantity = parseInt(quantityInput.value) || 1;
-                        const pricePerUnit = parseFloat(quantityInput.dataset.pricePerUnit);
-                        let totalPrice = quantity * pricePerUnit;
-                        // Apply VIP discount
-                        if (vipDiscount > 0) {
-                            totalPrice = totalPrice * (1 - vipDiscount / 100);
+                    if (isQuantityBased) {
+                        if (quantityInput) {
+                            const quantity = parseInt(quantityInput.value) || 1;
+                            const pricePerUnit = parseFloat(quantityInput.dataset.pricePerUnit);
+                            let totalPrice = quantity * pricePerUnit;
+                            // Apply VIP discount
+                            if (vipDiscount > 0) {
+                                totalPrice = totalPrice * (1 - vipDiscount / 100);
+                            }
+                            return totalPrice;
                         }
-                        return totalPrice;
                     }
                     
                     // Handle variant-based services (discount already applied in data-price)
                     const checked = document.querySelector('input[name="variant_id"]:checked');
-                    if (checked && checked.dataset.price) {
-                        return parseFloat(checked.dataset.price);
+                    if (checked) {
+                        if (checked.dataset.price) {
+                            return parseFloat(checked.dataset.price);
+                        }
                     }
                     
                     // Handle regular services
                     let price = hasVariants ? null : parseFloat({{ json_encode($service->price) }});
-                    if (price !== null && vipDiscount > 0) {
-                        price = price * (1 - vipDiscount / 100);
+                    if (price !== null) {
+                        if (vipDiscount > 0) {
+                            price = price * (1 - vipDiscount / 100);
+                        }
                     }
                     return price;
                 };
@@ -285,15 +291,19 @@
                 const getOriginalPrice = () => {
                     // For variant-based services
                     const checked = document.querySelector('input[name="variant_id"]:checked');
-                    if (checked && checked.dataset.originalPrice) {
-                        return parseFloat(checked.dataset.originalPrice);
+                    if (checked) {
+                        if (checked.dataset.originalPrice) {
+                            return parseFloat(checked.dataset.originalPrice);
+                        }
                     }
                     
                     // For quantity-based services
-                    if (isQuantityBased && quantityInput) {
-                        const quantity = parseInt(quantityInput.value) || 1;
-                        const pricePerUnit = parseFloat(quantityInput.dataset.pricePerUnit);
-                        return quantity * pricePerUnit;
+                    if (isQuantityBased) {
+                        if (quantityInput) {
+                            const quantity = parseInt(quantityInput.value) || 1;
+                            const pricePerUnit = parseFloat(quantityInput.dataset.pricePerUnit);
+                            return quantity * pricePerUnit;
+                        }
                     }
                     
                     return null;
@@ -303,23 +313,31 @@
                     const price = getSelectedPrice();
                     const originalPrice = getOriginalPrice();
                     
-                    if (priceElement && price !== null && !Number.isNaN(price)) {
-                        priceElement.textContent = '$' + price.toFixed(2);
-                        if (priceCurrency) priceCurrency.classList.remove('hidden');
-                        if (priceInput) priceInput.value = price.toFixed(2);
-                        
-                        // Update original price if VIP discount is active
-                        if (vipDiscount > 0 && originalPriceElement && originalPrice !== null) {
-                            originalPriceElement.textContent = '$' + originalPrice.toFixed(2);
-                            originalPriceElement.classList.remove('hidden');
-                        } else if (originalPriceElement) {
-                            originalPriceElement.classList.add('hidden');
+                    if (priceElement) {
+                        if (price !== null) {
+                            if (!Number.isNaN(price)) {
+                                priceElement.textContent = '$' + price.toFixed(2);
+                                if (priceCurrency) priceCurrency.classList.remove('hidden');
+                                if (priceInput) priceInput.value = price.toFixed(2);
+                                
+                                // Update original price if VIP discount is active
+                                if (vipDiscount > 0) {
+                                    if (originalPriceElement) {
+                                        if (originalPrice !== null) {
+                                            originalPriceElement.textContent = '$' + originalPrice.toFixed(2);
+                                            originalPriceElement.classList.remove('hidden');
+                                        }
+                                    }
+                                } else if (originalPriceElement) {
+                                    originalPriceElement.classList.add('hidden');
+                                }
+                            }
+                        } else if (hasVariants) {
+                            priceElement.textContent = '{{ __("messages.select_package_first") ?? (app()->getLocale() == "ar" ? "اختر باقة أولاً" : "Select a package first") }}';
+                            if (priceCurrency) priceCurrency.classList.add('hidden');
+                            if (priceInput) priceInput.value = '';
+                            if (originalPriceElement) originalPriceElement.classList.add('hidden');
                         }
-                    } else if (hasVariants && price === null) {
-                        priceElement.textContent = '{{ __("messages.select_package_first") ?? (app()->getLocale() == "ar" ? "اختر باقة أولاً" : "Select a package first") }}';
-                        if (priceCurrency) priceCurrency.classList.add('hidden');
-                        if (priceInput) priceInput.value = '';
-                        if (originalPriceElement) originalPriceElement.classList.add('hidden');
                     }
 
                     if (!purchaseButton) {
@@ -328,8 +346,10 @@
 
                     if (price === null || availableBalance < price) {
                         purchaseButton.setAttribute('disabled', 'disabled');
-                        if (insufficientMessage && price !== null) {
-                            insufficientMessage.classList.remove('hidden');
+                        if (insufficientMessage) {
+                            if (price !== null) {
+                                insufficientMessage.classList.remove('hidden');
+                            }
                         }
                     } else {
                         purchaseButton.removeAttribute('disabled');
