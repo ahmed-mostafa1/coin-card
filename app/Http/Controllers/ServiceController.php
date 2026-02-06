@@ -46,23 +46,58 @@ class ServiceController extends Controller
         $allowedKeys = $service->formFields()->pluck('name_key')->all();
         $payload = array_intersect_key($payload, array_flip($allowedKeys));
         $variantId = $request->input('variant_id');
+        $quantity = $request->input('quantity', 1);
 
         $order = null;
 
-        DB::transaction(function () use ($user, $service, $payload, $walletService, $variantId, &$order) {
+        DB::transaction(function () use ($user, $service, $payload, $walletService, $variantId, $quantity, $request, &$order) {
             $wallet = Wallet::where('user_id', $user->id)->lockForUpdate()->firstOrCreate(['user_id' => $user->id]);
             $variant = null;
-            $price = (string) $service->price;
+            
+            // Get VIP discount
+            $vipDiscount = 0;
+            $userVipStatus = $user->vipStatus;
+            if ($userVipStatus && $userVipStatus->tier) {
+                $vipDiscount = $userVipStatus->tier->discount_percentage ?? 0;
+            }
 
-            if ($service->variants()->where('is_active', true)->exists()) {
+            // Calculate the expected price based on service type
+            if ($service->is_quantity_based) {
+                // Quantity-based pricing
+                $basePrice = $service->price_per_unit * $quantity;
+                $price = $vipDiscount > 0 ? $basePrice * (1 - $vipDiscount / 100) : $basePrice;
+            } elseif ($service->variants()->where('is_active', true)->exists()) {
+                // Variant-based pricing
                 $variant = $service->variants()
                     ->where('is_active', true)
                     ->whereKey($variantId)
                     ->firstOrFail();
 
-                $price = (string) $variant->price;
+                $basePrice = $variant->price;
+                $price = $vipDiscount > 0 ? $basePrice * (1 - $vipDiscount / 100) : $basePrice;
+            } else {
+                // Regular service pricing
+                $basePrice = $service->price;
+                $price = $vipDiscount > 0 ? $basePrice * (1 - $vipDiscount / 100) : $basePrice;
             }
 
+            // Use the selected_price from request if provided (frontend calculated)
+            $selectedPrice = $request->input('selected_price');
+            if ($selectedPrice !== null && $selectedPrice !== '') {
+                $selectedPrice = (float) $selectedPrice;
+                $expectedPrice = (float) $price;
+                
+                // Validate that the selected price matches expected (with small tolerance for rounding)
+                if (abs($selectedPrice - $expectedPrice) > 0.01) {
+                    throw ValidationException::withMessages([
+                        'selected_price' => 'السعر المحدد غير صحيح.',
+                    ]);
+                }
+                
+                $price = $selectedPrice;
+            }
+
+            $price = (string) $price;
             $balance = (string) $wallet->balance;
 
             $insufficient = function_exists('bccomp')
@@ -73,6 +108,11 @@ class ServiceController extends Controller
                 throw ValidationException::withMessages([
                     'balance' => 'رصيدك غير كافٍ لإتمام عملية الشراء.',
                 ]);
+            }
+
+            // Add quantity to payload if quantity-based
+            if ($service->is_quantity_based) {
+                $payload['quantity'] = $quantity;
             }
 
             $order = Order::create([
@@ -92,6 +132,8 @@ class ServiceController extends Controller
                 'meta' => [
                     'amount_held' => $price,
                     'variant_name' => $variant?->name,
+                    'vip_discount' => $vipDiscount,
+                    'quantity' => $service->is_quantity_based ? $quantity : null,
                 ],
                 'actor_user_id' => $user->id,
             ]);

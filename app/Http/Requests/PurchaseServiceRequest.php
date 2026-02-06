@@ -33,6 +33,14 @@ class PurchaseServiceRequest extends FormRequest
             $rules['variant_id'] = ['nullable', 'integer', $variantRule];
         }
 
+        // Add selected_price validation
+        $rules['selected_price'] = ['nullable', 'numeric', 'min:0'];
+        
+        // Add quantity validation for quantity-based services
+        if ($service->is_quantity_based) {
+            $rules['quantity'] = ['required', 'integer', 'min:1'];
+        }
+
         return $rules;
     }
 }
