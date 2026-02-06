@@ -54,9 +54,37 @@
             </div>
 
             <div>
+                <x-input-label for="additional_rules" value="قواعد إضافية (عربي)" />
+                <textarea id="additional_rules" name="additional_rules" rows="3" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">{{ old('additional_rules') }}</textarea>
+                <x-input-error :messages="$errors->get('additional_rules')" />
+            </div>
+
+            <div>
+                <x-input-label for="additional_rules_en" value="قواعد إضافية (English)" />
+                <textarea id="additional_rules_en" name="additional_rules_en" rows="3" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500" dir="ltr">{{ old('additional_rules_en') }}</textarea>
+                <x-input-error :messages="$errors->get('additional_rules_en')" />
+            </div>
+
+            <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4 space-y-4">
+                <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
+                    <input id="is_quantity_based" name="is_quantity_based" type="checkbox" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" onchange="toggleQuantityFields(this)">
+                    <label for="is_quantity_based">خدمة بالكمية (سعر ثابت للقطعة)</label>
+                </div>
+                <div id="quantity-fields" class="hidden space-y-4">
+                    <div>
+                        <x-input-label for="price_per_unit" value="السعر لكل قطعة" />
+                        <x-text-input id="price_per_unit" name="price_per_unit" type="number" step="0.01" min="0.01" :value="old('price_per_unit')" />
+                        <x-input-error :messages="$errors->get('price_per_unit')" />
+                        <p class="mt-1 text-xs text-slate-500">سيتم حساب السعر الإجمالي تلقائياً بناءً على الكمية</p>
+                    </div>
+                </div>
+            </div>
+
+            <div>
                 <x-input-label for="price" :value="__('messages.price')" />
                 <x-text-input id="price" name="price" type="number" step="0.01" min="1" :value="old('price')" required />
                 <x-input-error :messages="$errors->get('price')" />
+                <p class="mt-1 text-xs text-slate-500">السعر الافتراضي (يتم تجاهله إذا كانت الخدمة بالكمية أو لديها باقات)</p>
             </div>
 
             <div>
@@ -145,20 +173,38 @@
                         <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4" data-field-row>
                             <div class="grid gap-4 lg:grid-cols-4">
                                 <div class="lg:col-span-2">
-                                    <x-input-label value="{{ __('messages.field_label') }}" />
+                                    <x-input-label value="{{ __('messages.field_label') }} (عربي)" />
                                     <x-text-input name="fields[{{ $index }}][label]" type="text" :value="$field['label'] ?? ''" required />
                                     <x-input-error :messages="$errors->get('fields.'.$index.'.label')" />
                                 </div>
+                                <div class="lg:col-span-2">
+                                    <x-input-label value="{{ __('messages.field_label') }} (English)" />
+                                    <x-text-input name="fields[{{ $index }}][label_en]" type="text" :value="$field['label_en'] ?? ''" />
+                                    <x-input-error :messages="$errors->get('fields.'.$index.'.label_en')" />
+                                </div>
+                            </div>
+                            <div class="mt-3 grid gap-4 lg:grid-cols-3">
                                 <div>
                                     <x-input-label value="{{ __('messages.field_key') }}" />
                                     <x-text-input name="fields[{{ $index }}][name_key]" type="text" :value="$field['name_key'] ?? ''" required />
                                     <x-input-error :messages="$errors->get('fields.'.$index.'.name_key')" />
                                 </div>
                                 <div>
+                                    <x-input-label value="Placeholder (عربي)" />
+                                    <x-text-input name="fields[{{ $index }}][placeholder]" type="text" :value="$field['placeholder'] ?? ''" />
+                                    <x-input-error :messages="$errors->get('fields.'.$index.'.placeholder')" />
+                                </div>
+                                <div>
+                                    <x-input-label value="Placeholder (English)" />
+                                    <x-text-input name="fields[{{ $index }}][placeholder_en]" type="text" :value="$field['placeholder_en'] ?? ''" />
+                                    <x-input-error :messages="$errors->get('fields.'.$index.'.placeholder_en')" />
+                                </div>
+                            </div>
+                            <div class="mt-3 grid gap-3 lg:grid-cols-4">
+                                <div>
                                     <x-input-label value="{{ __('messages.sort_order') }}" />
                                     <x-text-input name="fields[{{ $index }}][sort_order]" type="number" min="0" :value="$field['sort_order'] ?? 0" />
                                 </div>
-                            </div>
                             <div class="mt-3 grid gap-3 lg:grid-cols-3">
                                 <div>
                                     <x-input-label value="{{ __('messages.field_type') }}" />
@@ -218,18 +264,33 @@
                         <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4" data-field-row>
                             <div class="grid gap-4 lg:grid-cols-4">
                                 <div class="lg:col-span-2">
-                                    <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ __('messages.field_label') }}</label>
+                                    <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ __('messages.field_label') }} (عربي)</label>
                                     <input name="fields[${index}][label]" type="text" required class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
+                                <div class="lg:col-span-2">
+                                    <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ __('messages.field_label') }} (English)</label>
+                                    <input name="fields[${index}][label_en]" type="text" class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
+                                </div>
+                            </div>
+                            <div class="mt-3 grid gap-4 lg:grid-cols-3">
                                 <div>
                                     <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ __('messages.field_key') }}</label>
                                     <input name="fields[${index}][name_key]" type="text" required class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
                                 <div>
+                                    <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Placeholder (عربي)</label>
+                                    <input name="fields[${index}][placeholder]" type="text" class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
+                                </div>
+                                <div>
+                                    <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Placeholder (English)</label>
+                                    <input name="fields[${index}][placeholder_en]" type="text" class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
+                                </div>
+                            </div>
+                            <div class="mt-3 grid gap-3 lg:grid-cols-4">
+                                <div>
                                     <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ __('messages.sort_order') }}</label>
                                     <input name="fields[${index}][sort_order]" type="number" min="0" value="${index}" class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
-                            </div>
                             <div class="mt-3 grid gap-3 lg:grid-cols-3">
                                 <div>
                                     <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ __('messages.field_type') }}</label>
@@ -295,6 +356,17 @@
 
                     refreshRemoveButtons();
                 });
+            </script>
+
+            <script>
+                function toggleQuantityFields(checkbox) {
+                    const quantityFields = document.getElementById('quantity-fields');
+                    if (checkbox.checked) {
+                        quantityFields.classList.remove('hidden');
+                    } else {
+                        quantityFields.classList.add('hidden');
+                    }
+                }
             </script>
 
 

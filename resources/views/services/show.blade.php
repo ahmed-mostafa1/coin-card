@@ -8,6 +8,17 @@
         $availableBalance = $wallet?->balance ?? 0;
         $basePrice = $service->variants->count() ? $service->variants->min('price') : $service->price;
         $isBaseInsufficient = $availableBalance < $basePrice;
+        
+        // VIP Discount calculation
+        $vipDiscount = 0;
+        $currentVipTier = null;
+        if (auth()->check()) {
+            $userVipStatus = auth()->user()->vipStatus;
+            if ($userVipStatus && $userVipStatus->tier) {
+                $currentVipTier = $userVipStatus->tier;
+                $vipDiscount = $currentVipTier->discount_percentage ?? 0;
+            }
+        }
     @endphp
 
     <div class="store-shell space-y-6">
@@ -24,11 +35,6 @@
                             ? $service->variants->min('price')
                             : $service->price;
                     @endphp
-                    <span
-                        class="absolute right-3 top-3 rounded-full bg-amber-400 px-3 py-1 text-xs font-semibold text-white shadow">
-                        ${{ number_format($displayPrice, 2) }}
-                    </span>
-
                     <div class="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700">
                         @if ($service->offer_image_path)
                             <img src="{{ asset('storage/' . $service->offer_image_path) }}" alt="{{ $service->localized_name }}"
@@ -67,6 +73,9 @@
                         <div class="space-y-1">
                             <h1 class="text-xl font-bold text-slate-900">{{ $service->localized_name }}</h1>
                             <p class="text-sm text-slate-600">{{ $service->category->localized_name }}</p>
+                            @if ($service->localized_description)
+                                <p class="mt-2 text-sm text-slate-700 dark:text-slate-300 leading-relaxed">{{ $service->localized_description }}</p>
+                            @endif
                             @auth
                                 <p class="text-xs text-slate-500">
                                     {{ __('messages.available_balance_text') }}:
@@ -85,16 +94,29 @@
                                 <p class="text-sm font-semibold text-slate-800">{{ __('messages.choose_package') }}</p>
                                 <div class="space-y-2">
                                     @foreach ($service->variants->sortBy('sort_order') as $variant)
+                                        @php
+                                            $originalPrice = $variant->price;
+                                            $discountedPrice = $vipDiscount > 0 ? $originalPrice * (1 - $vipDiscount / 100) : $originalPrice;
+                                        @endphp
                                         <label
                                             class="flex items-center justify-between rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 transition hover:border-emerald-200 dark:hover:border-emerald-500">
                                             <span class="flex items-center gap-2">
                                                 <input type="radio" name="variant_id" value="{{ $variant->id }}"
-                                                    data-price="{{ $variant->price }}"
+                                                    data-price="{{ $discountedPrice }}"
+                                                    data-original-price="{{ $originalPrice }}"
+                                                    data-discount="{{ $vipDiscount }}"
                                                     class="text-emerald-600 focus:ring-emerald-500"
                                                     @checked(old('variant_id') == $variant->id) required>
                                                 <span>{{ $variant->localized_name }}</span>
                                             </span>
-                                            <span class="font-semibold text-emerald-700">${{ number_format($variant->price, 2) }}</span>
+                                            <span class="flex items-center gap-2">
+                                                @if ($vipDiscount > 0)
+                                                    <span class="text-xs text-slate-500 line-through">${{ number_format($originalPrice, 2) }}</span>
+                                                    <span class="font-semibold text-emerald-700">${{ number_format($discountedPrice, 2) }}</span>
+                                                @else
+                                                    <span class="font-semibold text-emerald-700">${{ number_format($originalPrice, 2) }}</span>
+                                                @endif
+                                            </span>
                                         </label>
                                     @endforeach
                                 </div>
@@ -102,12 +124,60 @@
                             </div>
                         @endif
 
+                        @if ($service->is_quantity_based)
+                            <div class="space-y-2">
+                                <p class="text-sm font-semibold text-slate-800">{{ __('messages.quantity') ?? (app()->getLocale() == 'ar' ? 'الكمية' : 'Quantity') }}</p>
+                                <div class="flex items-center gap-3">
+                                    <input type="number" name="quantity" id="quantity-input" min="1" value="1" 
+                                        data-price-per-unit="{{ $service->price_per_unit }}"
+                                        class="w-32 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-2 text-sm text-slate-700 dark:text-slate-200"
+                                        required>
+                                    <span class="text-sm text-slate-600 dark:text-slate-400">
+                                        × ${{ number_format($service->price_per_unit, 2) }} {{ __('messages.per_unit') ?? (app()->getLocale() == 'ar' ? 'للقطعة' : 'per unit') }}
+                                    </span>
+                                </div>
+                            </div>
+                        @endif
+
+                        @if ($service->localized_additional_rules)
+                            <div class="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 px-4 py-3">
+                                <p class="text-sm font-semibold text-amber-900 dark:text-amber-300 mb-2">{{ __('messages.additional_rules') ?? (app()->getLocale() == 'ar' ? 'قواعد إضافية' : 'Additional Rules') }}</p>
+                                <p class="text-sm text-amber-800 dark:text-amber-200 whitespace-pre-line">{{ $service->localized_additional_rules }}</p>
+                            </div>
+                        @endif
+
+                        @if ($vipDiscount > 0)
+                            <div class="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 px-4 py-3">
+                                <p class="text-sm font-semibold text-emerald-900 dark:text-emerald-300">
+                                    🎉 {{ __('messages.vip_discount_active') ?? (app()->getLocale() == 'ar' ? 'خصم VIP فعّال' : 'VIP Discount Active') }}: {{ number_format($vipDiscount, 0) }}%
+                                </p>
+                                <p class="text-xs text-emerald-800 dark:text-emerald-200 mt-1">
+                                    {{ __('messages.vip_discount_desc') ?? (app()->getLocale() == 'ar' ? 'تستمتع بخصم تلقائي على جميع الخدمات بفضل مستوى VIP الخاص بك' : 'You enjoy automatic discount on all services thanks to your VIP level') }}
+                                </p>
+                            </div>
+                        @endif
+
                         <div class="rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-3 text-sm text-slate-700 dark:text-slate-200">
                             <p>{{ __('messages.current_price') }}:
+                                @if ($vipDiscount > 0 && !$service->variants->count() && !$service->is_quantity_based)
+                                    <span class="text-xs text-slate-500 line-through">${{ number_format($service->price, 2) }}</span>
+                                @endif
                                 <span id="current-price" class="font-semibold text-emerald-700">
-                                    {{ number_format($service->variants->count() ? $service->variants->min('price') : $service->price, 2) }}
-                                </span> USD
+                                    @if ($service->variants->count())
+                                        {{ __('messages.select_package_first') ?? (app()->getLocale() == 'ar' ? 'اختر باقة أولاً' : 'Select a package first') }}
+                                    @elseif ($service->is_quantity_based)
+                                        {{ __('messages.enter_quantity_first') ?? (app()->getLocale() == 'ar' ? 'أدخل الكمية أولاً' : 'Enter quantity first') }}
+                                    @else
+                                        @php
+                                            $displayPrice = $vipDiscount > 0 ? $service->price * (1 - $vipDiscount / 100) : $service->price;
+                                        @endphp
+                                        {{ number_format($displayPrice, 2) }}
+                                    @endif
+                                </span>
+                                <span id="price-currency" class="{{ ($service->variants->count() || $service->is_quantity_based) ? 'hidden' : '' }}">USD</span>
                             </p>
+                            <input type="hidden" name="selected_price" id="selected-price-input" value="{{ $service->variants->count() || $service->is_quantity_based ? '' : ($vipDiscount > 0 ? $service->price * (1 - $vipDiscount / 100) : $service->price) }}">
+                            <input type="hidden" name="vip_discount" value="{{ $vipDiscount }}">
                             <p id="insufficient-message"
                                 class="mt-2 text-xs text-rose-600 {{ $isBaseInsufficient ? '' : 'hidden' }}">
                                 {{ __('messages.insufficient_balance_msg') }}</p>
@@ -159,31 +229,63 @@
             document.addEventListener('DOMContentLoaded', () => {
                 const availableBalance = parseFloat({{ json_encode($availableBalance) }} || 0);
                 const priceElement = document.getElementById('current-price');
+                const priceCurrency = document.getElementById('price-currency');
+                const priceInput = document.getElementById('selected-price-input');
                 const insufficientMessage = document.getElementById('insufficient-message');
                 const purchaseButton = document.getElementById('purchase-button');
                 const variantInputs = document.querySelectorAll('input[name="variant_id"]');
+                const quantityInput = document.getElementById('quantity-input');
+                const hasVariants = {{ $service->variants->count() ? 'true' : 'false' }};
+                const isQuantityBased = {{ $service->is_quantity_based ? 'true' : 'false' }};
+                const vipDiscount = {{ $vipDiscount }};
 
                 const getSelectedPrice = () => {
+                    // Handle quantity-based services
+                    if (isQuantityBased && quantityInput) {
+                        const quantity = parseInt(quantityInput.value) || 1;
+                        const pricePerUnit = parseFloat(quantityInput.dataset.pricePerUnit);
+                        let totalPrice = quantity * pricePerUnit;
+                        // Apply VIP discount
+                        if (vipDiscount > 0) {
+                            totalPrice = totalPrice * (1 - vipDiscount / 100);
+                        }
+                        return totalPrice;
+                    }
+                    
+                    // Handle variant-based services (discount already applied in data-price)
                     const checked = document.querySelector('input[name="variant_id"]:checked');
                     if (checked && checked.dataset.price) {
                         return parseFloat(checked.dataset.price);
                     }
-                    return parseFloat(priceElement?.textContent || 0);
+                    
+                    // Handle regular services
+                    let price = hasVariants ? null : parseFloat({{ json_encode($service->price) }});
+                    if (price !== null && vipDiscount > 0) {
+                        price = price * (1 - vipDiscount / 100);
+                    }
+                    return price;
                 };
 
                 const updateState = () => {
                     const price = getSelectedPrice();
-                    if (priceElement && !Number.isNaN(price)) {
+                    
+                    if (priceElement && price !== null && !Number.isNaN(price)) {
                         priceElement.textContent = price.toFixed(2);
+                        if (priceCurrency) priceCurrency.classList.remove('hidden');
+                        if (priceInput) priceInput.value = price.toFixed(2);
+                    } else if (hasVariants && price === null) {
+                        priceElement.textContent = '{{ __("messages.select_package_first") ?? (app()->getLocale() == "ar" ? "اختر باقة أولاً" : "Select a package first") }}';
+                        if (priceCurrency) priceCurrency.classList.add('hidden');
+                        if (priceInput) priceInput.value = '';
                     }
 
                     if (!purchaseButton) {
                         return;
                     }
 
-                    if (availableBalance < price) {
+                    if (price === null || availableBalance < price) {
                         purchaseButton.setAttribute('disabled', 'disabled');
-                        if (insufficientMessage) {
+                        if (insufficientMessage && price !== null) {
                             insufficientMessage.classList.remove('hidden');
                         }
                     } else {
@@ -197,6 +299,10 @@
                 variantInputs.forEach((input) => {
                     input.addEventListener('change', updateState);
                 });
+
+                if (quantityInput) {
+                    quantityInput.addEventListener('input', updateState);
+                }
 
                 updateState();
             });

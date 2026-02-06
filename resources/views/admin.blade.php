@@ -10,6 +10,7 @@
             <a href="{{ route('admin.ops.index', ['tab' => 'orders_new']) }}" class="cc-pill">لوحة العمليات</a>
             <a href="{{ route('admin.reports.index') }}" class="cc-pill">التقارير</a>
             <a href="{{ route('admin.agency-requests.index') }}" class="cc-pill">طلبات الوكالة</a>
+            <a href="{{ route('admin.agency-request-fields.index') }}" class="cc-pill">إدارة صفحة طلب الوكالة</a>
             <a href="{{ route('admin.payment-methods.index') }}" class="cc-pill">طرق الدفع</a>
             <a href="{{ route('admin.deposits.index') }}" class="cc-pill">طلبات الشحن</a>
             <a href="{{ route('admin.users.index') }}" class="cc-pill">المستخدمون</a>
@@ -17,6 +18,8 @@
             <a href="{{ route('admin.services.index') }}" class="cc-pill">الخدمات</a>
             <a href="{{ route('admin.orders.index') }}" class="cc-pill">الطلبات</a>
             <a href="{{ route('admin.vip-tiers.index') }}" class="cc-pill">مستويات VIP</a>
+            <a href="{{ route('admin.banners.index') }}" class="cc-pill">البانرات</a>
+            <a href="{{ route('admin.popups.index') }}" class="cc-pill">النوافذ المنبثقة</a>
             <a href="{{ route('admin.pages.edit') }}" class="cc-pill">محتوى الصفحات</a>
             <a href="{{ route('admin.site-settings.edit') }}" class="cc-pill">إدارة الموقع</a>
         </div>

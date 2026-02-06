@@ -12,6 +12,7 @@ class VipTier extends Model
         'title_en',
         'rank',
         'deposits_required',
+        'discount_percentage',
         'image_path',
         'is_active',
     ];
@@ -20,6 +21,18 @@ class VipTier extends Model
         'deposits_required' => 'decimal:2',
         'is_active' => 'boolean',
     ];
+
+    /**
+     * Get the localized title based on current locale
+     */
+    public function getLocalizedTitleAttribute(): string
+    {
+        $locale = app()->getLocale();
+        if ($locale === 'en' && $this->title_en) {
+            return $this->title_en;
+        }
+        return $this->title_ar ?? '';
+    }
 
     public function userStatuses(): HasMany
     {

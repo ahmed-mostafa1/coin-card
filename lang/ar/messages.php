@@ -124,6 +124,7 @@ return [
     'amount_to_next_level' => 'المبلغ المطلوب للوصول للمستوى التالي',
     'highest_level' => 'أنت في أعلى مستوى',
     'vip_levels' => 'مستويات VIP',
+    'no_vip_levels' => 'لا توجد مستويات VIP بعد.',
     'progress_to_next' => 'التقدم نحو المستوى التالي',
     'status_locked' => 'مغلق',
     'status_completed' => 'مكتمل',
@@ -418,4 +419,5 @@ return [
     'service-offer-card' => 'عرض خاص لفترة محدودة',
     'otp_sent' => 'تم إرسال رمز التحقق إلى بريدك الإلكتروني.',
     'sending' => 'جاري الإرسال...',
+    'discount' => 'نسبة الخصم'
 ];

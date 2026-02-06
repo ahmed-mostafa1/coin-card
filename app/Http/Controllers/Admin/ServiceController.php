@@ -57,7 +57,10 @@ class ServiceController extends Controller
                 $service->formFields()->create([
                     'type' => $field['type'],
                     'label' => $field['label'],
+                    'label_en' => $field['label_en'] ?? null,
                     'name_key' => $field['name_key'],
+                    'placeholder' => $field['placeholder'] ?? null,
+                    'placeholder_en' => $field['placeholder_en'] ?? null,
                     'is_required' => isset($field['is_required']) ? (bool) $field['is_required'] : false,
                     'sort_order' => $field['sort_order'] ?? $index,
                 ]);

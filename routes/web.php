@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\OpsController as AdminOpsController;
 use App\Http\Controllers\Admin\OpsOrderController as AdminOpsOrderController;
 use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\Admin\AgencyRequestController as AdminAgencyRequestController;
+use App\Http\Controllers\Admin\AgencyRequestFieldController as AdminAgencyRequestFieldController;
 use App\Http\Controllers\Admin\ReportsController as AdminReportsController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\PaymentMethodController as AdminPaymentMethodController;
@@ -93,6 +94,15 @@ Route::middleware(['auth', 'not_banned', 'role:admin'])->prefix('admin')->name('
     Route::get('/agency-requests', [AdminAgencyRequestController::class, 'index'])->name('agency-requests.index');
     Route::get('/agency-requests/{agencyRequest}', [AdminAgencyRequestController::class, 'show'])->name('agency-requests.show');
     Route::delete('/agency-requests/{agencyRequest}', [AdminAgencyRequestController::class, 'destroy'])->name('agency-requests.destroy');
+    
+    // Agency Request Fields Management
+    Route::get('/agency-request-fields', [AdminAgencyRequestFieldController::class, 'index'])->name('agency-request-fields.index');
+    Route::get('/agency-request-fields/create', [AdminAgencyRequestFieldController::class, 'create'])->name('agency-request-fields.create');
+    Route::post('/agency-request-fields', [AdminAgencyRequestFieldController::class, 'store'])->name('agency-request-fields.store');
+    Route::get('/agency-request-fields/{field}/edit', [AdminAgencyRequestFieldController::class, 'edit'])->name('agency-request-fields.edit');
+    Route::put('/agency-request-fields/{field}', [AdminAgencyRequestFieldController::class, 'update'])->name('agency-request-fields.update');
+    Route::delete('/agency-request-fields/{field}', [AdminAgencyRequestFieldController::class, 'destroy'])->name('agency-request-fields.destroy');
+    
     Route::get('/payment-methods', [AdminPaymentMethodController::class, 'index'])->name('payment-methods.index');
     Route::get('/payment-methods/create', [AdminPaymentMethodController::class, 'create'])->name('payment-methods.create');
     Route::post('/payment-methods', [AdminPaymentMethodController::class, 'store'])->name('payment-methods.store');

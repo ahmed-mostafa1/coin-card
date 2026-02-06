@@ -4,14 +4,14 @@
 
 @section('content')
     <div class="grid gap-6 lg:grid-cols-3">
-        <div class="rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm lg:col-span-2">
+        <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-8 shadow-sm lg:col-span-2">
             <div class="flex items-center justify-between">
-                <h1 class="text-2xl font-semibold text-emerald-700">تعديل الحقل</h1>
-                <a href="{{ route('admin.services.edit', $service) }}" class="text-sm text-emerald-700">عودة للخدمة</a>
+            <h1 class="text-2xl font-semibold text-emerald-700 dark:text-emerald-400">تعديل الحقل</h1>
+            <a href="{{ route('admin.services.edit', $service) }}" class="text-sm text-emerald-700 dark:text-emerald-400">عودة للخدمة</a>
             </div>
 
             @if (session('status'))
-                <div class="mt-6 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+            <div class="mt-6 rounded-lg border border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-300">
                     {{ session('status') }}
                 </div>
             @endif
@@ -22,7 +22,7 @@
 
                 <div>
                     <x-input-label for="type" value="نوع الحقل" />
-                    <select id="type" name="type" class="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-2 text-sm text-slate-700" required>
+                <select id="type" name="type" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white" required>
                         <option value="text" @selected(old('type', $field->type) === 'text')>نصي</option>
                         <option value="textarea" @selected(old('type', $field->type) === 'textarea')>نص متعدد الأسطر</option>
                     </select>
@@ -51,8 +51,8 @@
                     <x-text-input id="validation_rules" name="validation_rules" type="text" :value="old('validation_rules', $field->validation_rules)" />
                 </div>
 
-                <div class="flex items-center gap-3 text-sm text-slate-600">
-                    <input id="is_required" name="is_required" type="checkbox" value="1" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500" {{ $field->is_required ? 'checked' : '' }}>
+            <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
+                <input id="is_required" name="is_required" type="checkbox" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" {{ $field->is_required ? 'checked' : '' }}>
                     <label for="is_required">حقل مطلوب</label>
                 </div>
 
@@ -69,7 +69,7 @@
             <form method="POST" action="{{ route('admin.services.fields.destroy', [$service, $field]) }}" class="mt-6">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="rounded-full border border-rose-200 px-4 py-2 text-sm font-semibold text-rose-600">حذف الحقل</button>
+                <button type="submit" class="rounded-full border border-rose-200 dark:border-rose-800 px-4 py-2 text-sm font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-900/30">حذف الحقل</button>
             </form>
         </div>
     </div>

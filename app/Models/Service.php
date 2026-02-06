@@ -16,7 +16,11 @@ class Service extends Model
         'image_path',
         'description',
         'description_en',
+        'additional_rules',
+        'additional_rules_en',
         'price',
+        'is_quantity_based',
+        'price_per_unit',
         'is_active',
         'sort_order',
         'offer_image_path',
@@ -25,8 +29,10 @@ class Service extends Model
 
     protected $casts = [
         'price' => 'decimal:2',
+        'price_per_unit' => 'decimal:2',
         'is_active' => 'boolean',
         'is_offer_active' => 'boolean',
+        'is_quantity_based' => 'boolean',
     ];
 
     /**
@@ -49,6 +55,17 @@ class Service extends Model
         return $locale === 'en' && $this->description_en 
             ? $this->description_en 
             : $this->description;
+    }
+
+    /**
+     * Get the localized additional rules based on current locale
+     */
+    public function getLocalizedAdditionalRulesAttribute(): ?string
+    {
+        $locale = app()->getLocale();
+        return $locale === 'en' && $this->additional_rules_en 
+            ? $this->additional_rules_en 
+            : $this->additional_rules;
     }
 
     public function category(): BelongsTo

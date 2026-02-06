@@ -124,6 +124,7 @@ return [
     'amount_to_next_level' => 'Amount required for next level',
     'highest_level' => 'You are at the highest level',
     'vip_levels' => 'VIP Levels',
+    'no_vip_levels' => 'No VIP levels available yet.',
     'progress_to_next' => 'Progress to next level',
     'status_locked' => 'Locked',
     'status_completed' => 'Completed',
@@ -430,4 +431,5 @@ return [
     'service-offer-card' => 'Limited Time Offer',
     'otp_sent' => 'OTP sent to your email address.',
     'sending' => 'Sending...',
+    'discount' => 'Discount',
 ];
