@@ -13,8 +13,8 @@ return new class extends Migration
             $table->decimal('discount_percentage', 5, 2)->default(0)->after('deposits_required');
         });
 
-        // Set default discount percentages based on rank
-        DB::table('vip_tiers')->update(['discount_percentage' => DB::raw('rank * 2')]);
+        // Set default discount percentages based on rank (2% per level)
+        DB::statement('UPDATE vip_tiers SET discount_percentage = rank * 2');
     }
 
     public function down(): void
