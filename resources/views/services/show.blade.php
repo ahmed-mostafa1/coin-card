@@ -335,7 +335,7 @@
                                 }
                             }
                         } else if (hasVariants) {
-                            priceElement.textContent = {{ json_encode($selectPackageMessage) }};
+                            priceElement.textContent = {!! json_encode($selectPackageMessage) !!};
                             if (priceCurrency) priceCurrency.classList.add('hidden');
                             if (priceInput) priceInput.value = '';
                             if (originalPriceElement) originalPriceElement.classList.add('hidden');
