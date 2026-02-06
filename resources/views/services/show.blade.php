@@ -238,7 +238,6 @@
             </div>
         </div>
     </div>
-
     @auth
         @php
             $selectPackageMessage = __("messages.select_package_first") ?? (app()->getLocale() == "ar" ? "اختر باقة أولاً" : "Select a package first");
@@ -282,7 +281,7 @@
                     }
                     
                     // Handle regular services
-                    let price = hasVariants ? null : parseFloat({{ json_encode($service->price) }});
+                    let price = hasVariants ? null : parseFloat({{ $service->price }});
                     if (price !== null) {
                         if (vipDiscount > 0) {
                             price = price * (1 - vipDiscount / 100);
