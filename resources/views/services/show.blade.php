@@ -240,6 +240,9 @@
     </div>
 
     @auth
+        @php
+            $selectPackageMessage = __("messages.select_package_first") ?? (app()->getLocale() == "ar" ? "اختر باقة أولاً" : "Select a package first");
+        @endphp
         <script>
             document.addEventListener('DOMContentLoaded', () => {
                 const availableBalance = parseFloat({{ json_encode($availableBalance) }} || 0);
@@ -333,7 +336,7 @@
                                 }
                             }
                         } else if (hasVariants) {
-                            priceElement.textContent = '{{ __("messages.select_package_first") ?? (app()->getLocale() == "ar" ? "اختر باقة أولاً" : "Select a package first") }}';
+                            priceElement.textContent = {{ json_encode($selectPackageMessage) }};
                             if (priceCurrency) priceCurrency.classList.add('hidden');
                             if (priceInput) priceInput.value = '';
                             if (originalPriceElement) originalPriceElement.classList.add('hidden');
