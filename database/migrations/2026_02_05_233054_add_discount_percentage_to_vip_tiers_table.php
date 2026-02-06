@@ -9,12 +9,15 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('vip_tiers', function (Blueprint $table) {
-            $table->decimal('discount_percentage', 5, 2)->default(0)->after('deposits_required');
-        });
+        // Check if column already exists before adding
+        if (!Schema::hasColumn('vip_tiers', 'discount_percentage')) {
+            Schema::table('vip_tiers', function (Blueprint $table) {
+                $table->decimal('discount_percentage', 5, 2)->default(0)->after('deposits_required');
+            });
 
-        // Set default discount percentages based on rank (2% per level)
-        DB::statement('UPDATE vip_tiers SET discount_percentage = rank * 2');
+            // Set default discount percentages based on rank (2% per level)
+            DB::statement('UPDATE vip_tiers SET discount_percentage = rank * 2');
+        }
     }
 
     public function down(): void
