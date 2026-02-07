@@ -118,6 +118,7 @@ Route::middleware(['auth', 'not_banned'])->group(function () {
             3 => 6,   // Rank 3 = 6%
             4 => 8,   // Rank 4 = 8%
             5 => 10,  // Rank 5 = 10%
+            6 => 12,  // Rank 6 = 12%
         ];
         
         $html = '<style>body{font-family:monospace;padding:20px;background:#1e293b;color:#e2e8f0;}</style>';

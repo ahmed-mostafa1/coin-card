@@ -421,4 +421,8 @@ return [
     'sending' => 'جاري الإرسال...',
     'discount' => 'نسبة الخصم',
     'select_package_first' => 'يجب اختيار باقة أولا',
+    'vip_discount_active' => 'نسبة الخصم ',
+    'vip_discount_desc' => 'تم تفعيل خصم مستوى الVIP بنجاح',
+
+
 ];

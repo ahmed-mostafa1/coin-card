@@ -7,6 +7,7 @@ $updates = [
     3 => 6,   // Rank 3 = 6%
     4 => 8,   // Rank 4 = 8%
     5 => 10,  // Rank 5 = 10%
+    6 => 10,  // Rank 6 = 12%
 ];
 
 foreach ($updates as $rank => $discount) {

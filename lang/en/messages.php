@@ -432,5 +432,8 @@ return [
     'otp_sent' => 'OTP sent to your email address.',
     'sending' => 'Sending...',
     'discount' => 'Discount',
-    'select_package_first' => 'Select Package First'
+    'select_package_first' => 'Select Package First',
+    'vip_discount_active' => 'VIP Discount Active',
+    'vip_discount_desc' => 'VIP Discount',
+
 ];
