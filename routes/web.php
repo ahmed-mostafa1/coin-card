@@ -74,6 +74,42 @@ Route::middleware(['auth', 'not_banned'])->group(function () {
 
     Route::post('/services/{service:slug}/purchase', [ServiceController::class, 'purchase'])->name('services.purchase')->middleware(['not_frozen', \App\Http\Middleware\EnsureAccountVerified::class]);
     
+    // Quick VIP Check
+    Route::get('/check-vip', function() {
+        $user = auth()->user();
+        $user->load('vipStatus.vipTier');
+        
+        $html = '<style>body{font-family:monospace;padding:20px;background:#1e293b;color:#e2e8f0;}</style>';
+        $html .= '<h1 style="color:#10b981;">VIP Discount Debug</h1>';
+        $html .= '<p><strong>User:</strong> ' . $user->name . ' (ID: ' . $user->id . ')</p>';
+        
+        if (!$user->vipStatus) {
+            $html .= '<p style="color:#ef4444;">❌ NO VIP STATUS</p>';
+            $html .= '<p>Visit <a href="/debug/vip-discount" style="color:#3b82f6;">/debug/vip-discount</a> to assign test VIP status</p>';
+            return $html;
+        }
+        
+        $html .= '<p style="color:#10b981;">✅ VIP Status exists</p>';
+        
+        if (!$user->vipStatus->vipTier) {
+            $html .= '<p style="color:#ef4444;">❌ NO VIP TIER</p>';
+            return $html;
+        }
+        
+        $tier = $user->vipStatus->vipTier;
+        $html .= '<p style="color:#10b981;">✅ VIP Tier: ' . $tier->title_en . '</p>';
+        $html .= '<p><strong>Discount:</strong> <span style="color:#10b981;font-size:24px;">' . $tier->discount_percentage . '%</span></p>';
+        
+        if ($tier->discount_percentage > 0) {
+            $html .= '<p style="color:#10b981;">✅ DISCOUNT SHOULD BE SHOWING</p>';
+            $html .= '<p>If not showing, clear cache and refresh (Ctrl+Shift+R)</p>';
+        } else {
+            $html .= '<p style="color:#f59e0b;">⚠️ Discount is 0%</p>';
+        }
+        
+        return $html;
+    })->name('check.vip');
+    
     // VIP Debug Routes (remove in production)
     Route::get('/debug/vip-discount', function() {
         return view('debug.vip-discount');

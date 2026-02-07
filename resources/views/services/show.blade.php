@@ -65,12 +65,12 @@
                 @endif
 
                 <div class="store-card p-6">
-                    <div class="flex flex-wrap items-center justify-center gap-3 border-b border-slate-100 dark:border-slate-700 pb-4">
+                    <div class="flex flex-col items-center justify-center gap-3 border-b border-slate-100 dark:border-slate-700 pb-4">
                         @if ($service->image_path)
                             <img src="{{ asset('storage/' . $service->image_path) }}" alt="{{ $service->localized_name }}"
-                                class="h-16 w-16 rounded-xl object-cover">
+                                class="h-32 w-32 rounded-xl object-cover">
                         @endif
-                        <div class="space-y-1">
+                        <div class="space-y-1 text-center">
                             <h1 class="text-xl font-bold text-slate-900">{{ $service->localized_name }}</h1>
                             <p class="text-sm text-slate-600">{{ $service->category->localized_name }}</p>
                             @if ($service->localized_description)

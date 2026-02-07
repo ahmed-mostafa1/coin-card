@@ -19,13 +19,13 @@
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
 
-                <template x-if="currentPopup.image_path">
+                <template x-if="currentPopup && currentPopup.image_path">
                     <img :src="'/storage/' + currentPopup.image_path" class="w-full h-auto max-h-60 object-cover" :alt="currentPopup.localized_title">
                 </template>
 
                 <div class="p-6 text-center">
-                    <h3 x-text="currentPopup.localized_title" class="text-xl font-bold text-slate-800 dark:text-white mb-2"></h3>
-                    <p x-text="currentPopup.localized_content" class="text-slate-600 dark:text-slate-300 whitespace-pre-wrap"></p>
+                    <h3 x-text="currentPopup && currentPopup.localized_title" class="text-xl font-bold text-slate-800 dark:text-white mb-2"></h3>
+                    <p x-text="currentPopup && currentPopup.localized_content" class="text-slate-600 dark:text-slate-300 whitespace-pre-wrap"></p>
                 </div>
             </div>
         </div>
