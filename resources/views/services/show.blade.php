@@ -74,7 +74,7 @@
                             <h1 class="text-xl font-bold text-slate-900">{{ $service->localized_name }}</h1>
                             <p class="text-sm text-slate-600">{{ $service->category->localized_name }}</p>
                             @if ($service->localized_description)
-                                <p class="mt-2 text-sm text-slate-700 dark:text-slate-300 leading-relaxed">{{ $service->localized_description }}</p>
+                                <p class="mt-2 text-sm text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line">{{ $service->localized_description }}</p>
                             @endif
                             @auth
                                 <p class="text-xs text-slate-500">
