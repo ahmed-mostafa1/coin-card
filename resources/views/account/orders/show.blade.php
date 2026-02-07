@@ -16,8 +16,27 @@
             <div class="mt-6 grid gap-4 sm:grid-cols-2">
                 <div class="rounded-2xl border border-slate-200 p-4">
                     <p class="text-xs text-slate-500">{{ __('messages.price_label') }}</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ number_format($order->price_at_purchase, 2) }} USD</p>
+                    @if ($order->discount_percentage > 0)
+                        <div class="mt-2 space-y-1">
+                            <p class="text-xs text-slate-400 line-through">{{ number_format($order->original_price, 2) }} USD</p>
+                            <div class="flex items-center gap-2">
+                                <p class="text-sm font-semibold text-emerald-700">{{ number_format($order->price_at_purchase, 2) }} USD</p>
+                                <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/30 px-2 py-0.5 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
+                                    -{{ number_format($order->discount_percentage, 0) }}%
+                                </span>
+                            </div>
+                        </div>
+                    @else
+                        <p class="mt-2 text-sm font-semibold text-slate-700">{{ number_format($order->price_at_purchase, 2) }} USD</p>
+                    @endif
                 </div>
+                @if ($order->discount_percentage > 0)
+                    <div class="rounded-2xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 p-4">
+                        <p class="text-xs text-emerald-600 dark:text-emerald-400">{{ app()->getLocale() == 'ar' ? 'المبلغ الموفر' : 'Amount Saved' }}</p>
+                        <p class="mt-2 text-sm font-semibold text-emerald-700 dark:text-emerald-300">{{ number_format($order->discount_amount, 2) }} USD</p>
+                        <p class="mt-1 text-xs text-emerald-600 dark:text-emerald-400">🎉 {{ app()->getLocale() == 'ar' ? 'خصم VIP' : 'VIP Discount' }}</p>
+                    </div>
+                @endif
                 <div class="rounded-2xl border border-slate-200 p-4">
                     <p class="text-xs text-slate-500">{{ __('messages.held_amount') }}</p>
                     <p class="mt-2 text-sm font-semibold text-slate-700">{{ number_format($order->amount_held, 2) }} USD</p>

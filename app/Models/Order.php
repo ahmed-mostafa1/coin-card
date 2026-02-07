@@ -20,6 +20,9 @@ class Order extends Model
         'variant_id',
         'status',
         'price_at_purchase',
+        'original_price',
+        'discount_percentage',
+        'discount_amount',
         'amount_held',
         'payload',
         'admin_note',
@@ -31,6 +34,9 @@ class Order extends Model
 
     protected $casts = [
         'price_at_purchase' => 'decimal:2',
+        'original_price' => 'decimal:2',
+        'discount_percentage' => 'decimal:2',
+        'discount_amount' => 'decimal:2',
         'amount_held' => 'decimal:2',
         'payload' => 'array',
         'handled_at' => 'datetime',

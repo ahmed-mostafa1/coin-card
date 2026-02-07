@@ -115,12 +115,18 @@ class ServiceController extends Controller
                 $payload['quantity'] = $quantity;
             }
 
+            // Calculate discount amount
+            $discountAmount = $vipDiscount > 0 ? ($basePrice - $price) : 0;
+
             $order = Order::create([
                 'user_id' => $user->id,
                 'service_id' => $service->id,
                 'variant_id' => $variant?->id,
                 'status' => Order::STATUS_NEW,
                 'price_at_purchase' => $price,
+                'original_price' => $vipDiscount > 0 ? $basePrice : null,
+                'discount_percentage' => $vipDiscount,
+                'discount_amount' => $discountAmount,
                 'amount_held' => $price,
                 'payload' => $payload,
             ]);
