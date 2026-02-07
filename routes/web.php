@@ -110,6 +110,41 @@ Route::middleware(['auth', 'not_banned'])->group(function () {
         return $html;
     })->name('check.vip');
     
+    // Update VIP Discounts
+    Route::get('/update-vip-discounts', function() {
+        $updates = [
+            1 => 2,   // Rank 1 = 2%
+            2 => 4,   // Rank 2 = 4%
+            3 => 6,   // Rank 3 = 6%
+            4 => 8,   // Rank 4 = 8%
+            5 => 10,  // Rank 5 = 10%
+        ];
+        
+        $html = '<style>body{font-family:monospace;padding:20px;background:#1e293b;color:#e2e8f0;}</style>';
+        $html .= '<h1 style="color:#10b981;">Update VIP Discounts</h1>';
+        
+        foreach ($updates as $rank => $discount) {
+            $tier = \App\Models\VipTier::where('rank', $rank)->first();
+            if ($tier) {
+                $tier->discount_percentage = $discount;
+                $tier->save();
+                $html .= '<p style="color:#10b981;">✅ Rank ' . $rank . ' (' . $tier->title_en . '): ' . $discount . '%</p>';
+            } else {
+                $html .= '<p style="color:#ef4444;">❌ Rank ' . $rank . ': Tier not found</p>';
+            }
+        }
+        
+        $html .= '<h2 style="color:#10b981;margin-top:20px;">Updated VIP Tiers</h2>';
+        $tiers = \App\Models\VipTier::orderBy('rank')->get();
+        foreach ($tiers as $tier) {
+            $html .= '<p>Rank ' . $tier->rank . ': ' . $tier->title_en . ' - <strong style="color:#10b981;">' . $tier->discount_percentage . '%</strong></p>';
+        }
+        
+        $html .= '<p style="margin-top:20px;"><a href="/check-vip" style="color:#3b82f6;">Check your VIP status</a></p>';
+        
+        return $html;
+    })->name('update.vip.discounts');
+    
     // VIP Debug Routes (remove in production)
     Route::get('/debug/vip-discount', function() {
         return view('debug.vip-discount');
