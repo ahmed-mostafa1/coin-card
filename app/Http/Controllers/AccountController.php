@@ -70,24 +70,39 @@ class AccountController extends Controller
         $user = auth()->user();
 
         $validated = request()->validate([
-            'current_password' => ['required', 'string'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'name' => ['required', 'string', 'max:255'],
+            'current_password' => ['nullable', 'string'],
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
         ], [
+            'name.required' => 'يرجى إدخال الاسم.',
+            'name.max' => 'الاسم يجب ألا يتجاوز 255 حرفًا.',
             'current_password.required' => 'يرجى إدخال كلمة المرور الحالية.',
             'password.required' => 'يرجى إدخال كلمة المرور الجديدة.',
             'password.min' => 'كلمة المرور يجب أن تكون 8 أحرف على الأقل.',
             'password.confirmed' => 'تأكيد كلمة المرور غير متطابق.',
         ]);
 
-        // Check if current password is correct
-        if (!Hash::check($validated['current_password'], $user->password)) {
-            return redirect()->back()->with('error', 'كلمة المرور الحالية غير صحيحة.');
+        // Update name
+        $user->name = $validated['name'];
+
+        // Only update password if current_password is provided
+        if (!empty($validated['current_password'])) {
+            // Check if current password is correct
+            if (!Hash::check($validated['current_password'], $user->password)) {
+                return redirect()->back()->withInput()->with('error', 'كلمة المرور الحالية غير صحيحة.');
+            }
+
+            // Validate that new password is provided
+            if (empty($validated['password'])) {
+                return redirect()->back()->withInput()->with('error', 'يرجى إدخال كلمة المرور الجديدة.');
+            }
+
+            // Update password
+            $user->password = Hash::make($validated['password']);
         }
 
-        // Update password
-        $user->password = Hash::make($validated['password']);
         $user->save();
 
-        return redirect()->route('account')->with('status', 'تم تحديث كلمة المرور بنجاح.');
+        return redirect()->route('account')->with('status', 'تم تحديث البيانات بنجاح.');
     }
 }

@@ -83,7 +83,7 @@ return [
     'wallet_history' => 'سجل الرصيد',
     'my_orders' => 'طلباتي',
     'vip_system' => 'نظام VIP',
-    'change_password' => 'تغيير كلمة المرور',
+    'change_password' => 'تعديل الملف الشخصي',
     'wallet_balance' => 'رصيد المحفظة',
     'available_balance' => 'الرصيد المتاح',
     'held_balance' => 'الرصيد المعلّق',

@@ -83,7 +83,7 @@ return [
     'wallet_history' => 'Wallet History',
     'my_orders' => 'My Orders',
     'vip_system' => 'VIP System',
-    'change_password' => 'Change Password',
+    'change_password' => 'Edit Profile',
     'wallet_balance' => 'Wallet Balance',
     'available_balance' => 'Available Balance',
     'held_balance' => 'Held Balance',
