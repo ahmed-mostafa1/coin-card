@@ -21,6 +21,19 @@ php artisan optimize:clear
 php artisan optimize
 
 
+Goal: one sentence
+
+Files involved: list paths (or “unknown”)
+
+Current behavior: 1–2 sentences
+
+Expected behavior: 1–2 sentences
+
+Constraints: (Laravel version= 12, DB, auth method)
+
+Relevant snippets: only the minimal code blocks
+
+AI rule: If any of these are missing, proceed with safe assumptions and request only the missing item that blocks correctness.
 
 The VIP badges feature the following gradient styles based on tier rank:
 Rank 1: Slate/Silver Gradient

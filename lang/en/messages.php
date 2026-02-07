@@ -435,5 +435,7 @@ return [
     'select_package_first' => 'Select Package First',
     'vip_discount_active' => 'VIP Discount Active',
     'vip_discount_desc' => 'VIP Discount',
+    'additional_rules' => 'Additional Rules',
+    'invalid_otp' => 'Invalid OTP',
 
 ];
