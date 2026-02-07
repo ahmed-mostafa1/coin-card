@@ -437,5 +437,7 @@ return [
     'vip_discount_desc' => 'VIP Discount',
     'additional_rules' => 'Additional Rules',
     'invalid_otp' => 'Invalid OTP',
+    'quantity' => 'Quantity',
+    'per_unit' => 'Per Unit',
 
 ];

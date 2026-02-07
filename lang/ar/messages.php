@@ -425,6 +425,6 @@ return [
     'vip_discount_desc' => 'تم تفعيل خصم مستوى الVIP بنجاح',
     'additional_rules' => 'قواعد إضافية',
     'invalid_otp' => 'رمز التحقق غير صحيح.',
-
-
+    'quantity' => 'الكمية',
+    'per_unit' => 'لكل وحدة',
 ];

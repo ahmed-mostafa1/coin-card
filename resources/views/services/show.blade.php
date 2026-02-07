@@ -135,7 +135,7 @@
                                         class="w-32 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-2 text-sm text-slate-700 dark:text-slate-200"
                                         required>
                                     <span class="text-sm text-slate-600 dark:text-slate-400">
-                                        × ${{ number_format($service->price_per_unit, 2) }} {{ __('messages.per_unit') ?? (app()->getLocale() == 'ar' ? 'للقطعة' : 'per unit') }}
+                                        × ${{ number_format($service->price_per_unit, 2) }} {{ __('messages.per_unit') ?? (app()->getLocale() == 'ar' ? 'للوحدة' : 'per unit') }}
                                     </span>
                                 </div>
                             </div>
