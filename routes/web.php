@@ -73,6 +73,28 @@ Route::middleware(['auth', 'not_banned'])->group(function () {
     Route::post('/deposit/{paymentMethod:slug}', [DepositController::class, 'store'])->name('deposit.store')->middleware(['not_frozen', \App\Http\Middleware\EnsureAccountVerified::class]);
 
     Route::post('/services/{service:slug}/purchase', [ServiceController::class, 'purchase'])->name('services.purchase')->middleware(['not_frozen', \App\Http\Middleware\EnsureAccountVerified::class]);
+    
+    // VIP Debug Routes (remove in production)
+    Route::get('/debug/vip-discount', function() {
+        return view('debug.vip-discount');
+    })->name('debug.vip-discount');
+    
+    Route::post('/admin/test/assign-vip', function() {
+        $user = auth()->user();
+        $tier = \App\Models\VipTier::where('rank', 2)->first();
+        if ($tier) {
+            \App\Models\UserVipStatus::updateOrCreate(
+                ['user_id' => $user->id],
+                [
+                    'vip_tier_id' => $tier->id,
+                    'lifetime_spent' => 500,
+                    'calculated_at' => now()
+                ]
+            );
+            return redirect()->route('debug.vip-discount')->with('status', 'VIP status assigned successfully!');
+        }
+        return redirect()->route('debug.vip-discount')->with('error', 'VIP tier not found');
+    })->name('admin.test.assign-vip');
 });
 
 Route::middleware(['auth', 'not_banned', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
