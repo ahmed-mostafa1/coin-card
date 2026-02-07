@@ -13,9 +13,9 @@
         $vipDiscount = 0;
         $currentVipTier = null;
         if (auth()->check()) {
-            $userVipStatus = auth()->user()->vipStatus;
-            if ($userVipStatus && $userVipStatus->tier) {
-                $currentVipTier = $userVipStatus->tier;
+            $userVipStatus = auth()->user()->load('vipStatus.vipTier')->vipStatus;
+            if ($userVipStatus && $userVipStatus->vipTier) {
+                $currentVipTier = $userVipStatus->vipTier;
                 $vipDiscount = $currentVipTier->discount_percentage ?? 0;
             }
         }

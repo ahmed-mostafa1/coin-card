@@ -56,9 +56,9 @@ class ServiceController extends Controller
             
             // Get VIP discount
             $vipDiscount = 0;
-            $userVipStatus = $user->vipStatus;
-            if ($userVipStatus && $userVipStatus->tier) {
-                $vipDiscount = $userVipStatus->tier->discount_percentage ?? 0;
+            $userVipStatus = $user->load('vipStatus.vipTier')->vipStatus;
+            if ($userVipStatus && $userVipStatus->vipTier) {
+                $vipDiscount = $userVipStatus->vipTier->discount_percentage ?? 0;
             }
 
             // Calculate the expected price based on service type
