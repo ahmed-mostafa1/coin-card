@@ -73,7 +73,7 @@
                 <div id="quantity-fields" class="hidden space-y-4">
                     <div>
                         <x-input-label for="price_per_unit" value="السعر لكل قطعة" />
-                        <x-text-input id="price_per_unit" name="price_per_unit" type="number" step="0.01" min="0.01" :value="old('price_per_unit')" />
+                        <x-text-input id="price_per_unit" name="price_per_unit" type="number" step="any" min="0.000000001" :value="old('price_per_unit')" />
                         <x-input-error :messages="$errors->get('price_per_unit')" />
                         <p class="mt-1 text-xs text-slate-500">سيتم حساب السعر الإجمالي تلقائياً بناءً على الكمية</p>
                     </div>
