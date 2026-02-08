@@ -83,7 +83,7 @@
                     <div id="quantity-fields" class="{{ $service->is_quantity_based ? '' : 'hidden' }} space-y-4">
                         <div>
                             <x-input-label for="price_per_unit" value="السعر لكل قطعة" />
-                            <x-text-input id="price_per_unit" name="price_per_unit" type="number" step="any" min="0.000000001" :value="old('price_per_unit', $service->price_per_unit)" />
+                            <x-text-input id="price_per_unit" name="price_per_unit" type="number" step="any" min="0.000000000001" :value="old('price_per_unit', $service->price_per_unit ? rtrim(rtrim(number_format($service->price_per_unit, 12, '.', ''), '0'), '.') : '')" />
                             <x-input-error :messages="$errors->get('price_per_unit')" />
                             <p class="mt-1 text-xs text-slate-500">سيتم حساب السعر الإجمالي تلقائياً بناءً على الكمية</p>
                         </div>

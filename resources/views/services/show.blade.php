@@ -138,7 +138,7 @@
                                         class="w-32 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-2 text-sm text-slate-700 dark:text-slate-200"
                                         required>
                                     <span class="text-sm text-slate-600 dark:text-slate-400">
-                                        × ${{ number_format($service->price_per_unit, 2) }} {{ __('messages.per_unit') ?? (app()->getLocale() == 'ar' ? 'للوحدة' : 'per unit') }}
+                                        × ${{ rtrim(rtrim(number_format($service->price_per_unit, 12, '.', ''), '0'), '.') }} {{ __('messages.per_unit') ?? (app()->getLocale() == 'ar' ? 'للوحدة' : 'per unit') }}
                                     </span>
                                     @if($service->min_quantity > 1 || $service->max_quantity)
                                         <p class="text-xs text-slate-500 mt-1">
@@ -269,6 +269,15 @@
                 const isQuantityBased = {{ $service->is_quantity_based ? 'true' : 'false' }};
                 const vipDiscount = {{ $vipDiscount }};
 
+                const formatPrice = (price) => {
+                    // Avoid scientific notation and handle small numbers
+                    // If price < 0.01 and not 0, show more decimals
+                    if (price > 0 && price < 0.01) {
+                         return price.toFixed(12).replace(/\.?0+$/, "");
+                    }
+                    return price.toFixed(2);
+                };
+
                 const getSelectedPrice = () => {
                     // Handle quantity-based services
                     if (isQuantityBased) {
@@ -330,15 +339,15 @@
                     if (priceElement) {
                         if (price !== null) {
                             if (!Number.isNaN(price)) {
-                                priceElement.textContent = '$' + price.toFixed(2);
+                                priceElement.textContent = '$' + formatPrice(price);
                                 if (priceCurrency) priceCurrency.classList.remove('hidden');
-                                if (priceInput) priceInput.value = price.toFixed(2);
+                                if (priceInput) priceInput.value = price.toFixed(12); // Send high precision to backend
                                 
                                 // Update original price if VIP discount is active
                                 if (vipDiscount > 0) {
                                     if (originalPriceElement) {
                                         if (originalPrice !== null) {
-                                            originalPriceElement.textContent = '$' + originalPrice.toFixed(2);
+                                            originalPriceElement.textContent = '$' + formatPrice(originalPrice);
                                             originalPriceElement.classList.remove('hidden');
                                         }
                                     }
