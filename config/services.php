@@ -41,4 +41,9 @@ return [
         'redirect' => env('GOOGLE_REDIRECT_URI'),
     ],
 
+    'marketcard99' => [
+        'base_url' => env('MARKETCARD99_BASE_URL', 'https://app.market-card99.com'),
+        'token' => env('MARKETCARD99_TOKEN'),
+    ],
+
 ];

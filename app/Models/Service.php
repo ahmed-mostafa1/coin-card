@@ -25,6 +25,10 @@ class Service extends Model
         'sort_order',
         'offer_image_path',
         'is_offer_active',
+        'external_product_id',
+        'external_type',
+        'requires_customer_id',
+        'requires_amount',
     ];
 
     protected $casts = [
@@ -33,6 +37,8 @@ class Service extends Model
         'is_active' => 'boolean',
         'is_offer_active' => 'boolean',
         'is_quantity_based' => 'boolean',
+        'requires_customer_id' => 'boolean',
+        'requires_amount' => 'boolean',
     ];
 
     /**

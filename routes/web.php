@@ -74,6 +74,12 @@ Route::middleware(['auth', 'not_banned'])->group(function () {
 
     Route::post('/services/{service:slug}/purchase', [ServiceController::class, 'purchase'])->name('services.purchase')->middleware(['not_frozen', \App\Http\Middleware\EnsureAccountVerified::class]);
     
+    // MarketCard99 Integration Routes
+    Route::middleware(['throttle:10,1', 'not_frozen', \App\Http\Middleware\EnsureAccountVerified::class])->group(function () {
+        Route::post('/marketcard99/orders', [\App\Http\Controllers\MarketCard99OrderController::class, 'store'])->name('marketcard99.orders.store');
+        Route::get('/marketcard99/orders/{id}', [\App\Http\Controllers\MarketCard99OrderController::class, 'show'])->name('marketcard99.orders.show');
+    });
+    
     // Quick VIP Check
     Route::get('/check-vip', function() {
         $user = auth()->user();
