@@ -1,4 +1,4 @@
-@component('emails.layout', ['title' => 'Coin7Card - إشعار طلب جديد'])
+@component('emails.layout', ['title' => 'Arab 8bp.in - إشعار طلب جديد'])
 
 <p class="intro-text">
     تم إنشاء طلب شحن رصيد جديد على الموقع، وهذه تفاصيله:

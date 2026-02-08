@@ -171,7 +171,7 @@
     <div class="email-wrapper">
         <!-- Header -->
         <div class="header">
-            <h1>{{ $title ?? 'Coin7Card - كوين7كارد' }}</h1>
+            <h1>{{ $title ?? 'Arab 8bp.in - كوين7كارد' }}</h1>
         </div>
 
         <!-- Content -->
@@ -182,7 +182,7 @@
         <!-- Footer -->
         <div class="footer">
             <p class="footer-text">
-                © Coin7Card {{ date('Y') }} - {{ $footerText ?? 'جميع الحقوق محفوظة' }}
+                © Arab 8bp.in {{ date('Y') }} - {{ $footerText ?? 'جميع الحقوق محفوظة' }}
             </p>
         </div>
     </div>

@@ -22,7 +22,7 @@ class DepositStatusChangedNotification extends Notification
     public function toMail(object $notifiable): \Illuminate\Notifications\Messages\MailMessage
     {
         return (new \Illuminate\Notifications\Messages\MailMessage)
-            ->subject('تحديث حالة طلب الشحن - Coin7Card')
+            ->subject('تحديث حالة طلب الشحن - Arab 8bp.in')
             ->view('emails.notifications.deposit_status_changed', [
                 'deposit' => $this->deposit
             ]);

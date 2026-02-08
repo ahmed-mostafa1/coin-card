@@ -1,7 +1,7 @@
-@component('emails.layout', ['title' => 'Coin7Card - كود التفعيل'])
+@component('emails.layout', ['title' => 'Arab 8bp.in - كود التفعيل'])
 
 <p class="intro-text">
-    مرحباً بك في Coin7Card! شكراً لتسجيلك معنا.
+    مرحباً بك في Arab 8bp.in! شكراً لتسجيلك معنا.
 </p>
 
 <p class="intro-text">

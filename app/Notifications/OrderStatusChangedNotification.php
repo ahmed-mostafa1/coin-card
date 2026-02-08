@@ -25,7 +25,7 @@ class OrderStatusChangedNotification extends Notification
     public function toMail(object $notifiable): \Illuminate\Notifications\Messages\MailMessage
     {
         return (new \Illuminate\Notifications\Messages\MailMessage)
-            ->subject('تحديث حالة الطلب - Coin7Card')
+            ->subject('تحديث حالة الطلب - Arab 8bp.in')
             ->view('emails.notifications.order_status_changed', [
                 'order' => $this->order
             ]);

@@ -1,4 +1,4 @@
-@component('emails.layout', ['title' => $subject ?? 'Coin7Card - رسالة من الإدارة'])
+@component('emails.layout', ['title' => $subject ?? 'Arab 8bp.in - رسالة من الإدارة'])
 
 <div class="intro-text" style="white-space: pre-wrap;">
     {!! nl2br(e($content)) !!}

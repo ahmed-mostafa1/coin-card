@@ -1,4 +1,4 @@
-@component('emails.layout', ['title' => 'Coin7Card - تحديث حالة الطلب'])
+@component('emails.layout', ['title' => 'Arab 8bp.in - تحديث حالة الطلب'])
 
 @php
     $statusText = match($order->status) {

@@ -1,4 +1,4 @@
-@component('emails.layout', ['title' => 'Coin7Card - تحديث حالة طلب الشحن'])
+@component('emails.layout', ['title' => 'Arab 8bp.in - تحديث حالة طلب الشحن'])
 
 @php
     $statusText = match($deposit->status) {

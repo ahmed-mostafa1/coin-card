@@ -22,7 +22,7 @@ class NewDepositRequestNotification extends Notification
     public function toMail(object $notifiable): \Illuminate\Notifications\Messages\MailMessage
     {
         return (new \Illuminate\Notifications\Messages\MailMessage)
-            ->subject('إشعار طلب شحن رصيد جديد - Coin7Card')
+            ->subject('إشعار طلب شحن رصيد جديد - Arab 8bp.in')
             ->view('emails.notifications.new_deposit', [
                 'deposit' => $this->deposit
             ]);
