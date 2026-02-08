@@ -79,6 +79,7 @@ class DepositController extends Controller
             }
 
             $deposit->load('user');
+            $deposit->user->notify(new \App\Notifications\UserDepositRequestCreatedNotification($deposit));
             $notificationService->notifyAdmins(new NewDepositRequestNotification($deposit));
         });
 

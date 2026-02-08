@@ -16,7 +16,8 @@ class MarketCard99OrderService
 {
     public function __construct(
         private MarketCard99Client $client,
-        private WalletService $walletService
+        private WalletService $walletService,
+        private NotificationService $notificationService
     ) {}
 
     /**
@@ -113,6 +114,7 @@ class MarketCard99OrderService
                 'external_amount' => $externalAmount,
                 'has_purchase_password' => !is_null($purchasePassword),
                 'price_at_purchase' => $sellTotal, // For compatibility with existing order system
+                'amount_held' => $sellTotal,      // Required for email notifications compatibility
             ]);
 
             // Debit wallet
@@ -219,6 +221,17 @@ class MarketCard99OrderService
             'status' => $this->mapExternalStatus($billResolution['external_status']),
         ]);
 
+        // Send notifications
+        try {
+            $user->notify(new \App\Notifications\UserOrderCreatedNotification($order));
+            $this->notificationService->notifyAdmins(new \App\Notifications\NewOrderNotification($order));
+        } catch (\Exception $e) {
+            Log::error('MarketCard99: Failed to send notifications', [
+                'order_id' => $order->id,
+                'error' => $e->getMessage(),
+            ]);
+        }
+
         Log::info('MarketCard99: Order created successfully', [
             'order_id' => $order->id,
             'external_bill_id' => $order->external_bill_id,
@@ -256,6 +269,7 @@ class MarketCard99OrderService
 
         $externalStatus = $bill['status'] ?? null;
         $newStatus = $this->mapExternalStatus($externalStatus);
+        $oldStatus = $order->status;
 
         // Check if we need to refund
         $shouldRefund = in_array(strtolower($externalStatus ?? ''), ['cancel', 'failed', 'rejected']);
@@ -295,10 +309,20 @@ class MarketCard99OrderService
         if ($updated) {
             Log::info('MarketCard99: Order status synced', [
                 'order_id' => $order->id,
-                'old_status' => $order->getOriginal('status'),
+                'old_status' => $oldStatus,
                 'new_status' => $newStatus,
                 'external_status' => $externalStatus,
             ]);
+
+            // Notify user of status change
+             try {
+                $order->user->notify(new \App\Notifications\OrderStatusChangedNotification($order, $oldStatus, $newStatus));
+            } catch (\Exception $e) {
+                Log::error('MarketCard99: Failed to send status notification', [
+                    'order_id' => $order->id,
+                    'error' => $e->getMessage(),
+                ]);
+            }
         }
 
         return $updated;

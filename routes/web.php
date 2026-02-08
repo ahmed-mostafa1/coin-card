@@ -255,4 +255,21 @@ Route::middleware(['auth', 'not_banned', 'role:admin'])->prefix('admin')->name('
     Route::put('/orders/{order}', [AdminOrderController::class, 'update'])->name('orders.update');
 });
 
+Route::get('/debug/test-email', function () {
+    $user = auth()->user();
+    if (! $user) {
+        return 'Please login first.';
+    }
+
+    try {
+        \Illuminate\Support\Facades\Mail::raw('Test email from Arab 8bp.in debug route.', function ($message) use ($user) {
+            $message->to($user->email)
+                ->subject('Test Email - Arab 8bp.in');
+        });
+        return 'Email sent to ' . $user->email;
+    } catch (\Exception $e) {
+        return 'Failed to send email: ' . $e->getMessage();
+    }
+});
+
 require __DIR__ . '/auth.php';
