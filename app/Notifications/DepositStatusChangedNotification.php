@@ -21,21 +21,13 @@ class DepositStatusChangedNotification extends Notification
      */
     public function toMail(object $notifiable): \Illuminate\Notifications\Messages\MailMessage
     {
-        $data = $this->toDatabase($notifiable);
-        $title = __($data['title'], $data['title_params'] ?? []);
-        $description = __($data['description'], $data['description_params'] ?? []);
-
-        if (!empty($data['admin_note'])) {
-            $description .= "\n\n" . __('messages.reason') . ': ' . $data['admin_note'];
-        }
-
         return (new \Illuminate\Notifications\Messages\MailMessage)
-            ->subject($title)
-            ->view('emails.layout', [
-                'title' => $title,
-                'slot' => new \Illuminate\Support\HtmlString(nl2br(e($description)))
+            ->subject('تحديث حالة طلب الشحن - Coin7Card')
+            ->view('emails.notifications.deposit_status_changed', [
+                'deposit' => $this->deposit
             ]);
     }
+
 
     public function toDatabase(object $notifiable): array
     {

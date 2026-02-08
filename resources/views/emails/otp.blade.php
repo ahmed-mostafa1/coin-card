@@ -1,13 +1,23 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Account Activation</title>
-</head>
-<body style="font-family: sans-serif; text-align: center; padding: 20px;">
-    <h1>Welcome to Arab 8bp.in</h1>
-    <p>Thank you for registering. Please use the following One-Time Password (OTP) to activate your account:</p>
-    <h2 style="font-size: 24px; letter-spacing: 5px; background-color: #f3f4f6; padding: 10px; display: inline-block; border-radius: 8px;">{{ $code }}</h2>
-    <p>This code will expire in 10 minutes.</p>
-    <p>If you did not sign up for this account, please ignore this email.</p>
-</body>
-</html>
+@component('emails.layout', ['title' => 'Coin7Card - كود التفعيل'])
+
+<p class="intro-text">
+    مرحباً بك في Coin7Card! شكراً لتسجيلك معنا.
+</p>
+
+<p class="intro-text">
+    يرجى استخدام كود التفعيل التالي لتفعيل حسابك:
+</p>
+
+<div style="text-align: center; margin: 30px 0;">
+    <div style="display: inline-block; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 20px 40px; border-radius: 8px; border: 2px dashed #2d5a8c;">
+        <div style="font-size: 32px; font-weight: 700; letter-spacing: 8px; color: #2d5a8c; font-family: 'Courier New', monospace;">
+            {{ $code }}
+        </div>
+    </div>
+</div>
+
+<div class="action-text">
+    <strong>ملاحظة:</strong> هذا الكود صالح لمدة 10 دقائق فقط. إذا لم تقم بإنشاء حساب، يرجى تجاهل هذه الرسالة.
+</div>
+
+@endcomponent

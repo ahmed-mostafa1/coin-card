@@ -21,17 +21,13 @@ class NewOrderNotification extends Notification
      */
     public function toMail(object $notifiable): \Illuminate\Notifications\Messages\MailMessage
     {
-        $data = $this->toDatabase($notifiable);
-        $title = __($data['title'], $data['title_params'] ?? []);
-        $description = __($data['description'], $data['description_params'] ?? []);
-
         return (new \Illuminate\Notifications\Messages\MailMessage)
-            ->subject($title)
-            ->view('emails.layout', [
-                'title' => $title,
-                'slot' => new \Illuminate\Support\HtmlString(nl2br(e($description)) . '<br><br><a href="' . $data['url'] . '">View Order</a>')
+            ->subject('إشعار طلب شحن رصيد جديد - Coin7Card')
+            ->view('emails.notifications.new_order', [
+                'order' => $this->order
             ]);
     }
+
 
     public function toDatabase(object $notifiable): array
     {

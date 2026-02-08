@@ -24,17 +24,13 @@ class OrderStatusChangedNotification extends Notification
      */
     public function toMail(object $notifiable): \Illuminate\Notifications\Messages\MailMessage
     {
-        $data = $this->toDatabase($notifiable);
-        $title = __($data['title'], $data['title_params'] ?? []);
-        $description = __($data['description'], $data['description_params'] ?? []);
-
         return (new \Illuminate\Notifications\Messages\MailMessage)
-            ->subject($title)
-            ->view('emails.layout', [
-                'title' => $title,
-                'slot' => new \Illuminate\Support\HtmlString(nl2br(e($description)))
+            ->subject('تحديث حالة الطلب - Coin7Card')
+            ->view('emails.notifications.order_status_changed', [
+                'order' => $this->order
             ]);
     }
+
 
     public function toDatabase(object $notifiable): array
     {
