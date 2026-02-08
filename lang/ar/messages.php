@@ -427,4 +427,9 @@ return [
     'invalid_otp' => 'رمز التحقق غير صحيح.',
     'quantity' => 'الكمية',
     'per_unit' => 'لكل وحدة',
+    'min_quantity' => 'أقل كمية',
+    'max_quantity' => 'أقصى كمية',
+    'any_quantity' => 'اتركه فارغاً لسماح بأي كمية',
+    'quantity_limits' => 'الحد الأدنى: :min | الحد الأقصى: :max',
+    'quantity_min_limit' => 'الحد الأدنى: :min',
 ];

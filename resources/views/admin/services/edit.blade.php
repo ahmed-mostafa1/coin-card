@@ -87,6 +87,19 @@
                             <x-input-error :messages="$errors->get('price_per_unit')" />
                             <p class="mt-1 text-xs text-slate-500">سيتم حساب السعر الإجمالي تلقائياً بناءً على الكمية</p>
                         </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                            <x-input-label for="min_quantity" :value="__('messages.min_quantity')" />
+                                <x-text-input id="min_quantity" name="min_quantity" type="number" min="1" :value="old('min_quantity', $service->min_quantity ?? 1)" />
+                                <x-input-error :messages="$errors->get('min_quantity')" />
+                            </div>
+                            <div>
+                                <x-input-label for="max_quantity" :value="__('messages.max_quantity')" />
+                                <x-text-input id="max_quantity" name="max_quantity" type="number" min="1" :value="old('max_quantity', $service->max_quantity)" />
+                                <x-input-error :messages="$errors->get('max_quantity')" />
+                                <p class="mt-1 text-xs text-slate-500">{{ __('messages.any_quantity') }}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

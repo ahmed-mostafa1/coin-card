@@ -29,6 +29,8 @@ class Service extends Model
         'external_type',
         'requires_customer_id',
         'requires_amount',
+        'min_quantity',
+        'max_quantity',
     ];
 
     protected $casts = [
@@ -39,6 +41,8 @@ class Service extends Model
         'is_quantity_based' => 'boolean',
         'requires_customer_id' => 'boolean',
         'requires_amount' => 'boolean',
+        'min_quantity' => 'integer',
+        'max_quantity' => 'integer',
     ];
 
     /**

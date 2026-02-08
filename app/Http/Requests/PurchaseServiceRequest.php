@@ -36,9 +36,15 @@ class PurchaseServiceRequest extends FormRequest
         // Add selected_price validation
         $rules['selected_price'] = ['nullable', 'numeric', 'min:0'];
         
-        // Add quantity validation for quantity-based services
         if ($service->is_quantity_based) {
-            $rules['quantity'] = ['required', 'integer', 'min:1'];
+            $rules['quantity'] = [
+                'required', 
+                'integer', 
+                'min:' . ($service->min_quantity ?? 1),
+                $service->max_quantity ? 'max:' . $service->max_quantity : ''
+            ];
+            // Filter out empty rules
+            $rules['quantity'] = array_filter($rules['quantity']);
         }
 
         return $rules;

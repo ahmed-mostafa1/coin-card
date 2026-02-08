@@ -439,5 +439,9 @@ return [
     'invalid_otp' => 'Invalid OTP',
     'quantity' => 'Quantity',
     'per_unit' => 'Per Unit',
-
+     'min_quantity' => 'Min Quantity',
+    'max_quantity' => 'Max Quantity',
+    'any_quantity' => 'Leave empty to allow any quantity',
+    'quantity_limits' => 'Min: :min | Max: :max',
+    'quantity_min_limit' => 'Min: :min',
 ];

@@ -130,13 +130,25 @@
                             <div class="space-y-2">
                                 <p class="text-sm font-semibold text-slate-800">{{ __('messages.quantity') ?? (app()->getLocale() == 'ar' ? 'الكمية' : 'Quantity') }}</p>
                                 <div class="flex items-center gap-3">
-                                    <input type="number" name="quantity" id="quantity-input" min="1" value="1" 
+                                    <input type="number" name="quantity" id="quantity-input" 
+                                        min="{{ $service->min_quantity ?? 1 }}" 
+                                        @if($service->max_quantity) max="{{ $service->max_quantity }}" @endif
+                                        value="{{ $service->min_quantity ?? 1 }}" 
                                         data-price-per-unit="{{ $service->price_per_unit }}"
                                         class="w-32 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-2 text-sm text-slate-700 dark:text-slate-200"
                                         required>
                                     <span class="text-sm text-slate-600 dark:text-slate-400">
                                         × ${{ number_format($service->price_per_unit, 2) }} {{ __('messages.per_unit') ?? (app()->getLocale() == 'ar' ? 'للوحدة' : 'per unit') }}
                                     </span>
+                                    @if($service->min_quantity > 1 || $service->max_quantity)
+                                        <p class="text-xs text-slate-500 mt-1">
+                                            @if($service->max_quantity)
+                                                {{ __('messages.quantity_limits', ['min' => $service->min_quantity ?? 1, 'max' => $service->max_quantity]) }}
+                                            @else
+                                                {{ __('messages.quantity_min_limit', ['min' => $service->min_quantity ?? 1]) }}
+                                            @endif
+                                        </p>
+                                    @endif
                                 </div>
                             </div>
                         @endif

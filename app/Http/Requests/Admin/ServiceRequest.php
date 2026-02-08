@@ -26,6 +26,8 @@ class ServiceRequest extends FormRequest
             'additional_rules' => ['nullable', 'string'],
             'additional_rules_en' => ['nullable', 'string'],
             'is_quantity_based' => ['nullable', 'boolean'],
+            'min_quantity' => ['nullable', 'integer', 'min:1'],
+            'max_quantity' => ['nullable', 'integer', 'gte:min_quantity'],
             'price_per_unit' => ['required_if:is_quantity_based,1', 'nullable', 'numeric', 'gt:0'],
             'price' => ['required_unless:is_quantity_based,1', 'nullable', 'numeric', 'gt:0'],
             'image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
