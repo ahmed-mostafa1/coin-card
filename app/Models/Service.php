@@ -32,8 +32,8 @@ class Service extends Model
     ];
 
     protected $casts = [
-        'price' => 'decimal:2',
-        'price_per_unit' => 'decimal:2',
+        'price' => 'double',
+        'price_per_unit' => 'double',
         'is_active' => 'boolean',
         'is_offer_active' => 'boolean',
         'is_quantity_based' => 'boolean',
