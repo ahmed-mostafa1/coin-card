@@ -163,7 +163,7 @@ class ServiceController extends Controller
 
             $order->load(['service', 'user']);
 
-            $user->notify(new OrderStatusChangedNotification($order, null, Order::STATUS_NEW));
+            $user->notify(new \App\Notifications\UserOrderCreatedNotification($order));
             $notificationService->notifyAdmins(new NewOrderNotification($order));
         });
 

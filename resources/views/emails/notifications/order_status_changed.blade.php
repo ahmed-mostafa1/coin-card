@@ -2,7 +2,7 @@
 
 @php
     $statusText = match($order->status) {
-        'pending' => 'قيد المراجعة',
+        'new', 'pending' => 'قيد المراجعة',
         'processing' => 'قيد التنفيذ',
         'done' => 'مكتمل',
         'rejected' => 'مرفوض',
@@ -10,7 +10,7 @@
     };
     
     $statusClass = match($order->status) {
-        'pending' => 'status-pending',
+        'new', 'pending' => 'status-pending',
         'processing' => 'status-processing',
         'done' => 'status-done',
         'rejected' => 'status-rejected',
