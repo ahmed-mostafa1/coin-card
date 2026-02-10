@@ -255,6 +255,9 @@ return [
     'field_type' => 'Field Type',
     'field_type_text' => 'Text',
     'field_type_textarea' => 'Multi-line Text',
+    'field_type_number' => 'Number',
+    'field_type_email' => 'Email',
+    'field_type_tel' => 'Phone',
     'field_key' => 'Field Key',
     'validation_rules_optional' => 'Additional Rules (Optional)',
     'required_field' => 'Required Field',
@@ -444,4 +447,17 @@ return [
     'any_quantity' => 'Leave empty to allow any quantity',
     'quantity_limits' => 'Min: :min | Max: :max',
     'quantity_min_limit' => 'Min: :min',
+
+    'notifications_custom.deposit_approved_title' => 'Deposit request approved',
+    'notifications_custom.deposit_approved_desc' => 'Deposit request approved successfully',
+    'notifications_custom.deposit_rejected_title' => 'Deposit request rejected',
+    'notifications_custom.deposit_rejected_desc' => 'Deposit request rejected successfully',
+    'notifications_custom.deposit_rejected_reason' => 'Reason: :reason',
+    'notifications_custom.new_deposit_request_title' => 'New deposit request',
+    'notifications_custom.new_deposit_request_desc' => 'New deposit request Created',
+    'notifications_custom.deposit_created_title' => 'Deposit request created',
+    'notifications_custom.deposit_created_desc' => 'Deposit request created successfully',
+
+
+
 ];

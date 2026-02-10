@@ -254,6 +254,9 @@ return [
     'field_type' => 'نوع الحقل',
     'field_type_text' => 'نصي',
     'field_type_textarea' => 'نص متعدد الأسطر',
+    'field_type_number' => 'رقمي',
+    'field_type_email' => 'بريد إلكتروني',
+    'field_type_tel' => 'هاتف',
     'field_key' => 'مفتاح الحقل',
     'validation_rules_optional' => 'قواعد إضافية (اختياري)',
     'required_field' => 'حقل مطلوب',
@@ -432,4 +435,15 @@ return [
     'any_quantity' => 'اتركه فارغاً لسماح بأي كمية',
     'quantity_limits' => 'الحد الأدنى: :min | الحد الأقصى: :max',
     'quantity_min_limit' => 'الحد الأدنى: :min',
+    'notifications_custom.deposit_approved_title' => 'تم قبول طلب الشحن',
+    'notifications_custom.deposit_approved_desc' => 'تم قبول طلب الشحن بنجاح',
+    'notifications_custom.deposit_rejected_title' => 'تم رفض طلب الشحن',
+    'notifications_custom.deposit_rejected_desc' => 'تم رفض طلب الشحن بنجاح',
+    'notifications_custom.deposit_rejected_reason' => 'السبب: :reason',
+    'notifications_custom.new_deposit_request_title' => 'طلب شحن جديد',
+    'notifications_custom.new_deposit_request_desc' => 'طلب شحن جديد',
+    'notifications_custom.deposit_created_title' => 'تم إنشاء طلب الشحن',
+    'notifications_custom.deposit_created_desc' => 'تم إنشاء طلب الشحن بنجاح',
+
+
 ];
