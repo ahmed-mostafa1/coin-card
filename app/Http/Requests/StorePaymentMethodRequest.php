@@ -20,6 +20,8 @@ class StorePaymentMethodRequest extends FormRequest
             'instructions' => ['required', 'string'],
             'instructions_en' => ['nullable', 'string'],
             'account_number' => ['required', 'string', 'max:255'],
+            'show_account_number' => ['nullable', 'boolean'],
+            'show_contact_button' => ['nullable', 'boolean'],
             'icon' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'is_active' => ['nullable', 'boolean'],
             'sort_order' => ['nullable', 'integer', 'min:0'],

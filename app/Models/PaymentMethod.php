@@ -14,6 +14,8 @@ class PaymentMethod extends Model
         'instructions',
         'instructions_en',
         'account_number',
+        'show_account_number',
+        'show_contact_button',
         'icon_path',
         'is_active',
         'sort_order',
@@ -21,6 +23,8 @@ class PaymentMethod extends Model
 
     protected $casts = [
         'is_active' => 'boolean',
+        'show_account_number' => 'boolean',
+        'show_contact_button' => 'boolean',
     ];
 
     /**

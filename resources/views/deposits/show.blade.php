@@ -25,20 +25,31 @@
                 {{ $paymentMethod->localized_instructions }}
             </div>
 
-            <div class="mt-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4">
-                <div class="flex items-center justify-between gap-4">
-                    <div>
-                        <p class="text-sm text-slate-500 dark:text-slate-400">{{ __('messages.account_number_label') }}</p>
-                        <p class="mt-2 text-lg font-semibold text-slate-700 dark:text-slate-200 break-all" data-account-number>
-                            {{ $paymentMethod->account_number }}</p>
-                        <p class="mt-1 text-xs text-emerald-600 dark:text-emerald-400 hidden" data-copy-feedback>
-                            {{ __('messages.copied_feedback') }}</p>
-                    </div>
-                    <button type="button"
-                        class="rounded-full border border-emerald-200 dark:border-emerald-700 px-4 py-2 text-sm font-semibold text-emerald-700 dark:text-emerald-400 transition hover:bg-emerald-50 dark:hover:bg-emerald-900/30"
-                        data-copy-button>{{ __('messages.copy_button') }}</button>
+            @if($paymentMethod->show_contact_button && !empty($sharedWhatsappLink))
+                <div class="mt-4">
+                    <a href="{{ $sharedWhatsappLink }}" target="_blank"
+                        class="inline-flex w-full items-center justify-center rounded-2xl border border-emerald-200 dark:border-emerald-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-semibold text-emerald-700 dark:text-emerald-400 transition hover:bg-emerald-50 dark:hover:bg-emerald-900/30">
+                        {{ __('messages.contact_us_button') }}
+                    </a>
                 </div>
-            </div>
+            @endif
+
+            @if($paymentMethod->show_account_number)
+                <div class="mt-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4">
+                    <div class="flex items-center justify-between gap-4">
+                        <div>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">{{ __('messages.account_number_label') }}</p>
+                            <p class="mt-2 text-lg font-semibold text-slate-700 dark:text-slate-200 break-all" data-account-number>
+                                {{ $paymentMethod->account_number }}</p>
+                            <p class="mt-1 text-xs text-emerald-600 dark:text-emerald-400 hidden" data-copy-feedback>
+                                {{ __('messages.copied_feedback') }}</p>
+                        </div>
+                        <button type="button"
+                            class="rounded-full border border-emerald-200 dark:border-emerald-700 px-4 py-2 text-sm font-semibold text-emerald-700 dark:text-emerald-400 transition hover:bg-emerald-50 dark:hover:bg-emerald-900/30"
+                            data-copy-button>{{ __('messages.copy_button') }}</button>
+                    </div>
+                </div>
+            @endif
         </div>
 
         <div class="rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm">

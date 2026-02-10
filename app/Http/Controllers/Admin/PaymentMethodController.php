@@ -32,6 +32,8 @@ class PaymentMethodController extends Controller
     {
         $data = $request->validated();
         $data['is_active'] = $request->boolean('is_active');
+        $data['show_account_number'] = $request->boolean('show_account_number');
+        $data['show_contact_button'] = $request->boolean('show_contact_button');
 
         if ($request->hasFile('icon')) {
             $data['icon_path'] = $request->file('icon')->store('payment-methods/icons', 'public');
@@ -57,6 +59,8 @@ class PaymentMethodController extends Controller
     {
         $data = $request->validated();
         $data['is_active'] = $request->boolean('is_active');
+        $data['show_account_number'] = $request->boolean('show_account_number');
+        $data['show_contact_button'] = $request->boolean('show_contact_button');
 
         if ($request->hasFile('icon')) {
             if ($paymentMethod->icon_path) {

@@ -54,6 +54,21 @@
                 <x-input-error :messages="$errors->get('account_number')" />
             </div>
 
+            <div class="flex flex-col gap-3 text-sm text-slate-600 dark:text-slate-400">
+                <label class="flex items-center gap-3">
+                    <input id="show_account_number" name="show_account_number" type="checkbox" value="1"
+                        class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500"
+                        {{ old('show_account_number', true) ? 'checked' : '' }}>
+                    {{ __('messages.show_account_number') }}
+                </label>
+                <label class="flex items-center gap-3">
+                    <input id="show_contact_button" name="show_contact_button" type="checkbox" value="1"
+                        class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500"
+                        {{ old('show_contact_button', true) ? 'checked' : '' }}>
+                    {{ __('messages.show_contact_button') }}
+                </label>
+            </div>
+
 
             <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
                 <input id="is_active" name="is_active" type="checkbox" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" checked>
