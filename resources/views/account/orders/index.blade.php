@@ -14,7 +14,7 @@
         @endif
 
         <x-table class="mt-6">
-            <thead class="bg-slate-50 text-slate-500">
+            <thead class="bg-slate-50 dark:bg-slate-800/60 text-slate-500 dark:text-slate-300">
                 <tr>
                     <th class="py-2">{{ __('messages.service') }}</th>
                     <th class="py-2">{{ __('messages.package') }}</th>
@@ -25,16 +25,16 @@
                     <th class="py-2">{{ __('messages.details_link') }}</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-slate-100">
+            <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
                 @forelse ($orders as $order)
-                    <tr class="transition hover:bg-slate-50">
-                        <td class="py-3 text-slate-700">{{ $order->service->name }}</td>
-                        <td class="py-3 text-slate-700">{{ $order->variant?->name ?? '-' }}</td>
-                        <td class="py-3 text-slate-700">
+                    <tr class="transition">
+                        <td class="py-3 text-slate-700 dark:text-slate-200">{{ $order->service->name }}</td>
+                        <td class="py-3 text-slate-700 dark:text-slate-200">{{ $order->variant?->name ?? '-' }}</td>
+                        <td class="py-3 text-slate-700 dark:text-slate-200">
                             @if ($order->discount_percentage > 0)
                                 <div class="flex items-center gap-2">
                                     <span class="text-xs text-slate-400 line-through">{{ number_format($order->original_price, 2) }}</span>
-                                    <span class="font-semibold text-emerald-700">{{ number_format($order->price_at_purchase, 2) }}</span>
+                                    <span class="font-semibold text-emerald-700 dark:text-emerald-400">{{ number_format($order->price_at_purchase, 2) }}</span>
                                     <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/30 px-1.5 py-0.5 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
                                         -{{ number_format($order->discount_percentage, 0) }}%
                                     </span>
@@ -43,7 +43,7 @@
                                 {{ number_format($order->price_at_purchase, 2) }} USD
                             @endif
                         </td>
-                        <td class="py-3 text-slate-700">{{ number_format($order->amount_held, 2) }} USD</td>
+                        <td class="py-3 text-slate-700 dark:text-slate-200">{{ number_format($order->amount_held, 2) }} USD</td>
                         <td class="py-3">
                             @if ($order->status === 'new')
                                 <x-badge type="new">{{ __('messages.status_new') }}</x-badge>
@@ -57,15 +57,15 @@
                                 <x-badge>{{ __('messages.status_cancelled') }}</x-badge>
                             @endif
                         </td>
-                        <td class="py-3 text-slate-500">{{ $order->created_at->format('Y-m-d') }}</td>
+                        <td class="py-3 text-slate-500 dark:text-slate-400">{{ $order->created_at->format('Y-m-d') }}</td>
                         <td class="py-3">
                             <a href="{{ route('account.orders.show', $order) }}"
-                                class="text-emerald-700 hover:text-emerald-900">{{ __('messages.view_link') }}</a>
+                                class="text-emerald-700 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">{{ __('messages.view_link') }}</a>
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="py-6 text-center text-slate-500">{{ __('messages.no_orders_yet') }}</td>
+                        <td colspan="7" class="py-6 text-center text-slate-500 dark:text-slate-400">{{ __('messages.no_orders_yet') }}</td>
                     </tr>
                 @endforelse
             </tbody>

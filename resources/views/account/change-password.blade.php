@@ -29,6 +29,13 @@
                     <x-input-error :messages="$errors->get('name')" />
                 </div>
 
+                <div>
+                    <x-input-label for="email" :value="__('messages.email_label')" />
+                    <x-text-input id="email" name="email" type="email" dir="ltr" :value="old('email', auth()->user()->email)" required
+                        autocomplete="email" />
+                    <x-input-error :messages="$errors->get('email')" />
+                </div>
+
                 <div class="border-t border-slate-200 dark:border-slate-700 pt-4">
                     <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">اترك حقول كلمة المرور فارغة إذا كنت لا تريد تغييرها</p>
                     

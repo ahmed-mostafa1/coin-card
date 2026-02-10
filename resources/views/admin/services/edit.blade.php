@@ -83,19 +83,19 @@
                     <div id="quantity-fields" class="{{ $service->is_quantity_based ? '' : 'hidden' }} space-y-4">
                         <div>
                             <x-input-label for="price_per_unit" value="السعر لكل قطعة" />
-                            <x-text-input id="price_per_unit" name="price_per_unit" type="number" step="any" min="0.000000000001" :value="old('price_per_unit', $service->price_per_unit ? rtrim(rtrim(number_format($service->price_per_unit, 12, '.', ''), '0'), '.') : '')" />
+                            <x-text-input id="price_per_unit" name="price_per_unit" type="number" step="any" min="0.000000000001" lang="en" dir="ltr" :value="old('price_per_unit', $service->price_per_unit ? rtrim(rtrim(number_format($service->price_per_unit, 12, '.', ''), '0'), '.') : '')" />
                             <x-input-error :messages="$errors->get('price_per_unit')" />
                             <p class="mt-1 text-xs text-slate-500">سيتم حساب السعر الإجمالي تلقائياً بناءً على الكمية</p>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                             <x-input-label for="min_quantity" :value="__('messages.min_quantity')" />
-                                <x-text-input id="min_quantity" name="min_quantity" type="number" min="1" :value="old('min_quantity', $service->min_quantity ?? 1)" />
+                                <x-text-input id="min_quantity" name="min_quantity" type="number" min="1" lang="en" dir="ltr" :value="old('min_quantity', $service->min_quantity ?? 1)" />
                                 <x-input-error :messages="$errors->get('min_quantity')" />
                             </div>
                             <div>
                                 <x-input-label for="max_quantity" :value="__('messages.max_quantity')" />
-                                <x-text-input id="max_quantity" name="max_quantity" type="number" min="1" :value="old('max_quantity', $service->max_quantity)" />
+                                <x-text-input id="max_quantity" name="max_quantity" type="number" min="1" lang="en" dir="ltr" :value="old('max_quantity', $service->max_quantity)" />
                                 <x-input-error :messages="$errors->get('max_quantity')" />
                                 <p class="mt-1 text-xs text-slate-500">{{ __('messages.any_quantity') }}</p>
                             </div>

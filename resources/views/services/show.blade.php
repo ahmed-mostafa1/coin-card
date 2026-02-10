@@ -136,16 +136,17 @@
                                         value="{{ $service->min_quantity ?? 1 }}" 
                                         data-price-per-unit="{{ $service->price_per_unit }}"
                                         class="w-32 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-2 text-sm text-slate-700 dark:text-slate-200"
+                                        lang="en" dir="ltr"
                                         required>
                                     <span class="text-sm text-slate-600 dark:text-slate-400">
-                                        × ${{ rtrim(rtrim(number_format($service->price_per_unit, 12, '.', ''), '0'), '.') }} {{ __('messages.per_unit') ?? (app()->getLocale() == 'ar' ? 'للوحدة' : 'per unit') }}
+                                        × $<span class="latin-digits" lang="en" dir="ltr">{{ rtrim(rtrim(number_format($service->price_per_unit, 12, '.', ''), '0'), '.') }}</span> {{ __('messages.per_unit') ?? (app()->getLocale() == 'ar' ? 'للوحدة' : 'per unit') }}
                                     </span>
                                     @if($service->min_quantity > 1 || $service->max_quantity)
                                         <p class="text-xs text-slate-500 mt-1">
                                             @if($service->max_quantity)
-                                                {{ __('messages.quantity_limits', ['min' => $service->min_quantity ?? 1, 'max' => $service->max_quantity]) }}
+                                                {!! __('messages.quantity_limits', ['min' => '<span class="latin-digits" lang="en" dir="ltr">'.e($service->min_quantity ?? 1).'</span>', 'max' => '<span class="latin-digits" lang="en" dir="ltr">'.e($service->max_quantity).'</span>']) !!}
                                             @else
-                                                {{ __('messages.quantity_min_limit', ['min' => $service->min_quantity ?? 1]) }}
+                                                {!! __('messages.quantity_min_limit', ['min' => '<span class="latin-digits" lang="en" dir="ltr">'.e($service->min_quantity ?? 1).'</span>']) !!}
                                             @endif
                                         </p>
                                     @endif

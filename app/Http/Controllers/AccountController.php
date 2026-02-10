@@ -71,6 +71,7 @@ class AccountController extends Controller
 
         $validated = request()->validate([
             'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $user->id],
             'current_password' => ['nullable', 'string'],
             'password' => ['nullable', 'string', 'min:8', 'confirmed'],
         ], [
@@ -84,6 +85,7 @@ class AccountController extends Controller
 
         // Update name
         $user->name = $validated['name'];
+        $user->email = $validated['email'];
 
         // Only update password if current_password is provided
         if (!empty($validated['current_password'])) {

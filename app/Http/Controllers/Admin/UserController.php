@@ -92,7 +92,7 @@ class UserController extends Controller
 
         $wallet = $user->wallet()->firstOrCreate([]);
 
-        $walletService->credit($wallet, (string) $data['amount'], [
+        $transaction = $walletService->credit($wallet, (string) $data['amount'], [
             'type' => WalletTransaction::TYPE_DEPOSIT,
             'reference_type' => 'admin_manual_credit',
             'note' => $data['note'] ?? null,
@@ -100,6 +100,14 @@ class UserController extends Controller
             'approved_by_user_id' => $request->user()?->id,
             'approved_at' => now(),
         ]);
+
+        $wallet->refresh();
+        $user->notify(new \App\Notifications\BalanceAdjustedNotification(
+            $transaction,
+            'credit',
+            $data['note'] ?? null,
+            $wallet->balance
+        ));
 
         return redirect()->route('admin.users.show', $user)
             ->with('status', 'تمت إضافة الرصيد بنجاح.');
@@ -120,7 +128,7 @@ class UserController extends Controller
                 ->withErrors(['amount' => 'رصيد المستخدم غير كافٍ للخصم.']); // Insufficient balance
         }
 
-        $walletService->debit($wallet, (string) $data['amount'], [
+        $transaction = $walletService->debit($wallet, (string) $data['amount'], [
             'type' => 'manual_withdraw', // Custom type for manual admin debit
             'reference_type' => 'admin_manual_debit',
             'note' => $data['note'] ?? null,
@@ -128,6 +136,14 @@ class UserController extends Controller
             'approved_by_user_id' => $request->user()?->id,
             'approved_at' => now(),
         ]);
+
+        $wallet->refresh();
+        $user->notify(new \App\Notifications\BalanceAdjustedNotification(
+            $transaction,
+            'debit',
+            $data['note'] ?? null,
+            $wallet->balance
+        ));
 
         return redirect()->route('admin.users.show', $user)
             ->with('status', 'تم خصم الرصيد بنجاح.');

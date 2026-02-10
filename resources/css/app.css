@@ -94,6 +94,17 @@
         color: #064e3b !important; /* emerald-900 */
     }
 
+    table tr:hover,
+    table tr:hover > th,
+    table tr:hover > td {
+        background-color: transparent !important;
+    }
+
+    .latin-digits {
+        direction: ltr;
+        unicode-bidi: isolate;
+        font-variant-numeric: tabular-nums;
+    }
 }
 
 @layer components {

@@ -3,10 +3,10 @@
 @section('title', __('messages.add_field'))
 
 @section('content')
-    <div class="mx-auto max-w-2xl rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm">
+    <div class="mx-auto max-w-2xl rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-8 shadow-sm">
         <div class="flex items-center justify-between">
-            <h1 class="text-2xl font-semibold text-emerald-700">{{ __('messages.add_field_for_service') }}</h1>
-            <a href="{{ route('admin.services.edit', $service) }}" class="text-sm text-emerald-700">{{ __('messages.back_to_service') }}</a>
+            <h1 class="text-2xl font-semibold text-emerald-700 dark:text-emerald-400">{{ __('messages.add_field_for_service') }}</h1>
+            <a href="{{ route('admin.services.edit', $service) }}" class="text-sm text-emerald-700 dark:text-emerald-400">{{ __('messages.back_to_service') }}</a>
         </div>
 
         <form method="POST" action="{{ route('admin.services.fields.store', $service) }}" class="mt-6 space-y-4">
@@ -14,7 +14,7 @@
 
             <div>
                 <x-input-label for="type" :value="__('messages.field_type')" />
-                <select id="type" name="type" class="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-2 text-sm text-slate-700" required>
+                <select id="type" name="type" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white" required>
                     <option value="text" @selected(old('type') === 'text')>{{ __('messages.field_type_text') }}</option>
                     <option value="textarea" @selected(old('type') === 'textarea')>{{ __('messages.field_type_textarea') }}</option>
                 </select>
