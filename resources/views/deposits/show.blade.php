@@ -28,7 +28,7 @@
             @if($paymentMethod->show_contact_button && !empty($sharedWhatsappLink))
                 <div class="mt-4">
                     <a href="{{ $sharedWhatsappLink }}" target="_blank"
-                        class="inline-flex w-full items-center justify-center rounded-2xl border border-emerald-200 dark:border-emerald-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-semibold text-emerald-700 dark:text-emerald-400 transition hover:bg-emerald-50 dark:hover:bg-emerald-900/30">
+                        class="inline-flex w-full items-center justify-center rounded-2xl border border-emerald-800 dark:border-emerald-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-semibold text-emerald-700 dark:text-gray-800 transition hover:bg-emerald-50 dark:hover:bg-emerald-900/30">
                         {{ __('messages.contact_us_button') }}
                     </a>
                 </div>

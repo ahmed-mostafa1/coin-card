@@ -229,6 +229,9 @@
                                         placeholder="{{ $field->localized_placeholder }}" class="store-input"
                                         {{ $field->is_required ? 'required' : '' }}>{{ old('fields.' . $field->name_key) }}</textarea>
                                 @endif
+                                @if ($field->localized_additional_rules)
+                                    <p class="mt-2 text-xs text-slate-500">{{ $field->localized_additional_rules }}</p>
+                                @endif
                                 <x-input-error :messages="$errors->get('fields.' . $field->name_key)" />
                             </div>
                         @empty

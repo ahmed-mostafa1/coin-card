@@ -23,6 +23,7 @@ class ServiceFormFieldRequest extends FormRequest
             'is_required' => ['nullable', 'boolean'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
             'validation_rules' => ['nullable', 'string', 'max:255'],
+            'additional_rules_en' => ['nullable', 'string', 'max:2000'],
         ];
     }
 

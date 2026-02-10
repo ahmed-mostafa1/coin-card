@@ -22,6 +22,7 @@ class ServiceFormField extends Model
         'placeholder_en',
         'sort_order',
         'validation_rules',
+        'additional_rules_en',
     ];
 
     protected $casts = [
@@ -48,6 +49,14 @@ class ServiceFormField extends Model
         return $locale === 'en' && $this->placeholder_en 
             ? $this->placeholder_en 
             : $this->placeholder;
+    }
+
+    /**
+     * Get the localized additional rules based on current locale
+     */
+    public function getLocalizedAdditionalRulesAttribute(): ?string
+    {
+        return app()->getLocale() === 'en' ? $this->additional_rules_en : null;
     }
 
     public function service(): BelongsTo

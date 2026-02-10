@@ -166,6 +166,11 @@
                 <span>{{ __('messages.my_account') }}</span>
             </a>
 
+            <a href="{{ route('deposit.index') }}" class="flex items-center gap-3 rounded-lg border border-slate-400 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-700">
+                <i class="fa-solid fa-coins text-orange-400 w-5"></i>
+                <span>{{ __('messages.top_up_balance') }}</span>
+            </a>
+
             @if(!auth()->user()?->hasRole('admin'))
             <a href="{{ route('account.orders') }}" class="flex items-center gap-3 rounded-lg border border-slate-400 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-700">
                 <i class="fa-solid fa-shopping-cart text-orange-400 w-5"></i>
@@ -175,11 +180,6 @@
              <a href="{{ route('account.wallet') }}" class="flex items-center gap-3 rounded-lg border border-slate-400 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-700">
                 <i class="fa-solid fa-wallet text-orange-400 w-5"></i>
                 <span>{{ __('messages.wallet') ?? 'شحن الرصيد' }}</span>
-            </a>
-
-            <a href="{{ route('deposit.index') }}" class="flex items-center gap-3 rounded-lg border border-slate-400 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-700">
-                <i class="fa-solid fa-coins text-orange-400 w-5"></i>
-                <span>{{ __('messages.top_up_balance') }}</span>
             </a>
             @endif
 
