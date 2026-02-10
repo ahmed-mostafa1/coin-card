@@ -33,15 +33,9 @@ Relevant snippets: only the minimal code blocks
 AI rule: If any of these are missing, proceed with safe assumptions and request only the missing item that blocks correctness.
 
 
-
-
-The VIP badges feature the following gradient styles based on tier rank:
-Rank 1: Slate/Silver Gradient
-Rank 2: Gold/Yellow Gradient
-Rank 3: Emerald/Platinum Gradient
-Rank 4: Purple/Diamond Gradient
-Rank 5: Rose/Mythic Gradient
-
+in deposit method show page eg "/deposit/vodafonecash":
+1- add a "Contact Us" button above "الرقم المحول إليه" and add translation to it 
+2- make it possible for admin to show or hide "الرقم المحول إليه"div and contact us button from method edit page in dashboard 
 
 smtp email:
 

@@ -12,69 +12,119 @@
         }
         body {
             font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f5f5;
+            background-color: #f1f5f9;
             margin: 0;
-            padding: 20px;
+            padding: 0;
             direction: rtl;
             text-align: right;
+            color: #0f172a;
+            width: 100% !important;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+        img {
+            border: 0;
+            height: auto;
+            max-width: 100%;
+            display: block;
+        }
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+        p {
+            margin: 0 0 14px;
+            line-height: 1.8;
+        }
+        .preheader {
+            display: none !important;
+            visibility: hidden;
+            opacity: 0;
+            color: transparent;
+            height: 0;
+            width: 0;
+            overflow: hidden;
+            mso-hide: all;
+        }
+        .email-body {
+            width: 100%;
+            background-color: #f1f5f9;
         }
         .email-wrapper {
-            max-width: 600px;
+            width: 100%;
+            max-width: 680px;
             margin: 0 auto;
+            padding: 28px 16px;
+        }
+        .email-card {
+            width: 100%;
             background-color: #ffffff;
-            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
         }
         .header {
-            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8c 100%);
+            background-color: #0f766e;
+            background-image: linear-gradient(135deg, #0f766e 0%, #115e59 45%, #0f4c5c 100%);
             color: #ffffff;
-            padding: 24px 30px;
+            padding: 30px 32px 24px;
             text-align: center;
         }
-        .header h1 {
+        .header-title {
             font-size: 22px;
             font-weight: 700;
-            margin: 0;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.4px;
+        }
+        .header-subtitle {
+            font-size: 13px;
+            margin-top: 6px;
+            color: rgba(255, 255, 255, 0.85);
         }
         .content {
-            padding: 35px 30px;
+            padding: 32px 34px;
             background-color: #ffffff;
         }
         .intro-text {
             font-size: 16px;
-            color: #333333;
-            line-height: 1.8;
-            margin-bottom: 25px;
+            color: #0f172a;
+            margin-bottom: 18px;
+        }
+        .body-text {
+            font-size: 15px;
+            color: #1e293b;
+        }
+        .section-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0f766e;
+            margin: 22px 0 12px;
         }
         .details-table {
             width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            margin: 25px 0;
-            background-color: #fafafa;
-            border-radius: 6px;
+            margin: 0 0 18px;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
             overflow: hidden;
         }
-        .details-table tr {
-            border-bottom: 1px solid #e8e8e8;
+        .details-table td {
+            padding: 12px 16px;
+            font-size: 14px;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: top;
         }
-        .details-table tr:last-child {
+        .details-table tr:last-child td {
             border-bottom: none;
         }
-        .details-table td {
-            padding: 14px 18px;
-            font-size: 15px;
-        }
         .details-table .label {
-            color: #666666;
+            color: #64748b;
             font-weight: 600;
             text-align: right;
-            width: 40%;
+            width: 38%;
         }
         .details-table .value {
-            color: #1a1a1a;
+            color: #0f172a;
             font-weight: 700;
             text-align: left;
             direction: ltr;
@@ -83,76 +133,84 @@
             text-align: right;
             direction: rtl;
         }
+        .details-table .value.muted {
+            color: #64748b;
+            font-weight: 600;
+        }
         .highlight-value {
-            color: #2d5a8c;
-            font-size: 18px;
+            color: #0f766e;
+            font-size: 16px;
         }
         .status-badge {
             display: inline-block;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
         }
         .status-pending {
-            background-color: #fff3cd;
-            color: #856404;
+            background-color: #fef3c7;
+            color: #92400e;
         }
         .status-processing {
-            background-color: #d1ecf1;
-            color: #0c5460;
+            background-color: #e0f2fe;
+            color: #075985;
         }
         .status-done {
-            background-color: #d4edda;
-            color: #155724;
+            background-color: #dcfce7;
+            color: #166534;
         }
         .status-rejected {
-            background-color: #f8d7da;
-            color: #721c24;
+            background-color: #fee2e2;
+            color: #991b1b;
         }
         .action-text {
-            font-size: 15px;
-            color: #555555;
-            line-height: 1.7;
-            margin-top: 20px;
-            padding: 18px;
-            background-color: #f8f9fa;
-            border-right: 4px solid #2d5a8c;
-            border-radius: 4px;
+            font-size: 14px;
+            color: #0f172a;
+            margin-top: 16px;
+            padding: 16px 18px;
+            background-color: #f0fdfa;
+            border-right: 4px solid #14b8a6;
+            border-radius: 12px;
+        }
+        .divider {
+            height: 1px;
+            background-color: #e2e8f0;
+            margin: 22px 0;
         }
         .footer {
-            background-color: #f8f9fa;
-            color: #6c757d;
-            padding: 20px 30px;
+            background-color: #f8fafc;
+            color: #64748b;
+            padding: 20px 24px;
             text-align: center;
-            font-size: 13px;
-            border-top: 1px solid #e9ecef;
+            font-size: 12px;
+            border-top: 1px solid #e2e8f0;
         }
         .footer-text {
             margin: 0;
-            line-height: 1.6;
+            line-height: 1.7;
         }
         a {
-            color: #2d5a8c;
+            color: #0f766e;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 700;
         }
         a:hover {
             text-decoration: underline;
         }
         @media only screen and (max-width: 600px) {
-            body {
-                padding: 10px;
+            .header {
+                padding: 24px 18px 18px;
             }
-            .header h1 {
+            .header-title {
                 font-size: 18px;
             }
             .content {
-                padding: 25px 20px;
+                padding: 24px 20px;
             }
             .details-table td {
-                padding: 12px 14px;
-                font-size: 14px;
+                padding: 10px 12px;
+                font-size: 13px;
             }
             .details-table .label,
             .details-table .value {
@@ -162,29 +220,52 @@
             }
             .details-table .value {
                 margin-top: 4px;
-                padding-right: 0;
+            }
+            .details-table .value.rtl {
+                direction: rtl;
+            }
+            .email-wrapper {
+                padding: 16px 10px;
+            }
+            .email-card {
+                border-radius: 12px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="email-wrapper">
-        <!-- Header -->
-        <div class="header">
-            <h1>{{ $title ?? 'Arab 8bp.in - كوين7كارد' }}</h1>
-        </div>
-
-        <!-- Content -->
-        <div class="content">
-            {!! $slot !!}
-        </div>
-
-        <!-- Footer -->
-        <div class="footer">
-            <p class="footer-text">
-                © Arab 8bp.in {{ date('Y') }} - {{ $footerText ?? 'جميع الحقوق محفوظة' }}
-            </p>
-        </div>
-    </div>
+    <div class="preheader">{{ $preheader ?? $title ?? '' }}</div>
+    <table class="email-body" role="presentation" width="100%">
+        <tr>
+            <td align="center">
+                <table class="email-wrapper" role="presentation" width="100%">
+                    <tr>
+                        <td>
+                            <table class="email-card" role="presentation" width="100%">
+                                <tr>
+                                    <td class="header">
+                                        <div class="header-title">{{ $title ?? 'Arab 8bp.in - كوين7كارد' }}</div>
+                                        <div class="header-subtitle">{{ $subtitle ?? 'رسالة نظام تلقائية' }}</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="content">
+                                        {!! $slot !!}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="footer">
+                                        <p class="footer-text">
+                                            © Arab 8bp.in {{ date('Y') }} - {{ $footerText ?? 'جميع الحقوق محفوظة' }}
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
 </body>
 </html>
