@@ -12,13 +12,13 @@
         </x-page-header>
 
         @if (session('status'))
-            <div class="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+            <div class="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm dark:bg-emerald-800 text-emerald-700">
                 {{ session('status') }}
             </div>
         @endif
 
         <x-table class="mt-6">
-            <thead class="bg-slate-50 text-slate-500">
+            <thead class="bg-slate-50 text-slate-500 dark:bg-emerald-800/60 dark:text-slate-300">
                     <tr>
                         <th class="py-2">الطريقة</th>
                         <th class="py-2">المبلغ المطلوب</th>

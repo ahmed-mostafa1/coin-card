@@ -8,7 +8,7 @@
         <x-page-header :title="__('messages.wallet_history_title')" :subtitle="__('messages.wallet_history_desc')">
             <x-slot name="actions">
                 <a href="{{ route('deposit.index') }}"
-                    class="inline-flex items-center justify-center rounded-xl border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-700 dark:text-white transition hover:bg-emerald-50 cc-press">{{ __('messages.top_up') }}</a>
+                    class="inline-flex items-center justify-center rounded-xl border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-700 dark:text-white transition cc-press">{{ __('messages.top_up') }}</a>
             </x-slot>
         </x-page-header>
 

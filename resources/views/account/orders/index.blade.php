@@ -8,7 +8,7 @@
         <x-page-header :title="__('messages.my_orders_title')" :subtitle="__('messages.my_orders_desc')" />
 
         @if (session('status'))
-            <div class="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+            <div class="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm dark:bg-emerald-800 text-emerald-700">
                 {{ session('status') }}
             </div>
         @endif
