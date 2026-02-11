@@ -7,34 +7,40 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\App;
 
 class UserOrderCreatedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public function __construct(public Order $order)
+    public function __construct(private readonly Order $order)
     {
     }
 
     public function via(object $notifiable): array
     {
-        return ['mail', 'database'];
+        return ['database', 'mail'];
     }
 
     public function toMail(object $notifiable): MailMessage
     {
+        // Use user's locale if available, otherwise default to app locale
+        $locale = data_get($notifiable, 'locale', App::getLocale());
+
         $appName = config('app.name', 'Arab 8bp.in');
-        $subjectAr = __('messages.email_subjects.order_created_user', ['app_name' => $appName], 'ar');
-        $subjectEn = __('messages.email_subjects.order_created_user', ['app_name' => $appName], 'en');
+        $subject = __('messages.email_subjects.order_created_user', ['app_name' => $appName], $locale);
 
         return (new MailMessage)
-            ->subject($subjectAr . ' / ' . $subjectEn)
-            ->view('emails.notifications.user_order_created', ['order' => $this->order]);
+            ->subject($subject)
+            ->view('emails.notifications.user_order_created', [
+                'order' => $this->order,
+                'user' => $notifiable,
+            ]);
     }
 
     public function toDatabase(object $notifiable): array
     {
-        $amountText = number_format($this->order->amount_held, 2) . ' USD';
+        $amountText = number_format($this->order->price_at_purchase, 2) . ' ' . ($this->order->currency ?? 'USD');
 
         return [
             'title' => 'messages.notifications_custom.order_created_title',
@@ -46,10 +52,6 @@ class UserOrderCreatedNotification extends Notification implements ShouldQueue
             ],
             'url' => route('account.orders.show', $this->order),
             'order_id' => $this->order->id,
-            'service_id' => $this->order->service_id,
-            'service_name' => $this->order->service->name,
-            'amount' => $this->order->amount_held,
-            'status' => $this->order->status,
         ];
     }
 }
