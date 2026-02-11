@@ -1,6 +1,14 @@
 <?php
 
 return [
+    'email_subjects' => [
+        'new_order_admin' => 'إشعار طلب جديد - :app_name',
+        'deposit_request_created_user' => 'تم استلام طلب الشحن - :app_name',
+        'new_deposit_request_admin' => 'إشعار طلب شحن رصيد جديد - :app_name',
+        'deposit_status_changed_user' => 'تحديث حالة طلب الشحن - :app_name',
+        'order_created_user' => 'تأكيد استلام الطلب - :app_name',
+        'order_status_changed_user' => 'تحديث حالة الطلب - :app_name',
+    ],
     'home' => 'الرئيسية',
     'my_account' => 'حسابي',
     'admin_panel' => 'لوحة الأدمن',
