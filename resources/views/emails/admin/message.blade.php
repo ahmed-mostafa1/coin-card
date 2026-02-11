@@ -1,9 +1,9 @@
 @component('emails.layout', [
-    'title' => $subject ?? '????? ?? ??????? / Admin Message',
+    'title' => $subject ?? 'رسالة من الإدارة / Admin Message',
     'preheader' => $subject ?? 'Admin message'
 ])
 <div class="section rtl">
-    <h3 class="lang-title">???????</h3>
+    <h3 class="lang-title">العربية</h3>
     <p style="white-space: pre-wrap;">{!! nl2br(e($content)) !!}</p>
 </div>
 

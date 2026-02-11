@@ -42,7 +42,7 @@
     'preheader' => $subject,
 ])
 <div class="section rtl">
-    <h3 class="lang-title">???????</h3>
+    <h3 class="lang-title">العربية</h3>
 
     @if($arTitle)
         <p><strong>{{ $arTitle }}</strong></p>
@@ -60,7 +60,7 @@
         <p>{!! $line !!}</p>
     @endforeach
 
-    <p class="signature">?? ???????<br>{{ $signatureName }}</p>
+    <p class="signature">مع التحية،<br>{{ $signatureName }}</p>
 
     @if($arHelperText)
         <p class="muted">{{ $arHelperText }}

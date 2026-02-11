@@ -1,9 +1,9 @@
 @php
     $statusAr = [
-        'new' => '????',
-        'processing' => '??? ???????',
-        'done' => '?????',
-        'rejected' => '?????',
+        'new' => 'جديد',
+        'processing' => 'قيد التنفيذ',
+        'done' => 'مكتمل',
+        'rejected' => 'مرفوض',
     ][$order->status] ?? $order->status;
 
     $statusEn = [
@@ -23,25 +23,25 @@
     $amount = (float) ($order->amount_held ?? $order->price_at_purchase ?? 0);
 @endphp
 @component('emails.layout', [
-    'title' => '????? ???? ????? / Order status updated',
+    'title' => 'تحديث حالة الطلب / Order status updated',
     'preheader' => 'Order #' . $order->id . ' status changed'
 ])
 <div class="section rtl">
-    <h3 class="lang-title">???????</h3>
-    <p>?? ????? ???? ????. ???????? ???????:</p>
+    <h3 class="lang-title">العربية</h3>
+    <p>تم تحديث حالة طلبك. التفاصيل الحالية:</p>
     <table class="details-table">
-        <tr><td class="label">??? ?????</td><td class="value">#{{ $order->id }}</td></tr>
-        <tr><td class="label">??????</td><td class="value">{{ $order->service->name ?? '-' }}</td></tr>
-        <tr><td class="label">??????</td><td class="value highlight-value">${{ number_format($amount, 2) }}</td></tr>
+        <tr><td class="label">رقم الطلب</td><td class="value">#{{ $order->id }}</td></tr>
+        <tr><td class="label">الخدمة</td><td class="value">{{ $order->service->name ?? '-' }}</td></tr>
+        <tr><td class="label">المبلغ</td><td class="value highlight-value">${{ number_format($amount, 2) }}</td></tr>
         <tr>
-            <td class="label">??????</td>
+            <td class="label">الحالة</td>
             <td class="value"><span class="status-badge {{ $badgeClass }}">{{ $statusAr }}</span></td>
         </tr>
         @if($order->admin_note)
-        <tr><td class="label">?????? ???????</td><td class="value">{{ $order->admin_note }}</td></tr>
+        <tr><td class="label">ملاحظة الإدارة</td><td class="value">{{ $order->admin_note }}</td></tr>
         @endif
     </table>
-    <p class="btn-wrap"><a class="btn" href="{{ route('account.orders.show', $order) }}">??? ?????</a></p>
+    <p class="btn-wrap"><a class="btn" href="{{ route('account.orders.show', $order) }}">عرض الطلب</a></p>
 </div>
 
 <hr class="separator">

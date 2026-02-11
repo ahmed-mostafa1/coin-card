@@ -2,20 +2,20 @@
     $amount = (float) ($order->amount_held ?? $order->price_at_purchase ?? 0);
 @endphp
 @component('emails.layout', [
-    'title' => '??? ???? ??????? / New order for admin',
+    'title' => 'طلب جديد للإدارة / New order for admin',
     'preheader' => 'New Order #' . $order->id
 ])
 <div class="section rtl">
-    <h3 class="lang-title">???????</h3>
-    <p>?? ????? ??? ???? ?????? ?????? ?? ???????.</p>
+    <h3 class="lang-title">العربية</h3>
+    <p>تم إنشاء طلب جديد ويحتاج متابعة من الإدارة.</p>
     <table class="details-table">
-        <tr><td class="label">??? ?????</td><td class="value">#{{ $order->id }}</td></tr>
-        <tr><td class="label">????????</td><td class="value">{{ $order->user->name ?? '-' }} ({{ $order->user->email ?? '-' }})</td></tr>
-        <tr><td class="label">??????</td><td class="value">{{ $order->service->name ?? '-' }}</td></tr>
-        <tr><td class="label">??????</td><td class="value highlight-value">${{ number_format($amount, 2) }}</td></tr>
-        <tr><td class="label">??????</td><td class="value">{{ $order->status }}</td></tr>
+        <tr><td class="label">رقم الطلب</td><td class="value">#{{ $order->id }}</td></tr>
+        <tr><td class="label">المستخدم</td><td class="value">{{ $order->user->name ?? '-' }} ({{ $order->user->email ?? '-' }})</td></tr>
+        <tr><td class="label">الخدمة</td><td class="value">{{ $order->service->name ?? '-' }}</td></tr>
+        <tr><td class="label">المبلغ</td><td class="value highlight-value">${{ number_format($amount, 2) }}</td></tr>
+        <tr><td class="label">الحالة</td><td class="value">{{ $order->status }}</td></tr>
     </table>
-    <p class="btn-wrap"><a class="btn" href="{{ route('admin.orders.show', $order) }}">??? ?????</a></p>
+    <p class="btn-wrap"><a class="btn" href="{{ route('admin.orders.show', $order) }}">فتح الطلب</a></p>
 </div>
 
 <hr class="separator">

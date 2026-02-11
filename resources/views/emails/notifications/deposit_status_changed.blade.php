@@ -1,8 +1,8 @@
 @php
     $statusAr = [
-        'pending' => '??? ????????',
-        'approved' => '?????',
-        'rejected' => '?????',
+        'pending' => 'قيد المراجعة',
+        'approved' => 'مقبول',
+        'rejected' => 'مرفوض',
     ][$deposit->status] ?? $deposit->status;
 
     $statusEn = [
@@ -21,24 +21,24 @@
     $approvedAmount = $deposit->approved_amount !== null ? (float) $deposit->approved_amount : null;
 @endphp
 @component('emails.layout', [
-    'title' => '????? ???? ????? / Deposit status updated',
+    'title' => 'تحديث حالة الشحن / Deposit status updated',
     'preheader' => 'Deposit #' . $deposit->id . ' status changed'
 ])
 <div class="section rtl">
-    <h3 class="lang-title">???????</h3>
-    <p>?? ????? ???? ??? ????? ????? ??.</p>
+    <h3 class="lang-title">العربية</h3>
+    <p>تم تحديث حالة طلب الشحن الخاص بك.</p>
     <table class="details-table">
-        <tr><td class="label">??? ?????</td><td class="value">#{{ $deposit->id }}</td></tr>
-        <tr><td class="label">?????? ???????</td><td class="value">${{ number_format($requestedAmount, 2) }}</td></tr>
+        <tr><td class="label">رقم الطلب</td><td class="value">#{{ $deposit->id }}</td></tr>
+        <tr><td class="label">المبلغ المطلوب</td><td class="value">${{ number_format($requestedAmount, 2) }}</td></tr>
         @if(!is_null($approvedAmount))
-        <tr><td class="label">?????? ???????</td><td class="value highlight-value">${{ number_format($approvedAmount, 2) }}</td></tr>
+        <tr><td class="label">المبلغ المعتمد</td><td class="value highlight-value">${{ number_format($approvedAmount, 2) }}</td></tr>
         @endif
-        <tr><td class="label">??????</td><td class="value"><span class="status-badge {{ $badgeClass }}">{{ $statusAr }}</span></td></tr>
+        <tr><td class="label">الحالة</td><td class="value"><span class="status-badge {{ $badgeClass }}">{{ $statusAr }}</span></td></tr>
         @if($deposit->admin_note)
-        <tr><td class="label">?????? ???????</td><td class="value">{{ $deposit->admin_note }}</td></tr>
+        <tr><td class="label">ملاحظة الإدارة</td><td class="value">{{ $deposit->admin_note }}</td></tr>
         @endif
     </table>
-    <p class="btn-wrap"><a class="btn" href="{{ route('account.deposits.show', $deposit) }}">??? ?????</a></p>
+    <p class="btn-wrap"><a class="btn" href="{{ route('account.deposits.show', $deposit) }}">عرض الطلب</a></p>
 </div>
 
 <hr class="separator">
