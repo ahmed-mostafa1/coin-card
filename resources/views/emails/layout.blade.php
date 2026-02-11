@@ -1,13 +1,11 @@
 @php
-    $appName = config('app.name', 'Arab 8bp.in');
+    $appName = config('app.name', 'Arab 8BP');
     $title = $title ?? $appName;
     $subtitle = $subtitle ?? null;
     $preheader = $preheader ?? strip_tags((string) $title);
-    $direction = $direction ?? 'rtl';
 @endphp
-
 <!DOCTYPE html>
-<html lang="ar" dir="{{ $direction }}">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,74 +18,93 @@
             padding: 0;
             background: #f3f4f6;
             color: #111827;
-            font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+            font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             line-height: 1.6;
         }
-        .email-wrap {
+        .email-shell {
             width: 100%;
-            padding: 24px 0;
+            padding: 28px 0;
         }
-        .email-card {
+        .email-container {
             width: 100%;
-            max-width: 680px;
+            max-width: 640px;
             margin: 0 auto;
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 14px;
-            overflow: hidden;
-            box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
-        }
-        .email-head {
-            padding: 26px 24px 14px;
-            border-bottom: 1px solid #f1f5f9;
-            background: linear-gradient(180deg, #ecfdf5 0%, #ffffff 100%);
         }
         .brand {
-            font-weight: 700;
-            font-size: 15px;
-            color: #065f46;
-            margin: 0 0 10px;
-        }
-        h1 {
-            margin: 0;
-            font-size: 20px;
-            line-height: 1.4;
-            color: #111827;
-        }
-        .subtitle {
-            margin: 8px 0 0;
-            color: #475569;
-            font-size: 14px;
-        }
-        .content {
-            padding: 22px 24px;
-            color: #111827;
-            font-size: 14px;
-        }
-        .content p {
-            margin: 0 0 12px;
-        }
-        .intro-text {
-            margin-bottom: 14px;
-            color: #1f2937;
-            font-weight: 600;
-        }
-        .section-title {
-            margin: 18px 0 8px;
+            margin: 0 0 18px;
+            text-align: center;
+            font-size: 44px;
             font-weight: 700;
             color: #0f172a;
+            line-height: 1;
+        }
+        .card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .card-head {
+            padding: 24px 32px 8px;
+        }
+        .card-title {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+            color: #111827;
+        }
+        .card-subtitle {
+            margin: 8px 0 0;
             font-size: 14px;
+            color: #6b7280;
+        }
+        .card-body {
+            padding: 24px 32px 28px;
+            font-size: 16px;
+            color: #374151;
+        }
+        .section {
+            margin: 0;
+        }
+        .lang-title {
+            margin: 0 0 14px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #111827;
+        }
+        .section p {
+            margin: 0 0 16px;
+        }
+        .separator {
+            border: 0;
+            border-top: 1px solid #e5e7eb;
+            margin: 22px 0;
+        }
+        .btn {
+            display: inline-block;
+            background: #111827;
+            color: #ffffff !important;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 12px 24px;
+        }
+        .btn-wrap {
+            margin: 18px 0;
+            text-align: center;
         }
         .details-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 0 0 12px;
+            margin: 0 0 16px;
             border: 1px solid #e5e7eb;
             border-radius: 8px;
             overflow: hidden;
+            font-size: 14px;
         }
         .details-table tr:nth-child(odd) {
-            background: #f8fafc;
+            background: #f9fafb;
         }
         .details-table td {
             padding: 10px 12px;
@@ -98,10 +115,9 @@
             border-bottom: 0;
         }
         .details-table .label {
-            width: 42%;
-            color: #475569;
+            width: 40%;
             font-weight: 600;
-            white-space: nowrap;
+            color: #4b5563;
         }
         .details-table .value {
             color: #111827;
@@ -109,7 +125,7 @@
             word-break: break-word;
         }
         .details-table .highlight-value {
-            color: #065f46;
+            color: #111827;
             font-weight: 700;
         }
         .status-badge {
@@ -117,8 +133,8 @@
             padding: 4px 10px;
             border-radius: 999px;
             font-size: 12px;
-            font-weight: 700;
             line-height: 1.4;
+            font-weight: 700;
         }
         .status-pending {
             background: #fef3c7;
@@ -126,7 +142,7 @@
         }
         .status-processing {
             background: #dbeafe;
-            color: #1e3a8a;
+            color: #1d4ed8;
         }
         .status-done {
             background: #dcfce7;
@@ -136,75 +152,87 @@
             background: #fee2e2;
             color: #991b1b;
         }
-        .action-text {
-            margin-top: 14px;
-            padding: 12px;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            color: #334155;
+        .muted {
+            color: #6b7280;
+            font-size: 14px;
         }
-        a {
-            color: #0f766e;
-            text-decoration: none;
+        .action-text {
+            margin: 16px 0 0;
+            padding: 12px 14px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            background: #f9fafb;
+            color: #374151;
+            font-size: 14px;
+        }
+        .signature {
+            margin-top: 10px;
+            color: #374151;
         }
         .rtl {
             direction: rtl;
             text-align: right;
         }
-        .email-foot {
-            padding: 14px 24px 18px;
-            border-top: 1px solid #f1f5f9;
-            color: #64748b;
+        .ltr {
+            direction: ltr;
+            text-align: left;
+        }
+        .card-foot {
+            padding: 18px 32px 24px;
+            border-top: 1px solid #f3f4f6;
             font-size: 12px;
+            color: #9ca3af;
             text-align: center;
-            background: #ffffff;
         }
         @media only screen and (max-width: 640px) {
-            .email-wrap {
+            .email-shell {
                 padding: 0;
             }
-            .email-card {
+            .card {
                 border-radius: 0;
                 border-left: 0;
                 border-right: 0;
             }
-            .email-head,
-            .content,
-            .email-foot {
+            .card-head,
+            .card-body,
+            .card-foot {
                 padding-left: 16px;
                 padding-right: 16px;
             }
+            .brand {
+                margin: 18px 0;
+                font-size: 34px;
+            }
             .details-table .label {
                 width: 44%;
-                white-space: normal;
             }
         }
     </style>
 </head>
 <body>
-<div style="display: none; max-height: 0; overflow: hidden; opacity: 0;">{{ $preheader }}</div>
-
-<div class="email-wrap">
-    <div class="email-card">
-        <div class="email-head">
-            <p class="brand">{{ $appName }}</p>
-            @if(!empty($title))
-                <h1>{{ $title }}</h1>
-            @endif
-            @if(!empty($subtitle))
-                <p class="subtitle">{{ $subtitle }}</p>
-            @endif
-        </div>
-
-        <div class="content">
-            {!! $slot ?? '' !!}
-        </div>
-
-        <div class="email-foot">
-            &copy; {{ date('Y') }} {{ $appName }}. All rights reserved.
+    <div style="display:none;max-height:0;overflow:hidden;opacity:0;">{{ $preheader }}</div>
+    <div class="email-shell">
+        <div class="email-container">
+            <h1 class="brand">Arab 8BP</h1>
+            <div class="card">
+                @if(!empty($title) || !empty($subtitle))
+                    <div class="card-head">
+                        @if(!empty($title))
+                            <h2 class="card-title">{{ $title }}</h2>
+                        @endif
+                        @if(!empty($subtitle))
+                            <p class="card-subtitle">{{ $subtitle }}</p>
+                        @endif
+                    </div>
+                @endif
+                <div class="card-body">
+                    {!! $slot ?? '' !!}
+                </div>
+                <div class="card-foot">
+                    &copy; {{ date('Y') }} {{ $appName }}. All rights reserved.
+                </div>
+            </div>
         </div>
     </div>
-</div>
 </body>
 </html>

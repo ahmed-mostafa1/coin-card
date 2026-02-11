@@ -6,7 +6,6 @@ use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\App;
 
 class UserOrderCreatedNotification extends Notification
 {
@@ -23,14 +22,12 @@ class UserOrderCreatedNotification extends Notification
 
     public function toMail(object $notifiable): MailMessage
     {
-        // Use user's locale if available, otherwise default to app locale
-        $locale = data_get($notifiable, 'locale', App::getLocale());
-
         $appName = config('app.name', 'Arab 8bp.in');
-        $subject = __('messages.email_subjects.order_created_user', ['app_name' => $appName], $locale);
+        $subjectAr = __('messages.email_subjects.order_created_user', ['app_name' => $appName], 'ar');
+        $subjectEn = __('messages.email_subjects.order_created_user', ['app_name' => $appName], 'en');
 
         return (new MailMessage)
-            ->subject($subject)
+            ->subject($subjectAr . ' / ' . $subjectEn)
             ->view('emails.notifications.user_order_created', [
                 'order' => $this->order,
                 'user' => $notifiable,

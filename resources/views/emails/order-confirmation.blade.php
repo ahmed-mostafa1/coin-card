@@ -1,33 +1,42 @@
-<x-emails.app
-  :subject="__('Your Order #:id is Confirmed', ['id' => $order->id])"
-  :title="__('Thanks for your order!')"
-  :introLines="[
-      __('Hi :name,', ['name' => $order->user->name]),
-      __('We\'ve received your order and are getting it ready. We will notify you again once it has been processed.'),
-  ]"
-  :actionText="__('View Your Order')"
-  :actionUrl="route('account.orders.show', $order)"
-  :outroLines="[__('Thank you for your business.')]"
->
-  <h2 style="margin: 24px 0 16px; font-size: 18px; font-weight: 700; color: #111827;">Order Summary</h2>
-  <table style="width: 100%;" cellpadding="0" cellspacing="0" role="presentation">
-    <tr>
-      <td style="padding: 12px 0; border-bottom: 1px solid #E5E7EB;">
-        <p style="margin: 0; font-size: 14px; color: #6B7280;">Order ID:</p>
-        <p style="margin: 4px 0 0; font-size: 16px; font-weight: 600; color: #111827;">#{{ $order->id }}</p>
-      </td>
-    </tr>
-    <tr>
-      <td style="padding: 12px 0; border-bottom: 1px solid #E5E7EB;">
-        <p style="margin: 0; font-size: 14px; color: #6B7280;">Service:</p>
-        <p style="margin: 4px 0 0; font-size: 16px; font-weight: 600; color: #111827;">{{ $order->service->name }}</p>
-      </td>
-    </tr>
-    <tr>
-      <td style="padding: 12px 0;">
-        <p style="margin: 0; font-size: 14px; color: #6B7280;">Total Price:</p>
-        <p style="margin: 4px 0 0; font-size: 16px; font-weight: 600; color: #111827;">${{ number_format($order->price_at_purchase, 2) }}</p>
-      </td>
-    </tr>
-  </table>
-</x-emails.app>
+@component('emails.layout', [
+    'title' => '????? ????? / Order Confirmation',
+    'preheader' => 'Order #' . $order->id . ' confirmed'
+])
+<div class="section rtl">
+    <h3 class="lang-title">???????</h3>
+    <p>?????? {{ $order->user->name }}? ?? ?????? ???? ????? ??? ???? ??? ????????.</p>
+
+    <table class="details-table">
+        <tr><td class="label">??? ?????</td><td class="value">#{{ $order->id }}</td></tr>
+        <tr><td class="label">??????</td><td class="value">{{ $order->service->name ?? '-' }}</td></tr>
+        @if($order->variant)
+        <tr><td class="label">??????</td><td class="value">{{ $order->variant->name }}</td></tr>
+        @endif
+        <tr><td class="label">??????</td><td class="value highlight-value">${{ number_format((float)($order->price_at_purchase ?? $order->amount_held), 2) }}</td></tr>
+        <tr><td class="label">??????</td><td class="value">{{ $order->status }}</td></tr>
+        <tr><td class="label">???????</td><td class="value">{{ $order->created_at?->format('Y-m-d H:i') }}</td></tr>
+    </table>
+
+    <p class="btn-wrap"><a class="btn" href="{{ route('account.orders.show', $order) }}">??? ?????</a></p>
+</div>
+
+<hr class="separator">
+
+<div class="section ltr">
+    <h3 class="lang-title">English</h3>
+    <p>Hello {{ $order->user->name }}, your order has been received successfully and is now under review.</p>
+
+    <table class="details-table">
+        <tr><td class="label">Order ID</td><td class="value">#{{ $order->id }}</td></tr>
+        <tr><td class="label">Service</td><td class="value">{{ $order->service->name ?? '-' }}</td></tr>
+        @if($order->variant)
+        <tr><td class="label">Variant</td><td class="value">{{ $order->variant->name }}</td></tr>
+        @endif
+        <tr><td class="label">Amount</td><td class="value highlight-value">${{ number_format((float)($order->price_at_purchase ?? $order->amount_held), 2) }}</td></tr>
+        <tr><td class="label">Status</td><td class="value">{{ $order->status }}</td></tr>
+        <tr><td class="label">Created At</td><td class="value">{{ $order->created_at?->format('Y-m-d H:i') }}</td></tr>
+    </table>
+
+    <p class="btn-wrap"><a class="btn" href="{{ route('account.orders.show', $order) }}">View Order</a></p>
+</div>
+@endcomponent

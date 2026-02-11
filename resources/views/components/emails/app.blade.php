@@ -8,124 +8,98 @@
     'helperText' => null,
     'fallbackUrl' => null,
     'signatureName' => 'Arab 8BP',
-    'showDivider' => true,
-    'direction' => 'ltr', // 'ltr' or 'rtl'
+    'arTitle' => null,
+    'enTitle' => null,
+    'arIntroLines' => null,
+    'enIntroLines' => null,
+    'arOutroLines' => null,
+    'enOutroLines' => null,
+    'arActionText' => null,
+    'enActionText' => null,
+    'arHelperText' => null,
+    'enHelperText' => null,
 ])
 
-<!DOCTYPE html>
-<html lang="en" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
-<head>
-  <meta charset="utf-8">
-  <meta name="x-apple-disable-message-reformatting">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
-  <!--[if mso]>
-  <noscript>
-    <xml>
-      <o:OfficeDocumentSettings>
-        <o:PixelsPerInch>96</o:PixelsPerInch>
-      </o:OfficeDocumentSettings>
-    </xml>
-  </noscript>
-  <![endif]-->
-  <title>{{ $subject }}</title>
-  <style>
-    .hover-underline:hover {
-      text-decoration: underline !important;
-    }
-    @media (max-width: 600px) {
-      .sm-w-full {
-        width: 100% !important;
-      }
-      .sm-px-24 {
-        padding-left: 24px !important;
-        padding-right: 24px !important;
-      }
-      .sm-py-32 {
-        padding-top: 32px !important;
-        padding-bottom: 32px !important;
-      }
-    }
-  </style>
-</head>
-<body style="margin: 0; width: 100%; padding: 0; word-break: break-word; -webkit-font-smoothing: antialiased; background-color: #F3F4F6;">
-  <div style="display: none;">{{ $subject }}</div>
-  <div role="article" aria-roledescription="email" aria-label="{{ $subject }}" lang="en">
-    <table style="width: 100%; font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;" cellpadding="0" cellspacing="0" role="presentation">
-      <tr>
-        <td align="center" style="background-color: #F3F4F6;">
-          <table class="sm-w-full" style="width: 600px;" cellpadding="0" cellspacing="0" role="presentation">
-            <tr>
-              <td class="sm-py-32 sm-px-24" style="padding: 40px;">
-                <table style="width: 100%;" cellpadding="0" cellspacing="0" role="presentation">
-                  <tr>
-                    <td style="border-radius: 8px; background-color: #ffffff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);">
-                      <!-- Main card table -->
-                      <table style="width: 100%;" cellpadding="0" cellspacing="0" role="presentation">
-                        <tr>
-                          <td style="padding: 40px 36px;" dir="{{ $direction }}">
-                            <!-- Header -->
-                            @include('emails.header')
+@php
+    $arTitle = $arTitle ?? $title;
+    $enTitle = $enTitle ?? $title;
 
-                            <!-- Title -->
-                            @if ($title)
-                              <h1 style="margin: 0 0 24px; font-size: 24px; font-weight: 700; color: #111827;">{{ $title }}</h1>
-                            @endif
+    $arIntroLines = is_array($arIntroLines) ? $arIntroLines : $introLines;
+    $enIntroLines = is_array($enIntroLines) ? $enIntroLines : $introLines;
 
-                            <!-- Intro Lines -->
-                            @foreach ($introLines as $line)
-                              <p style="margin: 0 0 24px; font-size: 16px; line-height: 1.75; color: #6B7280;">
-                                {!! $line !!}
-                              </p>
-                            @endforeach
+    $arOutroLines = is_array($arOutroLines) ? $arOutroLines : $outroLines;
+    $enOutroLines = is_array($enOutroLines) ? $enOutroLines : $outroLines;
 
-                            <!-- Slot for custom content like OTP or order details -->
-                            {{ $slot }}
+    $arActionText = $arActionText ?? $actionText;
+    $enActionText = $enActionText ?? $actionText;
 
-                            <!-- Action Button -->
-                            @if ($actionUrl && $actionText)
-                              @include('emails.button', ['url' => $actionUrl, 'text' => $actionText])
-                            @endif
+    $arHelperText = $arHelperText ?? $helperText;
+    $enHelperText = $enHelperText ?? $helperText;
+@endphp
 
-                            <!-- Outro Lines -->
-                            @foreach ($outroLines as $line)
-                              <p style="margin: 24px 0 0; font-size: 16px; line-height: 1.75; color: #6B7280;">
-                                {!! $line !!}
-                              </p>
-                            @endforeach
+@component('emails.layout', [
+    'title' => $subject,
+    'preheader' => $subject,
+])
+<div class="section rtl">
+    <h3 class="lang-title">???????</h3>
 
-                            <!-- Signature -->
-                            <p style="margin: 24px 0 0; font-size: 16px; line-height: 1.75; color: #6B7280;">
-                              Regards,<br>The {{ $signatureName }} Team
-                            </p>
+    @if($arTitle)
+        <p><strong>{{ $arTitle }}</strong></p>
+    @endif
 
-                            <!-- Divider -->
-                            @if ($showDivider)
-                                @include('emails.divider')
-                            @endif
+    @foreach($arIntroLines as $line)
+        <p>{!! $line !!}</p>
+    @endforeach
 
-                            <!-- Footer / Helper -->
-                            @include('emails.footer', ['helperText' => $helperText, 'fallbackUrl' => $fallbackUrl])
+    @if($actionUrl && $arActionText)
+        <p class="btn-wrap"><a class="btn" href="{{ $actionUrl }}">{{ $arActionText }}</a></p>
+    @endif
 
-                          </td>
-                        </tr>
-                      </table>
-                    </td>
-                  </tr>
-                  <!-- Footer outside card -->
-                  <tr>
-                    <td style="padding: 32px; text-align: center; font-size: 12px; color: #6B7280;">
-                      <p style="margin: 0 0 4px;">&copy; {{ date('Y') }} {{ $signatureName }}. All rights reserved.</p>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
-  </div>
-</body>
-</html>
+    @foreach($arOutroLines as $line)
+        <p>{!! $line !!}</p>
+    @endforeach
+
+    <p class="signature">?? ???????<br>{{ $signatureName }}</p>
+
+    @if($arHelperText)
+        <p class="muted">{{ $arHelperText }}
+            @if($fallbackUrl)
+                <a href="{{ $fallbackUrl }}">{{ $fallbackUrl }}</a>
+            @endif
+        </p>
+    @endif
+</div>
+
+<hr class="separator">
+
+<div class="section ltr">
+    <h3 class="lang-title">English</h3>
+
+    @if($enTitle)
+        <p><strong>{{ $enTitle }}</strong></p>
+    @endif
+
+    @foreach($enIntroLines as $line)
+        <p>{!! $line !!}</p>
+    @endforeach
+
+    @if($actionUrl && $enActionText)
+        <p class="btn-wrap"><a class="btn" href="{{ $actionUrl }}">{{ $enActionText }}</a></p>
+    @endif
+
+    @foreach($enOutroLines as $line)
+        <p>{!! $line !!}</p>
+    @endforeach
+
+    <p class="signature">Regards,<br>{{ $signatureName }}</p>
+
+    @if($enHelperText)
+        <p class="muted">{{ $enHelperText }}
+            @if($fallbackUrl)
+                <a href="{{ $fallbackUrl }}">{{ $fallbackUrl }}</a>
+            @endif
+        </p>
+    @endif
+</div>
+@endcomponent

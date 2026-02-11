@@ -1,12 +1,28 @@
-<x-emails.app
-  :subject="__('Your Login Code')"
-  :title="__('Your Login Code')"
-  :introLines="[__('Use the code below to complete your login. This code is valid for 10 minutes.')]"
-  :outroLines="[__('If you did not request this code, you can safely ignore this email.')]"
->
-  <div style="margin: 24px 0; text-align: center;">
-    <p style="display: inline-block; padding: 12px 24px; background-color: #F3F4F6; border-radius: 8px; font-size: 28px; font-weight: 700; letter-spacing: 4px; color: #111827;">
-      {{ $otp }}
+@component('emails.layout', [
+    'title' => '??? ????? ?????? / Login Code',
+    'preheader' => '??? ?????? ????? ?? / Your login code'
+])
+<div class="section rtl">
+    <h3 class="lang-title">???????</h3>
+    <p>?????? ????? ?????? ?????? ????? ??????. ?????? ????? 10 ????? ???.</p>
+
+    <p class="btn-wrap">
+        <span class="btn" style="letter-spacing: 5px; cursor: default;">{{ $otp }}</span>
     </p>
-  </div>
-</x-emails.app>
+
+    <p class="muted">??? ?? ???? ??? ?????? ????? ????? ??????? ?????.</p>
+</div>
+
+<hr class="separator">
+
+<div class="section ltr">
+    <h3 class="lang-title">English</h3>
+    <p>Use the code below to complete your login. This code is valid for 10 minutes.</p>
+
+    <p class="btn-wrap">
+        <span class="btn" style="letter-spacing: 5px; cursor: default;">{{ $otp }}</span>
+    </p>
+
+    <p class="muted">If you did not request this code, you can safely ignore this email.</p>
+</div>
+@endcomponent

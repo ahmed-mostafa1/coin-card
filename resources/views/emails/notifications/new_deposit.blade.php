@@ -1,98 +1,35 @@
-@component('emails.layout', [
-    'title' => 'Arab 8bp.in - إشعار طلب شحن رصيد جديد',
-    'subtitle' => 'طلب شحن جديد يحتاج مراجعة',
-    'preheader' => 'طلب شحن جديد رقم #' . $deposit->id
-])
-
 @php
-    $paymentMethodName = $deposit->paymentMethod->name ?? $deposit->payment_method ?? 'غير محدد';
-    $payload = $deposit->payload ?? [];
-    $payloadFields = $deposit->paymentMethod?->fields?->keyBy('name_key') ?? collect();
+    $amount = (float) ($deposit->user_amount ?? 0);
 @endphp
-
-<p class="intro-text">
-    تم إنشاء طلب شحن رصيد جديد على الموقع، وهذه تفاصيله:
-</p>
-
-<div class="section-title">بيانات العميل</div>
-<table class="details-table">
-    <tr>
-        <td class="label">اسم المستخدم:</td>
-        <td class="value rtl">{{ $deposit->user->name }}</td>
-    </tr>
-    <tr>
-        <td class="label">البريد الإلكتروني:</td>
-        <td class="value"><a href="mailto:{{ $deposit->user->email }}">{{ $deposit->user->email }}</a></td>
-    </tr>
-    <tr>
-        <td class="label">رقم المستخدم:</td>
-        <td class="value">#{{ $deposit->user->id }}</td>
-    </tr>
-</table>
-
-<div class="section-title">تفاصيل الطلب</div>
-<table class="details-table">
-    <tr>
-        <td class="label">رقم طلب الشحن:</td>
-        <td class="value highlight-value">#{{ $deposit->id }}</td>
-    </tr>
-    <tr>
-        <td class="label">اسم المستخدم:</td>
-        <td class="value rtl">{{ $deposit->user->name }}</td>
-    </tr>
-    <tr>
-        <td class="label">إيميل المستخدم:</td>
-        <td class="value"><a href="mailto:{{ $deposit->user->email }}">{{ $deposit->user->email }}</a></td>
-    </tr>
-    <tr>
-        <td class="label">قيمة الشحن:</td>
-        <td class="value highlight-value">$ {{ number_format($deposit->user_amount, 2) }}</td>
-    </tr>
-    <tr>
-        <td class="label">طريقة الدفع:</td>
-        <td class="value rtl">{{ $paymentMethodName }}</td>
-    </tr>
-    <tr>
-        <td class="label">تاريخ الطلب:</td>
-        <td class="value">{{ $deposit->created_at->format('Y-m-d H:i') }}</td>
-    </tr>
-    <tr>
-        <td class="label">آخر تحديث:</td>
-        <td class="value">{{ $deposit->updated_at->format('Y-m-d H:i') }}</td>
-    </tr>
-    <tr>
-        <td class="label">حالة الطلب الحالية:</td>
-        <td class="value">
-            <span class="status-badge status-pending">قيد المراجعة</span>
-        </td>
-    </tr>
-    @if($deposit->user_note)
-    <tr>
-        <td class="label">ملاحظة العميل:</td>
-        <td class="value rtl">{{ $deposit->user_note }}</td>
-    </tr>
-    @endif
-</table>
-
-@if(!empty($payload))
-<div class="section-title">بيانات التحويل</div>
-<table class="details-table">
-    @foreach($payload as $key => $value)
-        @php
-            $label = $payloadFields->get($key)?->label ?? $key;
-            $displayValue = is_array($value) ? json_encode($value, JSON_UNESCAPED_UNICODE) : (string) $value;
-            $displayValue = trim($displayValue) !== '' ? $displayValue : '-';
-        @endphp
-        <tr>
-            <td class="label">{{ $label }}:</td>
-            <td class="value rtl">{{ $displayValue }}</td>
-        </tr>
-    @endforeach
-</table>
-@endif
-
-<div class="action-text">
-    لمراجعة طلب الشحن وتغيير حالته، يمكنك الدخول مباشرة إلى <a href="{{ route('admin.deposits.show', $deposit) }}">لوحة التحكم</a>.
+@component('emails.layout', [
+    'title' => '??? ??? ???? ??????? / New deposit for admin',
+    'preheader' => 'New Deposit #' . $deposit->id
+])
+<div class="section rtl">
+    <h3 class="lang-title">???????</h3>
+    <p>?? ????? ??? ??? ???? ?????? ?????? ?? ???????.</p>
+    <table class="details-table">
+        <tr><td class="label">??? ?????</td><td class="value">#{{ $deposit->id }}</td></tr>
+        <tr><td class="label">????????</td><td class="value">{{ $deposit->user->name ?? '-' }} ({{ $deposit->user->email ?? '-' }})</td></tr>
+        <tr><td class="label">??????</td><td class="value highlight-value">${{ number_format($amount, 2) }}</td></tr>
+        <tr><td class="label">???????</td><td class="value">{{ $deposit->paymentMethod->name ?? '-' }}</td></tr>
+        <tr><td class="label">??????</td><td class="value">{{ $deposit->status }}</td></tr>
+    </table>
+    <p class="btn-wrap"><a class="btn" href="{{ route('admin.deposits.show', $deposit) }}">??? ?????</a></p>
 </div>
 
+<hr class="separator">
+
+<div class="section ltr">
+    <h3 class="lang-title">English</h3>
+    <p>A new deposit request has been created and requires admin review.</p>
+    <table class="details-table">
+        <tr><td class="label">Request ID</td><td class="value">#{{ $deposit->id }}</td></tr>
+        <tr><td class="label">User</td><td class="value">{{ $deposit->user->name ?? '-' }} ({{ $deposit->user->email ?? '-' }})</td></tr>
+        <tr><td class="label">Amount</td><td class="value highlight-value">${{ number_format($amount, 2) }}</td></tr>
+        <tr><td class="label">Method</td><td class="value">{{ $deposit->paymentMethod->name ?? '-' }}</td></tr>
+        <tr><td class="label">Status</td><td class="value">{{ $deposit->status }}</td></tr>
+    </table>
+    <p class="btn-wrap"><a class="btn" href="{{ route('admin.deposits.show', $deposit) }}">Open Request</a></p>
+</div>
 @endcomponent

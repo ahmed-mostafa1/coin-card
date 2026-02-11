@@ -3,7 +3,6 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -45,32 +44,15 @@ class AdminGeneralNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        // Determine locale based on notifiable preference or default to bilingual
-        $isAr = app()->getLocale() == 'ar';
-        
-        // Use notifiable preference if available? For now, we'll format the email to show the relevant language or both.
-        // Let's assume we send based on the current app locale if triggered individually, 
-        // but for bulk, usually we want to respect user's locale.
-        // However, `toMail` is called per user. "notifiable" is the user.
-        // If we want to be smart:
-        // $locale = $notifiable->locale ?? 'en'; 
-        // But we don't know if user has 'locale' column.
-        
-        // Simple approach: Send both or just the title/content in user's preferred language?
-        // Requirement: "text content only (title and content) in both languages arabic and english".
-        // This suggests the content itself contains both.
-        
         $subject = $this->titleAr . ' / ' . $this->titleEn;
 
         return (new MailMessage)
             ->subject($subject)
-            ->view('emails.layout', [
-                'title' => $subject,
-                'slot' => new \Illuminate\Support\HtmlString(
-                    '<div style="text-align: right; direction: rtl; margin-bottom: 20px;">' . nl2br(e($this->contentAr)) . '</div>' .
-                    '<hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">' .
-                    '<div style="text-align: left; direction: ltr;">' . nl2br(e($this->contentEn)) . '</div>'
-                )
+            ->view('emails.notifications.admin_general', [
+                'titleAr' => $this->titleAr,
+                'titleEn' => $this->titleEn,
+                'contentAr' => $this->contentAr,
+                'contentEn' => $this->contentEn,
             ]);
     }
 

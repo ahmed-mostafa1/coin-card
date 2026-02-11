@@ -44,8 +44,9 @@ class AdminUserMessage extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.admin.message',
+            view: 'emails.admin.message',
             with: [
+                'subject' => $this->msgSubject,
                 'content' => $this->messageContent,
             ],
         );

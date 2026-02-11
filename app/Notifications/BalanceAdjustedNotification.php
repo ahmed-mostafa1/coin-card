@@ -36,16 +36,23 @@ class BalanceAdjustedNotification extends Notification
             'note' => $this->note,
         ];
 
+        $descriptionAr = __($descriptionKey, $params, 'ar');
+        $descriptionEn = __($descriptionKey, $params, 'en');
+
         return (new MailMessage)
             ->subject($subjectAr . ' / ' . $subjectEn)
-            // Arabic Content
-            ->line(__('messages.balance_notification_greeting', ['name' => $notifiable->name], 'ar'))
-            ->line(__($descriptionKey, $params, 'ar'))
-            ->line('---')
-            // English Content
-            ->line(__('messages.balance_notification_greeting', ['name' => $notifiable->name], 'en'))
-            ->line(__($descriptionKey, $params, 'en'))
-            ->action(__('messages.view_wallet', [], 'ar') . ' / ' . __('messages.view_wallet', [], 'en'), route('account.wallet'));
+            ->view('emails.notifications.balance_adjusted', [
+                'notifiable' => $notifiable,
+                'subjectAr' => $subjectAr,
+                'subjectEn' => $subjectEn,
+                'descriptionAr' => $descriptionAr,
+                'descriptionEn' => $descriptionEn,
+                'amountText' => $amountText,
+                'balanceText' => $balanceText,
+                'noteText' => $this->note,
+                'walletUrl' => route('account.wallet'),
+                'isDebit' => $this->direction === 'debit',
+            ]);
     }
 
     public function toDatabase(object $notifiable): array
