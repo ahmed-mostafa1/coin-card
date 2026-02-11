@@ -6,6 +6,12 @@
       'We\'ve received your order and are getting it ready. We will notify you again once it has been processed.',
   ]" :actionText="'View Your Order'" :actionUrl="route('account.orders.show', $order)" :outroLines="['Thank you for your business.']">
 
+<x-emails.app :subject="__('Your Order #:id is Confirmed', ['id' => $order->id])"
+              :title="__('Thanks for your order!')"
+              :introLines="[
+                  __('Hi :name,', ['name' => $order->user->name]),
+                  __('We\'ve received your order and are getting it ready. We will notify you again once it has been processed.'),
+              ]" :actionText="__('View Your Order')" :actionUrl="route('account.orders.show', $order)" :outroLines="[__('Thank you for your business.')]">
     {{-- Custom Content Slot --}}
     <h2 style="margin: 24px 0 16px; font-size: 18px; font-weight: 700; color: #111827;">Order Summary</h2>
     <table style="width: 100%;" cellpadding="0" cellspacing="0" role="presentation">
@@ -31,6 +37,7 @@
 
   </x-emails.layouts.app>
 @endsection
+</x-emails.app>
 
 {{--
 This example shows how to inject custom content (like an order summary table) into the main slot.

@@ -36,7 +36,7 @@ class GenericStyledMail extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            view: 'emails.layouts.app',
+            view: 'emails.app',
             with: [
                 'subject' => $this->emailSubject,
                 'title' => $this->title,
