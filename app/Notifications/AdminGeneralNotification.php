@@ -60,16 +60,16 @@ class AdminGeneralNotification extends Notification
         // Requirement: "text content only (title and content) in both languages arabic and english".
         // This suggests the content itself contains both.
         
-        $subject = $this->titleEn . ' / ' . $this->titleAr;
+        $subject = $this->titleAr . ' / ' . $this->titleEn;
 
         return (new MailMessage)
             ->subject($subject)
             ->view('emails.layout', [
                 'title' => $subject,
                 'slot' => new \Illuminate\Support\HtmlString(
-                    '<div style="text-align: left; direction: ltr; margin-bottom: 20px;">' . nl2br(e($this->contentEn)) . '</div>' .
+                    '<div style="text-align: right; direction: rtl; margin-bottom: 20px;">' . nl2br(e($this->contentAr)) . '</div>' .
                     '<hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">' .
-                    '<div style="text-align: right; direction: rtl;">' . nl2br(e($this->contentAr)) . '</div>'
+                    '<div style="text-align: left; direction: ltr;">' . nl2br(e($this->contentEn)) . '</div>'
                 )
             ]);
     }

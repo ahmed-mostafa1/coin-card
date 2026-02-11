@@ -24,8 +24,12 @@ class OrderStatusChangedNotification extends Notification
      */
     public function toMail(object $notifiable): \Illuminate\Notifications\Messages\MailMessage
     {
+        $appName = config('app.name', 'Arab 8bp.in');
+        $subjectAr = __('messages.email_subjects.order_status_changed_user', ['app_name' => $appName], 'ar');
+        $subjectEn = __('messages.email_subjects.order_status_changed_user', ['app_name' => $appName], 'en');
+
         return (new \Illuminate\Notifications\Messages\MailMessage)
-            ->subject('تحديث حالة الطلب - Arab 8bp.in')
+            ->subject($subjectAr . ' / ' . $subjectEn)
             ->view('emails.notifications.order_status_changed', [
                 'order' => $this->order
             ]);

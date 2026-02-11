@@ -23,19 +23,29 @@ class BalanceAdjustedNotification extends Notification
 
     public function toMail(object $notifiable): MailMessage
     {
+        $subjectKey = $this->subjectKey();
+        $subjectAr = __($subjectKey, [], 'ar');
+        $subjectEn = __($subjectKey, [], 'en');
+
         $amountText = $this->amountText();
         $balanceText = $this->balanceText();
         $descriptionKey = $this->descriptionKey();
+        $params = [
+            'amount' => $amountText,
+            'balance' => $balanceText,
+            'note' => $this->note,
+        ];
 
         return (new MailMessage)
-            ->subject(__($this->subjectKey()))
-            ->greeting(__('messages.balance_notification_greeting', ['name' => $notifiable->name]))
-            ->line(__($descriptionKey, [
-                'amount' => $amountText,
-                'balance' => $balanceText,
-                'note' => $this->note,
-            ]))
-            ->action(__('messages.view_wallet'), route('account.wallet'));
+            ->subject($subjectAr . ' / ' . $subjectEn)
+            // Arabic Content
+            ->line(__('messages.balance_notification_greeting', ['name' => $notifiable->name], 'ar'))
+            ->line(__($descriptionKey, $params, 'ar'))
+            ->line('---')
+            // English Content
+            ->line(__('messages.balance_notification_greeting', ['name' => $notifiable->name], 'en'))
+            ->line(__($descriptionKey, $params, 'en'))
+            ->action(__('messages.view_wallet', [], 'ar') . ' / ' . __('messages.view_wallet', [], 'en'), route('account.wallet'));
     }
 
     public function toDatabase(object $notifiable): array

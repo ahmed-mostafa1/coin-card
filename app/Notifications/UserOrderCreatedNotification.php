@@ -23,8 +23,12 @@ class UserOrderCreatedNotification extends Notification implements ShouldQueue
 
     public function toMail(object $notifiable): MailMessage
     {
+        $appName = config('app.name', 'Arab 8bp.in');
+        $subjectAr = __('messages.email_subjects.order_created_user', ['app_name' => $appName], 'ar');
+        $subjectEn = __('messages.email_subjects.order_created_user', ['app_name' => $appName], 'en');
+
         return (new MailMessage)
-            ->subject('تأكيد استلام الطلب - Arab 8bp.in')
+            ->subject($subjectAr . ' / ' . $subjectEn)
             ->view('emails.notifications.user_order_created', ['order' => $this->order]);
     }
 
