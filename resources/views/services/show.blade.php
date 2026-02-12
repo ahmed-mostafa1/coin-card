@@ -155,7 +155,7 @@
                                     @endif
 
                                     @if ($showLimitedOfferCountdown)
-                                        <div class="min-w-0 flex-1 rounded-lg border border-slate-200 bg-slate-100 px-2 py-1 dark:border-slate-700 dark:bg-slate-800">
+                                        <div class="min-w-0 flex-1 border border-slate-200 bg-slate-100 px-2 py-1 dark:border-slate-700 dark:bg-slate-800">
                                             <div class="offer-countdown" data-limited-offer-countdown data-end-at="{{ $limitedOfferEndsAtIso }}">
                                                 <div class="offer-countdown__unit">
                                                     <span class="offer-countdown__value" data-countdown-days>---</span>
