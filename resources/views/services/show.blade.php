@@ -4,6 +4,19 @@
 @section('mainWidth', 'w-full max-w-full')
 
 @section('content')
+    <style>
+        .service-mobile-80 {
+            width: 100%;
+            margin-inline: auto;
+        }
+
+        @media (max-width: 639px) {
+            .service-mobile-80 {
+                width: 80% !important;
+            }
+        }
+    </style>
+
     @php
         $availableBalance = $wallet?->balance ?? 0;
         $basePrice = $service->variants->count() ? $service->variants->min('price') : $service->price;
@@ -26,11 +39,11 @@
     @endphp
 
     <div class="store-shell space-y-6">
-        <div class="w-4/5 mx-auto">
+        <div class="service-mobile-80">
             <x-store.hero :banners="$sharedBanners" :alt="$service->localized_name" />
         </div>
 
-        <div class="w-4/5 mx-auto">
+        <div class="service-mobile-80">
             <x-store.notice :text="$sharedTickerText" />
         </div>
 
@@ -98,7 +111,7 @@
                                             >
                                                 -- : -- : --
                                             </span>
-                                            <span class="text-s text-slate-500 dark:text-slate-400">{{ __('messages.days_hours_minutes') }}</span>
+                                            <span class="text-xs text-slate-500 dark:text-slate-400">{{ __('messages.days_hours_minutes') }}</span>
                                         </span>
                                     @endif
                                 </div>
