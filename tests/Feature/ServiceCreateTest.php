@@ -172,6 +172,7 @@ class ServiceCreateTest extends TestCase
             'is_active' => true,
             'is_limited_offer_label_active' => 1,
             'limited_offer_label' => 'عرض لفترة محدودة',
+            'limited_offer_label_en' => 'Limited time offer',
             'is_limited_offer_countdown_active' => 1,
             'limited_offer_ends_at' => $endAt,
             'sort_order' => 0,
@@ -182,6 +183,7 @@ class ServiceCreateTest extends TestCase
         $response->assertRedirect(route('admin.services.edit', $service));
         $this->assertTrue($service->is_limited_offer_label_active);
         $this->assertSame('عرض لفترة محدودة', $service->limited_offer_label);
+        $this->assertSame('Limited time offer', $service->limited_offer_label_en);
         $this->assertTrue($service->is_limited_offer_countdown_active);
         $this->assertNotNull($service->limited_offer_ends_at);
     }

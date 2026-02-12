@@ -162,6 +162,11 @@
                             <x-text-input id="limited_offer_label" name="limited_offer_label" type="text" :value="old('limited_offer_label', $service->limited_offer_label)" />
                             <x-input-error :messages="$errors->get('limited_offer_label')" />
                         </div>
+                        <div>
+                            <x-input-label for="limited_offer_label_en" :value="__('messages.limited_offer_label_text_en')" />
+                            <x-text-input id="limited_offer_label_en" name="limited_offer_label_en" type="text" :value="old('limited_offer_label_en', $service->limited_offer_label_en)" />
+                            <x-input-error :messages="$errors->get('limited_offer_label_en')" />
+                        </div>
                     </div>
 
                     <div class="space-y-2">

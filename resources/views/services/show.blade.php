@@ -85,12 +85,12 @@
                                 <div class="mt-2 flex flex-wrap items-center justify-center gap-2">
                                     @if ($showLimitedOfferLabel)
                                         <span class="inline-flex items-center rounded-full border border-rose-200 bg-rose-100 px-3 py-1 text-xs font-semibold text-rose-700 dark:border-rose-800 dark:bg-rose-900/40 dark:text-rose-300">
-                                            {{ $service->limited_offer_label }}
+                                            {{ $service->localized_limited_offer_label }}
                                         </span>
                                     @endif
 
                                     @if ($showLimitedOfferCountdown)
-                                        <span class="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
+                                        <span class="inline-flex flex-col items-center gap-1 rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
                                             <span>{{ __('messages.offer_time_left') }}</span>
                                             <span
                                                 data-limited-offer-countdown
@@ -99,6 +99,7 @@
                                             >
                                                 -- : -- : --
                                             </span>
+                                            <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ __('messages.days_hours_minutes') }}</span>
                                         </span>
                                     @endif
                                 </div>

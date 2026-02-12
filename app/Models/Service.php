@@ -27,6 +27,7 @@ class Service extends Model
         'offer_image_path',
         'is_offer_active',
         'limited_offer_label',
+        'limited_offer_label_en',
         'is_limited_offer_label_active',
         'is_limited_offer_countdown_active',
         'limited_offer_ends_at',
@@ -109,6 +110,21 @@ class Service extends Model
     public function hasLimitedOfferLabel(): bool
     {
         return $this->is_limited_offer_label_active && filled($this->limited_offer_label);
+    }
+
+    public function getLocalizedLimitedOfferLabelAttribute(): ?string
+    {
+        if (! $this->hasLimitedOfferLabel()) {
+            return null;
+        }
+
+        $locale = app()->getLocale();
+
+        if ($locale === 'en' && filled($this->limited_offer_label_en)) {
+            return $this->limited_offer_label_en;
+        }
+
+        return $this->limited_offer_label;
     }
 
     public function hasLimitedOfferCountdown(): bool

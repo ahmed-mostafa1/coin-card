@@ -126,6 +126,10 @@ class ServiceController extends Controller
             $data['limited_offer_label'] = trim((string) $data['limited_offer_label']) ?: null;
         }
 
+        if (array_key_exists('limited_offer_label_en', $data)) {
+            $data['limited_offer_label_en'] = trim((string) $data['limited_offer_label_en']) ?: null;
+        }
+
         $slug = $data['slug'] ?? null;
         if (!$slug) {
             $slug = Str::slug($data['name']);

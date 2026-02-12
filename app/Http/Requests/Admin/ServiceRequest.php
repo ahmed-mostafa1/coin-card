@@ -36,6 +36,7 @@ class ServiceRequest extends FormRequest
             'is_offer_active' => ['nullable', 'boolean'],
             'is_limited_offer_label_active' => ['nullable', 'boolean'],
             'limited_offer_label' => ['exclude_unless:is_limited_offer_label_active,1', 'required', 'string', 'max:120'],
+            'limited_offer_label_en' => ['exclude_unless:is_limited_offer_label_active,1', 'nullable', 'string', 'max:120'],
             'is_limited_offer_countdown_active' => ['nullable', 'boolean'],
             'limited_offer_ends_at' => ['exclude_unless:is_limited_offer_countdown_active,1', 'required', 'date', 'after:now'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
