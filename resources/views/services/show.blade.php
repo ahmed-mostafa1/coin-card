@@ -11,14 +11,16 @@
         }
 
         .offer-countdown {
-            display: flex;
-            justify-content: center;
-            gap: 0.75rem;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            align-items: flex-end;
+            gap: 0.3rem;
             direction: ltr;
+            width: 100%;
         }
 
         .offer-countdown__unit {
-            min-width: 4.4rem;
+            min-width: 0;
             text-align: center;
             color: #b30010;
         }
@@ -26,19 +28,19 @@
         .offer-countdown__value {
             display: block;
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-            font-size: clamp(1.65rem, 5.5vw, 3rem);
+            font-size: clamp(0.82rem, 1.6vw, 1.12rem);
             font-weight: 700;
             line-height: 1;
-            letter-spacing: 0.16em;
-            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85), 0 0 10px rgba(179, 0, 16, 0.2);
+            letter-spacing: 0.01em;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85), 0 0 8px rgba(179, 0, 16, 0.15);
         }
 
         .offer-countdown__label {
             display: block;
-            margin-top: 0.35rem;
-            padding-top: 0.35rem;
-            border-top: 4px solid #d82929;
-            font-size: clamp(0.75rem, 2.8vw, 1.25rem);
+            margin-top: 0.18rem;
+            padding-top: 0.18rem;
+            border-top: 2px solid #d82929;
+            font-size: clamp(0.48rem, 1vw, 0.62rem);
             font-weight: 700;
             line-height: 1;
             color: #b30010;
@@ -50,20 +52,16 @@
             }
 
             .offer-countdown {
-                gap: 0.45rem;
-            }
-
-            .offer-countdown__unit {
-                min-width: 3.2rem;
+                gap: 0.18rem;
             }
 
             .offer-countdown__value {
-                font-size: clamp(1.35rem, 8vw, 2.05rem);
-                letter-spacing: 0.12em;
+                font-size: clamp(0.64rem, 2.9vw, 0.86rem);
+                letter-spacing: 0;
             }
 
             .offer-countdown__label {
-                font-size: clamp(0.72rem, 3.4vw, 0.95rem);
+                font-size: clamp(0.42rem, 2vw, 0.54rem);
             }
         }
     </style>
@@ -149,15 +147,15 @@
                             <h1 class="text-xl font-bold text-slate-900">{{ $service->localized_name }}</h1>
                             <p class="text-sm text-slate-600">{{ $service->category->localized_name }}</p>
                             @if ($showLimitedOfferLabel || $showLimitedOfferCountdown)
-                                <div class="mt-2 flex flex-wrap items-center justify-center gap-2">
+                                <div class="mt-2 flex items-center justify-center gap-2">
                                     @if ($showLimitedOfferLabel)
-                                        <span class="inline-flex items-center  border border-rose-200 bg-rose-100 px-3 py-1 text-s font-semibold text-rose-700 dark:border-rose-800 dark:bg-rose-900/40 dark:text-rose-300">
+                                        <span class="inline-flex shrink-0 items-center border border-rose-200 bg-rose-100 px-2 py-1 text-xs font-semibold text-rose-700 dark:border-rose-800 dark:bg-rose-900/40 dark:text-rose-300">
                                             {{ $service->localized_limited_offer_label }}
                                         </span>
                                     @endif
 
                                     @if ($showLimitedOfferCountdown)
-                                        <div class="w-full rounded-lg border border-slate-200 bg-slate-100 px-3 py-2 dark:border-slate-700 dark:bg-slate-800">
+                                        <div class="min-w-0 flex-1 rounded-lg border border-slate-200 bg-slate-100 px-2 py-1 dark:border-slate-700 dark:bg-slate-800">
                                             <div class="offer-countdown" data-limited-offer-countdown data-end-at="{{ $limitedOfferEndsAtIso }}">
                                                 <div class="offer-countdown__unit">
                                                     <span class="offer-countdown__value" data-countdown-days>---</span>
