@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Order;
+use App\Models\Category;
 use App\Models\Service;
 use App\Models\User;
 use App\Models\Wallet;
@@ -26,12 +27,21 @@ class MarketCard99OrderTest extends TestCase
 
         $this->user = User::factory()->create();
         $this->wallet = Wallet::create(['user_id' => $this->user->id, 'balance' => 1000, 'held_balance' => 0]);
-        
+
+        $category = Category::create([
+            'name' => 'Test Category',
+            'slug' => 'test-category',
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+
         $this->service = Service::create([
+            'category_id' => $category->id,
             'name' => 'Test Service',
             'slug' => 'test-service',
             'price' => 100,
             'is_active' => true,
+            'source' => 'marketcard99',
             'external_product_id' => 123,
             'external_type' => 'id',
             'requires_customer_id' => true,
@@ -39,12 +49,12 @@ class MarketCard99OrderTest extends TestCase
         ]);
     }
 
-    public function test_order_creation_deducts_wallet()
+    public function test_order_creation_holds_wallet_balance()
     {
         $initialBalance = $this->wallet->balance;
 
         $client = $this->mock(MarketCard99Client::class);
-        $client->shouldReceive('createBill')->andReturn(['success' => true]);
+        $client->shouldReceive('createBill')->andReturn(['ok' => true]);
         $client->shouldReceive('resolveBillIdAfterCreate')->andReturn([
             'external_bill_id' => 999,
             'external_uuid' => 'test-uuid',
@@ -53,22 +63,21 @@ class MarketCard99OrderTest extends TestCase
         ]);
 
         $orderService = app(MarketCard99OrderService::class);
-        
-        $order = $orderService->createOrder(
-            $this->user,
-            $this->service,
-            1,
-            'player123'
-        );
+        $order = $orderService->createOrder($this->user, $this->service, [
+            'selected_price' => 100,
+            'customer_identifier' => 'player123',
+        ]);
 
         $this->wallet->refresh();
 
         $this->assertEquals($initialBalance - 100, $this->wallet->balance);
+        $this->assertEquals(100, $this->wallet->held_balance);
         $this->assertDatabaseHas('orders', [
             'id' => $order->id,
             'user_id' => $this->user->id,
             'service_id' => $this->service->id,
-            'sell_total' => 100,
+            'status' => 'processing',
+            'amount_held' => 100,
         ]);
     }
 
@@ -78,74 +87,79 @@ class MarketCard99OrderTest extends TestCase
 
         $client = $this->mock(MarketCard99Client::class);
         $client->shouldReceive('createBill')->andReturn([
-            'success' => false,
-            'message' => 'API Error',
+            'ok' => false,
+            'error_message' => 'API Error',
         ]);
 
         $orderService = app(MarketCard99OrderService::class);
-
-        try {
-            $orderService->createOrder(
-                $this->user,
-                $this->service,
-                1,
-                'player123'
-            );
-        } catch (\Exception $e) {
-            // Expected to throw
-        }
+        $order = $orderService->createOrder($this->user, $this->service, [
+            'selected_price' => 100,
+            'customer_identifier' => 'player123',
+        ]);
 
         $this->wallet->refresh();
+        $order->refresh();
 
-        // Balance should be refunded
         $this->assertEquals($initialBalance, $this->wallet->balance);
+        $this->assertEquals(0, $this->wallet->held_balance);
+        $this->assertSame('rejected', $order->status);
     }
 
-    public function test_status_sync_updates_to_fulfilled()
+    public function test_status_sync_updates_to_done()
     {
         $order = Order::create([
             'user_id' => $this->user->id,
             'service_id' => $this->service->id,
-            'qty' => 1,
-            'sell_unit_price' => 100,
-            'sell_total' => 100,
-            'status' => 'submitted',
+            'status' => 'processing',
             'external_bill_id' => 999,
             'price_at_purchase' => 100,
+            'amount_held' => 100,
+        ]);
+
+        app(WalletService::class)->holdAmount($this->wallet, '100', [
+            'reference_type' => 'order',
+            'reference_id' => $order->id,
         ]);
 
         $client = $this->mock(MarketCard99Client::class);
         $client->shouldReceive('getBill')->andReturn([
-            'id' => 999,
-            'status' => 'success',
+            'ok' => true,
+            'data' => [
+                'data' => [
+                    'bill' => [
+                        'id' => 999,
+                        'status' => 'success',
+                    ],
+                ],
+            ],
         ]);
 
         $orderService = app(MarketCard99OrderService::class);
-        $orderService->syncOrderStatus($order);
+        $orderService->syncOrderStatus($order, $this->user);
 
         $order->refresh();
+        $this->wallet->refresh();
 
-        $this->assertEquals('fulfilled', $order->status);
+        $this->assertEquals('done', $order->status);
         $this->assertEquals('success', $order->external_status);
+        $this->assertEquals(900, $this->wallet->balance);
+        $this->assertEquals(0, $this->wallet->held_balance);
     }
 
-    public function test_status_sync_sees_cancel_and_refunds_once()
+    public function test_status_sync_sees_cancel_and_releases_once()
     {
         $initialBalance = $this->wallet->balance;
 
         $order = Order::create([
             'user_id' => $this->user->id,
             'service_id' => $this->service->id,
-            'qty' => 1,
-            'sell_unit_price' => 100,
-            'sell_total' => 100,
-            'status' => 'submitted',
+            'status' => 'processing',
             'external_bill_id' => 999,
             'price_at_purchase' => 100,
+            'amount_held' => 100,
         ]);
 
-        // Deduct balance first
-        app(WalletService::class)->debit($this->wallet, '100', [
+        app(WalletService::class)->holdAmount($this->wallet, '100', [
             'reference_type' => 'order',
             'reference_id' => $order->id,
         ]);
@@ -155,21 +169,27 @@ class MarketCard99OrderTest extends TestCase
 
         $client = $this->mock(MarketCard99Client::class);
         $client->shouldReceive('getBill')->andReturn([
-            'id' => 999,
-            'status' => 'cancel',
+            'ok' => true,
+            'data' => [
+                'data' => [
+                    'bill' => [
+                        'id' => 999,
+                        'status' => 'cancel',
+                    ],
+                ],
+            ],
         ]);
 
         $orderService = app(MarketCard99OrderService::class);
-        $orderService->syncOrderStatus($order);
+        $orderService->syncOrderStatus($order, $this->user);
 
         $order->refresh();
         $this->wallet->refresh();
 
-        $this->assertEquals('refunded', $order->status);
+        $this->assertEquals('rejected', $order->status);
         $this->assertEquals($initialBalance, $this->wallet->balance);
 
-        // Sync again - should not refund twice
-        $orderService->syncOrderStatus($order);
+        $orderService->syncOrderStatus($order, $this->user);
         $this->wallet->refresh();
         $this->assertEquals($initialBalance, $this->wallet->balance);
     }

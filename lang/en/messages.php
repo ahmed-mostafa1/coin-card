@@ -422,7 +422,7 @@ return [
     'limited_offer_ends_at' => 'Ends at',
     'limited_offer_auto_deactivate_hint' => 'Service will be deactivated automatically when countdown reaches zero.',
     'offer_time_left' => 'Time left',
-    'days_hours_minutes' => 'Days : Hours : Minutes',
+    'days_hours_minutes' => 'Day : Hour : Minute',
     'offer_expired' => 'Offer expired',
     'request_agency' => "Request Agency",
     'dashboard' => 'Dashboard',

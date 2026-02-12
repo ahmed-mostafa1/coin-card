@@ -35,6 +35,21 @@ class OrderStatusService
                 Order::STATUS_DONE => [Order::STATUS_DONE],
                 Order::STATUS_REJECTED => [Order::STATUS_REJECTED],
                 Order::STATUS_CANCELLED => [Order::STATUS_CANCELLED],
+                Order::STATUS_CREATING_EXTERNAL => [
+                    Order::STATUS_CREATING_EXTERNAL,
+                    Order::STATUS_PROCESSING,
+                    Order::STATUS_DONE,
+                    Order::STATUS_REJECTED,
+                ],
+                Order::STATUS_SUBMITTED => [
+                    Order::STATUS_SUBMITTED,
+                    Order::STATUS_PROCESSING,
+                    Order::STATUS_DONE,
+                    Order::STATUS_REJECTED,
+                ],
+                Order::STATUS_FULFILLED => [Order::STATUS_FULFILLED, Order::STATUS_DONE],
+                Order::STATUS_FAILED => [Order::STATUS_FAILED, Order::STATUS_REJECTED],
+                Order::STATUS_REFUNDED => [Order::STATUS_REFUNDED, Order::STATUS_REJECTED],
             ];
 
             if (! in_array($newStatus, $allowedTransitions[$currentStatus] ?? [], true)) {

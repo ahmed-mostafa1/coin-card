@@ -46,14 +46,12 @@ class MarketCard99OrderController extends Controller
         }
 
         try {
-            $order = $this->orderService->createOrder(
-                $user,
-                $service,
-                $validated['qty'] ?? 1,
-                $validated['customer_identifier'] ?? null,
-                $validated['external_amount'] ?? null,
-                $validated['purchase_password'] ?? null
-            );
+            $order = $this->orderService->createOrder($user, $service, [
+                'selected_price' => (float) ($service->price ?? 0),
+                'customer_identifier' => $validated['customer_identifier'] ?? null,
+                'external_amount' => $validated['external_amount'] ?? null,
+                'purchase_password' => $validated['purchase_password'] ?? null,
+            ]);
 
             return response()->json([
                 'success' => true,

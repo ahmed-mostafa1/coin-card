@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Order;
+use App\Models\User;
 use App\Services\MarketCard99OrderService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -24,9 +25,17 @@ class SyncMarketCard99BillStatus implements ShouldQueue
     {
         Log::info('MarketCard99: Starting bill status sync job');
 
+        $actor = User::query()->whereHas('roles', fn ($q) => $q->where('name', 'admin'))->first()
+            ?? User::query()->first();
+        if (!$actor) {
+            Log::warning('MarketCard99: Sync skipped because no actor user exists');
+            return;
+        }
+
         // Find orders that need syncing
         $orders = Order::whereNotNull('external_bill_id')
-            ->whereIn('status', ['submitted', 'processing', 'creating_external'])
+            ->whereIn('status', ['new', 'processing', 'submitted', 'creating_external'])
+            ->whereHas('service', fn ($query) => $query->where('source', 'marketcard99'))
             ->get();
 
         $syncedCount = 0;
@@ -34,7 +43,7 @@ class SyncMarketCard99BillStatus implements ShouldQueue
 
         foreach ($orders as $order) {
             try {
-                $synced = $orderService->syncOrderStatus($order);
+                $synced = $orderService->syncOrderStatus($order, $actor);
                 
                 if ($synced) {
                     $syncedCount++;

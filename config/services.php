@@ -44,6 +44,9 @@ return [
     'marketcard99' => [
         'base_url' => env('MARKETCARD99_BASE_URL', 'https://app.market-card99.com'),
         'token' => env('MARKETCARD99_TOKEN'),
+        'timeout' => (int) env('MARKETCARD99_TIMEOUT', 25),
+        'retry_times' => (int) env('MARKETCARD99_RETRY_TIMES', 2),
+        'retry_delay_ms' => (int) env('MARKETCARD99_RETRY_DELAY_MS', 500),
     ],
 
 ];

@@ -17,6 +17,7 @@
             <a href="{{ route('admin.categories.index') }}" class="cc-pill">التصنيفات</a>
             <a href="{{ route('admin.services.index') }}" class="cc-pill">الخدمات</a>
             <a href="{{ route('admin.orders.index') }}" class="cc-pill">الطلبات</a>
+            <a href="{{ route('admin.integrations.marketcard99.index') }}" class="cc-pill">تكامل MarketCard99</a>
             <a href="{{ route('admin.vip-tiers.index') }}" class="cc-pill">مستويات VIP</a>
             <a href="{{ route('admin.banners.index') }}" class="cc-pill">البانرات</a>
             <a href="{{ route('admin.popups.index') }}" class="cc-pill">النوافذ المنبثقة</a>

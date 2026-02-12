@@ -25,6 +25,7 @@
                     <th class="py-2">{{ __('messages.name_label') }}</th>
                     <th class="py-2">{{ __('messages.category') }}</th>
                     <th class="py-2">{{ __('messages.price') }}</th>
+                    <th class="py-2">المصدر</th>
                     <th class="py-2">{{ __('messages.status') }}</th>
                     <th class="py-2">{{ __('messages.actions') }}</th>
                 </tr>
@@ -35,6 +36,18 @@
                         <td class="py-3 text-slate-700 dark:text-white">{{ $service->name }}</td>
                         <td class="py-3 text-slate-500 dark:text-slate-400">{{ $service->category?->name }}</td>
                         <td class="py-3 text-slate-700 dark:text-white">{{ number_format($service->price, 2) }} USD</td>
+                        <td class="py-3">
+                            @if (($service->source ?? 'manual') === 'marketcard99')
+                                <div class="flex flex-col gap-1">
+                                    <span class="rounded-full bg-sky-100 dark:bg-sky-900/50 px-3 py-1 text-xs text-sky-700 dark:text-sky-300">MarketCard99</span>
+                                    @if ($service->external_product_id)
+                                        <span class="text-[11px] text-slate-500">ID: {{ $service->external_product_id }}</span>
+                                    @endif
+                                </div>
+                            @else
+                                <span class="rounded-full bg-slate-100 dark:bg-slate-700 px-3 py-1 text-xs text-slate-700 dark:text-slate-300">يدوي</span>
+                            @endif
+                        </td>
                         <td class="py-3">
                             @if ($service->is_active)
                                 <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/50 px-3 py-1 text-xs text-emerald-700 dark:text-emerald-400">{{ __('messages.status_active') }}</span>
@@ -54,7 +67,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="py-6 text-center text-slate-500 dark:text-slate-400">{{ __('messages.no_services_yet') }}</td>
+                        <td colspan="6" class="py-6 text-center text-slate-500 dark:text-slate-400">{{ __('messages.no_services_yet') }}</td>
                     </tr>
                 @endforelse
             </tbody>

@@ -9,6 +9,14 @@ use Tests\TestCase;
 
 class MarketCard99BillResolverTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        config()->set('services.marketcard99.base_url', 'https://app.market-card99.com');
+        config()->set('services.marketcard99.token', 'testing-token');
+    }
+
     public function test_bill_resolver_filters_by_product_id()
     {
         $client = new MarketCard99Client();

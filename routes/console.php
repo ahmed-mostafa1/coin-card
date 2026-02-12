@@ -35,9 +35,3 @@ Artisan::command('vip:recalculate {--user_id=}', function (VipService $vipServic
     $this->info('VIP recalculated for '.$count.' users.');
     return 0;
 })->purpose('Recalculate VIP status for one user or all users');
-
-use Illuminate\Support\Facades\Schedule;
-use App\Jobs\SyncMarketCard99BillStatus;
-
-// Schedule MarketCard99 bill status sync every 5 minutes
-Schedule::job(new SyncMarketCard99BillStatus)->everyFiveMinutes();

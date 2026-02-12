@@ -26,11 +26,11 @@
     @endphp
 
     <div class="store-shell space-y-6">
-        <div class="w-full sm:w-4/5 sm:mx-auto">
+        <div class="w-4/5 mx-auto">
             <x-store.hero :banners="$sharedBanners" :alt="$service->localized_name" />
         </div>
 
-        <div class="w-full sm:w-4/5 sm:mx-auto">
+        <div class="w-4/5 mx-auto">
             <x-store.notice :text="$sharedTickerText" />
         </div>
 
@@ -91,7 +91,6 @@
 
                                     @if ($showLimitedOfferCountdown)
                                         <span class="inline-flex flex-col items-center gap-1  border border-slate-200 bg-slate-100 px-3 py-1 text-s font-semibold text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
-                                            <span>{{ __('messages.offer_time_left') }}</span>
                                             <span
                                                 data-limited-offer-countdown
                                                 data-end-at="{{ $limitedOfferEndsAtIso }}"
@@ -243,31 +242,62 @@
                             <p class="mt-1 text-xs text-slate-500">{{ __('messages.held_amount_notice') }}</p>
                         </div>
 
-                        @forelse ($service->formFields->sortBy('sort_order') as $field)
-                            <div class="space-y-1">
-                                <label for="field_{{ $field->name_key }}"
-                                    class="block text-sm font-semibold text-slate-800">{{ $field->localized_label }}</label>
-                                @if ($field->type === 'text')
-                                    <input id="field_{{ $field->name_key }}"
-                                        name="fields[{{ $field->name_key }}]"
-                                        type="text"
-                                        value="{{ old('fields.' . $field->name_key) }}"
-                                        placeholder="{{ $field->localized_placeholder }}"
-                                        class="store-input"
-                                        {{ $field->is_required ? 'required' : '' }}>
-                                @else
-                                    <textarea id="field_{{ $field->name_key }}" name="fields[{{ $field->name_key }}]" rows="3"
-                                        placeholder="{{ $field->localized_placeholder }}" class="store-input"
-                                        {{ $field->is_required ? 'required' : '' }}>{{ old('fields.' . $field->name_key) }}</textarea>
-                                @endif
-                                @if ($field->localized_additional_rules)
-                                    <p class="mt-2 text-xs text-slate-500">{{ $field->localized_additional_rules }}</p>
-                                @endif
-                                <x-input-error :messages="$errors->get('fields.' . $field->name_key)" />
-                            </div>
-                        @empty
-                            <p class="text-sm text-slate-500">{{ __('messages.no_required_fields') }}</p>
-                        @endforelse
+                        @if (($service->source ?? 'manual') === 'marketcard99')
+                            @if ($service->requires_customer_id)
+                                <div class="space-y-1">
+                                    <label for="customer_identifier" class="block text-sm font-semibold text-slate-800">معرف المستخدم</label>
+                                    <input id="customer_identifier" name="customer_identifier" type="text" value="{{ old('customer_identifier') }}"
+                                        placeholder="أدخل معرف المستخدم" class="store-input" required>
+                                    <x-input-error :messages="$errors->get('customer_identifier')" />
+                                </div>
+                            @endif
+
+                            @if ($service->requires_amount)
+                                <div class="space-y-1">
+                                    <label for="external_amount" class="block text-sm font-semibold text-slate-800">المبلغ الخارجي</label>
+                                    <input id="external_amount" name="external_amount" type="number" step="any" min="0.01"
+                                        value="{{ old('external_amount') }}" placeholder="أدخل المبلغ" class="store-input"
+                                        {{ $service->requires_amount ? 'required' : '' }}>
+                                    <x-input-error :messages="$errors->get('external_amount')" />
+                                </div>
+                            @endif
+
+                            @if ($service->supports_purchase_password)
+                                <div class="space-y-1">
+                                    <label for="purchase_password" class="block text-sm font-semibold text-slate-800">كلمة سر الشراء</label>
+                                    <input id="purchase_password" name="purchase_password" type="text" value="{{ old('purchase_password') }}"
+                                        placeholder="اختياري" class="store-input"
+                                        {{ $service->requires_purchase_password ? 'required' : '' }}>
+                                    <x-input-error :messages="$errors->get('purchase_password')" />
+                                </div>
+                            @endif
+                        @else
+                            @forelse ($service->formFields->sortBy('sort_order') as $field)
+                                <div class="space-y-1">
+                                    <label for="field_{{ $field->name_key }}"
+                                        class="block text-sm font-semibold text-slate-800">{{ $field->localized_label }}</label>
+                                    @if ($field->type === 'text')
+                                        <input id="field_{{ $field->name_key }}"
+                                            name="fields[{{ $field->name_key }}]"
+                                            type="text"
+                                            value="{{ old('fields.' . $field->name_key) }}"
+                                            placeholder="{{ $field->localized_placeholder }}"
+                                            class="store-input"
+                                            {{ $field->is_required ? 'required' : '' }}>
+                                    @else
+                                        <textarea id="field_{{ $field->name_key }}" name="fields[{{ $field->name_key }}]" rows="3"
+                                            placeholder="{{ $field->localized_placeholder }}" class="store-input"
+                                            {{ $field->is_required ? 'required' : '' }}>{{ old('fields.' . $field->name_key) }}</textarea>
+                                    @endif
+                                    @if ($field->localized_additional_rules)
+                                        <p class="mt-2 text-xs text-slate-500">{{ $field->localized_additional_rules }}</p>
+                                    @endif
+                                    <x-input-error :messages="$errors->get('fields.' . $field->name_key)" />
+                                </div>
+                            @empty
+                                <p class="text-sm text-slate-500">{{ __('messages.no_required_fields') }}</p>
+                            @endforelse
+                        @endif
 
                         @auth
                             <button id="purchase-button" type="submit"

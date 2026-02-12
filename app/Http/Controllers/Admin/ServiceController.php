@@ -120,6 +120,17 @@ class ServiceController extends Controller
         $data['is_limited_offer_label_active'] = $request->boolean('is_limited_offer_label_active');
         $data['is_limited_offer_countdown_active'] = $request->boolean('is_limited_offer_countdown_active');
         $data['is_quantity_based'] = $request->boolean('is_quantity_based');
+        $data['source'] = $data['source'] ?? $service?->source ?? Service::SOURCE_MANUAL;
+        $data['sync_rule_mode'] = $data['sync_rule_mode'] ?? $service?->sync_rule_mode ?? Service::SYNC_RULE_AUTO;
+        if ($data['source'] === Service::SOURCE_MARKETCARD99 || $request->hasAny([
+            'requires_customer_id',
+            'requires_amount',
+            'requires_purchase_password',
+        ])) {
+            $data['requires_customer_id'] = $request->boolean('requires_customer_id');
+            $data['requires_amount'] = $request->boolean('requires_amount');
+            $data['requires_purchase_password'] = $request->boolean('requires_purchase_password');
+        }
         $data['sort_order'] = $data['sort_order'] ?? 0;
 
         if (array_key_exists('limited_offer_label', $data)) {

@@ -19,6 +19,27 @@ class PurchaseServiceRequest extends FormRequest
         /** @var Service $service */
         $service = $this->route('service');
 
+        if ($service->source === Service::SOURCE_MARKETCARD99) {
+            $rules = [
+                'selected_price' => ['required', 'numeric', 'gt:0'],
+                'customer_identifier' => [$service->requires_customer_id ? 'required' : 'nullable', 'string', 'max:255'],
+                'external_amount' => [$service->requires_amount ? 'required' : 'nullable', 'numeric', 'gt:0'],
+                'purchase_password' => [$service->requires_purchase_password ? 'required' : 'nullable', 'string', 'max:255'],
+            ];
+
+            if ($service->is_quantity_based) {
+                $rules['quantity'] = [
+                    'required',
+                    'integer',
+                    'min:'.($service->min_quantity ?? 1),
+                    $service->max_quantity ? 'max:'.$service->max_quantity : '',
+                ];
+                $rules['quantity'] = array_filter($rules['quantity']);
+            }
+
+            return $rules;
+        }
+
         $rules = app(ServiceFormValidator::class)->rules($service);
 
         $variantsQuery = $service->variants()->where('is_active', true);
@@ -33,7 +54,6 @@ class PurchaseServiceRequest extends FormRequest
             $rules['variant_id'] = ['nullable', 'integer', $variantRule];
         }
 
-        // Add selected_price validation
         $rules['selected_price'] = ['nullable', 'numeric', 'min:0'];
         
         if ($service->is_quantity_based) {

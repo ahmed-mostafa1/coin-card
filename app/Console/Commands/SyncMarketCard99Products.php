@@ -15,10 +15,14 @@ class SyncMarketCard99Products extends Command
     {
         $this->info('Fetching products from MarketCard99...');
 
-        $products = $client->getProducts();
+        $productsResponse = $client->getProducts();
+        $products = data_get($productsResponse, 'data.data.products', []);
 
-        if (empty($products)) {
+        if (!($productsResponse['ok'] ?? false) || empty($products)) {
             $this->error('No products found or API request failed.');
+            if (!empty($productsResponse['error_message'])) {
+                $this->warn($productsResponse['error_message']);
+            }
             return self::FAILURE;
         }
 

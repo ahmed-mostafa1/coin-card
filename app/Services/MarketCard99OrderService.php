@@ -3,11 +3,12 @@
 namespace App\Services;
 
 use App\Models\Order;
+use App\Models\OrderEvent;
 use App\Models\Service;
 use App\Models\User;
 use App\Models\Wallet;
-use App\Models\WalletTransaction;
-use Carbon\Carbon;
+use App\Notifications\NewOrderNotification;
+use App\Notifications\UserOrderCreatedNotification;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
@@ -15,335 +16,314 @@ use Illuminate\Validation\ValidationException;
 class MarketCard99OrderService
 {
     public function __construct(
-        private MarketCard99Client $client,
-        private WalletService $walletService,
-        private NotificationService $notificationService
-    ) {}
+        private readonly MarketCard99Client $client,
+        private readonly WalletService $walletService,
+        private readonly OrderStatusService $orderStatusService,
+        private readonly NotificationService $notificationService
+    ) {
+    }
 
     /**
-     * Create an order with MarketCard99 integration
-     * 
-     * @throws ValidationException
-     * @throws \Exception
+     * @param array{
+     *  selected_price?:string|float|int|null,
+     *  customer_identifier?:string|null,
+     *  external_amount?:string|float|int|null,
+     *  purchase_password?:string|null
+     * } $input
      */
-    public function createOrder(
-        User $user,
-        Service $service,
-        int $qty = 1,
-        ?string $customerIdentifier = null,
-        ?string $externalAmount = null,
-        ?string $purchasePassword = null
-    ): Order {
-        // Validate service is active
+    public function createOrder(User $user, Service $service, array $input): Order
+    {
+        if ($service->source !== Service::SOURCE_MARKETCARD99) {
+            throw ValidationException::withMessages([
+                'service_id' => 'الخدمة لا تتبع مزود MarketCard99.',
+            ]);
+        }
+
         if (!$service->is_active) {
             throw ValidationException::withMessages([
-                'service_id' => ['Service is not active'],
+                'service_id' => 'الخدمة غير مفعلة حالياً.',
             ]);
         }
 
-        // Validate external product is configured
         if (!$service->external_product_id) {
             throw ValidationException::withMessages([
-                'service_id' => ['Service is not configured for external fulfillment'],
+                'service_id' => 'الخدمة غير مرتبطة بمنتج خارجي.',
             ]);
         }
 
-        // Validate required fields based on service configuration
-        if ($service->requires_customer_id && !$customerIdentifier) {
+        $customerIdentifier = $input['customer_identifier'] ?? null;
+        $externalAmount = $input['external_amount'] ?? null;
+        $purchasePassword = $input['purchase_password'] ?? null;
+        $selectedPrice = isset($input['selected_price']) ? (float) $input['selected_price'] : (float) $service->price;
+
+        if ($selectedPrice <= 0) {
             throw ValidationException::withMessages([
-                'customer_identifier' => ['Customer identifier is required for this service'],
+                'selected_price' => 'السعر المحدد غير صالح.',
             ]);
         }
 
-        if ($service->requires_amount && !$externalAmount) {
+        if ($service->requires_customer_id && blank($customerIdentifier)) {
             throw ValidationException::withMessages([
-                'external_amount' => ['Amount is required for this service'],
+                'customer_identifier' => 'معرف المستخدم مطلوب لهذه الخدمة.',
             ]);
         }
 
-        // Calculate pricing
-        $sellUnitPrice = $service->price ?? $service->price_per_unit ?? 0;
-        $sellTotal = $sellUnitPrice * $qty;
-
-        // Check user wallet balance
-        $wallet = $user->wallet;
-        if (!$wallet) {
-            throw new \Exception('User wallet not found');
-        }
-
-        if ($wallet->balance < $sellTotal) {
+        if ($service->requires_amount && blank($externalAmount)) {
             throw ValidationException::withMessages([
-                'balance' => ['Insufficient wallet balance'],
+                'external_amount' => 'المبلغ مطلوب لهذه الخدمة.',
             ]);
         }
 
-        // Idempotency check: prevent duplicate orders within 10 seconds
-        $recentOrder = Order::where('user_id', $user->id)
+        if ($service->requires_purchase_password && blank($purchasePassword)) {
+            throw ValidationException::withMessages([
+                'purchase_password' => 'كلمة سر الشراء مطلوبة لهذه الخدمة.',
+            ]);
+        }
+
+        $recentOrder = Order::query()
+            ->where('user_id', $user->id)
             ->where('service_id', $service->id)
-            ->whereIn('status', ['creating_external', 'submitted'])
+            ->whereIn('status', [Order::STATUS_NEW, Order::STATUS_PROCESSING])
             ->where('created_at', '>', now()->subSeconds(10))
             ->first();
 
         if ($recentOrder) {
             throw ValidationException::withMessages([
-                'order' => ['Please wait before placing another order for this service'],
+                'order' => 'يرجى الانتظار قليلاً قبل إنشاء طلب آخر لنفس الخدمة.',
             ]);
         }
 
-        // Step 1: Create order and debit wallet in transaction
         $order = DB::transaction(function () use (
             $user,
             $service,
-            $qty,
-            $sellUnitPrice,
-            $sellTotal,
             $customerIdentifier,
             $externalAmount,
             $purchasePassword,
-            $wallet
+            $selectedPrice
         ) {
-            // Create order with status creating_external
+            $wallet = Wallet::query()
+                ->where('user_id', $user->id)
+                ->lockForUpdate()
+                ->firstOrCreate(['user_id' => $user->id]);
+
+            $balance = (float) $wallet->balance;
+            if ($balance < $selectedPrice) {
+                throw ValidationException::withMessages([
+                    'balance' => 'رصيدك غير كافٍ لإتمام عملية الشراء.',
+                ]);
+            }
+
             $order = Order::create([
                 'user_id' => $user->id,
                 'service_id' => $service->id,
-                'qty' => $qty,
-                'sell_unit_price' => $sellUnitPrice,
-                'sell_total' => $sellTotal,
-                'status' => 'creating_external',
+                'status' => Order::STATUS_PROCESSING,
+                'price_at_purchase' => $selectedPrice,
+                'original_price' => $selectedPrice,
+                'amount_held' => $selectedPrice,
+                'payload' => [
+                    'customer_identifier' => $customerIdentifier,
+                    'external_amount' => $externalAmount,
+                    'has_purchase_password' => filled($purchasePassword),
+                ],
                 'customer_identifier' => $customerIdentifier,
                 'external_amount' => $externalAmount,
-                'has_purchase_password' => !is_null($purchasePassword),
-                'price_at_purchase' => $sellTotal, // For compatibility with existing order system
-                'amount_held' => $sellTotal,      // Required for email notifications compatibility
+                'has_purchase_password' => filled($purchasePassword),
             ]);
 
-            // Debit wallet
-            $this->walletService->debit($wallet, (string) $sellTotal, [
-                'type' => 'purchase',
+            OrderEvent::create([
+                'order_id' => $order->id,
+                'type' => 'created',
+                'message' => 'تم إنشاء الطلب وإرسال التنفيذ إلى المزود.',
+                'meta' => [
+                    'amount_held' => $selectedPrice,
+                    'external_product_id' => $service->external_product_id,
+                ],
+                'actor_user_id' => $user->id,
+            ]);
+
+            $this->walletService->holdAmount($wallet, (string) $selectedPrice, [
+                'type' => 'hold',
+                'status' => 'approved',
                 'reference_type' => 'order',
                 'reference_id' => $order->id,
-                'note' => "Order #{$order->id} - {$service->name}",
                 'created_by_user_id' => $user->id,
+                'approved_by_user_id' => $user->id,
                 'approved_at' => now(),
-            ], false); // useTransaction = false because we're already in a transaction
+                'note' => 'تعليق مبلغ طلب خدمة MarketCard99',
+            ], false);
 
             return $order;
         });
 
-        // Step 2: Call external API (outside DB transaction to avoid long locks)
-        $createdAtLocal = Carbon::now();
-        
-        $createResult = $this->client->createBill(
-            $service->external_product_id,
-            $customerIdentifier,
-            $externalAmount,
-            $purchasePassword
-        );
+        $this->submitAndApplyExternalStatus($order, $service, $user, $customerIdentifier, $externalAmount, $purchasePassword);
 
-        // Store external payload for debugging (excluding password)
-        $externalPayload = [
-            'product_id' => $service->external_product_id,
-            'customer_identifier' => $customerIdentifier,
-            'amount' => $externalAmount,
-            'has_password' => !is_null($purchasePassword),
-            'created_at_local' => $createdAtLocal->toDateTimeString(),
-        ];
-
-        $order->external_payload = $externalPayload;
-        $order->save();
-
-        // Step 3: Handle external creation result
-        if (!$createResult['success']) {
-            // External creation failed - refund and mark as failed
-            Log::error('MarketCard99: Order creation failed', [
-                'order_id' => $order->id,
-                'service_id' => $service->id,
-                'error' => $createResult['message'],
-            ]);
-
-            // Refund wallet
-            $this->walletService->credit($wallet, (string) $sellTotal, [
-                'type' => 'refund',
-                'reference_type' => 'order',
-                'reference_id' => $order->id,
-                'note' => "Refund for failed order #{$order->id}",
-                'created_by_user_id' => $user->id,
-                'approved_at' => now(),
-            ]);
-
-            $order->update([
-                'status' => 'failed',
-                'admin_note' => 'External bill creation failed: ' . $createResult['message'],
-            ]);
-
-            throw new \Exception('Failed to create external bill: ' . $createResult['message']);
-        }
-
-        // Step 4: Resolve bill ID by polling
-        $billResolution = $this->client->resolveBillIdAfterCreate(
-            $service->external_product_id,
-            $customerIdentifier,
-            $createdAtLocal
-        );
-
-        if (!$billResolution) {
-            // Failed to resolve bill ID - refund and mark as failed
-            Log::error('MarketCard99: Failed to resolve bill ID', [
-                'order_id' => $order->id,
-                'service_id' => $service->id,
-                'product_id' => $service->external_product_id,
-            ]);
-
-            // Refund wallet
-            $this->walletService->credit($wallet, (string) $sellTotal, [
-                'type' => 'refund',
-                'reference_type' => 'order',
-                'reference_id' => $order->id,
-                'note' => "Refund for order #{$order->id} - bill ID not resolved",
-                'created_by_user_id' => $user->id,
-                'approved_at' => now(),
-            ]);
-
-            $order->update([
-                'status' => 'failed',
-                'admin_note' => 'Failed to resolve external bill ID after creation',
-            ]);
-
-            throw new \Exception('Failed to resolve external bill ID. Please contact support.');
-        }
-
-        // Step 5: Update order with external bill details
-        $order->update([
-            'external_bill_id' => $billResolution['external_bill_id'],
-            'external_uuid' => $billResolution['external_uuid'],
-            'external_status' => $billResolution['external_status'],
-            'external_raw' => $billResolution['external_raw'],
-            'status' => $this->mapExternalStatus($billResolution['external_status']),
-        ]);
-
-        // Send notifications
         try {
-            $user->notify(new \App\Notifications\UserOrderCreatedNotification($order));
-            $this->notificationService->notifyAdmins(new \App\Notifications\NewOrderNotification($order));
-        } catch (\Exception $e) {
-            Log::error('MarketCard99: Failed to send notifications', [
+            $order->load(['service', 'user']);
+            $user->notify(new UserOrderCreatedNotification($order));
+            $this->notificationService->notifyAdmins(new NewOrderNotification($order));
+        } catch (\Throwable $e) {
+            Log::error('MarketCard99: failed sending order creation notifications', [
                 'order_id' => $order->id,
                 'error' => $e->getMessage(),
             ]);
         }
 
-        Log::info('MarketCard99: Order created successfully', [
-            'order_id' => $order->id,
-            'external_bill_id' => $order->external_bill_id,
-            'external_status' => $order->external_status,
-        ]);
-
         return $order->fresh();
     }
 
-    /**
-     * Sync order status from external bill
-     * 
-     * @return bool True if order was updated
-     */
-    public function syncOrderStatus(Order $order): bool
+    public function syncOrderStatus(Order $order, User $actor): bool
     {
         if (!$order->external_bill_id) {
             return false;
         }
 
-        // Don't sync if already in final state
-        if (in_array($order->status, ['fulfilled', 'refunded', 'cancelled'])) {
-            return false;
-        }
-
-        $bill = $this->client->getBill($order->external_bill_id);
-
-        if (!$bill) {
-            Log::warning('MarketCard99: Failed to fetch bill for sync', [
+        $billResponse = $this->client->getBill((int) $order->external_bill_id);
+        if (!($billResponse['ok'] ?? false)) {
+            Log::warning('MarketCard99: bill status sync skipped due to API failure', [
                 'order_id' => $order->id,
                 'external_bill_id' => $order->external_bill_id,
+                'error' => $billResponse['error_message'] ?? null,
             ]);
+
             return false;
         }
 
-        $externalStatus = $bill['status'] ?? null;
-        $newStatus = $this->mapExternalStatus($externalStatus);
-        $oldStatus = $order->status;
-
-        // Check if we need to refund
-        $shouldRefund = in_array(strtolower($externalStatus ?? ''), ['cancel', 'failed', 'rejected']);
-
-        if ($shouldRefund && $order->status !== 'refunded') {
-            // Refund the customer
-            $wallet = $order->user->wallet;
-            
-            if ($wallet) {
-                $this->walletService->credit($wallet, (string) $order->sell_total, [
-                    'type' => 'refund',
-                    'reference_type' => 'order',
-                    'reference_id' => $order->id,
-                    'note' => "Refund for cancelled/failed order #{$order->id}",
-                    'created_by_user_id' => $order->user_id,
-                    'approved_at' => now(),
-                ]);
-
-                Log::info('MarketCard99: Order refunded', [
-                    'order_id' => $order->id,
-                    'external_bill_id' => $order->external_bill_id,
-                    'external_status' => $externalStatus,
-                    'amount' => $order->sell_total,
-                ]);
-            }
-
-            $newStatus = 'refunded';
+        $bill = data_get($billResponse['data'], 'data.bill');
+        if (!is_array($bill)) {
+            return false;
         }
 
-        // Update order
-        $updated = $order->update([
-            'external_status' => $externalStatus,
-            'external_raw' => $bill,
-            'status' => $newStatus,
-        ]);
+        $externalStatus = strtolower((string) ($bill['status'] ?? ''));
+        $mappedLocalStatus = $this->mapExternalStatus($externalStatus);
+        $hasExternalChanges = $order->external_status !== ($externalStatus !== '' ? $externalStatus : null)
+            || $order->external_raw !== $bill;
 
-        if ($updated) {
-            Log::info('MarketCard99: Order status synced', [
-                'order_id' => $order->id,
-                'old_status' => $oldStatus,
-                'new_status' => $newStatus,
-                'external_status' => $externalStatus,
-            ]);
+        $order->external_status = $externalStatus !== '' ? $externalStatus : null;
+        $order->external_raw = $bill;
+        $order->save();
 
-            // Notify user of status change
-             try {
-                $order->user->notify(new \App\Notifications\OrderStatusChangedNotification($order, $oldStatus, $newStatus));
-            } catch (\Exception $e) {
-                Log::error('MarketCard99: Failed to send status notification', [
-                    'order_id' => $order->id,
-                    'error' => $e->getMessage(),
-                ]);
-            }
+        if (in_array($mappedLocalStatus, [Order::STATUS_DONE, Order::STATUS_REJECTED], true)
+            && !in_array($order->status, [Order::STATUS_DONE, Order::STATUS_REJECTED], true)) {
+            $note = $mappedLocalStatus === Order::STATUS_DONE
+                ? 'تمت تسوية الطلب تلقائياً بناءً على حالة المزود.'
+                : 'تم رفض الطلب تلقائياً بناءً على حالة المزود.';
+
+            $this->orderStatusService->updateStatus($order, $mappedLocalStatus, $note, $actor);
+            return true;
         }
 
-        return $updated;
+        if ($mappedLocalStatus === Order::STATUS_PROCESSING
+            && in_array($order->status, [Order::STATUS_NEW, Order::STATUS_SUBMITTED, Order::STATUS_CREATING_EXTERNAL], true)) {
+            $this->orderStatusService->updateStatus($order, Order::STATUS_PROCESSING, null, $actor);
+            return true;
+        }
+
+        return $hasExternalChanges;
     }
 
-    /**
-     * Map external status to internal status
-     */
-    private function mapExternalStatus(?string $externalStatus): string
-    {
-        if (!$externalStatus) {
-            return 'processing';
+    private function submitAndApplyExternalStatus(
+        Order $order,
+        Service $service,
+        User $actor,
+        ?string $customerIdentifier,
+        mixed $externalAmount,
+        ?string $purchasePassword
+    ): void {
+        $payload = [
+            'product_id' => $service->external_product_id,
+        ];
+
+        if (filled($customerIdentifier)) {
+            $payload['id_user'] = $customerIdentifier;
+            $payload['customer_id'] = $customerIdentifier;
         }
 
-        $status = strtolower($externalStatus);
+        if ($externalAmount !== null && $externalAmount !== '') {
+            $payload['amount'] = (string) $externalAmount;
+        }
+
+        if (filled($purchasePassword)) {
+            $payload['old'] = $purchasePassword;
+        }
+
+        $createdAtLocal = now();
+        $createResult = $this->client->createBill($payload);
+
+        $order->external_payload = [
+            'product_id' => $service->external_product_id,
+            'customer_identifier' => $customerIdentifier,
+            'amount' => $externalAmount,
+            'has_password' => filled($purchasePassword),
+            'created_at_local' => $createdAtLocal->toDateTimeString(),
+        ];
+        $order->save();
+
+        if (!($createResult['ok'] ?? false)) {
+            $order->external_status = 'failed';
+            $order->save();
+            $this->orderStatusService->updateStatus(
+                $order,
+                Order::STATUS_REJECTED,
+                'فشل إنشاء الفاتورة الخارجية: '.($createResult['error_message'] ?? 'Unknown error'),
+                $actor
+            );
+            return;
+        }
+
+        $billResolution = $this->client->resolveBillIdAfterCreate(
+            (int) $service->external_product_id,
+            $customerIdentifier,
+            $createdAtLocal
+        );
+
+        if (!$billResolution) {
+            $order->external_status = 'unresolved';
+            $order->save();
+            $this->orderStatusService->updateStatus(
+                $order,
+                Order::STATUS_REJECTED,
+                'تعذر ربط الفاتورة الخارجية بعد الإنشاء.',
+                $actor
+            );
+            return;
+        }
+
+        $order->update([
+            'external_bill_id' => $billResolution['external_bill_id'],
+            'external_uuid' => $billResolution['external_uuid'],
+            'external_status' => $billResolution['external_status'],
+            'external_raw' => $billResolution['external_raw'],
+        ]);
+
+        $mappedLocalStatus = $this->mapExternalStatus((string) ($billResolution['external_status'] ?? ''));
+        if ($mappedLocalStatus === Order::STATUS_DONE) {
+            $this->orderStatusService->updateStatus($order, Order::STATUS_DONE, null, $actor);
+            return;
+        }
+
+        if ($mappedLocalStatus === Order::STATUS_REJECTED) {
+            $this->orderStatusService->updateStatus(
+                $order,
+                Order::STATUS_REJECTED,
+                'تم رفض الطلب بناءً على نتيجة المزود.',
+                $actor
+            );
+            return;
+        }
+
+        if ($order->status !== Order::STATUS_PROCESSING) {
+            $this->orderStatusService->updateStatus($order, Order::STATUS_PROCESSING, null, $actor);
+        }
+    }
+
+    private function mapExternalStatus(?string $externalStatus): string
+    {
+        $status = strtolower((string) $externalStatus);
 
         return match (true) {
-            in_array($status, ['success', 'done', 'completed']) => 'fulfilled',
-            in_array($status, ['cancel', 'failed', 'rejected']) => 'failed',
-            in_array($status, ['pending', 'submitted']) => 'submitted',
-            default => 'processing',
+            in_array($status, ['success', 'done', 'completed'], true) => Order::STATUS_DONE,
+            in_array($status, ['cancel', 'failed', 'rejected'], true) => Order::STATUS_REJECTED,
+            default => Order::STATUS_PROCESSING,
         };
     }
 }

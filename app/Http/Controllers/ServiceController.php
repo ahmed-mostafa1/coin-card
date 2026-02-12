@@ -9,6 +9,7 @@ use App\Models\Service;
 use App\Models\Wallet;
 use App\Notifications\NewOrderNotification;
 use App\Services\NotificationService;
+use App\Services\MarketCard99OrderService;
 use App\Services\WalletService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
@@ -35,12 +36,33 @@ class ServiceController extends Controller
         PurchaseServiceRequest $request,
         Service $service,
         WalletService $walletService,
-        NotificationService $notificationService
+        NotificationService $notificationService,
+        MarketCard99OrderService $marketCard99OrderService
     ): RedirectResponse
     {
         abort_unless($service->is_active && $service->category->is_active, 404);
 
         $user = $request->user();
+
+        if ($service->source === Service::SOURCE_MARKETCARD99) {
+            $order = $marketCard99OrderService->createOrder($user, $service, [
+                'selected_price' => $request->input('selected_price'),
+                'customer_identifier' => $request->input('customer_identifier'),
+                'external_amount' => $request->input('external_amount'),
+                'purchase_password' => $request->input('purchase_password'),
+            ]);
+
+            $statusMessage = 'تم إرسال طلبك إلى المزود الخارجي وسيتم تحديث حالته تلقائياً.';
+            if ($order->status === Order::STATUS_DONE) {
+                $statusMessage = 'تم تنفيذ الطلب مباشرة وتأكيد الخصم.';
+            } elseif ($order->status === Order::STATUS_REJECTED) {
+                $statusMessage = 'تعذر تنفيذ الطلب الخارجي وتم إرجاع الرصيد إلى محفظتك.';
+            }
+
+            return redirect()->route('account.orders')
+                ->with('status', $statusMessage);
+        }
+
         $payload = $request->input('fields', []);
         $allowedKeys = $service->formFields()->pluck('name_key')->all();
         $payload = array_intersect_key($payload, array_flip($allowedKeys));

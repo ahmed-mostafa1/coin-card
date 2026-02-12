@@ -8,8 +8,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {
+    public const SOURCE_MANUAL = 'manual';
+    public const SOURCE_MARKETCARD99 = 'marketcard99';
+
     protected $fillable = [
         'parent_id',
+        'source',
+        'external_type',
+        'external_id',
+        'last_seen_at',
         'name',
         'name_en',
         'slug',
@@ -20,6 +27,8 @@ class Category extends Model
 
     protected $casts = [
         'is_active' => 'boolean',
+        'external_id' => 'integer',
+        'last_seen_at' => 'datetime',
     ];
 
     /**

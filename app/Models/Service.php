@@ -9,8 +9,14 @@ use Illuminate\Support\Carbon;
 
 class Service extends Model
 {
+    public const SOURCE_MANUAL = 'manual';
+    public const SOURCE_MARKETCARD99 = 'marketcard99';
+    public const SYNC_RULE_AUTO = 'auto';
+    public const SYNC_RULE_MANUAL = 'manual';
+
     protected $fillable = [
         'category_id',
+        'source',
         'name',
         'name_en',
         'slug',
@@ -35,6 +41,15 @@ class Service extends Model
         'external_type',
         'requires_customer_id',
         'requires_amount',
+        'provider_payload',
+        'provider_price',
+        'provider_unit_price',
+        'provider_is_available',
+        'provider_last_synced_at',
+        'sync_rule_mode',
+        'supports_purchase_password',
+        'requires_purchase_password',
+        'last_seen_at',
         'min_quantity',
         'max_quantity',
     ];
@@ -50,6 +65,14 @@ class Service extends Model
         'is_quantity_based' => 'boolean',
         'requires_customer_id' => 'boolean',
         'requires_amount' => 'boolean',
+        'provider_payload' => 'array',
+        'provider_price' => 'decimal:4',
+        'provider_unit_price' => 'decimal:4',
+        'provider_is_available' => 'boolean',
+        'provider_last_synced_at' => 'datetime',
+        'supports_purchase_password' => 'boolean',
+        'requires_purchase_password' => 'boolean',
+        'last_seen_at' => 'datetime',
         'min_quantity' => 'integer',
         'max_quantity' => 'integer',
     ];

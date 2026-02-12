@@ -417,7 +417,7 @@ return [
     'limited_offer_ends_at' => 'ينتهي في',
     'limited_offer_auto_deactivate_hint' => 'عند وصول العد إلى الصفر سيتم تعطيل الخدمة تلقائياً.',
     'offer_time_left' => 'الوقت المتبقي',
-    'days_hours_minutes' => 'أيام : ساعات : دقائق',
+    'days_hours_minutes' => 'يوم : ساعة : دقيقة',
     'offer_expired' => 'انتهى العرض',
     'request_agency' => 'طلب وكالة',
     'pages_management' => 'إدارة الصفحات',
