@@ -23,7 +23,7 @@ return new class extends Migration
 
         Schema::table('services', function (Blueprint $table) {
             $table->string('source')->default('manual')->after('category_id');
-            $table->json('provider_payload')->nullable()->after('external_raw');
+            $table->json('provider_payload')->nullable()->after('requires_amount');
             $table->decimal('provider_price', 12, 4)->nullable()->after('provider_payload');
             $table->decimal('provider_unit_price', 12, 4)->nullable()->after('provider_price');
             $table->boolean('provider_is_available')->default(true)->after('provider_unit_price');
@@ -79,4 +79,3 @@ return new class extends Migration
         });
     }
 };
-
