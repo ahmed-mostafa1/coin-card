@@ -149,6 +149,35 @@
                      </div>
                 </div>
 
+                <div class="rounded-2xl border border-rose-200 dark:border-rose-800/60 bg-rose-50/40 dark:bg-rose-900/10 p-4 space-y-4">
+                    <h2 class="text-lg font-semibold text-rose-700 dark:text-rose-300">{{ __('messages.limited_time_offer') }}</h2>
+
+                    <div class="space-y-2">
+                        <label for="is_limited_offer_label_active" class="inline-flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+                            <input id="is_limited_offer_label_active" name="is_limited_offer_label_active" type="checkbox" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-rose-600 focus:ring-rose-500" @checked(old('is_limited_offer_label_active', $service->is_limited_offer_label_active))>
+                            {{ __('messages.activate_limited_offer_label') }}
+                        </label>
+                        <div>
+                            <x-input-label for="limited_offer_label" :value="__('messages.limited_offer_label_text')" />
+                            <x-text-input id="limited_offer_label" name="limited_offer_label" type="text" :value="old('limited_offer_label', $service->limited_offer_label)" />
+                            <x-input-error :messages="$errors->get('limited_offer_label')" />
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="is_limited_offer_countdown_active" class="inline-flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+                            <input id="is_limited_offer_countdown_active" name="is_limited_offer_countdown_active" type="checkbox" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-rose-600 focus:ring-rose-500" @checked(old('is_limited_offer_countdown_active', $service->is_limited_offer_countdown_active))>
+                            {{ __('messages.activate_limited_offer_countdown') }}
+                        </label>
+                        <div>
+                            <x-input-label for="limited_offer_ends_at" :value="__('messages.limited_offer_ends_at')" />
+                            <input id="limited_offer_ends_at" name="limited_offer_ends_at" type="datetime-local" value="{{ old('limited_offer_ends_at', $service->limited_offer_ends_at?->format('Y-m-d\\TH:i')) }}" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-rose-500 focus:ring-rose-500">
+                            <x-input-error :messages="$errors->get('limited_offer_ends_at')" />
+                            <p class="mt-1 text-xs text-slate-500">{{ __('messages.limited_offer_auto_deactivate_hint') }}</p>
+                        </div>
+                    </div>
+                </div>
+
                 <div>
                     <x-input-label for="sort_order" :value="__('messages.sort_order')" />
                     <x-text-input id="sort_order" name="sort_order" type="number" min="0" :value="old('sort_order', $service->sort_order)" />

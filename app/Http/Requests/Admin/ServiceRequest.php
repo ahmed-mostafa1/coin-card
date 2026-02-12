@@ -34,6 +34,10 @@ class ServiceRequest extends FormRequest
             'offer_image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'is_active' => ['nullable', 'boolean'],
             'is_offer_active' => ['nullable', 'boolean'],
+            'is_limited_offer_label_active' => ['nullable', 'boolean'],
+            'limited_offer_label' => ['exclude_unless:is_limited_offer_label_active,1', 'required', 'string', 'max:120'],
+            'is_limited_offer_countdown_active' => ['nullable', 'boolean'],
+            'limited_offer_ends_at' => ['exclude_unless:is_limited_offer_countdown_active,1', 'required', 'date', 'after:now'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
             'variants' => ['nullable', 'array'],
             'variants.*.name' => ['required_with:variants', 'string', 'max:255'],
@@ -60,6 +64,9 @@ class ServiceRequest extends FormRequest
             'slug.regex' => 'المعرف المختصر يجب أن يكون بحروف لاتينية وأرقام وشرطات فقط.',
             'price.required' => 'يرجى إدخال سعر الخدمة.',
             'image.mimes' => 'الصورة يجب أن تكون بصيغة jpg أو png أو webp.',
+            'limited_offer_label.required' => 'يرجى إدخال نص شارة العرض المحدود.',
+            'limited_offer_ends_at.required' => 'يرجى تحديد موعد نهاية العد التنازلي.',
+            'limited_offer_ends_at.after' => 'موعد نهاية العد التنازلي يجب أن يكون في المستقبل.',
         ];
     }
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 class Service extends Model
 {
@@ -25,6 +26,10 @@ class Service extends Model
         'sort_order',
         'offer_image_path',
         'is_offer_active',
+        'limited_offer_label',
+        'is_limited_offer_label_active',
+        'is_limited_offer_countdown_active',
+        'limited_offer_ends_at',
         'external_product_id',
         'external_type',
         'requires_customer_id',
@@ -38,6 +43,9 @@ class Service extends Model
         'price_per_unit' => 'decimal:12',
         'is_active' => 'boolean',
         'is_offer_active' => 'boolean',
+        'is_limited_offer_label_active' => 'boolean',
+        'is_limited_offer_countdown_active' => 'boolean',
+        'limited_offer_ends_at' => 'datetime',
         'is_quantity_based' => 'boolean',
         'requires_customer_id' => 'boolean',
         'requires_amount' => 'boolean',
@@ -96,5 +104,26 @@ class Service extends Model
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function hasLimitedOfferLabel(): bool
+    {
+        return $this->is_limited_offer_label_active && filled($this->limited_offer_label);
+    }
+
+    public function hasLimitedOfferCountdown(): bool
+    {
+        return $this->is_limited_offer_countdown_active && $this->limited_offer_ends_at !== null;
+    }
+
+    public function isLimitedOfferExpired(?Carbon $referenceTime = null): bool
+    {
+        if (! $this->hasLimitedOfferCountdown()) {
+            return false;
+        }
+
+        $referenceTime ??= now();
+
+        return $this->limited_offer_ends_at->lte($referenceTime);
     }
 }

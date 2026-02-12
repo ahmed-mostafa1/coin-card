@@ -70,6 +70,42 @@ class StorefrontTest extends TestCase
             ->assertRedirect(route('login'));
     }
 
+    public function test_expired_limited_offer_deactivates_service_on_storefront(): void
+    {
+        Role::firstOrCreate(['name' => 'customer', 'guard_name' => 'web']);
+
+        $user = User::factory()->create();
+        $user->assignRole('customer');
+
+        $category = Category::create([
+            'name' => 'بطاقات الألعاب',
+            'slug' => 'gaming-expired',
+            'is_active' => true,
+        ]);
+
+        $service = Service::create([
+            'category_id' => $category->id,
+            'name' => 'خدمة منتهية',
+            'slug' => 'expired-limited-offer-service',
+            'price' => 100,
+            'is_active' => true,
+            'is_limited_offer_countdown_active' => true,
+            'limited_offer_ends_at' => now()->subMinute(),
+        ]);
+
+        $this->actingAs($user)->get('/categories/'.$category->slug)
+            ->assertStatus(200)
+            ->assertSee($service->name);
+
+        $service->refresh();
+
+        $this->assertFalse($service->is_active);
+        $this->assertFalse($service->is_limited_offer_countdown_active);
+
+        $this->actingAs($user)->get('/services/'.$service->slug)
+            ->assertStatus(404);
+    }
+
     public function test_customer_can_purchase_with_sufficient_balance(): void
     {
         Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);

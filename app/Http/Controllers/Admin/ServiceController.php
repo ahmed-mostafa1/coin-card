@@ -117,8 +117,14 @@ class ServiceController extends Controller
         $data = $request->validated();
         $data['is_active'] = $request->boolean('is_active');
         $data['is_offer_active'] = $request->boolean('is_offer_active');
+        $data['is_limited_offer_label_active'] = $request->boolean('is_limited_offer_label_active');
+        $data['is_limited_offer_countdown_active'] = $request->boolean('is_limited_offer_countdown_active');
         $data['is_quantity_based'] = $request->boolean('is_quantity_based');
         $data['sort_order'] = $data['sort_order'] ?? 0;
+
+        if (array_key_exists('limited_offer_label', $data)) {
+            $data['limited_offer_label'] = trim((string) $data['limited_offer_label']) ?: null;
+        }
 
         $slug = $data['slug'] ?? null;
         if (!$slug) {

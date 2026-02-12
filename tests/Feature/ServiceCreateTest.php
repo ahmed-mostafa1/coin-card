@@ -149,4 +149,40 @@ class ServiceCreateTest extends TestCase
             'field_id' => $fieldId,
         ]);
     }
+
+    public function test_admin_can_store_limited_time_offer_settings(): void
+    {
+        $admin = $this->makeAdmin();
+
+        $category = Category::create([
+            'name' => 'Cat',
+            'slug' => 'cat',
+            'is_active' => true,
+            'sort_order' => 0,
+        ]);
+
+        $endAt = now()->addDay()->format('Y-m-d\\TH:i');
+
+        $response = $this->actingAs($admin)->post(route('admin.services.store'), [
+            'category_id' => $category->id,
+            'name' => 'Limited Service',
+            'slug' => 'limited-service',
+            'description' => 'Desc',
+            'price' => 10,
+            'is_active' => true,
+            'is_limited_offer_label_active' => 1,
+            'limited_offer_label' => 'عرض لفترة محدودة',
+            'is_limited_offer_countdown_active' => 1,
+            'limited_offer_ends_at' => $endAt,
+            'sort_order' => 0,
+        ]);
+
+        $service = Service::where('slug', 'limited-service')->firstOrFail();
+
+        $response->assertRedirect(route('admin.services.edit', $service));
+        $this->assertTrue($service->is_limited_offer_label_active);
+        $this->assertSame('عرض لفترة محدودة', $service->limited_offer_label);
+        $this->assertTrue($service->is_limited_offer_countdown_active);
+        $this->assertNotNull($service->limited_offer_ends_at);
+    }
 }

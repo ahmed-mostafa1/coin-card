@@ -8,7 +8,6 @@ use App\Models\OrderEvent;
 use App\Models\Service;
 use App\Models\Wallet;
 use App\Notifications\NewOrderNotification;
-use App\Notifications\OrderStatusChangedNotification;
 use App\Services\NotificationService;
 use App\Services\WalletService;
 use Illuminate\Http\RedirectResponse;

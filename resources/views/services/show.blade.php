@@ -19,6 +19,10 @@
                 $vipDiscount = $currentVipTier->discount_percentage ?? 0;
             }
         }
+
+        $showLimitedOfferLabel = $service->hasLimitedOfferLabel();
+        $showLimitedOfferCountdown = $service->hasLimitedOfferCountdown();
+        $limitedOfferEndsAtIso = $service->limited_offer_ends_at?->toIso8601String();
     @endphp
 
     <div class="store-shell space-y-6">
@@ -77,6 +81,28 @@
                         <div class="space-y-1 text-center">
                             <h1 class="text-xl font-bold text-slate-900">{{ $service->localized_name }}</h1>
                             <p class="text-sm text-slate-600">{{ $service->category->localized_name }}</p>
+                            @if ($showLimitedOfferLabel || $showLimitedOfferCountdown)
+                                <div class="mt-2 flex flex-wrap items-center justify-center gap-2">
+                                    @if ($showLimitedOfferLabel)
+                                        <span class="inline-flex items-center rounded-full border border-rose-200 bg-rose-100 px-3 py-1 text-xs font-semibold text-rose-700 dark:border-rose-800 dark:bg-rose-900/40 dark:text-rose-300">
+                                            {{ $service->limited_offer_label }}
+                                        </span>
+                                    @endif
+
+                                    @if ($showLimitedOfferCountdown)
+                                        <span class="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
+                                            <span>{{ __('messages.offer_time_left') }}</span>
+                                            <span
+                                                data-limited-offer-countdown
+                                                data-end-at="{{ $limitedOfferEndsAtIso }}"
+                                                class="font-mono font-bold text-amber-700 dark:text-amber-300"
+                                            >
+                                                -- : -- : --
+                                            </span>
+                                        </span>
+                                    @endif
+                                </div>
+                            @endif
                             @if ($service->localized_description)
                                 <p class="mt-2 text-sm text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line">{{ $service->localized_description }}</p>
                             @endif
@@ -258,6 +284,61 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const countdownElement = document.querySelector('[data-limited-offer-countdown]');
+            if (!countdownElement) {
+                return;
+            }
+
+            const endAtRaw = countdownElement.dataset.endAt;
+            const endAt = endAtRaw ? new Date(endAtRaw).getTime() : Number.NaN;
+            if (Number.isNaN(endAt)) {
+                countdownElement.textContent = '-- : -- : --';
+                return;
+            }
+
+            const purchaseButton = document.getElementById('purchase-button');
+            const format = (value) => String(value).padStart(2, '0');
+
+            const render = () => {
+                const remainingMs = endAt - Date.now();
+
+                if (remainingMs <= 0) {
+                    countdownElement.textContent = '00 : 00 : 00';
+                    countdownElement.classList.remove('text-amber-700', 'dark:text-amber-300');
+                    countdownElement.classList.add('text-rose-700', 'dark:text-rose-300');
+
+                    if (purchaseButton) {
+                        purchaseButton.setAttribute('disabled', 'disabled');
+                    }
+
+                    return false;
+                }
+
+                const totalMinutes = Math.floor(remainingMs / 60000);
+                const days = Math.floor(totalMinutes / (24 * 60));
+                const hours = Math.floor((totalMinutes % (24 * 60)) / 60);
+                const minutes = totalMinutes % 60;
+
+                countdownElement.textContent = `${days} : ${format(hours)} : ${format(minutes)}`;
+                return true;
+            };
+
+            const shouldContinue = render();
+            if (!shouldContinue) {
+                return;
+            }
+
+            const intervalId = setInterval(() => {
+                if (!render()) {
+                    clearInterval(intervalId);
+                }
+            }, 1000);
+        });
+    </script>
+
     @auth
         @php
             $selectPackageMessage = __("messages.select_package_first") ?? (app()->getLocale() == "ar" ? "اختر باقة أولاً" : "Select a package first");
@@ -273,6 +354,7 @@
                 const purchaseButton = document.getElementById('purchase-button');
                 const variantInputs = document.querySelectorAll('input[name="variant_id"]');
                 const quantityInput = document.getElementById('quantity-input');
+                const countdownElement = document.querySelector('[data-limited-offer-countdown]');
                 const hasVariants = {{ $service->variants->count() ? 'true' : 'false' }};
                 const isQuantityBased = {{ $service->is_quantity_based ? 'true' : 'false' }};
                 const vipDiscount = {{ $vipDiscount }};
@@ -343,6 +425,9 @@
                 const updateState = () => {
                     const price = getSelectedPrice();
                     const originalPrice = getOriginalPrice();
+                    const countdownExpired = countdownElement
+                        ? (countdownElement.dataset.endAt ? new Date(countdownElement.dataset.endAt).getTime() <= Date.now() : false)
+                        : false;
                     
                     if (priceElement) {
                         if (price !== null) {
@@ -375,11 +460,13 @@
                         return;
                     }
 
-                    if (price === null || availableBalance < price) {
+                    if (countdownExpired || price === null || availableBalance < price) {
                         purchaseButton.setAttribute('disabled', 'disabled');
                         if (insufficientMessage) {
-                            if (price !== null) {
+                            if (!countdownExpired && price !== null) {
                                 insufficientMessage.classList.remove('hidden');
+                            } else if (countdownExpired) {
+                                insufficientMessage.classList.add('hidden');
                             }
                         }
                     } else {
