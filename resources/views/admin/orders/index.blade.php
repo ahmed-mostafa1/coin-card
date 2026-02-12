@@ -7,22 +7,48 @@
     <x-card :hover="false">
         <x-page-header title="الطلبات" subtitle="متابعة طلبات الخدمات." />
 
-        <form class="mt-6 flex flex-wrap gap-3" method="GET">
-            <x-select name="status">
-                <option value="">كل الحالات</option>
-                <option value="new" @selected(request('status') === 'new')>جديد</option>
-                <option value="processing" @selected(request('status') === 'processing')>قيد التنفيذ</option>
-                <option value="done" @selected(request('status') === 'done')>تم التنفيذ</option>
-                <option value="rejected" @selected(request('status') === 'rejected')>مرفوض</option>
-                <option value="cancelled" @selected(request('status') === 'cancelled')>ملغي</option>
-            </x-select>
-            <x-text-input name="q" value="{{ request('q') }}" placeholder="بحث بالبريد أو الاسم" />
-            <x-button type="submit">تصفية</x-button>
-        </form>
+        <div class="mt-6 flex flex-wrap items-center justify-between gap-3">
+            <form class="flex flex-wrap gap-3" method="GET">
+                <x-select name="status">
+                    <option value="">كل الحالات</option>
+                    <option value="new" @selected(request('status') === 'new')>جديد</option>
+                    <option value="processing" @selected(request('status') === 'processing')>قيد التنفيذ</option>
+                    <option value="done" @selected(request('status') === 'done')>تم التنفيذ</option>
+                    <option value="rejected" @selected(request('status') === 'rejected')>مرفوض</option>
+                    <option value="cancelled" @selected(request('status') === 'cancelled')>ملغي</option>
+                </x-select>
+                <x-text-input name="q" value="{{ request('q') }}" placeholder="بحث بالبريد أو الاسم" />
+                <x-button type="submit">تصفية</x-button>
+            </form>
+
+            <form method="POST" action="{{ route('admin.orders.sync-marketcard99-statuses') }}">
+                @csrf
+                <x-button type="submit" variant="secondary">مزامنة حالات MarketCard99</x-button>
+            </form>
+        </div>
 
         @if (session('status'))
             <div class="mt-6 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400">
                 {{ session('status') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="mt-4 rounded-xl border border-rose-200 dark:border-rose-800 bg-rose-50 dark:bg-rose-900/30 px-4 py-3 text-sm text-rose-700 dark:text-rose-400">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        @if (session('orders_result'))
+            @php($result = session('orders_result'))
+            <div class="mt-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/30 px-4 py-3 text-xs text-slate-700 dark:text-slate-300">
+                <span>مرشحة: {{ $result['total_candidates'] ?? 0 }}</span>
+                <span class="mx-2">|</span>
+                <span>محدّثة: {{ $result['synced'] ?? 0 }}</span>
+                <span class="mx-2">|</span>
+                <span>بدون تغيير: {{ $result['unchanged'] ?? 0 }}</span>
+                <span class="mx-2">|</span>
+                <span>فاشلة: {{ $result['failed'] ?? 0 }}</span>
             </div>
         @endif
 
