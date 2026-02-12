@@ -30,19 +30,19 @@
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
             font-size: clamp(1.05rem, 3.2vw, 1.6rem);
             font-weight: 700;
-            line-height: 1;
+            line-height: 0.75;
             letter-spacing: 0.1em;
             text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85), 0 0 10px rgba(179, 0, 16, 0.2);
         }
 
         .offer-countdown__label {
             display: block;
-            margin-top: 0.2rem;
-            padding-top: 0.2rem;
+            /* margin-top: 0.2rem;
+            padding-top: 0.2rem; */
             border-top: 2px solid #d82929;
             font-size: clamp(0.62rem, 2vw, 0.9rem);
             font-weight: 700;
-            line-height: 1;
+            line-height: 0.75;
             color: #b30010;
         }
 
