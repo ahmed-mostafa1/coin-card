@@ -4,21 +4,31 @@ namespace App\Services;
 
 use Carbon\Carbon;
 use Illuminate\Http\Client\PendingRequest;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class MarketCard99Client
 {
+    private const TOKEN_CACHE_KEY = 'marketcard99:auth:token';
+
     private string $baseUrl;
-    private ?string $token;
+    private ?string $staticToken;
+    private ?string $username;
+    private ?string $password;
+    private int $tokenCacheTtlMinutes;
     private int $timeout;
     private int $retryTimes;
     private int $retryDelay;
+    private ?string $resolvedToken = null;
 
     public function __construct()
     {
         $this->baseUrl = rtrim((string) config('services.marketcard99.base_url', 'https://app.market-card99.com'), '/');
-        $this->token = config('services.marketcard99.token');
+        $this->staticToken = config('services.marketcard99.token');
+        $this->username = config('services.marketcard99.username');
+        $this->password = config('services.marketcard99.password');
+        $this->tokenCacheTtlMinutes = (int) config('services.marketcard99.token_cache_ttl_minutes', 1440);
         $this->timeout = (int) config('services.marketcard99.timeout', 25);
         $this->retryTimes = (int) config('services.marketcard99.retry_times', 2);
         $this->retryDelay = (int) config('services.marketcard99.retry_delay_ms', 500);
@@ -50,8 +60,8 @@ class MarketCard99Client
      */
     public function createBill(array $payload): array
     {
-        if (blank($this->token)) {
-            return $this->errorResult(null, 'MARKETCARD99_TOKEN is missing');
+        if (!$this->hasConfiguredAuth()) {
+            return $this->errorResult(null, 'MarketCard99 auth is missing. Set MARKETCARD99_USERNAME/PASSWORD or MARKETCARD99_TOKEN.');
         }
 
         $multipart = [];
@@ -67,9 +77,23 @@ class MarketCard99Client
         }
 
         try {
-            $response = $this->buildRequest(true)
+            $token = $this->getAccessToken();
+            if (blank($token)) {
+                return $this->errorResult(null, 'Unable to get MarketCard99 access token.');
+            }
+
+            $response = $this->buildRequest(true, $token)
                 ->asMultipart()
                 ->post($this->url('/api/v2/bills'), $multipart);
+
+            if ($response->status() === 401 && $this->canUseCredentialLogin()) {
+                $token = $this->getAccessToken(true);
+                if (filled($token)) {
+                    $response = $this->buildRequest(true, $token)
+                        ->asMultipart()
+                        ->post($this->url('/api/v2/bills'), $multipart);
+                }
+            }
 
             if ($response->successful()) {
                 return [
@@ -188,12 +212,28 @@ class MarketCard99Client
 
     private function requestJson(string $method, string $path, bool $requiresAuth = false): array
     {
-        if ($requiresAuth && blank($this->token)) {
-            return $this->errorResult(null, 'MARKETCARD99_TOKEN is missing');
+        if ($requiresAuth && !$this->hasConfiguredAuth()) {
+            return $this->errorResult(null, 'MarketCard99 auth is missing. Set MARKETCARD99_USERNAME/PASSWORD or MARKETCARD99_TOKEN.');
         }
 
         try {
-            $response = $this->buildRequest($requiresAuth)->send(strtoupper($method), $this->url($path));
+            $response = null;
+            if ($requiresAuth) {
+                $token = $this->getAccessToken();
+                if (blank($token)) {
+                    return $this->errorResult(null, 'Unable to get MarketCard99 access token.');
+                }
+
+                $response = $this->buildRequest(true, $token)->send(strtoupper($method), $this->url($path));
+                if ($response->status() === 401 && $this->canUseCredentialLogin()) {
+                    $token = $this->getAccessToken(true);
+                    if (filled($token)) {
+                        $response = $this->buildRequest(true, $token)->send(strtoupper($method), $this->url($path));
+                    }
+                }
+            } else {
+                $response = $this->buildRequest(false)->send(strtoupper($method), $this->url($path));
+            }
 
             if ($response->successful()) {
                 return [
@@ -223,12 +263,15 @@ class MarketCard99Client
         }
     }
 
-    private function buildRequest(bool $withToken): PendingRequest
+    private function buildRequest(bool $withToken, ?string $token = null): PendingRequest
     {
         $request = Http::timeout($this->timeout)->retry($this->retryTimes, $this->retryDelay);
 
         if ($withToken) {
-            $request = $request->withToken((string) $this->token);
+            $token ??= $this->getAccessToken();
+            if (filled($token)) {
+                $request = $request->withToken((string) $token);
+            }
         }
 
         return $request;
@@ -277,5 +320,102 @@ class MarketCard99Client
 
         return [];
     }
-}
 
+    private function hasConfiguredAuth(): bool
+    {
+        return $this->canUseCredentialLogin() || filled($this->staticToken);
+    }
+
+    private function canUseCredentialLogin(): bool
+    {
+        return filled($this->username) && filled($this->password);
+    }
+
+    private function getAccessToken(bool $forceRefresh = false): ?string
+    {
+        if (!$forceRefresh && filled($this->resolvedToken)) {
+            return $this->resolvedToken;
+        }
+
+        if ($forceRefresh) {
+            $this->resolvedToken = null;
+            Cache::forget(self::TOKEN_CACHE_KEY);
+        }
+
+        if (!$forceRefresh) {
+            $cached = Cache::get(self::TOKEN_CACHE_KEY);
+            if (is_string($cached) && filled($cached)) {
+                $this->resolvedToken = $cached;
+                return $this->resolvedToken;
+            }
+        }
+
+        if ($this->canUseCredentialLogin()) {
+            $loginToken = $this->loginAndGetToken();
+            if (filled($loginToken)) {
+                $ttl = max($this->tokenCacheTtlMinutes, 1);
+                Cache::put(self::TOKEN_CACHE_KEY, $loginToken, now()->addMinutes($ttl));
+                $this->resolvedToken = $loginToken;
+                return $this->resolvedToken;
+            }
+        }
+
+        if (filled($this->staticToken)) {
+            $this->resolvedToken = (string) $this->staticToken;
+            return $this->resolvedToken;
+        }
+
+        return null;
+    }
+
+    private function loginAndGetToken(): ?string
+    {
+        try {
+            $response = Http::timeout($this->timeout)
+                ->retry($this->retryTimes, $this->retryDelay)
+                ->asMultipart()
+                ->post($this->url('/api/v2/login'), [
+                    ['name' => 'username', 'contents' => (string) $this->username],
+                    ['name' => 'password', 'contents' => (string) $this->password],
+                ]);
+
+            if (!$response->successful()) {
+                Log::error('MarketCard99: Login failed', [
+                    'status' => $response->status(),
+                    'body' => $response->body(),
+                ]);
+
+                return null;
+            }
+
+            $payload = $response->json();
+            $token = $this->extractTokenFromLoginPayload($payload);
+
+            if (blank($token)) {
+                Log::error('MarketCard99: Login response does not contain token', [
+                    'payload' => $payload,
+                ]);
+                return null;
+            }
+
+            return $token;
+        } catch (\Throwable $e) {
+            Log::error('MarketCard99: Login exception', [
+                'error' => $e->getMessage(),
+            ]);
+            return null;
+        }
+    }
+
+    private function extractTokenFromLoginPayload(mixed $payload): ?string
+    {
+        if (!is_array($payload)) {
+            return null;
+        }
+
+        $token = data_get($payload, 'data.token')
+            ?? data_get($payload, 'token');
+
+        return is_string($token) && filled($token) ? $token : null;
+    }
+}

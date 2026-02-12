@@ -10,9 +10,60 @@
             margin-inline: auto;
         }
 
+        .offer-countdown {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            direction: ltr;
+        }
+
+        .offer-countdown__unit {
+            min-width: 4.4rem;
+            text-align: center;
+            color: #b30010;
+        }
+
+        .offer-countdown__value {
+            display: block;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: clamp(1.65rem, 5.5vw, 3rem);
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: 0.16em;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85), 0 0 10px rgba(179, 0, 16, 0.2);
+        }
+
+        .offer-countdown__label {
+            display: block;
+            margin-top: 0.35rem;
+            padding-top: 0.35rem;
+            border-top: 4px solid #d82929;
+            font-size: clamp(0.75rem, 2.8vw, 1.25rem);
+            font-weight: 700;
+            line-height: 1;
+            color: #b30010;
+        }
+
         @media (max-width: 639px) {
             .service-mobile-80 {
                 width: 80% !important;
+            }
+
+            .offer-countdown {
+                gap: 0.45rem;
+            }
+
+            .offer-countdown__unit {
+                min-width: 3.2rem;
+            }
+
+            .offer-countdown__value {
+                font-size: clamp(1.35rem, 8vw, 2.05rem);
+                letter-spacing: 0.12em;
+            }
+
+            .offer-countdown__label {
+                font-size: clamp(0.72rem, 3.4vw, 0.95rem);
             }
         }
     </style>
@@ -36,6 +87,9 @@
         $showLimitedOfferLabel = $service->hasLimitedOfferLabel();
         $showLimitedOfferCountdown = $service->hasLimitedOfferCountdown();
         $limitedOfferEndsAtIso = $service->limited_offer_ends_at?->toIso8601String();
+        $countdownLabels = app()->getLocale() === 'ar'
+            ? ['days' => 'أيام', 'hours' => 'ساعات', 'minutes' => 'دقائق', 'seconds' => 'ثواني']
+            : ['days' => 'Days', 'hours' => 'Hours', 'minutes' => 'Minutes', 'seconds' => 'Seconds'];
     @endphp
 
     <div class="store-shell space-y-6">
@@ -103,16 +157,26 @@
                                     @endif
 
                                     @if ($showLimitedOfferCountdown)
-                                        <span class="inline-flex flex-col items-center gap-1  border border-slate-200 bg-slate-100 px-3 py-1 text-s font-semibold text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
-                                            <span
-                                                data-limited-offer-countdown
-                                                data-end-at="{{ $limitedOfferEndsAtIso }}"
-                                                class="font-mono font-bold text-amber-700 dark:text-amber-300"
-                                            >
-                                                -- : -- : --
-                                            </span>
-                                            <span class="text-xs text-slate-500 dark:text-slate-400">{{ __('messages.days_hours_minutes') }}</span>
-                                        </span>
+                                        <div class="w-full rounded-lg border border-slate-200 bg-slate-100 px-3 py-2 dark:border-slate-700 dark:bg-slate-800">
+                                            <div class="offer-countdown" data-limited-offer-countdown data-end-at="{{ $limitedOfferEndsAtIso }}">
+                                                <div class="offer-countdown__unit">
+                                                    <span class="offer-countdown__value" data-countdown-days>---</span>
+                                                    <span class="offer-countdown__label">{{ $countdownLabels['days'] }}</span>
+                                                </div>
+                                                <div class="offer-countdown__unit">
+                                                    <span class="offer-countdown__value" data-countdown-hours>--</span>
+                                                    <span class="offer-countdown__label">{{ $countdownLabels['hours'] }}</span>
+                                                </div>
+                                                <div class="offer-countdown__unit">
+                                                    <span class="offer-countdown__value" data-countdown-minutes>--</span>
+                                                    <span class="offer-countdown__label">{{ $countdownLabels['minutes'] }}</span>
+                                                </div>
+                                                <div class="offer-countdown__unit">
+                                                    <span class="offer-countdown__value" data-countdown-seconds>--</span>
+                                                    <span class="offer-countdown__label">{{ $countdownLabels['seconds'] }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     @endif
                                 </div>
                             @endif
@@ -336,10 +400,21 @@
                 return;
             }
 
+            const daysElement = countdownElement.querySelector('[data-countdown-days]');
+            const hoursElement = countdownElement.querySelector('[data-countdown-hours]');
+            const minutesElement = countdownElement.querySelector('[data-countdown-minutes]');
+            const secondsElement = countdownElement.querySelector('[data-countdown-seconds]');
             const endAtRaw = countdownElement.dataset.endAt;
             const endAt = endAtRaw ? new Date(endAtRaw).getTime() : Number.NaN;
+            const setCountdown = ({ days = '--', hours = '--', minutes = '--', seconds = '--' }) => {
+                if (daysElement) daysElement.textContent = days;
+                if (hoursElement) hoursElement.textContent = hours;
+                if (minutesElement) minutesElement.textContent = minutes;
+                if (secondsElement) secondsElement.textContent = seconds;
+            };
+
             if (Number.isNaN(endAt)) {
-                countdownElement.textContent = '-- : -- : --';
+                setCountdown({});
                 return;
             }
 
@@ -350,9 +425,7 @@
                 const remainingMs = endAt - Date.now();
 
                 if (remainingMs <= 0) {
-                    countdownElement.textContent = '00 : 00 : 00';
-                    countdownElement.classList.remove('text-amber-700', 'dark:text-amber-300');
-                    countdownElement.classList.add('text-rose-700', 'dark:text-rose-300');
+                    setCountdown({ days: '000', hours: '00', minutes: '00', seconds: '00' });
 
                     if (purchaseButton) {
                         purchaseButton.setAttribute('disabled', 'disabled');
@@ -361,12 +434,18 @@
                     return false;
                 }
 
-                const totalMinutes = Math.floor(remainingMs / 60000);
-                const days = Math.floor(totalMinutes / (24 * 60));
-                const hours = Math.floor((totalMinutes % (24 * 60)) / 60);
-                const minutes = totalMinutes % 60;
+                const totalSeconds = Math.floor(remainingMs / 1000);
+                const days = Math.floor(totalSeconds / (24 * 60 * 60));
+                const hours = Math.floor((totalSeconds % (24 * 60 * 60)) / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = totalSeconds % 60;
 
-                countdownElement.textContent = `${days} : ${format(hours)} : ${format(minutes)}`;
+                setCountdown({
+                    days: String(days).padStart(3, '0'),
+                    hours: format(hours),
+                    minutes: format(minutes),
+                    seconds: format(seconds),
+                });
                 return true;
             };
 
