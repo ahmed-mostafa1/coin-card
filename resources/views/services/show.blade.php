@@ -22,9 +22,13 @@
     @endphp
 
     <div class="store-shell space-y-6">
-        <x-store.hero :banners="$sharedBanners" :alt="$service->localized_name" />
+        <div class="w-full sm:w-4/5 sm:mx-auto">
+            <x-store.hero :banners="$sharedBanners" :alt="$service->localized_name" />
+        </div>
 
-        <x-store.notice :text="$sharedTickerText" />
+        <div class="w-full sm:w-4/5 sm:mx-auto">
+            <x-store.notice :text="$sharedTickerText" />
+        </div>
 
         <div class="w-full sm:w-4/5 sm:mx-auto flex flex-col gap-4">
             @if ($service->is_offer_active)

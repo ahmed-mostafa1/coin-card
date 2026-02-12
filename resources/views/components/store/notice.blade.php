@@ -7,7 +7,7 @@
         : ($text ?? $sharedTickerText ?? '');
 @endphp
 
-<div class="store-pill w-4/5 mx-auto">
+<div class="store-pill w-full">
     <span class="inline-block h-2 w-2 rounded-full bg-slate-400"></span>
     <div class="relative flex-1 overflow-hidden whitespace-nowrap">
         <span class="store-ticker-track">{{ $displayText }}</span>

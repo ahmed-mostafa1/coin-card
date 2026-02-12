@@ -5,9 +5,13 @@
 
 @section('content')
     <div class="store-shell space-y-6">
-        <x-store.hero :banners="$sharedBanners" :alt="$category->localized_name" />
+        <div class="w-full px-3 lg:w-4/5 lg:mx-auto">
+            <x-store.hero :banners="$sharedBanners" :alt="$category->localized_name" />
+        </div>
 
-        <x-store.notice :text="$sharedTickerText" />
+        <div class="w-full px-3 lg:w-4/5 lg:mx-auto">
+            <x-store.notice :text="$sharedTickerText" />
+        </div>
 
         @if ($hasChildren)
             <div class="w-full px-3 lg:w-4/5 lg:mx-auto space-y-4">
