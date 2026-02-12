@@ -30,22 +30,6 @@
                     <x-store.search-bar :placeholder="__('messages.search_products_placeholder')" target="products" :value="$search" />
                 </form>
 
-                {{-- Debug: Show service counts --}}
-                @if(config('app.debug'))
-                    <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4">
-                        <strong>Debug Info:</strong><br>
-                        Total services: {{ $services->count() }}<br>
-                        Quantity-based: {{ $services->where('is_quantity_based', true)->count() }}<br>
-                        Regular: {{ $services->where('is_quantity_based', false)->count() }}<br>
-                        With variants: {{ $services->filter(fn($s) => $s->variants->count() > 0)->count() }}<br>
-                        @foreach($services as $s)
-                            - {{ $s->name }} (ID: {{ $s->id }}, Qty-based: {{ $s->is_quantity_based ? 'Yes' : 'No' }}, 
-                            Price: {{ $s->price }}, Price/Unit: {{ $s->price_per_unit }}, 
-                            Variants: {{ $s->variants->count() }})<br>
-                        @endforeach
-                    </div>
-                @endif
-
                 <div class="grid gap-2 sm:gap-3 lg:gap-4 grid-cols-2 lg:grid-cols-5" data-filter-list="products">
                     @forelse ($services as $service)
                         <x-store.product-card :service="$service" searchTarget="products" />
