@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateOrderStatusRequest;
 use App\Models\Order;
-use App\Services\MarketCard99OrderSyncService;
 use App\Services\OrderStatusService;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -55,22 +53,5 @@ class OrderController extends Controller
 
         return redirect()->route('admin.orders.show', $order)
             ->with('status', 'تم تحديث حالة الطلب.');
-    }
-
-    public function syncMarketCard99Statuses(Request $request, MarketCard99OrderSyncService $orderSyncService): RedirectResponse
-    {
-        $result = $orderSyncService->sync($request->user());
-
-        if (!($result['ok'] ?? false)) {
-            return redirect()
-                ->route('admin.orders.index')
-                ->with('error', $result['message'] ?? 'فشلت مزامنة حالات الطلبات.')
-                ->with('orders_result', $result);
-        }
-
-        return redirect()
-            ->route('admin.orders.index')
-            ->with('status', 'تمت مزامنة حالات طلبات MarketCard99 بنجاح.')
-            ->with('orders_result', $result);
     }
 }

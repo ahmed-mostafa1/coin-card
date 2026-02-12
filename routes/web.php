@@ -249,7 +249,6 @@ Route::middleware(['auth', 'not_banned', 'role:admin'])->prefix('admin')->name('
     Route::delete('services/{service}/fields/{field}/options/{option}', [AdminServiceFormFieldController::class, 'destroyOption'])->name('services.fields.options.destroy');
 
     Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
-    Route::post('/orders/sync-marketcard99-statuses', [AdminOrderController::class, 'syncMarketCard99Statuses'])->name('orders.sync-marketcard99-statuses');
     Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
     Route::put('/orders/{order}', [AdminOrderController::class, 'update'])->name('orders.update');
 });
