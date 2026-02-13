@@ -168,11 +168,11 @@
     }
 
     .store-search {
-        @apply w-full rounded-full border border-slate-300 bg-white px-5 py-3 text-sm text-slate-700 shadow-inner outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-300;
+        @apply w-full rounded-full border border-slate-300 bg-slate-100 px-5 py-2.5 text-sm text-slate-700 outline-none placeholder:text-slate-500 focus:border-emerald-400 focus:bg-white focus:ring-2 focus:ring-emerald-300;
     }
 
     .dark .store-search {
-        @apply border-slate-600 bg-slate-800 text-slate-200 focus:border-emerald-500 focus:ring-emerald-600;
+        @apply border-slate-600 bg-slate-800 text-slate-200 placeholder:text-slate-400 focus:border-emerald-500 focus:bg-slate-800 focus:ring-emerald-600;
     }
 
     .store-card {
