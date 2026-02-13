@@ -25,7 +25,7 @@ class MarketCard99CatalogSyncService
     {
         $lock = Cache::lock(self::LOCK_KEY, 900);
 
-        if (!$lock->get()) {
+        if (! $lock->get()) {
             return [
                 'ok' => false,
                 'message' => 'عملية مزامنة أخرى قيد التنفيذ حالياً.',
@@ -37,8 +37,10 @@ class MarketCard99CatalogSyncService
             'ok' => true,
             'started_at' => $now->toDateTimeString(),
             'categories_created' => 0,
+            'categories_skipped' => 0,
             'categories_updated' => 0,
             'services_created' => 0,
+            'services_skipped' => 0,
             'services_updated' => 0,
             'services_deactivated' => 0,
             'categories_deactivated' => 0,
@@ -47,17 +49,17 @@ class MarketCard99CatalogSyncService
 
         try {
             $categoriesResponse = $this->client->getCategories();
-            if (!($categoriesResponse['ok'] ?? false)) {
+            if (! ($categoriesResponse['ok'] ?? false)) {
                 return $this->finalizeWithFailure($summary, $categoriesResponse['error_message'] ?? 'فشل جلب التصنيفات');
             }
 
             $remoteParents = data_get($categoriesResponse['data'], 'data.categories', []);
-            if (!is_array($remoteParents)) {
+            if (! is_array($remoteParents)) {
                 $remoteParents = [];
             }
 
             foreach ($remoteParents as $order => $parentData) {
-                if (!isset($parentData['id'])) {
+                if (! isset($parentData['id'])) {
                     $summary['errors'][] = 'تم تجاهل تصنيف رئيسي بدون ID.';
                     continue;
                 }
@@ -70,21 +72,21 @@ class MarketCard99CatalogSyncService
                     $order
                 );
 
-                $summary[$parentResult['created'] ? 'categories_created' : 'categories_updated']++;
+                $summary[$parentResult['created'] ? 'categories_created' : 'categories_skipped']++;
 
                 $subResponse = $this->client->getSubCategories((int) $parentData['id']);
-                if (!($subResponse['ok'] ?? false)) {
+                if (! ($subResponse['ok'] ?? false)) {
                     $summary['errors'][] = "فشل جلب التصنيفات الفرعية للتصنيف {$parentData['id']}.";
                     continue;
                 }
 
                 $remoteChildren = data_get($subResponse['data'], 'data.categories', []);
-                if (!is_array($remoteChildren)) {
+                if (! is_array($remoteChildren)) {
                     $remoteChildren = [];
                 }
 
                 foreach ($remoteChildren as $childOrder => $childData) {
-                    if (!isset($childData['id'])) {
+                    if (! isset($childData['id'])) {
                         $summary['errors'][] = 'تم تجاهل تصنيف فرعي بدون ID.';
                         continue;
                     }
@@ -97,21 +99,21 @@ class MarketCard99CatalogSyncService
                         $childOrder
                     );
 
-                    $summary[$childResult['created'] ? 'categories_created' : 'categories_updated']++;
+                    $summary[$childResult['created'] ? 'categories_created' : 'categories_skipped']++;
 
                     $productsResponse = $this->client->getProductsByDepartment((int) $childData['id']);
-                    if (!($productsResponse['ok'] ?? false)) {
+                    if (! ($productsResponse['ok'] ?? false)) {
                         $summary['errors'][] = "فشل جلب المنتجات للقسم {$childData['id']}.";
                         continue;
                     }
 
                     $products = data_get($productsResponse['data'], 'data.products', []);
-                    if (!is_array($products)) {
+                    if (! is_array($products)) {
                         $products = [];
                     }
 
                     foreach ($products as $productOrder => $product) {
-                        if (!isset($product['id'])) {
+                        if (! isset($product['id'])) {
                             $summary['errors'][] = 'تم تجاهل منتج بدون ID.';
                             continue;
                         }
@@ -122,24 +124,10 @@ class MarketCard99CatalogSyncService
                             $productOrder
                         );
 
-                        $summary[$serviceResult['created'] ? 'services_created' : 'services_updated']++;
+                        $summary[$serviceResult['created'] ? 'services_created' : 'services_skipped']++;
                     }
                 }
             }
-
-            $summary['categories_deactivated'] = Category::query()
-                ->where('source', Category::SOURCE_MARKETCARD99)
-                ->whereNotNull('last_seen_at')
-                ->where('last_seen_at', '<', $now)
-                ->where('is_active', true)
-                ->update(['is_active' => false]);
-
-            $summary['services_deactivated'] = Service::query()
-                ->where('source', Service::SOURCE_MARKETCARD99)
-                ->whereNotNull('last_seen_at')
-                ->where('last_seen_at', '<', $now)
-                ->where('is_active', true)
-                ->update(['is_active' => false]);
 
             $summary['finished_at'] = now()->toDateTimeString();
             Cache::put(self::CACHE_SUMMARY_KEY, $summary, now()->addDay());
@@ -185,21 +173,33 @@ class MarketCard99CatalogSyncService
         array $remote,
         int $sortOrder
     ): array {
+        $slugPrefix = $externalType === 'category' ? 'mc99-cat-' : 'mc99-dept-';
+        $slug = $slugPrefix.$externalId;
+
         $category = Category::query()
-            ->where('source', Category::SOURCE_MARKETCARD99)
-            ->where('external_type', $externalType)
-            ->where('external_id', $externalId)
+            ->where(function ($query) use ($externalType, $externalId, $slug) {
+                $query->where(function ($q) use ($externalType, $externalId) {
+                    $q->where('source', Category::SOURCE_MARKETCARD99)
+                        ->where('external_type', $externalType)
+                        ->where('external_id', $externalId);
+                })->orWhere('slug', $slug);
+            })
             ->first();
 
-        $isCreated = !$category;
-        $slugPrefix = $externalType === 'category' ? 'mc99-cat-' : 'mc99-dept-';
+        if ($category) {
+            return [
+                'category' => $category,
+                'created' => false,
+            ];
+        }
+
         $data = [
             'parent_id' => $parentId,
             'source' => Category::SOURCE_MARKETCARD99,
             'external_type' => $externalType,
             'external_id' => $externalId,
             'name' => (string) ($remote['name'] ?? "قسم {$externalId}"),
-            'slug' => $slugPrefix.$externalId,
+            'slug' => $slug,
             'is_active' => (bool) ($remote['is_available'] ?? true),
             'sort_order' => $sortOrder,
             'last_seen_at' => now(),
@@ -210,15 +210,11 @@ class MarketCard99CatalogSyncService
             $data['image_path'] = $imagePath;
         }
 
-        if ($category) {
-            $category->fill($data)->save();
-        } else {
-            $category = Category::create($data);
-        }
+        $category = Category::create($data);
 
         return [
             'category' => $category,
-            'created' => $isCreated,
+            'created' => true,
         ];
     }
 
@@ -228,12 +224,24 @@ class MarketCard99CatalogSyncService
     private function upsertService(Category $category, array $product, int $sortOrder): array
     {
         $externalProductId = (int) $product['id'];
+        $slug = 'mc99-svc-'.$externalProductId;
+
         $service = Service::query()
-            ->where('source', Service::SOURCE_MARKETCARD99)
-            ->where('external_product_id', $externalProductId)
+            ->where(function ($query) use ($externalProductId, $slug) {
+                $query->where(function ($q) use ($externalProductId) {
+                    $q->where('source', Service::SOURCE_MARKETCARD99)
+                        ->where('external_product_id', $externalProductId);
+                })->orWhere('slug', $slug);
+            })
             ->first();
 
-        $isCreated = !$service;
+        if ($service) {
+            return [
+                'service' => $service,
+                'created' => false,
+            ];
+        }
+
         $providerPrice = $this->normalizeDecimal($product['price'] ?? null);
         $providerUnitPrice = $this->normalizeDecimal($product['unit_price'] ?? null);
         $initialPrice = $providerPrice > 0 ? $providerPrice : $providerUnitPrice;
@@ -243,7 +251,7 @@ class MarketCard99CatalogSyncService
             'category_id' => $category->id,
             'source' => Service::SOURCE_MARKETCARD99,
             'name' => (string) ($product['name'] ?? "منتج {$externalProductId}"),
-            'slug' => 'mc99-svc-'.$externalProductId,
+            'slug' => $slug,
             'description' => isset($product['info']) ? (string) $product['info'] : null,
             'external_product_id' => $externalProductId,
             'external_type' => isset($product['type']) ? (string) $product['type'] : null,
@@ -261,28 +269,18 @@ class MarketCard99CatalogSyncService
             $data['image_path'] = $imagePath;
         }
 
-        if ($service) {
-            if ($service->sync_rule_mode === Service::SYNC_RULE_AUTO || blank($service->sync_rule_mode)) {
-                $data = array_merge($data, $this->deriveSyncRules($product, $service->requires_purchase_password));
-            }
-            $data['is_active'] = $providerIsAvailable && $service->price > 0;
-            $service->fill($data)->save();
-        } else {
-            $derivedRules = $this->deriveSyncRules($product, false);
-            $service = Service::create(array_merge($data, $derivedRules, [
-                'price' => $initialPrice > 0 ? $initialPrice : 0,
-                'is_active' => $providerIsAvailable && $initialPrice > 0,
-                'sync_rule_mode' => Service::SYNC_RULE_AUTO,
-            ]));
-        }
+        $derivedRules = $this->deriveSyncRules($product, false);
+        $service = Service::create(array_merge($data, $derivedRules, [
+            'price' => $initialPrice > 0 ? $initialPrice : 0,
+            'is_active' => $providerIsAvailable && $initialPrice > 0,
+            'sync_rule_mode' => Service::SYNC_RULE_AUTO,
+        ]));
 
-        if ($service->sync_rule_mode === Service::SYNC_RULE_AUTO) {
-            $this->syncReservedFields($service);
-        }
+        $this->syncReservedFields($service);
 
         return [
             'service' => $service,
-            'created' => $isCreated,
+            'created' => true,
         ];
     }
 
@@ -329,7 +327,7 @@ class MarketCard99CatalogSyncService
         ];
 
         foreach ($reserved as $nameKey => $meta) {
-            if (!$meta['enabled']) {
+            if (! $meta['enabled']) {
                 ServiceFormField::query()
                     ->where('service_id', $service->id)
                     ->where('name_key', $nameKey)
@@ -366,13 +364,13 @@ class MarketCard99CatalogSyncService
 
     private function storeRemoteImage(mixed $url, string $directory): ?string
     {
-        if (!is_string($url) || blank($url)) {
+        if (! is_string($url) || blank($url)) {
             return null;
         }
 
         try {
             $response = Http::timeout(20)->get($url);
-            if (!$response->successful()) {
+            if (! $response->successful()) {
                 return null;
             }
 

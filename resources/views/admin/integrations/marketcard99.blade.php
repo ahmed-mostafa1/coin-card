@@ -50,8 +50,10 @@
                         <p>بدأت: {{ $catalog['started_at'] ?? '-' }}</p>
                         <p>انتهت: {{ $catalog['finished_at'] ?? '-' }}</p>
                         <p>تصنيفات جديدة: {{ $catalog['categories_created'] ?? 0 }}</p>
+                        <p>تصنيفات متخطاة (موجودة): {{ $catalog['categories_skipped'] ?? 0 }}</p>
                         <p>تصنيفات محدثة: {{ $catalog['categories_updated'] ?? 0 }}</p>
                         <p>خدمات جديدة: {{ $catalog['services_created'] ?? 0 }}</p>
+                        <p>خدمات متخطاة (موجودة): {{ $catalog['services_skipped'] ?? 0 }}</p>
                         <p>خدمات محدثة: {{ $catalog['services_updated'] ?? 0 }}</p>
                         <p>تصنيفات معطلة: {{ $catalog['categories_deactivated'] ?? 0 }}</p>
                         <p>خدمات معطلة: {{ $catalog['services_deactivated'] ?? 0 }}</p>
@@ -104,4 +106,3 @@
         </div>
     </div>
 @endsection
-
