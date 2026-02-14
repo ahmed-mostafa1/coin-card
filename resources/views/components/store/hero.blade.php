@@ -12,7 +12,7 @@
     }
 @endphp
 
-<div class="relative w-full overflow-hidden rounded-xl border border-slate-300 bg-gradient-to-tr from-slate-800 via-slate-700 to-slate-600 shadow-md {{ $height }}"
+<div class="relative w-full overflow-hidden rounded-xl border border-slate-300 bg-gradient-to-tr from-slate-800 via-slate-700 to-slate-600 shadow-md"
     dir="ltr" data-hero-slider>
     @if($bannerItems->isNotEmpty())
         <div class="flex h-full w-full transition-transform duration-700 ease-in-out" data-hero-track dir="ltr">
