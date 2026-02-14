@@ -10,7 +10,24 @@
                 <h1 class="text-2xl font-semibold text-emerald-700 dark:text-emerald-400">التصنيفات</h1>
                 <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">إدارة التصنيفات الرئيسية والفرعية.</p>
             </div>
-            <a href="{{ route('admin.categories.create') }}" class="rounded-full bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700">إضافة تصنيف</a>
+            <div class="flex items-center gap-4">
+                <form action="{{ route('admin.categories.index') }}" method="GET" class="flex items-center gap-2">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="بحث بالاسم أو المعرف..." class="rounded-lg border-slate-200 dark:border-slate-700 text-sm focus:border-emerald-500 focus:ring-emerald-500 dark:bg-slate-900 dark:text-white">
+                    <button type="submit" class="rounded-lg bg-emerald-600 p-2 text-white hover:bg-emerald-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                        </svg>
+                    </button>
+                    @if(request('search'))
+                        <a href="{{ route('admin.categories.index') }}" class="rounded-lg bg-slate-200 p-2 text-slate-600 hover:bg-slate-300 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                            </svg>
+                        </a>
+                    @endif
+                </form>
+                <a href="{{ route('admin.categories.create') }}" class="rounded-full bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700">إضافة تصنيف</a>
+            </div>
         </div>
 
         @if (session('status'))
@@ -69,5 +86,8 @@
                 @endforelse
             </tbody>
         </x-table>
+        <div class="mt-4">
+            {{ $categories->links() }}
+        </div>
     </div>
 @endsection

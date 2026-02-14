@@ -22,8 +22,6 @@ php artisan optimize
 
 
 
-
-
 Goal: one sentence
 Files involved: list paths (or “unknown”)
 Current behavior: 1–2 sentences
