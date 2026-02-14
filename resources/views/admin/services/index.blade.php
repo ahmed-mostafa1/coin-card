@@ -16,7 +16,7 @@
                         <input type="text" 
                                name="search" 
                                value="{{ request('search') }}" 
-                               placeholder="بحث بالاسم أو ID..." 
+                               placeholder=".." 
                                class="w-80 rounded-xl border border-slate-200 bg-slate-50 py-2.5 pr-10 pl-4 text-sm outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-1 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-900/50 dark:text-white dark:focus:border-emerald-500 dark:focus:bg-slate-900">
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5">

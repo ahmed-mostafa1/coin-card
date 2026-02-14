@@ -504,5 +504,13 @@ return [
     'notifications_custom.deposit_created_title' => 'تم إنشاء طلب الشحن',
     'notifications_custom.deposit_created_desc' => 'تم إنشاء طلب الشحن بنجاح',
 
-
+    // Admin - Users
+    'users_management' => 'إدارة المستخدمين',
+    'users_management_desc' => 'البحث بالاسم أو البريد وإدارة الحالات.',
+    'search_name_email' => 'بحث بالاسم أو البريد',
+    'creation_date' => 'تاريخ الإنشاء',
+    'status_banned' => 'محظور',
+    'status_frozen' => 'مجمّد',
+    'active_user' => 'نشط',
+    'no_users_found' => 'لا يوجد مستخدمون.',
 ];

@@ -49,7 +49,7 @@
                     <h2 class="text-lg font-semibold text-slate-900 dark:text-white">طلبات الشحن</h2>
                     <form method="GET" action="{{ route('admin.ops.index') }}" class="flex flex-col sm:flex-row sm:flex-wrap lg:flex-nowrap items-stretch sm:items-center gap-2 text-sm w-full lg:w-auto">
                         <input type="hidden" name="tab" value="deposits" />
-                        <x-text-input name="deposit_q" value="{{ $depositSearch }}" placeholder="بحث بالاسم أو البريد أو الرقم" class="lg:w-auto" />
+                        <x-text-input name="deposit_q" value="{{ $depositSearch }}" placeholder=".." class="lg:w-auto" />
                         <x-select name="deposit_status" class="lg:w-auto">
                             <option value="pending" @selected($depositStatus === 'pending')>قيد المراجعة</option>
                             <option value="approved" @selected($depositStatus === 'approved')>مقبول</option>
@@ -113,7 +113,7 @@
                     <h2 class="text-lg font-semibold text-slate-900 dark:text-white">طلبات الخدمات</h2>
                     <form method="GET" action="{{ route('admin.ops.index') }}" class="flex flex-col sm:flex-row sm:flex-wrap lg:flex-nowrap items-stretch sm:items-center gap-2 text-sm w-full lg:w-auto">
                         <input type="hidden" name="tab" value="{{ $tab }}" />
-                        <x-text-input name="order_q" value="{{ $orderSearch }}" placeholder="بحث بالاسم أو البريد أو الرقم" class="lg:w-auto" />
+                        <x-text-input name="order_q" value="{{ $orderSearch }}" placeholder=".." class="lg:w-auto" />
                         <x-text-input type="date" name="order_from" value="{{ $orderFrom }}" class="lg:w-auto" />
                         <x-text-input type="date" name="order_to" value="{{ $orderTo }}" class="lg:w-auto" />
                         <x-button type="submit" class="lg:w-auto">تطبيق</x-button>

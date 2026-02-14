@@ -14,7 +14,7 @@
                 <option value="approved" @selected(request('status') === 'approved')>مقبول</option>
                 <option value="rejected" @selected(request('status') === 'rejected')>مرفوض</option>
             </x-select>
-            <x-text-input name="q" value="{{ request('q') }}" placeholder="بحث بالبريد أو الاسم" />
+            <x-text-input name="q" value="{{ request('q') }}" placeholder=".." />
             <x-button type="submit">تصفية</x-button>
         </form>
 
