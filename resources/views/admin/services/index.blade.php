@@ -25,7 +25,7 @@
                         </div>
                     </div>
                     <button type="submit" class="rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700">
-                        بحث
+                        {{ __('messages.search_button') }}
                     </button>
                 </form>
                 @if(request('search'))
