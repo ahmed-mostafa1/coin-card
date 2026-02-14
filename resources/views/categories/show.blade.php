@@ -5,11 +5,11 @@
 
 @section('content')
     <div class="store-shell space-y-6">
-        <div class="w-full px-3 lg:w-4/5 lg:mx-auto">
+        <div class="w-[95%] md:w-[80%] mx-auto">
             <x-store.hero :banners="$sharedBanners" :alt="$category->localized_name" />
         </div>
 
-        <div class="w-full px-3 lg:w-4/5 lg:mx-auto">
+        <div class="w-[95%] md:w-[80%] mx-auto">
             <x-store.notice :text="$sharedTickerText" />
         </div>
 

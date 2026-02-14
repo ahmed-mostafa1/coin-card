@@ -5,11 +5,6 @@
 
 @section('content')
     <style>
-        .service-mobile-80 {
-            width: 100%;
-            margin-inline: auto;
-        }
-
         .offer-countdown {
             display: grid;
             grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -47,10 +42,6 @@
         }
 
         @media (max-width: 639px) {
-            .service-mobile-80 {
-                width: 80% !important;
-            }
-
             .offer-countdown {
                 gap: 0.18rem;
             }
@@ -91,11 +82,11 @@
     @endphp
 
     <div class="store-shell space-y-6">
-        <div class="service-mobile-80">
+        <div class="w-[95%] md:w-[80%] mx-auto">
             <x-store.hero :banners="$sharedBanners" :alt="$service->localized_name" />
         </div>
 
-        <div class="service-mobile-80">
+        <div class="w-[95%] md:w-[80%] mx-auto">
             <x-store.notice :text="$sharedTickerText" />
         </div>
 
