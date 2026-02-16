@@ -308,36 +308,6 @@
                             <p class="mt-1 text-xs text-slate-500">{{ __('messages.held_amount_notice') }}</p>
                         </div>
 
-                        @if (($service->source ?? 'manual') === 'marketcard99')
-                            @if ($service->requires_customer_id)
-                                <div class="space-y-1">
-                                    <label for="customer_identifier" class="block text-sm font-semibold text-slate-800">معرف المستخدم</label>
-                                    <input id="customer_identifier" name="customer_identifier" type="text" value="{{ old('customer_identifier') }}"
-                                        placeholder="أدخل معرف المستخدم" class="store-input" required>
-                                    <x-input-error :messages="$errors->get('customer_identifier')" />
-                                </div>
-                            @endif
-
-                            @if ($service->requires_amount)
-                                <div class="space-y-1">
-                                    <label for="external_amount" class="block text-sm font-semibold text-slate-800">المبلغ الخارجي</label>
-                                    <input id="external_amount" name="external_amount" type="number" step="any" min="0.01"
-                                        value="{{ old('external_amount') }}" placeholder="أدخل المبلغ" class="store-input"
-                                        {{ $service->requires_amount ? 'required' : '' }}>
-                                    <x-input-error :messages="$errors->get('external_amount')" />
-                                </div>
-                            @endif
-
-                            @if ($service->supports_purchase_password)
-                                <div class="space-y-1">
-                                    <label for="purchase_password" class="block text-sm font-semibold text-slate-800">كلمة سر الشراء</label>
-                                    <input id="purchase_password" name="purchase_password" type="text" value="{{ old('purchase_password') }}"
-                                        placeholder="اختياري" class="store-input"
-                                        {{ $service->requires_purchase_password ? 'required' : '' }}>
-                                    <x-input-error :messages="$errors->get('purchase_password')" />
-                                </div>
-                            @endif
-                        @else
                             @forelse ($service->formFields->sortBy('sort_order') as $field)
                                 <div class="space-y-1">
                                     <label for="field_{{ $field->name_key }}"
@@ -363,7 +333,6 @@
                             @empty
                                 <p class="text-sm text-slate-500">{{ __('messages.no_required_fields') }}</p>
                             @endforelse
-                        @endif
 
                         @auth
                             <button id="purchase-button" type="submit"

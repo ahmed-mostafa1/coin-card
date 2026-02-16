@@ -61,16 +61,7 @@
                         <td class="py-3 text-slate-500 dark:text-slate-400">{{ $service->category?->name }}</td>
                         <td class="py-3 text-slate-700 dark:text-white">{{ number_format($service->price, 2) }} USD</td>
                         <td class="py-3">
-                            @if (($service->source ?? 'manual') === 'marketcard99')
-                                <div class="flex flex-col gap-1">
-                                    <span class="rounded-full bg-sky-100 dark:bg-sky-900/50 px-3 py-1 text-xs text-sky-700 dark:text-sky-300">MarketCard99</span>
-                                    @if ($service->external_product_id)
-                                        <span class="text-[11px] text-slate-500">ID: {{ $service->external_product_id }}</span>
-                                    @endif
-                                </div>
-                            @else
-                                <span class="rounded-full bg-slate-100 dark:bg-slate-700 px-3 py-1 text-xs text-slate-700 dark:text-slate-300">يدوي</span>
-                            @endif
+                            <span class="rounded-full bg-slate-100 dark:bg-slate-700 px-3 py-1 text-xs text-slate-700 dark:text-slate-300">يدوي</span>
                         </td>
                         <td class="py-3">
                             @if ($service->is_active)

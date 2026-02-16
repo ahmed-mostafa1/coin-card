@@ -17,7 +17,14 @@ class ServiceRequest extends FormRequest
         $serviceId = $this->route('service')?->id;
 
         return [
-            'category_id' => ['required', 'exists:categories,id'],
+            'category_id' => [
+                'required',
+                Rule::exists('categories', 'id')->where(function ($query) {
+                    $query->where(function ($q) {
+                        $q->where('source', 'manual')->orWhereNull('source');
+                    });
+                }),
+            ],
             'name' => ['required', 'string', 'max:255'],
             'name_en' => ['nullable', 'string', 'max:255'],
             'slug' => ['nullable', 'string', 'max:100', 'regex:/^[a-z0-9-]+$/', Rule::unique('services', 'slug')->ignore($serviceId)],
@@ -33,7 +40,6 @@ class ServiceRequest extends FormRequest
             'image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'offer_image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'is_active' => ['nullable', 'boolean'],
-            'source' => ['nullable', 'in:manual,marketcard99'],
             'is_offer_active' => ['nullable', 'boolean'],
             'is_limited_offer_label_active' => ['nullable', 'boolean'],
             'limited_offer_label' => ['exclude_unless:is_limited_offer_label_active,1', 'required', 'string', 'max:120'],
@@ -41,10 +47,6 @@ class ServiceRequest extends FormRequest
             'is_limited_offer_countdown_active' => ['nullable', 'boolean'],
             'limited_offer_ends_at' => ['exclude_unless:is_limited_offer_countdown_active,1', 'required', 'date', 'after:now'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
-            'sync_rule_mode' => ['nullable', 'in:auto,manual'],
-            'requires_customer_id' => ['nullable', 'boolean'],
-            'requires_amount' => ['nullable', 'boolean'],
-            'requires_purchase_password' => ['nullable', 'boolean'],
             'variants' => ['nullable', 'array'],
             'variants.*.name' => ['required_with:variants', 'string', 'max:255'],
             'variants.*.price' => ['required_with:variants', 'numeric', 'min:0.01'],

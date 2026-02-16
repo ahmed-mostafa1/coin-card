@@ -64,11 +64,7 @@
                         <td class="py-3 text-slate-500 dark:text-slate-400">{{ $category->parent?->name ?? 'تصنيف رئيسي' }}</td>
                         <td class="py-3 text-slate-500 dark:text-slate-400">{{ $category->slug }}</td>
                         <td class="py-3">
-                            @if (($category->source ?? 'manual') === 'marketcard99')
-                                <span class="rounded-full bg-sky-100 dark:bg-sky-900/50 px-3 py-1 text-xs text-sky-700 dark:text-sky-300">MarketCard99</span>
-                            @else
-                                <span class="rounded-full bg-slate-100 dark:bg-slate-700 px-3 py-1 text-xs text-slate-700 dark:text-slate-300">يدوي</span>
-                            @endif
+                            <span class="rounded-full bg-slate-100 dark:bg-slate-700 px-3 py-1 text-xs text-slate-700 dark:text-slate-300">يدوي</span>
                         </td>
                         <td class="py-3">
                             @if ($category->is_active)

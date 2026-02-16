@@ -3,55 +3,23 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Services\MarketCard99CatalogSyncService;
-use App\Services\MarketCard99OrderSyncService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
 
 class MarketCard99IntegrationController extends Controller
 {
-    public function index(
-        MarketCard99CatalogSyncService $catalogSyncService,
-        MarketCard99OrderSyncService $orderSyncService
-    ): View {
-        return view('admin.integrations.marketcard99', [
-            'catalogSummary' => $catalogSyncService->lastSummary(),
-            'orderSummary' => $orderSyncService->lastSummary(),
-        ]);
+    public function index(): RedirectResponse
+    {
+        return redirect()->route('admin.index')
+            ->with('error', 'MarketCard99 integration has been disabled and removed.');
     }
 
-    public function syncCatalog(MarketCard99CatalogSyncService $catalogSyncService): RedirectResponse
+    public function syncCatalog(): RedirectResponse
     {
-        $result = $catalogSyncService->sync();
-
-        if (!($result['ok'] ?? false)) {
-            return redirect()
-                ->route('admin.integrations.marketcard99.index')
-                ->with('error', $result['message'] ?? 'فشلت مزامنة الكتالوج.')
-                ->with('catalog_result', $result);
-        }
-
-        return redirect()
-            ->route('admin.integrations.marketcard99.index')
-            ->with('status', 'تم تنفيذ مزامنة الكتالوج بنجاح.')
-            ->with('catalog_result', $result);
+        return $this->index();
     }
 
-    public function syncOrderStatuses(MarketCard99OrderSyncService $orderSyncService): RedirectResponse
+    public function syncOrderStatuses(): RedirectResponse
     {
-        $result = $orderSyncService->sync(request()->user());
-
-        if (!($result['ok'] ?? false)) {
-            return redirect()
-                ->route('admin.integrations.marketcard99.index')
-                ->with('error', $result['message'] ?? 'فشلت مزامنة حالات الطلبات.')
-                ->with('orders_result', $result);
-        }
-
-        return redirect()
-            ->route('admin.integrations.marketcard99.index')
-            ->with('status', 'تم تنفيذ مزامنة حالات الطلبات بنجاح.')
-            ->with('orders_result', $result);
+        return $this->index();
     }
 }
-

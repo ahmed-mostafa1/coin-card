@@ -188,55 +188,6 @@
                     <x-text-input id="sort_order" name="sort_order" type="number" min="0" :value="old('sort_order', $service->sort_order)" />
                 </div>
 
-                @if (($service->source ?? 'manual') === 'marketcard99')
-                    <div class="rounded-2xl border border-sky-200 dark:border-sky-800/60 bg-sky-50/50 dark:bg-sky-900/10 p-4 space-y-4">
-                        <h2 class="text-base font-semibold text-sky-800 dark:text-sky-300">إعدادات مزود MarketCard99</h2>
-
-                        <div class="grid gap-4 sm:grid-cols-2 text-xs text-slate-600 dark:text-slate-300">
-                            <div class="rounded-xl border border-slate-200 dark:border-slate-700 p-3">
-                                <p class="font-semibold">مصدر الخدمة</p>
-                                <p class="mt-1">MarketCard99</p>
-                            </div>
-                            <div class="rounded-xl border border-slate-200 dark:border-slate-700 p-3">
-                                <p class="font-semibold">External Product ID</p>
-                                <p class="mt-1">{{ $service->external_product_id ?? '-' }}</p>
-                            </div>
-                            <div class="rounded-xl border border-slate-200 dark:border-slate-700 p-3">
-                                <p class="font-semibold">Provider Status</p>
-                                <p class="mt-1">{{ $service->provider_is_available ? 'Available' : 'Unavailable' }}</p>
-                            </div>
-                            <div class="rounded-xl border border-slate-200 dark:border-slate-700 p-3">
-                                <p class="font-semibold">Last Synced</p>
-                                <p class="mt-1">{{ $service->provider_last_synced_at?->format('Y-m-d H:i') ?? '-' }}</p>
-                            </div>
-                        </div>
-
-                        <div class="grid gap-4 sm:grid-cols-2">
-                            <div>
-                                <x-input-label for="sync_rule_mode" value="وضع قواعد المزامنة" />
-                                <select id="sync_rule_mode" name="sync_rule_mode" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
-                                    <option value="auto" @selected(old('sync_rule_mode', $service->sync_rule_mode) === 'auto')>تلقائي</option>
-                                    <option value="manual" @selected(old('sync_rule_mode', $service->sync_rule_mode) === 'manual')>يدوي</option>
-                                </select>
-                            </div>
-                            <div class="space-y-2">
-                                <label class="inline-flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
-                                    <input type="checkbox" name="requires_customer_id" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" @checked(old('requires_customer_id', $service->requires_customer_id))>
-                                    يتطلب معرف المستخدم
-                                </label>
-                                <label class="inline-flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
-                                    <input type="checkbox" name="requires_amount" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" @checked(old('requires_amount', $service->requires_amount))>
-                                    يتطلب مبلغ خارجي
-                                </label>
-                                <label class="inline-flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
-                                    <input type="checkbox" name="requires_purchase_password" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" @checked(old('requires_purchase_password', $service->requires_purchase_password))>
-                                    كلمة سر الشراء مطلوبة
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-
                 <div class="flex gap-3">
                     <x-primary-button>{{ __('messages.update') }}</x-primary-button>
                 </div>

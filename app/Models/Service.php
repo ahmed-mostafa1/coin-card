@@ -165,4 +165,12 @@ class Service extends Model
 
         return $this->limited_offer_ends_at->lte($referenceTime);
     }
+
+    public function scopeManual($query)
+    {
+        return $query->where(function ($q) {
+            $q->where('source', self::SOURCE_MANUAL)
+                ->orWhereNull('source');
+        });
+    }
 }

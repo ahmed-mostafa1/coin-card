@@ -66,4 +66,12 @@ class Category extends Model
     {
         return $query->where('is_active', true);
     }
+
+    public function scopeManual($query)
+    {
+        return $query->where(function ($q) {
+            $q->where('source', self::SOURCE_MANUAL)
+                ->orWhereNull('source');
+        });
+    }
 }

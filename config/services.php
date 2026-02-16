@@ -42,6 +42,7 @@ return [
     ],
 
     'marketcard99' => [
+        'enabled' => (bool) env('MARKETCARD99_ENABLED', false),
         'base_url' => env('MARKETCARD99_BASE_URL', 'https://app.market-card99.com'),
         'token' => env('MARKETCARD99_TOKEN'),
         'username' => env('MARKETCARD99_USERNAME'),

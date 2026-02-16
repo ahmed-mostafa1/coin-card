@@ -25,7 +25,6 @@ use App\Http\Controllers\Admin\BannerController as AdminBannerController;
 use App\Http\Controllers\Admin\AppearanceController as AdminAppearanceController;
 use App\Http\Controllers\Admin\SiteSettingsController as AdminSiteSettingsController;
 use App\Http\Controllers\Admin\PopupController as AdminPopupController;
-use App\Http\Controllers\Admin\MarketCard99IntegrationController as AdminMarketCard99IntegrationController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
@@ -219,9 +218,6 @@ Route::middleware(['auth', 'not_banned', 'role:admin'])->prefix('admin')->name('
     Route::post('/notifications', [\App\Http\Controllers\Admin\NotificationController::class, 'store'])->name('notifications.store');
 
     Route::resource('vip-tiers', \App\Http\Controllers\Admin\VipTierController::class)->except(['show']);
-    Route::get('/integrations/marketcard99', [AdminMarketCard99IntegrationController::class, 'index'])->name('integrations.marketcard99.index');
-    Route::post('/integrations/marketcard99/sync-catalog', [AdminMarketCard99IntegrationController::class, 'syncCatalog'])->name('integrations.marketcard99.sync-catalog');
-    Route::post('/integrations/marketcard99/sync-order-statuses', [AdminMarketCard99IntegrationController::class, 'syncOrderStatuses'])->name('integrations.marketcard99.sync-order-statuses');
     Route::get('/appearance', [AdminAppearanceController::class, 'edit'])->name('appearance.edit');
     Route::post('/appearance', [AdminAppearanceController::class, 'update'])->name('appearance.update');
     // Site Settings Routes

@@ -16,6 +16,7 @@ class CategoryController extends Controller
     public function index(Request $request): View
     {
         $query = Category::query()
+            ->manual()
             ->with('parent')
             ->orderBy('sort_order')
             ->orderBy('name');
@@ -36,6 +37,7 @@ class CategoryController extends Controller
     public function create(): View
     {
         $parents = Category::query()
+            ->manual()
             ->orderBy('sort_order')
             ->orderBy('name')
             ->get();
@@ -55,7 +57,10 @@ class CategoryController extends Controller
 
     public function edit(Category $category): View
     {
+        abort_unless(($category->source ?? Category::SOURCE_MANUAL) === Category::SOURCE_MANUAL, 404);
+
         $parents = Category::query()
+            ->manual()
             ->where('id', '!=', $category->id)
             ->orderBy('sort_order')
             ->orderBy('name')
@@ -66,6 +71,8 @@ class CategoryController extends Controller
 
     public function update(CategoryRequest $request, Category $category): RedirectResponse
     {
+        abort_unless(($category->source ?? Category::SOURCE_MANUAL) === Category::SOURCE_MANUAL, 404);
+
         $data = $this->prepareData($request, $category);
 
         if ($request->hasFile('image')) {
@@ -84,6 +91,8 @@ class CategoryController extends Controller
 
     public function destroy(Category $category): RedirectResponse
     {
+        abort_unless(($category->source ?? Category::SOURCE_MANUAL) === Category::SOURCE_MANUAL, 404);
+
         if ($category->children()->exists()) {
             return back()->with('error', 'لا يمكن حذف تصنيف يحتوي على تصنيفات فرعية.');
         }

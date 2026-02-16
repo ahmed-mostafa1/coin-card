@@ -12,6 +12,7 @@ class MarketCard99Client
 {
     private const TOKEN_CACHE_KEY = 'marketcard99:auth:token';
 
+    private bool $enabled;
     private string $baseUrl;
     private ?string $staticToken;
     private ?string $username;
@@ -24,6 +25,7 @@ class MarketCard99Client
 
     public function __construct()
     {
+        $this->enabled = (bool) config('services.marketcard99.enabled', false);
         $this->baseUrl = rtrim((string) config('services.marketcard99.base_url', 'https://app.market-card99.com'), '/');
         $this->staticToken = config('services.marketcard99.token');
         $this->username = config('services.marketcard99.username');
@@ -60,6 +62,10 @@ class MarketCard99Client
      */
     public function createBill(array $payload): array
     {
+        if (!$this->enabled) {
+            return $this->errorResult(null, 'MarketCard99 integration is disabled.');
+        }
+
         if (!$this->hasConfiguredAuth()) {
             return $this->errorResult(null, 'MarketCard99 auth is missing. Set MARKETCARD99_USERNAME/PASSWORD or MARKETCARD99_TOKEN.');
         }
@@ -212,6 +218,10 @@ class MarketCard99Client
 
     private function requestJson(string $method, string $path, bool $requiresAuth = false): array
     {
+        if (!$this->enabled) {
+            return $this->errorResult(null, 'MarketCard99 integration is disabled.');
+        }
+
         if ($requiresAuth && !$this->hasConfiguredAuth()) {
             return $this->errorResult(null, 'MarketCard99 auth is missing. Set MARKETCARD99_USERNAME/PASSWORD or MARKETCARD99_TOKEN.');
         }

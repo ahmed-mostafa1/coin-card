@@ -16,7 +16,15 @@ class CategoryRequest extends FormRequest
     {
         $categoryId = $this->route('category')?->id;
 
-        $parentRule = ['nullable', 'integer', 'exists:categories,id'];
+        $parentRule = [
+            'nullable',
+            'integer',
+            Rule::exists('categories', 'id')->where(function ($query) {
+                $query->where(function ($q) {
+                    $q->where('source', 'manual')->orWhereNull('source');
+                });
+            }),
+        ];
         if ($categoryId) {
             $parentRule[] = Rule::notIn([$categoryId]);
         }

@@ -18,6 +18,7 @@ class ServiceController extends Controller
     public function index(Request $request): View
     {
         $query = Service::query()
+            ->manual()
             ->with('category')
             ->orderBy('sort_order')
             ->orderBy('name');
@@ -26,7 +27,6 @@ class ServiceController extends Controller
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('external_product_id', 'like', "%{$search}%")
                   ->orWhereHas('category', function ($q) use ($search) {
                       $q->where('name', 'like', "%{$search}%");
                   });
@@ -41,6 +41,7 @@ class ServiceController extends Controller
     public function create(): View
     {
         $categories = Category::query()
+            ->manual()
             ->with('parent')
             ->orderBy('parent_id')
             ->orderBy('sort_order')
@@ -88,8 +89,11 @@ class ServiceController extends Controller
 
     public function edit(Service $service): View
     {
+        abort_unless(($service->source ?? Service::SOURCE_MANUAL) === Service::SOURCE_MANUAL, 404);
+
         $service->load(['formFields.options' => fn($query) => $query->orderBy('sort_order')]);
         $categories = Category::query()
+            ->manual()
             ->with('parent')
             ->orderBy('parent_id')
             ->orderBy('sort_order')
@@ -101,6 +105,8 @@ class ServiceController extends Controller
 
     public function update(ServiceRequest $request, Service $service): RedirectResponse
     {
+        abort_unless(($service->source ?? Service::SOURCE_MANUAL) === Service::SOURCE_MANUAL, 404);
+
         $data = $this->prepareData($request, $service);
 
         if ($request->hasFile('image')) {
@@ -133,17 +139,7 @@ class ServiceController extends Controller
         $data['is_limited_offer_label_active'] = $request->boolean('is_limited_offer_label_active');
         $data['is_limited_offer_countdown_active'] = $request->boolean('is_limited_offer_countdown_active');
         $data['is_quantity_based'] = $request->boolean('is_quantity_based');
-        $data['source'] = $data['source'] ?? $service?->source ?? Service::SOURCE_MANUAL;
-        $data['sync_rule_mode'] = $data['sync_rule_mode'] ?? $service?->sync_rule_mode ?? Service::SYNC_RULE_AUTO;
-        if ($data['source'] === Service::SOURCE_MARKETCARD99 || $request->hasAny([
-            'requires_customer_id',
-            'requires_amount',
-            'requires_purchase_password',
-        ])) {
-            $data['requires_customer_id'] = $request->boolean('requires_customer_id');
-            $data['requires_amount'] = $request->boolean('requires_amount');
-            $data['requires_purchase_password'] = $request->boolean('requires_purchase_password');
-        }
+        $data['source'] = Service::SOURCE_MANUAL;
         $data['sort_order'] = $data['sort_order'] ?? 0;
 
         if (array_key_exists('limited_offer_label', $data)) {
@@ -181,6 +177,8 @@ class ServiceController extends Controller
     }
     public function destroy(Service $service): RedirectResponse
     {
+        abort_unless(($service->source ?? Service::SOURCE_MANUAL) === Service::SOURCE_MANUAL, 404);
+
         if ($service->image_path) {
             Storage::disk('public')->delete($service->image_path);
         }

@@ -20,6 +20,7 @@ class MarketCard99CatalogSyncTest extends TestCase
         parent::setUp();
 
         config()->set('services.marketcard99.base_url', 'https://app.market-card99.com');
+        config()->set('services.marketcard99.enabled', true);
         config()->set('services.marketcard99.token', 'testing-token');
     }
 

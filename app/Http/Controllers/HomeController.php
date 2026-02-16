@@ -11,6 +11,7 @@ class HomeController extends Controller
         $categories = \App\Models\Category::query()
             ->roots()
             ->active()
+            ->manual()
             ->orderBy('sort_order')
             ->orderBy('name')
             ->get();
