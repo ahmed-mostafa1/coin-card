@@ -37,7 +37,7 @@ class AppServiceProvider extends ServiceProvider
             $sharedLogoType = Cache::remember('shared_logo_type', 300, fn () => SiteSetting::get('logo_type', 'text'));
             $sharedLogoText = Cache::remember('shared_logo_text', 300, fn () => SiteSetting::get('logo_text', 'Arab 8BP.in'));
             $sharedLogoImage = Cache::remember('shared_logo_image', 300, fn () => SiteSetting::get('logo_image', null));
-            $sharedUpscrollLink = Cache::remember('shared_upscroll_link', 300, fn () => SiteSetting::get('upscroll_link', '#'));
+            $sharedYoutubeLink = Cache::remember('shared_youtube_link', 300, fn () => SiteSetting::get('youtube_link', '#'));
             $sharedStoreDescription = Cache::remember('shared_store_description', 300, fn () => SiteSetting::get('store_description', 'متجر عربي متخصص في بيع بطاقات الألعاب والخدمات الرقمية بأسعار تنافسية وجودة عالية. نحن نقدم خدمة سريعة وموثوقة لجميع عملائنا. للاستفسارات أو الدعم، يرجى'));
             $sharedStoreDescriptionEn = Cache::remember('shared_store_description_en', 300, fn () => SiteSetting::get('store_description_en', ''));
             
@@ -65,7 +65,7 @@ class AppServiceProvider extends ServiceProvider
             $sharedLogoType = 'text';
             $sharedLogoText = 'Arab 8BP.in';
             $sharedLogoImage = null;
-            $sharedUpscrollLink = null;
+            $sharedYoutubeLink = null;
             $sharedStoreDescription = 'متجر عربي متخصص في بيع بطاقات الألعاب والخدمات الرقمية بأسعار تنافسية وجودة عالية. نحن نقدم خدمة سريعة وموثوقة لجميع عملائنا. للاستفسارات أو الدعم، يرجى';
             $activePopups = collect();
             $sharedTickerTextEn = '';
@@ -87,7 +87,7 @@ class AppServiceProvider extends ServiceProvider
         View::share('sharedLogoType', $sharedLogoType);
         View::share('sharedLogoText', $sharedLogoText);
         View::share('sharedLogoImage', $sharedLogoImage);
-        View::share('sharedUpscrollLink', $sharedUpscrollLink);
+        View::share('sharedYoutubeLink', $sharedYoutubeLink);
         View::share('sharedStoreDescription', $sharedStoreDescription);
         View::share('sharedStoreDescriptionEn', $sharedStoreDescriptionEn);
         View::share('activePopups', $activePopups);

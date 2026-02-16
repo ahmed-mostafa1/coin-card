@@ -256,9 +256,11 @@
                     <i class="fa-brands fa-facebook text-3xl"></i>
                 </a>
                 @endif
-                <a href="{{ $sharedUpscrollLink }}" target="_blank" class="text-slate-600 dark:text-slate-400 hover:scale-110 transition" title="UpScrolled">
-                    <img src="{{ asset('img/upscrolled.png') }}" alt="UpScrolled" class="w-8 h-8">
+                @if(isset($sharedYoutubeLink) && $sharedYoutubeLink)
+                <a href="{{ $sharedYoutubeLink }}" target="_blank" class="text-red-600 hover:scale-110 transition" title="YouTube">
+                    <i class="fa-brands fa-youtube text-3xl"></i>
                 </a>
+                @endif
             </div>
         </div>
 

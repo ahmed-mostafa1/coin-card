@@ -18,7 +18,7 @@ class SiteSettingsController extends Controller
         $logoType = SiteSetting::get('logo_type', 'text'); // 'text' or 'image'
         $logoText = SiteSetting::get('logo_text', 'Arab 8BP.in');
         $logoImage = SiteSetting::get('logo_image', null);
-        $upscrollLink = SiteSetting::get('upscroll_link', '#');
+        $youtubeLink = SiteSetting::get('youtube_link', '#');
         $aboutAr = SiteSetting::get('about_ar', '');
         $aboutEn = SiteSetting::get('about_en', '');
         $privacyAr = SiteSetting::get('privacy_ar', '');
@@ -42,7 +42,7 @@ class SiteSettingsController extends Controller
             'logoText',
             'logoText',
             'logoImage',
-            'upscrollLink',
+            'youtubeLink',
             'storeDescription',
             'storeDescriptionEn',
             'whatsappLink',
@@ -112,20 +112,20 @@ class SiteSettingsController extends Controller
             'instagram_link' => ['nullable', 'string'],
             'telegram_link' => ['nullable', 'string'],
             'facebook_link' => ['nullable', 'string'],
-            'upscroll_link' => ['nullable', 'string'],
+            'youtube_link' => ['nullable', 'string'],
         ]);
 
         SiteSetting::set('whatsapp_link', $data['whatsapp_link']);
         SiteSetting::set('instagram_link', $data['instagram_link']);
         SiteSetting::set('telegram_link', $data['telegram_link']);
         SiteSetting::set('facebook_link', $data['facebook_link']);
-        SiteSetting::set('upscroll_link', $data['upscroll_link']);
+        SiteSetting::set('youtube_link', $data['youtube_link']);
 
         cache()->forget('shared_whatsapp_link');
         cache()->forget('shared_instagram_link');
         cache()->forget('shared_telegram_link');
         cache()->forget('shared_facebook_link');
-        cache()->forget('shared_upscroll_link');
+        cache()->forget('shared_youtube_link');
         
         // Remove old whatsapp_number cache if it exists, as it is no longer used
         cache()->forget('shared_whatsapp_number');
