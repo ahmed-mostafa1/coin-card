@@ -102,10 +102,10 @@
                     <div class="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700">
                         @if ($service->offer_image_path)
                             <img src="{{ asset('storage/' . $service->offer_image_path) }}" alt="{{ $service->localized_name }}"
-                                class="h-48 w-full object-cover">
+                                class="w-full object-fill">
                         @elseif ($service->image_path)
                              <img src="{{ asset('storage/' . $service->image_path) }}" alt="{{ $service->localized_name }}"
-                                class="h-48 w-full object-cover">
+                                class="w-full object-fill">
                         @endif
                     </div>
 
