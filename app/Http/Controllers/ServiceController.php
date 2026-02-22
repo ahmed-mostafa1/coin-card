@@ -24,7 +24,8 @@ class ServiceController extends Controller
 
         $service->load([
             'formFields' => fn ($query) => $query->orderBy('sort_order'),
-            'variants' => fn ($query) => $query->where('is_active', true)->orderBy('sort_order'),
+            'variants'   => fn ($query) => $query->where('is_active', true)->orderBy('sort_order'),
+            'buttons'    => fn ($query) => $query->orderBy('sort_order'),
         ]);
 
         $wallet = auth()->check() ? auth()->user()->wallet()->firstOrCreate([]) : null;

@@ -318,6 +318,21 @@ return [
     'variant_name' => 'اسم الباقة',
     'remove' => 'حذف',
 
+    // Admin - Service Buttons
+    'service_buttons' => 'أزرار الخدمة',
+    'add_button' => 'إضافة زر',
+    'edit_button' => 'تعديل زر',
+    'delete_button' => 'حذف الزر',
+    'no_buttons_yet' => 'لا توجد أزرار بعد.',
+    'button_label_ar' => 'نص الزر (عربي)',
+    'button_label_en' => 'نص الزر (English)',
+    'button_url' => 'رابط الزر',
+    'button_bg_color' => 'لون خلفية الزر',
+    'button_created' => 'تم إضافة الزر بنجاح.',
+    'button_updated' => 'تم تحديث الزر بنجاح.',
+    'button_deleted' => 'تم حذف الزر بنجاح.',
+    'confirm_delete' => 'هل أنت متأكد من الحذف؟',
+
     // Admin - Banners
     'add_banner' => 'إضافة بانر',
     'edit_banner' => 'تعديل بانر',

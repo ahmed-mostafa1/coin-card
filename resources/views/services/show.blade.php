@@ -172,6 +172,18 @@
                             @if ($service->localized_description)
                                 <p class="mt-2 text-sm text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line">{{ $service->localized_description }}</p>
                             @endif
+
+                            @if ($service->buttons->isNotEmpty())
+                                <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 w-full">
+                                    @foreach ($service->buttons->sortBy('sort_order') as $btn)
+                                        <a href="{{ $btn->url }}" target="_blank" rel="noopener noreferrer"
+                                            class="flex items-center justify-center rounded-lg px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:brightness-110 active:scale-95"
+                                            style="background-color: {{ $btn->bg_color }};">
+                                            {{ $btn->localized_label }}
+                                        </a>
+                                    @endforeach
+                                </div>
+                            @endif
                             @auth
                                 <p class="text-xs text-slate-500">
                                     {{ __('messages.available_balance_text') }}:

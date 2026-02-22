@@ -319,6 +319,21 @@ return [
     'variants_hint' => 'You can add multiple options with different prices for each package.',
     'variant_name' => 'Package Name',
 
+    // Admin - Service Buttons
+    'service_buttons' => 'Service Buttons',
+    'add_button' => 'Add Button',
+    'edit_button' => 'Edit Button',
+    'delete_button' => 'Delete Button',
+    'no_buttons_yet' => 'No buttons added yet.',
+    'button_label_ar' => 'Button Text (Arabic)',
+    'button_label_en' => 'Button Text (English)',
+    'button_url' => 'Button URL',
+    'button_bg_color' => 'Button Background Color',
+    'button_created' => 'Button created successfully.',
+    'button_updated' => 'Button updated successfully.',
+    'button_deleted' => 'Button deleted successfully.',
+    'confirm_delete' => 'Are you sure you want to delete this?',
+
     // Admin - Banners
     'add_banner' => 'Add Banner',
     'edit_banner' => 'Edit Banner',

@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\PaymentMethodController as AdminPaymentMethodCont
 use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
 use App\Http\Controllers\Admin\ServiceFormFieldController as AdminServiceFormFieldController;
 use App\Http\Controllers\Admin\ServiceVariantController as AdminServiceVariantController;
+use App\Http\Controllers\Admin\ServiceButtonController as AdminServiceButtonController;
 use App\Http\Controllers\Admin\BannerController as AdminBannerController;
 use App\Http\Controllers\Admin\AppearanceController as AdminAppearanceController;
 use App\Http\Controllers\Admin\SiteSettingsController as AdminSiteSettingsController;
@@ -244,6 +245,13 @@ Route::middleware(['auth', 'not_banned', 'role:admin'])->prefix('admin')->name('
     Route::delete('services/{service}/fields/{field}', [AdminServiceFormFieldController::class, 'destroy'])->name('services.fields.destroy');
     Route::post('services/{service}/fields/{field}/options', [AdminServiceFormFieldController::class, 'storeOption'])->name('services.fields.options.store');
     Route::delete('services/{service}/fields/{field}/options/{option}', [AdminServiceFormFieldController::class, 'destroyOption'])->name('services.fields.options.destroy');
+
+    // Service Buttons
+    Route::get('services/{service}/buttons/create', [AdminServiceButtonController::class, 'create'])->name('services.buttons.create');
+    Route::post('services/{service}/buttons', [AdminServiceButtonController::class, 'store'])->name('services.buttons.store');
+    Route::get('services/{service}/buttons/{button}/edit', [AdminServiceButtonController::class, 'edit'])->name('services.buttons.edit');
+    Route::put('services/{service}/buttons/{button}', [AdminServiceButtonController::class, 'update'])->name('services.buttons.update');
+    Route::delete('services/{service}/buttons/{button}', [AdminServiceButtonController::class, 'destroy'])->name('services.buttons.destroy');
 
     Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');

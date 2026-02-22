@@ -91,7 +91,7 @@ class ServiceController extends Controller
     {
         abort_unless(($service->source ?? Service::SOURCE_MANUAL) === Service::SOURCE_MANUAL, 404);
 
-        $service->load(['formFields.options' => fn($query) => $query->orderBy('sort_order')]);
+        $service->load(['formFields.options' => fn($query) => $query->orderBy('sort_order'), 'buttons' => fn($q) => $q->orderBy('sort_order')]);
         $categories = Category::query()
             ->manual()
             ->with('parent')
