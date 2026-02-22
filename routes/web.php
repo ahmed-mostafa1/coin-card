@@ -40,15 +40,16 @@ Route::get('/lang/{locale}', function ($locale) {
     return back();
 })->name('lang.switch');
 
+// Public Storefront Routes
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/categories/{category:slug}', [CategoryController::class, 'show'])->name('categories.show');
+Route::get('/services/{service:slug}', [ServiceController::class, 'show'])->name('services.show');
+Route::get('/privacy-policy', fn() => view('pages.privacy-policy'))->name('privacy-policy');
+Route::get('/about', fn() => view('pages.about'))->name('about');
+
 Route::middleware(['auth', 'not_banned'])->group(function () {
     Route::post('/otp/verify', [\App\Http\Controllers\Auth\OtpController::class, 'verify'])->name('otp.verify');
     Route::post('/otp/resend', [\App\Http\Controllers\Auth\OtpController::class, 'resend'])->name('otp.resend');
-
-    Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::get('/categories/{category:slug}', [CategoryController::class, 'show'])->name('categories.show');
-    Route::get('/services/{service:slug}', [ServiceController::class, 'show'])->name('services.show');
-    Route::get('/privacy-policy', fn() => view('pages.privacy-policy'))->name('privacy-policy');
-    Route::get('/about', fn() => view('pages.about'))->name('about');
     Route::get('/agency-request', [AgencyRequestController::class, 'create'])->name('agency-requests.create');
     Route::post('/agency-request', [AgencyRequestController::class, 'store'])->name('agency-requests.store');
 
