@@ -21,8 +21,20 @@
             </div>
 
             <div
-                class="mt-6 rounded-2xl border border-emerald-100 dark:border-emerald-900/30 bg-emerald-50 dark:bg-emerald-900/20 px-5 py-4 text-sm text-slate-700 dark:text-slate-300 whitespace-pre-line">
-                {{ $paymentMethod->localized_instructions }}
+                class="mt-6 rounded-2xl border border-emerald-100 dark:border-emerald-900/30 bg-emerald-50 dark:bg-emerald-900/20 px-5 py-4 text-sm text-slate-700 dark:text-slate-300">
+                <div class="whitespace-pre-line">{{ $paymentMethod->localized_instructions }}</div>
+
+                @if ($paymentMethod->buttons->isNotEmpty())
+                    <div class="mt-4 grid grid-cols-1 gap-3 lg:grid-cols-2">
+                        @foreach ($paymentMethod->buttons->sortBy('sort_order') as $btn)
+                            <a href="{{ $btn->url }}" target="_blank" rel="noopener noreferrer"
+                                class="flex items-center justify-center text-center rounded-2xl px-4 py-3 text-sm font-semibold text-white transition hover:opacity-90"
+                                style="background-color: {{ $btn->bg_color }}">
+                                {{ $btn->localized_label }}
+                            </a>
+                        @endforeach
+                    </div>
+                @endif
             </div>
 
             @if($paymentMethod->show_contact_button && !empty($sharedWhatsappLink))
@@ -51,17 +63,6 @@
                 </div>
             @endif
 
-            @if ($paymentMethod->buttons->isNotEmpty())
-                <div class="mt-4 grid grid-cols-1 gap-3 lg:grid-cols-2">
-                    @foreach ($paymentMethod->buttons->sortBy('sort_order') as $btn)
-                        <a href="{{ $btn->url }}" target="_blank" rel="noopener noreferrer"
-                            class="flex items-center justify-center text-center rounded-2xl px-4 py-3 text-sm font-semibold text-white transition hover:opacity-90"
-                            style="background-color: {{ $btn->bg_color }}">
-                            {{ $btn->localized_label }}
-                        </a>
-                    @endforeach
-                </div>
-            @endif
         </div>
 
         <div class="rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm">
