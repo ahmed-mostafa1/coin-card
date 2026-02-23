@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
 use App\Http\Controllers\Admin\ServiceFormFieldController as AdminServiceFormFieldController;
 use App\Http\Controllers\Admin\ServiceVariantController as AdminServiceVariantController;
 use App\Http\Controllers\Admin\ServiceButtonController as AdminServiceButtonController;
+use App\Http\Controllers\Admin\PaymentMethodButtonController as AdminPaymentMethodButtonController;
 use App\Http\Controllers\Admin\BannerController as AdminBannerController;
 use App\Http\Controllers\Admin\AppearanceController as AdminAppearanceController;
 use App\Http\Controllers\Admin\SiteSettingsController as AdminSiteSettingsController;
@@ -204,6 +205,13 @@ Route::middleware(['auth', 'not_banned', 'role:admin'])->prefix('admin')->name('
     Route::post('/payment-methods', [AdminPaymentMethodController::class, 'store'])->name('payment-methods.store');
     Route::get('/payment-methods/{paymentMethod}/edit', [AdminPaymentMethodController::class, 'edit'])->name('payment-methods.edit');
     Route::put('/payment-methods/{paymentMethod}', [AdminPaymentMethodController::class, 'update'])->name('payment-methods.update');
+
+    // Payment Method Buttons
+    Route::get('payment-methods/{paymentMethod}/buttons/create', [AdminPaymentMethodButtonController::class, 'create'])->name('payment-methods.buttons.create');
+    Route::post('payment-methods/{paymentMethod}/buttons', [AdminPaymentMethodButtonController::class, 'store'])->name('payment-methods.buttons.store');
+    Route::get('payment-methods/{paymentMethod}/buttons/{button}/edit', [AdminPaymentMethodButtonController::class, 'edit'])->name('payment-methods.buttons.edit');
+    Route::put('payment-methods/{paymentMethod}/buttons/{button}', [AdminPaymentMethodButtonController::class, 'update'])->name('payment-methods.buttons.update');
+    Route::delete('payment-methods/{paymentMethod}/buttons/{button}', [AdminPaymentMethodButtonController::class, 'destroy'])->name('payment-methods.buttons.destroy');
 
     Route::get('/deposits', [AdminDepositController::class, 'index'])->name('deposits.index');
     Route::get('/deposits/{depositRequest}', [AdminDepositController::class, 'show'])->name('deposits.show');

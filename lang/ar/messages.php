@@ -320,6 +320,7 @@ return [
 
     // Admin - Service Buttons
     'service_buttons' => 'أزرار الخدمة',
+    'payment_method_buttons' => 'أزرار طريقة الدفع',
     'add_button' => 'إضافة زر',
     'edit_button' => 'تعديل زر',
     'delete_button' => 'حذف الزر',
@@ -332,6 +333,7 @@ return [
     'button_updated' => 'تم تحديث الزر بنجاح.',
     'button_deleted' => 'تم حذف الزر بنجاح.',
     'confirm_delete' => 'هل أنت متأكد من الحذف؟',
+    'back_to_payment_method' => 'عودة لطريقة الدفع',
 
     // Admin - Banners
     'add_banner' => 'إضافة بانر',

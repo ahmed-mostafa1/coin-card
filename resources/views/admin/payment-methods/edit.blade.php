@@ -233,4 +233,36 @@
             </div>
         </form>
     </div>
+
+    {{-- Payment Method Buttons --}}
+    <div class="mt-6 w-full rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm transition-colors duration-200">
+        <div class="flex items-center justify-between">
+            <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">{{ __('messages.payment_method_buttons') }}</h2>
+            <a href="{{ route('admin.payment-methods.buttons.create', $paymentMethod) }}" class="text-sm text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300">+ {{ __('messages.add_button') }}</a>
+        </div>
+        <div class="mt-4 space-y-3">
+            @forelse ($paymentMethod->buttons->sortBy('sort_order') as $button)
+                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-3">
+                    <div class="flex items-center justify-between gap-3">
+                        <div class="flex items-center gap-2 min-w-0">
+                            <span class="inline-block h-5 w-5 flex-shrink-0 rounded"
+                                style="background-color: {{ $button->bg_color }}"></span>
+                            <div class="min-w-0">
+                                <p class="truncate text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $button->label_ar }}</p>
+                                @if ($button->label_en)
+                                    <p class="truncate text-xs text-slate-500 dark:text-slate-400">{{ $button->label_en }}</p>
+                                @endif
+                            </div>
+                        </div>
+                        <a href="{{ route('admin.payment-methods.buttons.edit', [$paymentMethod, $button]) }}"
+                            class="flex-shrink-0 text-xs text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300">
+                            {{ __('messages.edit') }}
+                        </a>
+                    </div>
+                </div>
+            @empty
+                <p class="text-sm text-slate-500 dark:text-slate-400">{{ __('messages.no_buttons_yet') }}</p>
+            @endforelse
+        </div>
+    </div>
 @endsection

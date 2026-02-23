@@ -29,6 +29,8 @@ class DepositController extends Controller
     {
         abort_unless($paymentMethod->is_active, 404);
 
+        $paymentMethod->loadMissing(['fields', 'buttons']);
+
         return view('deposits.show', compact('paymentMethod'));
     }
 

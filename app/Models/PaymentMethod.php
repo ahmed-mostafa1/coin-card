@@ -58,4 +58,9 @@ class PaymentMethod extends Model
     {
         return $this->hasMany(PaymentMethodField::class);
     }
+
+    public function buttons(): HasMany
+    {
+        return $this->hasMany(PaymentMethodButton::class);
+    }
 }

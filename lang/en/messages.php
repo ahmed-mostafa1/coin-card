@@ -321,6 +321,7 @@ return [
 
     // Admin - Service Buttons
     'service_buttons' => 'Service Buttons',
+    'payment_method_buttons' => 'Payment Method Buttons',
     'add_button' => 'Add Button',
     'edit_button' => 'Edit Button',
     'delete_button' => 'Delete Button',
@@ -333,6 +334,7 @@ return [
     'button_updated' => 'Button updated successfully.',
     'button_deleted' => 'Button deleted successfully.',
     'confirm_delete' => 'Are you sure you want to delete this?',
+    'back_to_payment_method' => 'Back to Payment Method',
 
     // Admin - Banners
     'add_banner' => 'Add Banner',
