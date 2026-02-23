@@ -25,10 +25,10 @@
                 <div class="whitespace-pre-line">{{ $paymentMethod->localized_instructions }}</div>
 
                 @if ($paymentMethod->buttons->isNotEmpty())
-                    <div class="mt-4 grid grid-cols-1 gap-3 lg:grid-cols-2">
+                    <div class="mt-4 flex flex-wrap justify-center gap-3">
                         @foreach ($paymentMethod->buttons->sortBy('sort_order') as $btn)
                             <a href="{{ $btn->url }}" target="_blank" rel="noopener noreferrer"
-                                class="flex items-center justify-center text-center rounded-2xl px-4 py-3 text-sm font-semibold text-white transition hover:opacity-90"
+                                class="flex items-center justify-center text-center rounded-2xl px-6 py-3 min-w-[140px] text-sm font-semibold text-white transition hover:opacity-90"
                                 style="background-color: {{ $btn->bg_color }}">
                                 {{ $btn->localized_label }}
                             </a>
