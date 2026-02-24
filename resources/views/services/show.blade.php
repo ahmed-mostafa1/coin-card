@@ -177,7 +177,7 @@
                                 <div class="mt-4 flex flex-wrap justify-center gap-3 w-full">
                                     @foreach ($service->buttons->sortBy('sort_order') as $btn)
                                         <a href="{{ $btn->url }}" target="_blank" rel="noopener noreferrer"
-                                            class="flex items-center justify-center text-center rounded-lg px-6 py-3 min-w-[140px] text-sm font-semibold text-white shadow-sm transition hover:brightness-110 active:scale-95"
+                                            class="flex w-full sm:w-auto items-center justify-center text-center rounded-lg px-6 py-3 min-w-[140px] text-sm font-semibold text-white shadow-sm transition hover:brightness-110 active:scale-95"
                                             style="background-color: {{ $btn->bg_color }};">
                                             {{ $btn->localized_label }}
                                         </a>

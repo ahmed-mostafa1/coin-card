@@ -28,7 +28,7 @@
                     <div class="mt-4 flex flex-wrap justify-center gap-3">
                         @foreach ($paymentMethod->buttons->sortBy('sort_order') as $btn)
                             <a href="{{ $btn->url }}" target="_blank" rel="noopener noreferrer"
-                                class="flex items-center justify-center text-center rounded-2xl px-6 py-3 min-w-[140px] text-sm font-semibold text-white transition hover:opacity-90"
+                                class="flex w-full sm:w-auto items-center justify-center text-center rounded-2xl px-6 py-3 min-w-[140px] text-sm font-semibold text-white transition hover:opacity-90"
                                 style="background-color: {{ $btn->bg_color }}">
                                 {{ $btn->localized_label }}
                             </a>
