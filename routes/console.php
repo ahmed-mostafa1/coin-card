@@ -4,6 +4,9 @@ use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\User;
 use App\Services\VipService;
+use Illuminate\Support\Facades\Schedule;
+
+Schedule::command('sitemap:generate')->daily();
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());

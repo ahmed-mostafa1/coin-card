@@ -14,6 +14,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use Artesaos\SEOTools\Facades\SEOTools;
+use Illuminate\Support\Str;
 
 class ServiceController extends Controller
 {
@@ -27,6 +29,14 @@ class ServiceController extends Controller
             'variants'   => fn ($query) => $query->where('is_active', true)->orderBy('sort_order'),
             'buttons'    => fn ($query) => $query->orderBy('sort_order'),
         ]);
+
+        SEOTools::setTitle($service->localized_name);
+        if ($service->localized_description) {
+            SEOTools::setDescription(Str::limit(strip_tags($service->localized_description), 160));
+        }
+        if ($service->image_path) {
+            SEOTools::opengraph()->addImage(asset('storage/' . $service->image_path));
+        }
 
         $wallet = auth()->check() ? auth()->user()->wallet()->firstOrCreate([]) : null;
 
