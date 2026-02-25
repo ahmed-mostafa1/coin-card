@@ -10,12 +10,12 @@ use App\Models\Wallet;
 use App\Notifications\NewOrderNotification;
 use App\Services\NotificationService;
 use App\Services\WalletService;
+use Artesaos\SEOTools\Facades\SEOTools;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
-use Artesaos\SEOTools\Facades\SEOTools;
-use Illuminate\Support\Str;
 
 class ServiceController extends Controller
 {
@@ -26,8 +26,8 @@ class ServiceController extends Controller
 
         $service->load([
             'formFields' => fn ($query) => $query->orderBy('sort_order'),
-            'variants'   => fn ($query) => $query->where('is_active', true)->orderBy('sort_order'),
-            'buttons'    => fn ($query) => $query->orderBy('sort_order'),
+            'variants' => fn ($query) => $query->where('is_active', true)->orderBy('sort_order'),
+            'buttons' => fn ($query) => $query->orderBy('sort_order'),
         ]);
 
         SEOTools::setTitle($service->localized_name);
@@ -48,8 +48,7 @@ class ServiceController extends Controller
         Service $service,
         WalletService $walletService,
         NotificationService $notificationService
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         abort_unless($service->is_active && $service->category->is_active, 404);
         abort_unless(($service->source ?? Service::SOURCE_MANUAL) === Service::SOURCE_MANUAL, 404);
 
@@ -58,59 +57,73 @@ class ServiceController extends Controller
         $payload = $request->input('fields', []);
         $allowedKeys = $service->formFields()->pluck('name_key')->all();
         $payload = array_intersect_key($payload, array_flip($allowedKeys));
-        $variantId = $request->input('variant_id');
-        $quantity = $request->input('quantity', 1);
+
+        $isDiscountedInput = $service->isDiscountedInputPricing();
+        $variantId = $isDiscountedInput ? null : $request->input('variant_id');
+        $quantity = max(1, (int) $request->input('quantity', 1));
 
         $order = null;
 
-        DB::transaction(function () use ($user, $service, $payload, $walletService, $variantId, $quantity, $request, &$order) {
+        DB::transaction(function () use ($user, $service, $payload, $walletService, $variantId, $quantity, $request, $isDiscountedInput, &$order) {
             $wallet = Wallet::where('user_id', $user->id)->lockForUpdate()->firstOrCreate(['user_id' => $user->id]);
             $variant = null;
-            
-            // Get VIP discount
-            $vipDiscount = 0;
-            $userVipStatus = $user->load('vipStatus.vipTier')->vipStatus;
-            if ($userVipStatus && $userVipStatus->vipTier) {
-                $vipDiscount = $userVipStatus->vipTier->discount_percentage ?? 0;
-            }
 
-            // Calculate the expected price based on service type
-            if ($service->is_quantity_based) {
-                // Quantity-based pricing
-                $basePrice = $service->price_per_unit * $quantity;
-                $price = $vipDiscount > 0 ? $basePrice * (1 - $vipDiscount / 100) : $basePrice;
-            } elseif ($service->variants()->where('is_active', true)->exists()) {
-                // Variant-based pricing
-                $variant = $service->variants()
-                    ->where('is_active', true)
-                    ->whereKey($variantId)
-                    ->firstOrFail();
+            $vipDiscount = 0.0;
+            $basePrice = 0.0;
+            $price = 0.0;
 
-                $basePrice = $variant->price;
-                $price = $vipDiscount > 0 ? $basePrice * (1 - $vipDiscount / 100) : $basePrice;
+            if ($isDiscountedInput) {
+                $offerAmount = round((float) $request->input('offer_amount', 0), 2);
+                $serviceDiscountPercent = round((float) $service->admin_discount_percent, 2);
+                $discountFactor = max(0, 1 - ($serviceDiscountPercent / 100));
+
+                $basePrice = $offerAmount;
+                $price = round($offerAmount * $discountFactor, 2);
+
+                if ($request->hasFile('offer_image')) {
+                    $payload['offer_image_path'] = $request->file('offer_image')->store('orders/offer-images', 'public');
+                }
+                $payload['offer_amount'] = number_format($offerAmount, 2, '.', '');
+                $payload['service_discount_percent'] = number_format($serviceDiscountPercent, 2, '.', '');
+                $payload['payable_after_discount'] = number_format($price, 2, '.', '');
             } else {
-                // Regular service pricing
-                $basePrice = $service->price;
-                $price = $vipDiscount > 0 ? $basePrice * (1 - $vipDiscount / 100) : $basePrice;
+                $userVipStatus = $user->load('vipStatus.vipTier')->vipStatus;
+                if ($userVipStatus && $userVipStatus->vipTier) {
+                    $vipDiscount = (float) ($userVipStatus->vipTier->discount_percentage ?? 0);
+                }
+
+                if ($service->is_quantity_based) {
+                    $basePrice = (float) $service->price_per_unit * $quantity;
+                    $price = $vipDiscount > 0 ? $basePrice * (1 - $vipDiscount / 100) : $basePrice;
+                } elseif ($service->variants()->where('is_active', true)->exists()) {
+                    $variant = $service->variants()
+                        ->where('is_active', true)
+                        ->whereKey($variantId)
+                        ->firstOrFail();
+
+                    $basePrice = (float) $variant->price;
+                    $price = $vipDiscount > 0 ? $basePrice * (1 - $vipDiscount / 100) : $basePrice;
+                } else {
+                    $basePrice = (float) $service->price;
+                    $price = $vipDiscount > 0 ? $basePrice * (1 - $vipDiscount / 100) : $basePrice;
+                }
             }
 
-            // Use the selected_price from request if provided (frontend calculated)
             $selectedPrice = $request->input('selected_price');
             if ($selectedPrice !== null && $selectedPrice !== '') {
-                $selectedPrice = (float) $selectedPrice;
-                $expectedPrice = (float) $price;
-                
-                // Validate that the selected price matches expected (with small tolerance for rounding)
+                $selectedPrice = round((float) $selectedPrice, 2);
+                $expectedPrice = round((float) $price, 2);
+
                 if (abs($selectedPrice - $expectedPrice) > 0.01) {
                     throw ValidationException::withMessages([
                         'selected_price' => 'السعر المحدد غير صحيح.',
                     ]);
                 }
-                
+
                 $price = $selectedPrice;
             }
 
-            $price = (string) $price;
+            $price = number_format((float) $price, 2, '.', '');
             $balance = (string) $wallet->balance;
 
             $insufficient = function_exists('bccomp')
@@ -123,13 +136,14 @@ class ServiceController extends Controller
                 ]);
             }
 
-            // Add quantity to payload if quantity-based
-            if ($service->is_quantity_based) {
+            if (! $isDiscountedInput && $service->is_quantity_based) {
                 $payload['quantity'] = $quantity;
             }
 
-            // Calculate discount amount
-            $discountAmount = $vipDiscount > 0 ? ($basePrice - $price) : 0;
+            $discountPercentage = $isDiscountedInput
+                ? (float) $service->admin_discount_percent
+                : $vipDiscount;
+            $discountAmount = round(max(0, (float) $basePrice - (float) $price), 2);
 
             $order = Order::create([
                 'user_id' => $user->id,
@@ -137,8 +151,8 @@ class ServiceController extends Controller
                 'variant_id' => $variant?->id,
                 'status' => Order::STATUS_NEW,
                 'price_at_purchase' => $price,
-                'original_price' => $vipDiscount > 0 ? $basePrice : null,
-                'discount_percentage' => $vipDiscount,
+                'original_price' => $discountAmount > 0 ? round((float) $basePrice, 2) : null,
+                'discount_percentage' => $discountPercentage,
                 'discount_amount' => $discountAmount,
                 'amount_held' => $price,
                 'payload' => $payload,
@@ -152,6 +166,7 @@ class ServiceController extends Controller
                     'amount_held' => $price,
                     'variant_name' => $variant?->name,
                     'vip_discount' => $vipDiscount,
+                    'service_discount' => $isDiscountedInput ? (float) $service->admin_discount_percent : null,
                     'quantity' => $service->is_quantity_based ? $quantity : null,
                 ],
                 'actor_user_id' => $user->id,

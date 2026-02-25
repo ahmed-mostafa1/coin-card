@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Models\Service;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -15,6 +16,8 @@ class ServiceRequest extends FormRequest
     public function rules(): array
     {
         $serviceId = $this->route('service')?->id;
+        $pricingMode = $this->input('pricing_mode', Service::PRICING_MODE_FIXED);
+        $isDiscountedInput = $pricingMode === Service::PRICING_MODE_DISCOUNTED_INPUT;
 
         return [
             'category_id' => [
@@ -32,11 +35,15 @@ class ServiceRequest extends FormRequest
             'description_en' => ['nullable', 'string'],
             'additional_rules' => ['nullable', 'string'],
             'additional_rules_en' => ['nullable', 'string'],
-            'is_quantity_based' => ['nullable', 'boolean'],
-            'min_quantity' => ['nullable', 'integer', 'min:1'],
-            'max_quantity' => ['nullable', 'integer', 'gte:min_quantity'],
-            'price_per_unit' => ['required_if:is_quantity_based,1', 'nullable', 'numeric', 'gt:0'],
-            'price' => ['required_unless:is_quantity_based,1', 'nullable', 'numeric', 'gt:0'],
+            'pricing_mode' => ['nullable', Rule::in([Service::PRICING_MODE_FIXED, Service::PRICING_MODE_DISCOUNTED_INPUT])],
+            'admin_discount_percent' => ['required_if:pricing_mode,' . Service::PRICING_MODE_DISCOUNTED_INPUT, 'nullable', 'numeric', 'between:0,100', 'decimal:0,2'],
+            'is_quantity_based' => [Rule::prohibitedIf($isDiscountedInput), 'nullable', 'boolean'],
+            'min_quantity' => [Rule::prohibitedIf($isDiscountedInput), 'nullable', 'integer', 'min:1'],
+            'max_quantity' => [Rule::prohibitedIf($isDiscountedInput), 'nullable', 'integer', 'gte:min_quantity'],
+            'price_per_unit' => [Rule::prohibitedIf($isDiscountedInput), 'required_if:is_quantity_based,1', 'nullable', 'numeric', 'gt:0'],
+            'price' => $isDiscountedInput
+                ? ['required', 'numeric', 'min:0', 'max:0']
+                : ['required_unless:is_quantity_based,1', 'nullable', 'numeric', 'gt:0'],
             'image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'offer_image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'is_active' => ['nullable', 'boolean'],
@@ -47,11 +54,11 @@ class ServiceRequest extends FormRequest
             'is_limited_offer_countdown_active' => ['nullable', 'boolean'],
             'limited_offer_ends_at' => ['exclude_unless:is_limited_offer_countdown_active,1', 'required', 'date', 'after:now'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
-            'variants' => ['nullable', 'array'],
-            'variants.*.name' => ['required_with:variants', 'string', 'max:255'],
-            'variants.*.price' => ['required_with:variants', 'numeric', 'min:0.01'],
-            'variants.*.is_active' => ['nullable', 'boolean'],
-            'variants.*.sort_order' => ['nullable', 'integer', 'min:0'],
+            'variants' => [Rule::prohibitedIf($isDiscountedInput), 'nullable', 'array'],
+            'variants.*.name' => [Rule::prohibitedIf($isDiscountedInput), 'required_with:variants', 'string', 'max:255'],
+            'variants.*.price' => [Rule::prohibitedIf($isDiscountedInput), 'required_with:variants', 'numeric', 'min:0.01'],
+            'variants.*.is_active' => [Rule::prohibitedIf($isDiscountedInput), 'nullable', 'boolean'],
+            'variants.*.sort_order' => [Rule::prohibitedIf($isDiscountedInput), 'nullable', 'integer', 'min:0'],
             'fields' => ['nullable', 'array'],
             'fields.*.label' => ['required_with:fields', 'string', 'max:255'],
             'fields.*.label_en' => ['nullable', 'string', 'max:255'],

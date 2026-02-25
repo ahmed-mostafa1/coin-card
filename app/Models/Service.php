@@ -13,6 +13,8 @@ class Service extends Model
     public const SOURCE_MARKETCARD99 = 'marketcard99';
     public const SYNC_RULE_AUTO = 'auto';
     public const SYNC_RULE_MANUAL = 'manual';
+    public const PRICING_MODE_FIXED = 'fixed';
+    public const PRICING_MODE_DISCOUNTED_INPUT = 'discounted_input';
 
     protected $fillable = [
         'category_id',
@@ -26,6 +28,8 @@ class Service extends Model
         'additional_rules',
         'additional_rules_en',
         'price',
+        'pricing_mode',
+        'admin_discount_percent',
         'is_quantity_based',
         'price_per_unit',
         'is_active',
@@ -56,6 +60,7 @@ class Service extends Model
 
     protected $casts = [
         'price' => 'decimal:12',
+        'admin_discount_percent' => 'decimal:2',
         'price_per_unit' => 'decimal:12',
         'is_active' => 'boolean',
         'is_offer_active' => 'boolean',
@@ -177,5 +182,10 @@ class Service extends Model
             $q->where('source', self::SOURCE_MANUAL)
                 ->orWhereNull('source');
         });
+    }
+
+    public function isDiscountedInputPricing(): bool
+    {
+        return ($this->pricing_mode ?? self::PRICING_MODE_FIXED) === self::PRICING_MODE_DISCOUNTED_INPUT;
     }
 }

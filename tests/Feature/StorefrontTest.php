@@ -12,6 +12,8 @@ use App\Models\Wallet;
 use App\Notifications\NewOrderNotification;
 use App\Notifications\OrderStatusChangedNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
@@ -318,6 +320,136 @@ class StorefrontTest extends TestCase
 
         $this->assertSame(280.00, (float) $wallet->balance);
         $this->assertSame(220.00, (float) $wallet->held_balance);
+    }
+
+    public function test_discounted_input_service_allows_zero_offer_amount_with_zero_balance(): void
+    {
+        Storage::fake('public');
+        Role::firstOrCreate(['name' => 'customer', 'guard_name' => 'web']);
+
+        $user = User::factory()->create();
+        $user->assignRole('customer');
+
+        $wallet = Wallet::firstOrCreate(['user_id' => $user->id]);
+        $wallet->update(['balance' => 0, 'held_balance' => 0]);
+
+        $category = Category::create([
+            'name' => 'العروض',
+            'slug' => 'offers',
+            'is_active' => true,
+        ]);
+
+        $service = Service::create([
+            'category_id' => $category->id,
+            'name' => 'خدمة عروض',
+            'slug' => 'offer-service-zero',
+            'price' => 0,
+            'pricing_mode' => Service::PRICING_MODE_DISCOUNTED_INPUT,
+            'admin_discount_percent' => 20,
+            'is_active' => true,
+        ]);
+
+        $response = $this->actingAs($user)->post('/services/'.$service->slug.'/purchase', [
+            'offer_amount' => '0.00',
+            'selected_price' => '0.00',
+            'offer_image' => UploadedFile::fake()->image('offer.jpg'),
+        ]);
+
+        $response->assertRedirect(route('account.orders'));
+
+        $wallet->refresh();
+        $this->assertSame(0.00, (float) $wallet->balance);
+        $this->assertSame(0.00, (float) $wallet->held_balance);
+
+        $order = Order::where('user_id', $user->id)->firstOrFail();
+        $this->assertSame('0.00', $order->price_at_purchase);
+        $this->assertSame('0.00', $order->amount_held);
+        $this->assertSame('0.00', (string) ($order->payload['offer_amount'] ?? null));
+        $this->assertNotEmpty($order->payload['offer_image_path'] ?? null);
+        Storage::disk('public')->assertExists($order->payload['offer_image_path']);
+    }
+
+    public function test_discounted_input_service_requires_sufficient_balance_when_offer_amount_is_positive(): void
+    {
+        Storage::fake('public');
+        Role::firstOrCreate(['name' => 'customer', 'guard_name' => 'web']);
+
+        $user = User::factory()->create();
+        $user->assignRole('customer');
+
+        $wallet = Wallet::firstOrCreate(['user_id' => $user->id]);
+        $wallet->update(['balance' => 0, 'held_balance' => 0]);
+
+        $category = Category::create([
+            'name' => 'العروض',
+            'slug' => 'offers-low-balance',
+            'is_active' => true,
+        ]);
+
+        $service = Service::create([
+            'category_id' => $category->id,
+            'name' => 'خدمة عروض مدفوعة',
+            'slug' => 'offer-service-insufficient',
+            'price' => 0,
+            'pricing_mode' => Service::PRICING_MODE_DISCOUNTED_INPUT,
+            'admin_discount_percent' => 10,
+            'is_active' => true,
+        ]);
+
+        $response = $this->actingAs($user)->post('/services/'.$service->slug.'/purchase', [
+            'offer_amount' => '100.00',
+            'selected_price' => '90.00',
+            'offer_image' => UploadedFile::fake()->image('offer.jpg'),
+        ]);
+
+        $response->assertSessionHasErrors('balance');
+    }
+
+    public function test_discounted_input_service_holds_discounted_amount_when_balance_is_sufficient(): void
+    {
+        Storage::fake('public');
+        Role::firstOrCreate(['name' => 'customer', 'guard_name' => 'web']);
+
+        $user = User::factory()->create();
+        $user->assignRole('customer');
+
+        $wallet = Wallet::firstOrCreate(['user_id' => $user->id]);
+        $wallet->update(['balance' => 50, 'held_balance' => 0]);
+
+        $category = Category::create([
+            'name' => 'العروض',
+            'slug' => 'offers-paid',
+            'is_active' => true,
+        ]);
+
+        $service = Service::create([
+            'category_id' => $category->id,
+            'name' => 'خدمة خصم',
+            'slug' => 'offer-service-paid',
+            'price' => 0,
+            'pricing_mode' => Service::PRICING_MODE_DISCOUNTED_INPUT,
+            'admin_discount_percent' => 20,
+            'is_active' => true,
+        ]);
+
+        $response = $this->actingAs($user)->post('/services/'.$service->slug.'/purchase', [
+            'offer_amount' => '40.00',
+            'selected_price' => '32.00',
+            'offer_image' => UploadedFile::fake()->image('offer.jpg'),
+        ]);
+
+        $response->assertRedirect(route('account.orders'));
+
+        $wallet->refresh();
+        $this->assertSame(18.00, (float) $wallet->balance);
+        $this->assertSame(32.00, (float) $wallet->held_balance);
+
+        $order = Order::where('user_id', $user->id)->latest('id')->firstOrFail();
+        $this->assertSame('32.00', $order->price_at_purchase);
+        $this->assertSame('32.00', $order->amount_held);
+        $this->assertSame('20.00', $order->discount_percentage);
+        $this->assertSame('8.00', $order->discount_amount);
+        $this->assertSame('40.00', $order->original_price);
     }
 
     public function test_admin_settles_held_amount_on_done(): void

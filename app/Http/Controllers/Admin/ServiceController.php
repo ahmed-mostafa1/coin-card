@@ -58,13 +58,15 @@ class ServiceController extends Controller
         $service = DB::transaction(function () use ($request, $data) {
             $service = Service::create($data);
 
-            foreach ($request->input('variants', []) as $index => $variant) {
-                $service->variants()->create([
-                    'name' => $variant['name'],
-                    'price' => $variant['price'],
-                    'is_active' => isset($variant['is_active']) ? (bool) $variant['is_active'] : true,
-                    'sort_order' => $variant['sort_order'] ?? $index,
-                ]);
+            if (! $service->isDiscountedInputPricing()) {
+                foreach ($request->input('variants', []) as $index => $variant) {
+                    $service->variants()->create([
+                        'name' => $variant['name'],
+                        'price' => $variant['price'],
+                        'is_active' => isset($variant['is_active']) ? (bool) $variant['is_active'] : true,
+                        'sort_order' => $variant['sort_order'] ?? $index,
+                    ]);
+                }
             }
 
             foreach ($request->input('fields', []) as $index => $field) {
@@ -134,6 +136,8 @@ class ServiceController extends Controller
     private function prepareData(ServiceRequest $request, ?Service $service = null): array
     {
         $data = $request->validated();
+        $data['pricing_mode'] = $data['pricing_mode'] ?? Service::PRICING_MODE_FIXED;
+        $data['admin_discount_percent'] = $data['admin_discount_percent'] ?? 0;
         $data['is_active'] = $request->boolean('is_active');
         $data['is_offer_active'] = $request->boolean('is_offer_active');
         $data['is_limited_offer_label_active'] = $request->boolean('is_limited_offer_label_active');
@@ -141,6 +145,21 @@ class ServiceController extends Controller
         $data['is_quantity_based'] = $request->boolean('is_quantity_based');
         $data['source'] = Service::SOURCE_MANUAL;
         $data['sort_order'] = $data['sort_order'] ?? 0;
+
+        if ($data['pricing_mode'] === Service::PRICING_MODE_DISCOUNTED_INPUT) {
+            $data['price'] = 0;
+            $data['is_quantity_based'] = false;
+            $data['price_per_unit'] = null;
+            $data['min_quantity'] = null;
+            $data['max_quantity'] = null;
+        } else {
+            $data['admin_discount_percent'] = 0;
+            if (! $data['is_quantity_based']) {
+                $data['price_per_unit'] = null;
+                $data['min_quantity'] = null;
+                $data['max_quantity'] = null;
+            }
+        }
 
         if (array_key_exists('limited_offer_label', $data)) {
             $data['limited_offer_label'] = trim((string) $data['limited_offer_label']) ?: null;

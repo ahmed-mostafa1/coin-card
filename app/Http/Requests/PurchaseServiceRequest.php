@@ -18,24 +18,29 @@ class PurchaseServiceRequest extends FormRequest
     {
         /** @var Service $service */
         $service = $this->route('service');
+        $isDiscountedInput = $service->isDiscountedInputPricing();
 
         $rules = app(ServiceFormValidator::class)->rules($service);
-
-        $variantsQuery = $service->variants()->where('is_active', true);
 
         $variantRule = Rule::exists('service_variants', 'id')
             ->where('service_id', $service->id)
             ->where('is_active', true);
 
-        if ($variantsQuery->exists()) {
+        if ($isDiscountedInput) {
+            $rules['variant_id'] = ['nullable', 'integer', $variantRule];
+        } elseif ($service->variants()->where('is_active', true)->exists()) {
             $rules['variant_id'] = ['required', 'integer', $variantRule];
         } else {
             $rules['variant_id'] = ['nullable', 'integer', $variantRule];
         }
 
         $rules['selected_price'] = ['nullable', 'numeric', 'min:0'];
-        
-        if ($service->is_quantity_based) {
+
+        if ($isDiscountedInput) {
+            $rules['offer_image'] = ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'];
+            $rules['offer_amount'] = ['required', 'numeric', 'min:0', 'decimal:0,2'];
+            $rules['selected_price'] = ['required', 'numeric', 'min:0', 'decimal:0,2'];
+        } elseif ($service->is_quantity_based) {
             $rules['quantity'] = [
                 'required', 
                 'integer', 

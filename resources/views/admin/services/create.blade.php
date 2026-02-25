@@ -65,12 +65,28 @@
                 <x-input-error :messages="$errors->get('additional_rules_en')" />
             </div>
 
+            <div>
+                <x-input-label for="pricing_mode" value="نوع تسعير الخدمة" />
+                <select id="pricing_mode" name="pricing_mode" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
+                    <option value="fixed" @selected(old('pricing_mode', 'fixed') === 'fixed')>سعر ثابت</option>
+                    <option value="discounted_input" @selected(old('pricing_mode') === 'discounted_input')>خصم على قيمة يدخلها المستخدم</option>
+                </select>
+                <x-input-error :messages="$errors->get('pricing_mode')" />
+            </div>
+
+            <div id="admin-discount-wrapper" class="{{ old('pricing_mode') === 'discounted_input' ? '' : 'hidden' }}">
+                <x-input-label for="admin_discount_percent" value="نسبة الخصم (%)" />
+                <x-text-input id="admin_discount_percent" name="admin_discount_percent" type="number" step="0.01" min="0" max="100" :value="old('admin_discount_percent', 0)" />
+                <x-input-error :messages="$errors->get('admin_discount_percent')" />
+                <p class="mt-1 text-xs text-slate-500">تُطبّق هذه النسبة على قيمة العرض التي يدخلها المستخدم.</p>
+            </div>
+
             <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4 space-y-4">
                 <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
-                    <input id="is_quantity_based" name="is_quantity_based" type="checkbox" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" onchange="toggleQuantityFields(this)">
+                    <input id="is_quantity_based" name="is_quantity_based" type="checkbox" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" @checked(old('is_quantity_based')) onchange="toggleQuantityFields(this)">
                     <label for="is_quantity_based">خدمة بالكمية (سعر ثابت للقطعة)</label>
                 </div>
-                <div id="quantity-fields" class="hidden space-y-4">
+                <div id="quantity-fields" class="{{ old('is_quantity_based') ? '' : 'hidden' }} space-y-4">
                     <div>
                         <x-input-label for="price_per_unit" value="السعر لكل قطعة" />
                         <x-text-input id="price_per_unit" name="price_per_unit" type="number" step="any" min="0.000000001" lang="en" dir="ltr" :value="old('price_per_unit')" />
@@ -95,7 +111,7 @@
 
             <div>
                 <x-input-label for="price" :value="__('messages.price')" />
-                <x-text-input id="price" name="price" type="number" step="0.01" min="0.01" :value="old('price')" />
+                <x-text-input id="price" name="price" type="number" step="0.01" min="0" :value="old('price')" />
                 <x-input-error :messages="$errors->get('price')" />
                 <p class="mt-1 text-xs text-slate-500">السعر الافتراضي (يتم تجاهله إذا كانت الخدمة بالكمية أو لديها باقات)</p>
             </div>
@@ -174,11 +190,12 @@
                 $fields = old('fields', []);
             @endphp
 
-            <div class="rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm transition-colors duration-200">
+            <div id="variants-section" class="rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm transition-colors duration-200">
                 <div class="flex items-center justify-between">
                     <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">{{ __('messages.variants') }}</h2>
                     <button type="button" class="text-sm font-semibold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300" data-variant-add>{{ __('messages.add_variant') }}</button>
                 </div>
+                <p id="variants-disabled-hint" class="mt-2 hidden text-xs text-amber-700">الباقات غير متاحة لهذا النوع من التسعير.</p>
                 <div class="mt-4 space-y-4" data-variants-container>
                     @foreach ($variants as $index => $variant)
                         <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4" data-variant-row>
@@ -280,6 +297,16 @@
 
                     const addVariantButton = document.querySelector('[data-variant-add]');
                     const addFieldButton = document.querySelector('[data-field-add]');
+                    const pricingModeSelect = document.getElementById('pricing_mode');
+                    const adminDiscountWrapper = document.getElementById('admin-discount-wrapper');
+                    const variantsSection = document.getElementById('variants-section');
+                    const variantsDisabledHint = document.getElementById('variants-disabled-hint');
+                    const priceInput = document.getElementById('price');
+                    const quantityCheckbox = document.getElementById('is_quantity_based');
+                    const quantityFields = document.getElementById('quantity-fields');
+                    const pricePerUnitInput = document.getElementById('price_per_unit');
+                    const minQuantityInput = document.getElementById('min_quantity');
+                    const maxQuantityInput = document.getElementById('max_quantity');
 
                     const buildVariantRow = (index) => `
                         <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4" data-variant-row>
@@ -375,7 +402,63 @@
                         });
                     };
 
+                    const applyPricingMode = () => {
+                        const isDiscountedInput = pricingModeSelect?.value === 'discounted_input';
+
+                        if (adminDiscountWrapper) {
+                            adminDiscountWrapper.classList.toggle('hidden', !isDiscountedInput);
+                        }
+
+                        if (variantsSection) {
+                            variantsSection.classList.toggle('opacity-60', isDiscountedInput);
+                        }
+
+                        if (variantsDisabledHint) {
+                            variantsDisabledHint.classList.toggle('hidden', !isDiscountedInput);
+                        }
+
+                        if (addVariantButton) {
+                            addVariantButton.disabled = isDiscountedInput;
+                        }
+
+                        variantsContainer.querySelectorAll('input, button').forEach((element) => {
+                            if (element === addVariantButton) {
+                                return;
+                            }
+                            element.disabled = isDiscountedInput;
+                        });
+
+                        if (quantityCheckbox) {
+                            if (isDiscountedInput) {
+                                quantityCheckbox.checked = false;
+                            }
+                            quantityCheckbox.disabled = isDiscountedInput;
+                        }
+
+                        if (quantityFields) {
+                            quantityFields.classList.toggle('hidden', isDiscountedInput || !quantityCheckbox?.checked);
+                        }
+
+                        [pricePerUnitInput, minQuantityInput, maxQuantityInput].forEach((input) => {
+                            if (input) {
+                                input.disabled = isDiscountedInput;
+                            }
+                        });
+
+                        if (priceInput) {
+                            if (isDiscountedInput) {
+                                priceInput.value = '0';
+                                priceInput.readOnly = true;
+                            } else {
+                                priceInput.readOnly = false;
+                            }
+                        }
+                    };
+
                     addVariantButton?.addEventListener('click', () => {
+                        if (addVariantButton.disabled) {
+                            return;
+                        }
                         const index = variantsContainer.querySelectorAll('[data-variant-row]').length;
                         variantsContainer.insertAdjacentHTML('beforeend', buildVariantRow(index));
                         refreshRemoveButtons();
@@ -401,13 +484,20 @@
                         }
                     });
 
+                    pricingModeSelect?.addEventListener('change', applyPricingMode);
+
                     refreshRemoveButtons();
+                    applyPricingMode();
                 });
             </script>
 
             <script>
                 function toggleQuantityFields(checkbox) {
                     const quantityFields = document.getElementById('quantity-fields');
+                    if (checkbox.disabled) {
+                        quantityFields.classList.add('hidden');
+                        return;
+                    }
                     if (checkbox.checked) {
                         quantityFields.classList.remove('hidden');
                     } else {

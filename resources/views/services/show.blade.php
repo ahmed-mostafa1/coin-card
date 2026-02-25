@@ -59,13 +59,17 @@
 
     @php
         $availableBalance = $wallet?->balance ?? 0;
-        $basePrice = $service->variants->count() ? $service->variants->min('price') : $service->price;
+        $isDiscountedInputPricing = $service->isDiscountedInputPricing();
+        $serviceDiscountPercent = $isDiscountedInputPricing ? (float) ($service->admin_discount_percent ?? 0) : 0;
+        $basePrice = $isDiscountedInputPricing
+            ? 0
+            : ($service->variants->count() ? $service->variants->min('price') : $service->price);
         $isBaseInsufficient = $availableBalance < $basePrice;
         
         // VIP Discount calculation
         $vipDiscount = 0;
         $currentVipTier = null;
-        if (auth()->check()) {
+        if (auth()->check() && ! $isDiscountedInputPricing) {
             $userVipStatus = auth()->user()->load('vipStatus.vipTier')->vipStatus;
             if ($userVipStatus && $userVipStatus->vipTier) {
                 $currentVipTier = $userVipStatus->vipTier;
@@ -194,10 +198,10 @@
                         </div>
                     </div>
 
-                    <form method="POST" action="{{ route('services.purchase', $service->slug) }}" class="mt-4 space-y-4">
+                    <form method="POST" action="{{ route('services.purchase', $service->slug) }}" enctype="multipart/form-data" class="mt-4 space-y-4">
                         @csrf
 
-                        @if ($service->variants->count())
+                        @if (! $isDiscountedInputPricing && $service->variants->count())
                             <div class="space-y-2">
                                 <p class="text-sm font-semibold text-slate-800">{{ __('messages.choose_package') }}</p>
                                 <div class="space-y-2">
@@ -234,7 +238,7 @@
                             </div>
                         @endif
 
-                        @if ($service->is_quantity_based)
+                        @if (! $isDiscountedInputPricing && $service->is_quantity_based)
                             <div class="space-y-2">
                                 <p class="text-sm font-semibold text-slate-800">{{ __('messages.quantity') ?? (app()->getLocale() == 'ar' ? 'الكمية' : 'Quantity') }}</p>
                                 <div class="flex items-center gap-3">
@@ -269,7 +273,7 @@
                             </div>
                         @endif
 
-                        @if ($vipDiscount > 0)
+                        @if (! $isDiscountedInputPricing && $vipDiscount > 0)
                             <div class="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 px-4 py-3">
                                 <p class="text-sm font-semibold text-emerald-900 dark:text-emerald-300">
                                     🎉 {{ __('messages.vip_discount_active') ?? (app()->getLocale() == 'ar' ? 'خصم VIP فعّال' : 'VIP Discount Active') }}: {{ number_format($vipDiscount, 0) }}%
@@ -280,45 +284,74 @@
                             </div>
                         @endif
 
-                        <div class="rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-3 text-sm text-slate-700 dark:text-slate-200">
-                            <p >{{ __('messages.current_price') }}:
-                                @if ($service->variants->count())
-                                    @php
-                                        // Get the first variant (which is auto-selected)
-                                        $firstVariant = $service->variants->sortBy('sort_order')->first();
-                                        $originalPrice = $firstVariant->price;
-                                        $displayPrice = $vipDiscount > 0 ? $originalPrice * (1 - $vipDiscount / 100) : $originalPrice;
-                                    @endphp
-                                    @if ($vipDiscount > 0)
-                                        <span id="original-price" class="text-xs text-slate-500 line-through">${{ number_format($originalPrice, 2) }}</span>
+                        @if ($isDiscountedInputPricing)
+                            @php
+                                $oldOfferAmount = old('offer_amount', 0);
+                                $initialDiscountedPrice = max(0, round(((float) $oldOfferAmount) * (1 - ($serviceDiscountPercent / 100)), 2));
+                            @endphp
+                            <div class="space-y-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-3 text-sm text-slate-700 dark:text-slate-200">
+                                <div class="space-y-1">
+                                    <label for="offer_image" class="block text-sm font-semibold text-slate-800">صورة العرض</label>
+                                    <input id="offer_image" name="offer_image" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" class="store-input" required>
+                                    <x-input-error :messages="$errors->get('offer_image')" />
+                                </div>
+
+                                <div class="space-y-1">
+                                    <label for="offer_amount" class="block text-sm font-semibold text-slate-800">قيمة العرض</label>
+                                    <input id="offer_amount" name="offer_amount" type="number" step="0.01" min="0" value="{{ old('offer_amount', 0) }}" class="store-input" required>
+                                    <x-input-error :messages="$errors->get('offer_amount')" />
+                                </div>
+
+                                <p class="text-sm">
+                                    المبلغ المدفوع بعد الخصم:
+                                    <span id="current-price" class="font-semibold text-emerald-700">{{ number_format($initialDiscountedPrice, 2) }}</span>
+                                    <span id="price-currency">USD</span>
+                                </p>
+                                <input type="hidden" name="selected_price" id="selected-price-input" value="{{ number_format($initialDiscountedPrice, 2, '.', '') }}">
+                                <p id="insufficient-message" class="mt-2 text-xs text-rose-600 hidden">{{ __('messages.insufficient_balance_msg') }}</p>
+                                <p class="mt-1 text-xs text-slate-500">{{ __('messages.held_amount_notice') }}</p>
+                            </div>
+                        @else
+                            <div class="rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-3 text-sm text-slate-700 dark:text-slate-200">
+                                <p >{{ __('messages.current_price') }}:
+                                    @if ($service->variants->count())
+                                        @php
+                                            // Get the first variant (which is auto-selected)
+                                            $firstVariant = $service->variants->sortBy('sort_order')->first();
+                                            $originalPrice = $firstVariant->price;
+                                            $displayPrice = $vipDiscount > 0 ? $originalPrice * (1 - $vipDiscount / 100) : $originalPrice;
+                                        @endphp
+                                        @if ($vipDiscount > 0)
+                                            <span id="original-price" class="text-xs text-slate-500 line-through">${{ number_format($originalPrice, 2) }}</span>
+                                        @endif
+                                        <span id="current-price" class="font-semibold text-emerald-700">${{ number_format($displayPrice, 2) }}</span>
+                                    @elseif ($service->is_quantity_based)
+                                        @php
+                                            $displayPrice = $vipDiscount > 0 ? $service->price_per_unit * (1 - $vipDiscount / 100) : $service->price_per_unit;
+                                        @endphp
+                                        @if ($vipDiscount > 0)
+                                            <span class="text-xs text-slate-500 line-through">${{ number_format($service->price_per_unit, 2) }}</span>
+                                        @endif
+                                        <span id="current-price" class="font-semibold text-emerald-700">${{ number_format($displayPrice, 2) }}</span>
+                                    @else
+                                        @php
+                                            $displayPrice = $vipDiscount > 0 ? $service->price * (1 - $vipDiscount / 100) : $service->price;
+                                        @endphp
+                                        @if ($vipDiscount > 0)
+                                            <span class="text-xs text-slate-500 line-through">${{ number_format($service->price, 2) }}</span>
+                                        @endif
+                                        <span id="current-price" class="font-semibold text-emerald-700">${{ number_format($displayPrice, 2) }}</span>
                                     @endif
-                                    <span id="current-price" class="font-semibold text-emerald-700">${{ number_format($displayPrice, 2) }}</span>
-                                @elseif ($service->is_quantity_based)
-                                    @php
-                                        $displayPrice = $vipDiscount > 0 ? $service->price_per_unit * (1 - $vipDiscount / 100) : $service->price_per_unit;
-                                    @endphp
-                                    @if ($vipDiscount > 0)
-                                        <span class="text-xs text-slate-500 line-through">${{ number_format($service->price_per_unit, 2) }}</span>
-                                    @endif
-                                    <span id="current-price" class="font-semibold text-emerald-700">${{ number_format($displayPrice, 2) }}</span>
-                                @else
-                                    @php
-                                        $displayPrice = $vipDiscount > 0 ? $service->price * (1 - $vipDiscount / 100) : $service->price;
-                                    @endphp
-                                    @if ($vipDiscount > 0)
-                                        <span class="text-xs text-slate-500 line-through">${{ number_format($service->price, 2) }}</span>
-                                    @endif
-                                    <span id="current-price" class="font-semibold text-emerald-700">${{ number_format($displayPrice, 2) }}</span>
-                                @endif
-                                <span id="price-currency">USD</span>
-                            </p>
-                            <input type="hidden" name="selected_price" id="selected-price-input" value="@if ($service->variants->count()){{ $displayPrice }}@elseif ($service->is_quantity_based){{ $displayPrice }}@else{{ $vipDiscount > 0 ? $service->price * (1 - $vipDiscount / 100) : $service->price }}@endif">
-                            <input type="hidden" name="vip_discount" value="{{ $vipDiscount }}">
-                            <p id="insufficient-message"
-                                class="mt-2 text-xs text-rose-600 {{ $isBaseInsufficient ? '' : 'hidden' }}">
-                                {{ __('messages.insufficient_balance_msg') }}</p>
-                            <p class="mt-1 text-xs text-slate-500">{{ __('messages.held_amount_notice') }}</p>
-                        </div>
+                                    <span id="price-currency">USD</span>
+                                </p>
+                                <input type="hidden" name="selected_price" id="selected-price-input" value="@if ($service->variants->count()){{ $displayPrice }}@elseif ($service->is_quantity_based){{ $displayPrice }}@else{{ $vipDiscount > 0 ? $service->price * (1 - $vipDiscount / 100) : $service->price }}@endif">
+                                <input type="hidden" name="vip_discount" value="{{ $vipDiscount }}">
+                                <p id="insufficient-message"
+                                    class="mt-2 text-xs text-rose-600 {{ $isBaseInsufficient ? '' : 'hidden' }}">
+                                    {{ __('messages.insufficient_balance_msg') }}</p>
+                                <p class="mt-1 text-xs text-slate-500">{{ __('messages.held_amount_notice') }}</p>
+                            </div>
+                        @endif
 
                             @forelse ($service->formFields->sortBy('sort_order') as $field)
                                 <div class="space-y-1">
@@ -447,9 +480,12 @@
                 const purchaseButton = document.getElementById('purchase-button');
                 const variantInputs = document.querySelectorAll('input[name="variant_id"]');
                 const quantityInput = document.getElementById('quantity-input');
+                const offerAmountInput = document.getElementById('offer_amount');
                 const countdownElement = document.querySelector('[data-limited-offer-countdown]');
-                const hasVariants = {{ $service->variants->count() ? 'true' : 'false' }};
-                const isQuantityBased = {{ $service->is_quantity_based ? 'true' : 'false' }};
+                const isDiscountedInputPricing = {{ $isDiscountedInputPricing ? 'true' : 'false' }};
+                const serviceDiscountPercent = {{ $serviceDiscountPercent }};
+                const hasVariants = {{ (! $isDiscountedInputPricing && $service->variants->count()) ? 'true' : 'false' }};
+                const isQuantityBased = {{ (! $isDiscountedInputPricing && $service->is_quantity_based) ? 'true' : 'false' }};
                 const vipDiscount = {{ $vipDiscount }};
 
                 const formatPrice = (price) => {
@@ -462,56 +498,59 @@
                 };
 
                 const getSelectedPrice = () => {
-                    // Handle quantity-based services
-                    if (isQuantityBased) {
-                        if (quantityInput) {
-                            const quantity = parseInt(quantityInput.value) || 1;
-                            const pricePerUnit = parseFloat(quantityInput.dataset.pricePerUnit);
-                            let totalPrice = quantity * pricePerUnit;
-                            // Apply VIP discount
-                            if (vipDiscount > 0) {
-                                totalPrice = totalPrice * (1 - vipDiscount / 100);
-                            }
-                            return totalPrice;
+                    if (isDiscountedInputPricing) {
+                        const offerAmount = parseFloat(offerAmountInput?.value ?? '0');
+                        if (Number.isNaN(offerAmount)) {
+                            return null;
                         }
+
+                        const normalizedOfferAmount = Math.max(0, offerAmount);
+                        return Math.max(0, normalizedOfferAmount * (1 - serviceDiscountPercent / 100));
                     }
-                    
-                    // Handle variant-based services (discount already applied in data-price)
-                    const checked = document.querySelector('input[name="variant_id"]:checked');
-                    if (checked) {
-                        if (checked.dataset.price) {
-                            return parseFloat(checked.dataset.price);
-                        }
-                    }
-                    
-                    // Handle regular services
-                    let price = hasVariants ? null : parseFloat({{ $service->price }});
-                    if (price !== null) {
+
+                    if (isQuantityBased && quantityInput) {
+                        const quantity = parseInt(quantityInput.value) || 1;
+                        const pricePerUnit = parseFloat(quantityInput.dataset.pricePerUnit);
+                        let totalPrice = quantity * pricePerUnit;
                         if (vipDiscount > 0) {
-                            price = price * (1 - vipDiscount / 100);
+                            totalPrice = totalPrice * (1 - vipDiscount / 100);
                         }
+                        return totalPrice;
+                    }
+
+                    const checked = document.querySelector('input[name="variant_id"]:checked');
+                    if (checked && checked.dataset.price) {
+                        return parseFloat(checked.dataset.price);
+                    }
+
+                    let price = hasVariants ? null : parseFloat({{ $service->price }});
+                    if (price !== null && vipDiscount > 0) {
+                        price = price * (1 - vipDiscount / 100);
                     }
                     return price;
                 };
 
                 const getOriginalPrice = () => {
-                    // For variant-based services
+                    if (isDiscountedInputPricing) {
+                        const offerAmount = parseFloat(offerAmountInput?.value ?? '0');
+                        if (Number.isNaN(offerAmount)) {
+                            return null;
+                        }
+
+                        return Math.max(0, offerAmount);
+                    }
+
                     const checked = document.querySelector('input[name="variant_id"]:checked');
-                    if (checked) {
-                        if (checked.dataset.originalPrice) {
-                            return parseFloat(checked.dataset.originalPrice);
-                        }
+                    if (checked && checked.dataset.originalPrice) {
+                        return parseFloat(checked.dataset.originalPrice);
                     }
-                    
-                    // For quantity-based services
-                    if (isQuantityBased) {
-                        if (quantityInput) {
-                            const quantity = parseInt(quantityInput.value) || 1;
-                            const pricePerUnit = parseFloat(quantityInput.dataset.pricePerUnit);
-                            return quantity * pricePerUnit;
-                        }
+
+                    if (isQuantityBased && quantityInput) {
+                        const quantity = parseInt(quantityInput.value) || 1;
+                        const pricePerUnit = parseFloat(quantityInput.dataset.pricePerUnit);
+                        return quantity * pricePerUnit;
                     }
-                    
+
                     return null;
                 };
 
@@ -525,12 +564,19 @@
                     if (priceElement) {
                         if (price !== null) {
                             if (!Number.isNaN(price)) {
-                                priceElement.textContent = '$' + formatPrice(price);
+                                const normalizedPrice = Math.max(0, price);
+                                priceElement.textContent = isDiscountedInputPricing
+                                    ? formatPrice(normalizedPrice)
+                                    : '$' + formatPrice(normalizedPrice);
                                 if (priceCurrency) priceCurrency.classList.remove('hidden');
-                                if (priceInput) priceInput.value = price.toFixed(12); // Send high precision to backend
+                                if (priceInput) {
+                                    priceInput.value = isDiscountedInputPricing
+                                        ? normalizedPrice.toFixed(2)
+                                        : normalizedPrice.toFixed(12); // Send high precision to backend
+                                }
                                 
                                 // Update original price if VIP discount is active
-                                if (vipDiscount > 0) {
+                                if (!isDiscountedInputPricing && vipDiscount > 0) {
                                     if (originalPriceElement) {
                                         if (originalPrice !== null) {
                                             originalPriceElement.textContent = '$' + formatPrice(originalPrice);
@@ -553,12 +599,15 @@
                         return;
                     }
 
-                    if (countdownExpired || price === null || availableBalance < price) {
+                    const needsBalance = price !== null && !Number.isNaN(price) && price > 0;
+                    const insufficientBalance = needsBalance && availableBalance < price;
+
+                    if (countdownExpired || price === null || insufficientBalance) {
                         purchaseButton.setAttribute('disabled', 'disabled');
                         if (insufficientMessage) {
-                            if (!countdownExpired && price !== null) {
+                            if (!countdownExpired && insufficientBalance) {
                                 insufficientMessage.classList.remove('hidden');
-                            } else if (countdownExpired) {
+                            } else {
                                 insufficientMessage.classList.add('hidden');
                             }
                         }
@@ -576,6 +625,10 @@
 
                 if (quantityInput) {
                     quantityInput.addEventListener('input', updateState);
+                }
+
+                if (offerAmountInput) {
+                    offerAmountInput.addEventListener('input', updateState);
                 }
 
                 updateState();

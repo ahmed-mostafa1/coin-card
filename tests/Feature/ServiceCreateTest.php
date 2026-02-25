@@ -187,4 +187,59 @@ class ServiceCreateTest extends TestCase
         $this->assertTrue($service->is_limited_offer_countdown_active);
         $this->assertNotNull($service->limited_offer_ends_at);
     }
+
+    public function test_admin_can_create_discounted_input_service_type(): void
+    {
+        $admin = $this->makeAdmin();
+
+        $category = Category::create([
+            'name' => 'Cat',
+            'slug' => 'cat-discounted',
+            'is_active' => true,
+            'sort_order' => 0,
+        ]);
+
+        $response = $this->actingAs($admin)->post(route('admin.services.store'), [
+            'category_id' => $category->id,
+            'name' => 'Offer Service',
+            'slug' => 'offer-service',
+            'pricing_mode' => 'discounted_input',
+            'admin_discount_percent' => '12.50',
+            'price' => 0,
+            'is_active' => true,
+        ]);
+
+        $service = Service::where('slug', 'offer-service')->firstOrFail();
+
+        $response->assertRedirect(route('admin.services.edit', $service));
+        $this->assertSame('discounted_input', $service->pricing_mode);
+        $this->assertSame('12.50', (string) $service->admin_discount_percent);
+        $this->assertSame('0.000000000000', (string) $service->price);
+    }
+
+    public function test_discounted_input_service_type_rejects_variants_in_create_request(): void
+    {
+        $admin = $this->makeAdmin();
+
+        $category = Category::create([
+            'name' => 'Cat',
+            'slug' => 'cat-variant-block',
+            'is_active' => true,
+            'sort_order' => 0,
+        ]);
+
+        $this->actingAs($admin)
+            ->post(route('admin.services.store'), [
+                'category_id' => $category->id,
+                'name' => 'Offer Service',
+                'slug' => 'offer-service-variants',
+                'pricing_mode' => 'discounted_input',
+                'admin_discount_percent' => '10.00',
+                'price' => 0,
+                'variants' => [
+                    ['name' => 'Should Fail', 'price' => 10, 'is_active' => true, 'sort_order' => 0],
+                ],
+            ])
+            ->assertSessionHasErrors('variants');
+    }
 }

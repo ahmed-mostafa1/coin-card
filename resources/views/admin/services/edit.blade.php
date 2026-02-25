@@ -75,12 +75,28 @@
                     <x-input-error :messages="$errors->get('additional_rules_en')" />
                 </div>
 
+                <div>
+                    <x-input-label for="pricing_mode" value="نوع تسعير الخدمة" />
+                    <select id="pricing_mode" name="pricing_mode" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
+                        <option value="fixed" @selected(old('pricing_mode', $service->pricing_mode ?? \App\Models\Service::PRICING_MODE_FIXED) === 'fixed')>سعر ثابت</option>
+                        <option value="discounted_input" @selected(old('pricing_mode', $service->pricing_mode) === 'discounted_input')>خصم على قيمة يدخلها المستخدم</option>
+                    </select>
+                    <x-input-error :messages="$errors->get('pricing_mode')" />
+                </div>
+
+                <div id="admin-discount-wrapper" class="{{ old('pricing_mode', $service->pricing_mode) === 'discounted_input' ? '' : 'hidden' }}">
+                    <x-input-label for="admin_discount_percent" value="نسبة الخصم (%)" />
+                    <x-text-input id="admin_discount_percent" name="admin_discount_percent" type="number" step="0.01" min="0" max="100" :value="old('admin_discount_percent', $service->admin_discount_percent ?? 0)" />
+                    <x-input-error :messages="$errors->get('admin_discount_percent')" />
+                    <p class="mt-1 text-xs text-slate-500">تُطبّق هذه النسبة على قيمة العرض التي يدخلها المستخدم.</p>
+                </div>
+
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4 space-y-4">
                     <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
-                        <input id="is_quantity_based" name="is_quantity_based" type="checkbox" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" {{ $service->is_quantity_based ? 'checked' : '' }} onchange="toggleQuantityFields(this)">
+                        <input id="is_quantity_based" name="is_quantity_based" type="checkbox" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" {{ old('is_quantity_based', $service->is_quantity_based) ? 'checked' : '' }} onchange="toggleQuantityFields(this)">
                         <label for="is_quantity_based">خدمة بالكمية (سعر ثابت للقطعة)</label>
                     </div>
-                    <div id="quantity-fields" class="{{ $service->is_quantity_based ? '' : 'hidden' }} space-y-4">
+                    <div id="quantity-fields" class="{{ old('is_quantity_based', $service->is_quantity_based) ? '' : 'hidden' }} space-y-4">
                         <div>
                             <x-input-label for="price_per_unit" value="السعر لكل قطعة" />
                             <x-text-input id="price_per_unit" name="price_per_unit" type="number" step="any" min="0.000000000001" lang="en" dir="ltr" :value="old('price_per_unit', $service->price_per_unit ? rtrim(rtrim(number_format($service->price_per_unit, 12, '.', ''), '0'), '.') : '')" />
@@ -105,7 +121,7 @@
 
                 <div>
                     <x-input-label for="price" :value="__('messages.price')" />
-                    <x-text-input id="price" name="price" type="number" step="0.01" min="0.01" :value="old('price', $service->price)" />
+                    <x-text-input id="price" name="price" type="number" step="0.01" min="0" :value="old('price', $service->price)" />
                     <x-input-error :messages="$errors->get('price')" />
                     <p class="mt-1 text-xs text-slate-500">السعر الافتراضي (يتم تجاهله إذا كانت الخدمة بالكمية أو لديها باقات)</p>
                 </div>
@@ -198,9 +214,17 @@
             <div class="rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm transition-colors duration-200">
                 <div class="flex items-center justify-between">
                     <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">{{ __('messages.variants') }}</h2>
-                    <a href="{{ route('admin.services.variants.index', $service) }}" class="text-sm text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300">{{ __('messages.manage_variants') }}</a>
+                    @if (($service->pricing_mode ?? \App\Models\Service::PRICING_MODE_FIXED) === \App\Models\Service::PRICING_MODE_DISCOUNTED_INPUT)
+                        <span class="text-sm text-slate-500">غير متاح</span>
+                    @else
+                        <a href="{{ route('admin.services.variants.index', $service) }}" class="text-sm text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300">{{ __('messages.manage_variants') }}</a>
+                    @endif
                 </div>
-                <p class="mt-3 text-sm text-slate-600 dark:text-slate-400">{{ __('messages.variants_hint') }}</p>
+                @if (($service->pricing_mode ?? \App\Models\Service::PRICING_MODE_FIXED) === \App\Models\Service::PRICING_MODE_DISCOUNTED_INPUT)
+                    <p class="mt-3 text-sm text-amber-700">هذا النوع يستخدم التسعير بالخصم على قيمة مدخلة، لذلك الباقات معطلة.</p>
+                @else
+                    <p class="mt-3 text-sm text-slate-600 dark:text-slate-400">{{ __('messages.variants_hint') }}</p>
+                @endif
             </div>
 
             <div class="rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm transition-colors duration-200">
@@ -262,11 +286,63 @@
     <script>
         function toggleQuantityFields(checkbox) {
             const quantityFields = document.getElementById('quantity-fields');
+            if (checkbox.disabled) {
+                quantityFields.classList.add('hidden');
+                return;
+            }
             if (checkbox.checked) {
                 quantityFields.classList.remove('hidden');
             } else {
                 quantityFields.classList.add('hidden');
             }
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const pricingModeSelect = document.getElementById('pricing_mode');
+            const adminDiscountWrapper = document.getElementById('admin-discount-wrapper');
+            const quantityCheckbox = document.getElementById('is_quantity_based');
+            const quantityFields = document.getElementById('quantity-fields');
+            const priceInput = document.getElementById('price');
+            const pricePerUnitInput = document.getElementById('price_per_unit');
+            const minQuantityInput = document.getElementById('min_quantity');
+            const maxQuantityInput = document.getElementById('max_quantity');
+
+            const applyPricingMode = () => {
+                const isDiscountedInput = pricingModeSelect?.value === 'discounted_input';
+
+                if (adminDiscountWrapper) {
+                    adminDiscountWrapper.classList.toggle('hidden', !isDiscountedInput);
+                }
+
+                if (quantityCheckbox) {
+                    if (isDiscountedInput) {
+                        quantityCheckbox.checked = false;
+                    }
+                    quantityCheckbox.disabled = isDiscountedInput;
+                }
+
+                if (quantityFields) {
+                    quantityFields.classList.toggle('hidden', isDiscountedInput || !quantityCheckbox?.checked);
+                }
+
+                [pricePerUnitInput, minQuantityInput, maxQuantityInput].forEach((input) => {
+                    if (input) {
+                        input.disabled = isDiscountedInput;
+                    }
+                });
+
+                if (priceInput) {
+                    if (isDiscountedInput) {
+                        priceInput.value = '0';
+                        priceInput.readOnly = true;
+                    } else {
+                        priceInput.readOnly = false;
+                    }
+                }
+            };
+
+            pricingModeSelect?.addEventListener('change', applyPricingMode);
+            applyPricingMode();
+        });
     </script>
 @endsection
