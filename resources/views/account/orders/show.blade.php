@@ -78,11 +78,51 @@
             <div class="mt-6 rounded-2xl border border-slate-200 p-4">
                 <p class="text-xs text-slate-500">{{ __('messages.order_data_label') }}</p>
                 @if (count($order->payload))
-                    <div class="mt-3 space-y-2 text-sm text-slate-700">
+                    <div class="mt-3 grid gap-3 sm:grid-cols-2">
                         @foreach ($order->payload as $key => $value)
-                            <div class="flex items-center justify-between">
-                                <span class="text-slate-500">{{ $fieldLabels[$key] ?? $key }}</span>
-                                <span class="font-semibold">{{ $value }}</span>
+                            @php
+                                $displayValue = is_scalar($value) || $value === null
+                                    ? (string) $value
+                                    : json_encode($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+                                $displayValue = trim((string) $displayValue);
+
+                                if ($key === 'service_discount_percent' && is_numeric($displayValue)) {
+                                    $displayValue = number_format((float) $displayValue, 2) . '%';
+                                }
+
+                                if (in_array($key, ['offer_amount', 'payable_after_discount'], true) && is_numeric($displayValue)) {
+                                    $displayValue = number_format((float) $displayValue, 2) . ' USD';
+                                }
+
+                                $isUrl = filter_var($displayValue, FILTER_VALIDATE_URL) !== false;
+                                $isImageByExt = preg_match('/\.(jpg|jpeg|png|webp|gif|bmp|svg)(\?.*)?$/i', $displayValue) === 1;
+                                $isImagePath = ! $isUrl
+                                    && $isImageByExt
+                                    && !\Illuminate\Support\Str::contains($displayValue, [' ', "\n", "\r", "\t"]);
+
+                                $imageUrl = null;
+                                if ($isUrl && $isImageByExt) {
+                                    $imageUrl = $displayValue;
+                                } elseif ($isImagePath) {
+                                    $imageUrl = asset('storage/' . ltrim($displayValue, '/'));
+                                }
+                            @endphp
+                            <div class="rounded-xl border border-slate-200 bg-slate-50/70 p-3">
+                                <p class="text-xs text-slate-500">{{ $fieldLabels[$key] ?? \Illuminate\Support\Str::headline((string) $key) }}</p>
+
+                                @if ($imageUrl)
+                                    <a href="{{ $imageUrl }}" target="_blank" rel="noopener noreferrer" class="mt-2 inline-block">
+                                        <img src="{{ $imageUrl }}" alt="{{ $fieldLabels[$key] ?? (string) $key }}" class="h-40 w-auto max-w-full rounded-lg border border-slate-200 bg-white object-contain">
+                                    </a>
+                                @elseif ($isUrl)
+                                    <a href="{{ $displayValue }}" target="_blank" rel="noopener noreferrer" class="mt-2 block break-all text-sm font-semibold text-emerald-700 hover:underline">
+                                        {{ $displayValue }}
+                                    </a>
+                                @else
+                                    <p class="mt-2 break-words text-sm font-semibold text-slate-700">
+                                        {{ $displayValue !== '' ? $displayValue : '-' }}
+                                    </p>
+                                @endif
                             </div>
                         @endforeach
                     </div>

@@ -58,18 +58,58 @@
             </div>
 
             <div class="mt-6 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 p-4">
-                <p class="text-xs text-slate-500 dark:text-slate-400">بيانات الطلب</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('messages.order_data_label') }}</p>
                 @if (count($order->payload))
-                    <div class="mt-3 space-y-2 text-sm text-slate-700 dark:text-slate-200">
+                    <div class="mt-3 grid gap-3 sm:grid-cols-2">
                         @foreach ($order->payload as $key => $value)
-                            <div class="flex items-center justify-between">
-                                <span class="text-slate-500 dark:text-slate-400">{{ $fieldLabels[$key] ?? $key }}</span>
-                                <span class="font-semibold">{{ $value }}</span>
+                            @php
+                                $displayValue = is_scalar($value) || $value === null
+                                    ? (string) $value
+                                    : json_encode($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+                                $displayValue = trim((string) $displayValue);
+
+                                if ($key === 'service_discount_percent' && is_numeric($displayValue)) {
+                                    $displayValue = number_format((float) $displayValue, 2) . '%';
+                                }
+
+                                if (in_array($key, ['offer_amount', 'payable_after_discount'], true) && is_numeric($displayValue)) {
+                                    $displayValue = number_format((float) $displayValue, 2) . ' USD';
+                                }
+
+                                $isUrl = filter_var($displayValue, FILTER_VALIDATE_URL) !== false;
+                                $isImageByExt = preg_match('/\.(jpg|jpeg|png|webp|gif|bmp|svg)(\?.*)?$/i', $displayValue) === 1;
+                                $isImagePath = ! $isUrl
+                                    && $isImageByExt
+                                    && !\Illuminate\Support\Str::contains($displayValue, [' ', "\n", "\r", "\t"]);
+
+                                $imageUrl = null;
+                                if ($isUrl && $isImageByExt) {
+                                    $imageUrl = $displayValue;
+                                } elseif ($isImagePath) {
+                                    $imageUrl = asset('storage/' . ltrim($displayValue, '/'));
+                                }
+                            @endphp
+                            <div class="rounded-xl border border-slate-200 dark:border-slate-700 bg-white/70 dark:bg-slate-900/50 p-3">
+                                <p class="text-xs text-slate-500 dark:text-slate-400">{{ $fieldLabels[$key] ?? \Illuminate\Support\Str::headline((string) $key) }}</p>
+
+                                @if ($imageUrl)
+                                    <a href="{{ $imageUrl }}" target="_blank" rel="noopener noreferrer" class="mt-2 inline-block">
+                                        <img src="{{ $imageUrl }}" alt="{{ $fieldLabels[$key] ?? (string) $key }}" class="h-40 w-auto max-w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 object-contain">
+                                    </a>
+                                @elseif ($isUrl)
+                                    <a href="{{ $displayValue }}" target="_blank" rel="noopener noreferrer" class="mt-2 block break-all text-sm font-semibold text-emerald-700 dark:text-emerald-400 hover:underline">
+                                        {{ $displayValue }}
+                                    </a>
+                                @else
+                                    <p class="mt-2 break-words text-sm font-semibold text-slate-700 dark:text-slate-200">
+                                        {{ $displayValue !== '' ? $displayValue : '-' }}
+                                    </p>
+                                @endif
                             </div>
                         @endforeach
                     </div>
                 @else
-                    <p class="mt-3 text-sm text-slate-500 dark:text-slate-400">لا توجد بيانات إضافية.</p>
+                    <p class="mt-3 text-sm text-slate-500 dark:text-slate-400">{{ __('messages.no_additional_data') }}</p>
                 @endif
             </div>
 
