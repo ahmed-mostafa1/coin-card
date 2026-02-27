@@ -86,9 +86,9 @@
 
                 <div id="admin-discount-wrapper" class="{{ old('pricing_mode', $service->pricing_mode) === 'discounted_input' ? '' : 'hidden' }}">
                     <x-input-label for="admin_discount_percent" value="نسبة الخصم (%)" />
-                    <x-text-input id="admin_discount_percent" name="admin_discount_percent" type="number" step="0.01" min="0" max="100" :value="old('admin_discount_percent', $service->admin_discount_percent ?? 0)" />
+                    <x-text-input id="admin_discount_percent" name="admin_discount_percent" type="number" step="0.01" min="-100" max="100" :value="old('admin_discount_percent', $service->admin_discount_percent ?? 0)" />
                     <x-input-error :messages="$errors->get('admin_discount_percent')" />
-                    <p class="mt-1 text-xs text-slate-500">تُطبّق هذه النسبة على قيمة العرض التي يدخلها المستخدم.</p>
+                    <p class="mt-1 text-xs text-slate-500">تُطبّق هذه النسبة على قيمة العرض التي يدخلها المستخدم. القيمة السالبة تعني زيادة على السعر (Overprice).</p>
                 </div>
 
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4 space-y-4">
