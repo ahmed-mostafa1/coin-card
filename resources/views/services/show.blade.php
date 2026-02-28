@@ -303,7 +303,7 @@
                                 </div>
 
                                 <p class="text-sm">
-                                    المبلغ المدفوع بعد الخصم:
+                                    المبلغ المدفوع:
                                     <span id="current-price" class="font-semibold text-emerald-700">{{ number_format($initialDiscountedPrice, 2) }}</span>
                                     <span id="price-currency">USD</span>
                                 </p>
