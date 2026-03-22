@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', __('messages.home'))
 
@@ -26,6 +26,16 @@
                 <div class="p-6 text-center">
                     <h3 x-text="currentPopup && currentPopup.localized_title" class="text-xl font-bold text-slate-800 dark:text-white mb-2"></h3>
                     <p x-text="currentPopup && currentPopup.localized_content" class="text-slate-600 dark:text-slate-300 whitespace-pre-wrap"></p>
+
+                    <template x-if="currentPopup && currentPopup.localized_button_text && currentPopup.button_url">
+                        <a :href="currentPopup.button_url"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           :style="'background-color:' + (currentPopup.button_color || '#10b981') + ';color:' + (currentPopup.button_text_color || '#ffffff')"
+                           class="mt-4 inline-block rounded-full px-6 py-2.5 text-sm font-bold transition hover:opacity-90 shadow"
+                           x-text="currentPopup.localized_button_text">
+                        </a>
+                    </template>
                 </div>
             </div>
         </div>

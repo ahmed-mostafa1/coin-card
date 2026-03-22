@@ -15,6 +15,11 @@ class Popup extends Model
         'content',
         'content_en',
         'image_path',
+        'button_text',
+        'button_text_en',
+        'button_url',
+        'button_color',
+        'button_text_color',
         'is_active',
         'display_order',
     ];
@@ -24,7 +29,7 @@ class Popup extends Model
         'display_order' => 'integer',
     ];
 
-    protected $appends = ['localized_title', 'localized_content'];
+    protected $appends = ['localized_title', 'localized_content', 'localized_button_text'];
 
     public function scopeActive($query)
     {
@@ -43,5 +48,12 @@ class Popup extends Model
         return app()->getLocale() === 'en' && $this->content_en 
             ? $this->content_en 
             : $this->content;
+    }
+
+    public function getLocalizedButtonTextAttribute()
+    {
+        return app()->getLocale() === 'en' && $this->button_text_en 
+            ? $this->button_text_en 
+            : $this->button_text;
     }
 }

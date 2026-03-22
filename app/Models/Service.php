@@ -17,6 +17,7 @@ class Service extends Model
     public const PRICING_MODE_DISCOUNTED_INPUT = 'discounted_input';
 
     protected $fillable = [
+        'provider_id',
         'category_id',
         'source',
         'name',
@@ -113,6 +114,11 @@ class Service extends Model
         return $locale === 'en' && $this->additional_rules_en 
             ? $this->additional_rules_en 
             : $this->additional_rules;
+    }
+
+    public function provider(): BelongsTo
+    {
+        return $this->belongsTo(ApiProvider::class, 'provider_id');
     }
 
     public function category(): BelongsTo

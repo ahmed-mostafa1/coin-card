@@ -44,12 +44,44 @@
                 <input id="image_path" name="image_path" type="file" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-600 dark:text-slate-300 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-800 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-700 dark:file:text-emerald-300">
                 <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">
                     <i class="fa-solid fa-info-circle ml-1"></i>
-                <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">
-                    <i class="fa-solid fa-info-circle ml-1"></i>
                     {{ __('messages.recommended_size') }}: 600x400 px
                 </p>
-                </p>
                 <x-input-error :messages="$errors->get('image_path')" />
+            </div>
+
+            <div class="rounded-xl border border-slate-200 dark:border-slate-600 p-4 space-y-4">
+                <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">زر الإجراء (اختياري)</p>
+
+                <div>
+                    <x-input-label for="button_text" value="نص الزر (عربي)" />
+                    <x-text-input id="button_text" name="button_text" type="text" :value="old('button_text')" placeholder="مثال: اشترِ الآن" />
+                    <x-input-error :messages="$errors->get('button_text')" />
+                </div>
+
+                <div>
+                    <x-input-label for="button_text_en" value="نص الزر (إنجليزي)" />
+                    <x-text-input id="button_text_en" name="button_text_en" type="text" :value="old('button_text_en')" placeholder="e.g. Buy Now" dir="ltr" />
+                    <x-input-error :messages="$errors->get('button_text_en')" />
+                </div>
+
+                <div>
+                    <x-input-label for="button_url" value="رابط الزر (URL)" />
+                    <x-text-input id="button_url" name="button_url" type="url" :value="old('button_url')" placeholder="https://..." dir="ltr" />
+                    <x-input-error :messages="$errors->get('button_url')" />
+                </div>
+
+                <div class="flex flex-wrap gap-4">
+                    <div class="flex items-center gap-2">
+                        <x-input-label for="button_color" value="لون الزر" />
+                        <input id="button_color" name="button_color" type="color" value="{{ old('button_color', '#10b981') }}" class="h-9 w-14 rounded cursor-pointer border border-slate-200 dark:border-slate-600">
+                        <x-input-error :messages="$errors->get('button_color')" />
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <x-input-label for="button_text_color" value="لون النص" />
+                        <input id="button_text_color" name="button_text_color" type="color" value="{{ old('button_text_color', '#ffffff') }}" class="h-9 w-14 rounded cursor-pointer border border-slate-200 dark:border-slate-600">
+                        <x-input-error :messages="$errors->get('button_text_color')" />
+                    </div>
+                </div>
             </div>
 
             <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">

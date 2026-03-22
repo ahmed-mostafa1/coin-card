@@ -14,7 +14,9 @@ use App\Http\Controllers\Admin\OpsController as AdminOpsController;
 use App\Http\Controllers\Admin\OpsOrderController as AdminOpsOrderController;
 use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\Admin\DailyCardCatalogController as AdminDailyCardCatalogController;
-use App\Http\Controllers\Admin\DailyCardOrderSyncController as AdminDailyCardOrderSyncController;
+use App\Http\Controllers\Admin\ApiProviderController as AdminApiProviderController;
+use App\Http\Controllers\Admin\ApiProviderCatalogController as AdminApiProviderCatalogController;
+use App\Http\Controllers\Admin\ApiProviderOrderSyncController as AdminApiProviderOrderSyncController;
 use App\Http\Controllers\Admin\AgencyRequestController as AdminAgencyRequestController;
 use App\Http\Controllers\Admin\AgencyRequestFieldController as AdminAgencyRequestFieldController;
 use App\Http\Controllers\Admin\ReportsController as AdminReportsController;
@@ -266,10 +268,22 @@ Route::middleware(['auth', 'not_banned', 'role:admin'])->prefix('admin')->name('
     Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
     Route::put('/orders/{order}', [AdminOrderController::class, 'update'])->name('orders.update');
-    Route::post('/orders/{order}/sync-provider', [AdminDailyCardOrderSyncController::class, 'syncStatus'])->name('orders.sync-provider');
+    Route::post('/orders/{order}/sync-provider', [AdminApiProviderOrderSyncController::class, 'syncStatus'])->name('orders.sync-provider');
 
-    // DailyCard catalog browser
-    Route::get('/dailycard', [AdminDailyCardCatalogController::class, 'index'])->name('dailycard.index');
+    // API Providers (generic multi-provider system)
+    Route::resource('providers', AdminApiProviderController::class)->except(['show']);
+    Route::post('providers/{provider}/test', [AdminApiProviderController::class, 'testConnection'])->name('providers.test');
+    Route::get('providers/{provider}/catalog', [AdminApiProviderCatalogController::class, 'index'])->name('providers.catalog.index');
+    Route::post('providers/{provider}/catalog/import', [AdminApiProviderCatalogController::class, 'import'])->name('providers.catalog.import');
+
+    // Legacy DailyCard redirect → generic catalog
+    Route::get('/dailycard', function () {
+        $provider = \App\Models\ApiProvider::where('slug', 'dailycard')->first();
+        if ($provider) {
+            return redirect()->route('admin.providers.catalog.index', $provider);
+        }
+        return redirect()->route('admin.providers.index');
+    })->name('dailycard.index');
     Route::post('/dailycard/import', [AdminDailyCardCatalogController::class, 'import'])->name('dailycard.import');
 });
 

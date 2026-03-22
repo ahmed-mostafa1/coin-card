@@ -55,6 +55,41 @@
                 <x-input-error :messages="$errors->get('image_path')" />
             </div>
 
+            <div class="rounded-xl border border-slate-200 dark:border-slate-600 p-4 space-y-4">
+                <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">زر الإجراء (اختياري)</p>
+
+                <div>
+                    <x-input-label for="button_text" value="نص الزر (عربي)" />
+                    <x-text-input id="button_text" name="button_text" type="text" :value="old('button_text', $popup->button_text)" placeholder="مثال: اشترِ الآن" />
+                    <x-input-error :messages="$errors->get('button_text')" />
+                </div>
+
+                <div>
+                    <x-input-label for="button_text_en" value="نص الزر (إنجليزي)" />
+                    <x-text-input id="button_text_en" name="button_text_en" type="text" :value="old('button_text_en', $popup->button_text_en)" placeholder="e.g. Buy Now" dir="ltr" />
+                    <x-input-error :messages="$errors->get('button_text_en')" />
+                </div>
+
+                <div>
+                    <x-input-label for="button_url" value="رابط الزر (URL)" />
+                    <x-text-input id="button_url" name="button_url" type="url" :value="old('button_url', $popup->button_url)" placeholder="https://..." dir="ltr" />
+                    <x-input-error :messages="$errors->get('button_url')" />
+                </div>
+
+                <div class="flex flex-wrap gap-4">
+                    <div class="flex items-center gap-2">
+                        <x-input-label for="button_color" value="لون الزر" />
+                        <input id="button_color" name="button_color" type="color" value="{{ old('button_color', $popup->button_color ?? '#10b981') }}" class="h-9 w-14 rounded cursor-pointer border border-slate-200 dark:border-slate-600">
+                        <x-input-error :messages="$errors->get('button_color')" />
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <x-input-label for="button_text_color" value="لون النص" />
+                        <input id="button_text_color" name="button_text_color" type="color" value="{{ old('button_text_color', $popup->button_text_color ?? '#ffffff') }}" class="h-9 w-14 rounded cursor-pointer border border-slate-200 dark:border-slate-600">
+                        <x-input-error :messages="$errors->get('button_text_color')" />
+                    </div>
+                </div>
+            </div>
+
             <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
                 <input id="is_active" name="is_active" type="checkbox" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" {{ $popup->is_active ? 'checked' : '' }}>
                 <label for="is_active">تفعيل النافذة</label>

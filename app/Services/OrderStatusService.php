@@ -7,6 +7,7 @@ use App\Models\OrderEvent;
 use App\Models\User;
 use App\Models\Wallet;
 use App\Notifications\OrderStatusChangedNotification;
+use App\Services\ApiProviderManager;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -15,7 +16,7 @@ class OrderStatusService
     public function __construct(
         private readonly WalletService $walletService,
         private readonly VipService $vipService,
-        private readonly DailyCardOrderService $dailyCardOrderService
+        private readonly ApiProviderManager $providerManager
     ) {
     }
 
@@ -156,11 +157,10 @@ class OrderStatusService
             $order->load(['service', 'user']);
             $order->user->notify(new OrderStatusChangedNotification($order, $oldStatus, $newStatus));
 
-            // Auto-place order on DailyCard when moving to processing
-            if ($newStatus === Order::STATUS_PROCESSING
-                && $order->service
-                && $order->service->source === \App\Models\Service::SOURCE_DAILYCARD) {
-                $this->dailyCardOrderService->place($order);
+            // Auto-place order on provider when moving to processing
+            if ($newStatus === Order::STATUS_PROCESSING && $order->service) {
+                $orderService = $this->providerManager->forOrder($order);
+                $orderService?->place($order);
             }
 
             if ($shouldUpdateVip && $newStatus === Order::STATUS_DONE) {

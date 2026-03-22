@@ -1,8 +1,4 @@
 
-Google Client ID: 1041031292395-ds0tn2o095oabfbgogv06aili9n13pf8.apps.googleusercontent.com
- and Secret: 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
-
-
 #pull to host
 
 cd ~/laravel-app
@@ -20,7 +16,7 @@ php artisan optimize:clear
 
 php artisan optimize
 
-
+================================================
 
 Goal: one sentence
 Files involved: list paths (or “unknown”)
@@ -30,8 +26,10 @@ Constraints: (Laravel version= 12, DB, auth method)
 Relevant snippets: only the minimal code blocks
 AI rule: If any of these are missing, proceed with safe assumptions and request only the missing item that blocks correctness.
 
+================================================
 
-smtp email:
-
-support@8bp.in 
-password: #Support55
+you are a senior fullstack laravel developer and your task i to connect this project with this api https://dailycard.shop/UAPI/api-keys/ 
+and our task is to update the import products from any api to our project to be able to import products from any api to our project 
+while keeping it compatible with our current database structure and features and also make it easy to add new apis in the future from admin dashboard.
+note that api authentication is using api key in the header or query parameter or username and password in the header or query parameter.
+give me suggestion to improve this to be more professional and if you have questions ask me then plan before any coding

@@ -12,6 +12,7 @@ class Category extends Model
     public const SOURCE_DAILYCARD = 'dailycard';
 
     protected $fillable = [
+        'provider_id',
         'parent_id',
         'source',
         'external_type',
@@ -45,6 +46,11 @@ class Category extends Model
     public function parent(): BelongsTo
     {
         return $this->belongsTo(self::class, 'parent_id');
+    }
+
+    public function provider(): BelongsTo
+    {
+        return $this->belongsTo(ApiProvider::class, 'provider_id');
     }
 
     public function children(): HasMany

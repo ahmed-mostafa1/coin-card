@@ -30,6 +30,11 @@ class PopupController extends Controller
             'content' => ['nullable', 'string'],
             'content_en' => ['nullable', 'string'],
             'image_path' => ['nullable', 'image', 'max:2048'],
+            'button_text' => ['nullable', 'string', 'max:100'],
+            'button_text_en' => ['nullable', 'string', 'max:100'],
+            'button_url' => ['nullable', 'url', 'max:500'],
+            'button_color' => ['nullable', 'string', 'max:20'],
+            'button_text_color' => ['nullable', 'string', 'max:20'],
             'is_active' => ['boolean'],
             'display_order' => ['integer', 'min:0'],
         ]);
@@ -61,6 +66,11 @@ class PopupController extends Controller
             'content' => ['nullable', 'string'],
             'content_en' => ['nullable', 'string'],
             'image_path' => ['nullable', 'image', 'max:2048'],
+            'button_text' => ['nullable', 'string', 'max:100'],
+            'button_text_en' => ['nullable', 'string', 'max:100'],
+            'button_url' => ['nullable', 'url', 'max:500'],
+            'button_color' => ['nullable', 'string', 'max:20'],
+            'button_text_color' => ['nullable', 'string', 'max:20'],
             'is_active' => ['boolean'],
             'display_order' => ['integer', 'min:0'],
         ]);
