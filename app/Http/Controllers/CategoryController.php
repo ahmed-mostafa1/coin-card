@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\View\View;
-use Artesaos\SEOTools\Facades\SEOTools;
+
 
 class CategoryController extends Controller
 {
@@ -13,7 +13,6 @@ class CategoryController extends Controller
         abort_unless($category->is_active, 404);
         abort_unless(($category->source ?? Category::SOURCE_MANUAL) === Category::SOURCE_MANUAL, 404);
 
-        SEOTools::setTitle($category->localized_name);
 
         $search = request('q');
 

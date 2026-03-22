@@ -41,16 +41,12 @@ return [
         'redirect' => env('GOOGLE_REDIRECT_URI'),
     ],
 
-    'marketcard99' => [
-        'enabled' => (bool) env('MARKETCARD99_ENABLED', false),
-        'base_url' => env('MARKETCARD99_BASE_URL', 'https://app.market-card99.com'),
-        'token' => env('MARKETCARD99_TOKEN'),
-        'username' => env('MARKETCARD99_USERNAME'),
-        'password' => env('MARKETCARD99_PASSWORD'),
-        'token_cache_ttl_minutes' => (int) env('MARKETCARD99_TOKEN_CACHE_TTL_MINUTES', 1440),
-        'timeout' => (int) env('MARKETCARD99_TIMEOUT', 25),
-        'retry_times' => (int) env('MARKETCARD99_RETRY_TIMES', 2),
-        'retry_delay_ms' => (int) env('MARKETCARD99_RETRY_DELAY_MS', 500),
+    'dailycard' => [
+        'base_url' => env('DAILYCARD_BASE_URL', 'https://dailycard.shop/UAPI'),
+        'api_key'  => env('DAILYCARD_API_KEY'),
+        'secret'   => env('DAILYCARD_SECRET'),
+        'timeout'  => (int) env('DAILYCARD_TIMEOUT', 25),
+        'enabled'  => (bool) env('DAILYCARD_ENABLED', true),
     ],
 
 ];

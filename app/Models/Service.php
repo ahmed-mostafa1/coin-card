@@ -10,7 +10,7 @@ use Illuminate\Support\Carbon;
 class Service extends Model
 {
     public const SOURCE_MANUAL = 'manual';
-    public const SOURCE_MARKETCARD99 = 'marketcard99';
+    public const SOURCE_DAILYCARD = 'dailycard';
     public const SYNC_RULE_AUTO = 'auto';
     public const SYNC_RULE_MANUAL = 'manual';
     public const PRICING_MODE_FIXED = 'fixed';

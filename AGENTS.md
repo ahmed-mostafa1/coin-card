@@ -339,3 +339,49 @@
 - Frozen users can browse but cannot create deposit requests or purchase services.
 - Service form fields only allow `text` or `textarea` (textarea rows=3). Legacy `select` fields are migrated to `textarea`.
 - Payment methods require `account_number`; deposit method page shows "رقم التحويل" with copy button and "تم النسخ".
+
+## DailyCard Integration (replaces MarketCard99 entirely)
+### ما تم تنفيذه
+- حذف جميع ملفات MarketCard99 (Client, CatalogSyncService, OrderService, OrderSyncService, Controllers, Commands, Jobs, Tests).
+- استيراد المنتجات: صفحة أدمن لتصفح كتالوج DailyCard حياً مع بحث وفلتر وزر استيراد فردي.
+- تنفيذ الطلبات: عند الانتقال `new → processing` يُرسل الطلب تلقائياً لـ DailyCard عبر `DailyCardOrderService`.
+- تحديث حالة الطلب: يدوياً فقط عبر زر "تحديث الحالة من DailyCard" في تفاصيل الطلب.
+
+### المسارات الجديدة
+- `GET /admin/dailycard` — كتالوج المنتجات
+- `POST /admin/dailycard/import` — استيراد منتج
+- `POST /admin/orders/{order}/sync-provider` — تحديث حالة الطلب من DailyCard
+
+### الملفات الجديدة
+- `app/Services/DailyCardClient.php` — عميل HTTP (X-API-Key / X-API-Secret)
+- `app/Services/DailyCardOrderService.php` — إرسال الطلب وتحديث الحالة
+- `app/Http/Controllers/Admin/DailyCardCatalogController.php` — كتالوج الاستيراد
+- `app/Http/Controllers/Admin/DailyCardOrderSyncController.php` — تحديث الحالة
+- `resources/views/admin/dailycard/index.blade.php` — واجهة الكتالوج
+- `database/migrations/2026_03_22_000001_add_dailycard_fields_to_orders_table.php`
+
+### الحقول الجديدة في `orders`
+- `provider_transaction_id` — معرف المعاملة من DailyCard (e.g. TXN-xxx)
+- `provider_execution_status` — processing | success | failed
+- `provider_replay` — رسالة نتيجة التنفيذ
+
+### ثوابت النموذج المحدثة
+- `Service::SOURCE_DAILYCARD = 'dailycard'` (بدلاً من `SOURCE_MARKETCARD99`)
+- `Category::SOURCE_DAILYCARD = 'dailycard'`
+
+### متغيرات البيئة
+- `DAILYCARD_API_KEY`
+- `DAILYCARD_SECRET`
+- `DAILYCARD_BASE_URL` (افتراضي: `https://dailycard.shop/UAPI`)
+- `DAILYCARD_ENABLED` (افتراضي: `true`)
+
+### قرارات معمارية
+- المنتجات المستوردة تُنشأ بـ `is_active = false` وتتطلب تفعيلاً يدوياً من الأدمن.
+- الاستيراد تحت تصنيف مؤقت `dailycard-imported` (غير مفعّل) ويمكن نقله لتصنيف آخر.
+- لا scheduler ولا queue — تحديث الحالة يدوي فقط عبر زر في تفاصيل الطلب.
+- التنفيذ يتم بعد commit المعاملة (`DB::afterCommit`) لتجنب حجب lock المحفظة.
+
+### أوامر التشغيل
+- الهجرات: `php artisan migrate`
+- مسح الكاش: `php artisan config:clear && php artisan cache:clear`
+- الاختبارات: `php artisan test`

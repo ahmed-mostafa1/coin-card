@@ -18,7 +18,6 @@ class ServiceController extends Controller
     public function index(Request $request): View
     {
         $query = Service::query()
-            ->manual()
             ->with('category')
             ->orderBy('sort_order')
             ->orderBy('name');
@@ -91,7 +90,7 @@ class ServiceController extends Controller
 
     public function edit(Service $service): View
     {
-        abort_unless(($service->source ?? Service::SOURCE_MANUAL) === Service::SOURCE_MANUAL, 404);
+        abort_unless(in_array($service->source ?? Service::SOURCE_MANUAL, [Service::SOURCE_MANUAL, Service::SOURCE_DAILYCARD], true), 404);
 
         $service->load(['formFields.options' => fn($query) => $query->orderBy('sort_order'), 'buttons' => fn($q) => $q->orderBy('sort_order')]);
         $categories = Category::query()
@@ -107,7 +106,7 @@ class ServiceController extends Controller
 
     public function update(ServiceRequest $request, Service $service): RedirectResponse
     {
-        abort_unless(($service->source ?? Service::SOURCE_MANUAL) === Service::SOURCE_MANUAL, 404);
+        abort_unless(in_array($service->source ?? Service::SOURCE_MANUAL, [Service::SOURCE_MANUAL, Service::SOURCE_DAILYCARD], true), 404);
 
         $data = $this->prepareData($request, $service);
 
@@ -196,7 +195,7 @@ class ServiceController extends Controller
     }
     public function destroy(Service $service): RedirectResponse
     {
-        abort_unless(($service->source ?? Service::SOURCE_MANUAL) === Service::SOURCE_MANUAL, 404);
+        abort_unless(in_array($service->source ?? Service::SOURCE_MANUAL, [Service::SOURCE_MANUAL, Service::SOURCE_DAILYCARD], true), 404);
 
         if ($service->image_path) {
             Storage::disk('public')->delete($service->image_path);

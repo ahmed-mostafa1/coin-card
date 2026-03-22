@@ -151,6 +151,54 @@
                 <x-primary-button class="w-full">حفظ التحديث</x-primary-button>
             </form>
 
+            {{-- DailyCard Fulfillment Section --}}
+            @if ($order->service && $order->service->source === 'dailycard')
+                <div class="mt-6 rounded-2xl border border-blue-100 dark:border-blue-900 bg-blue-50 dark:bg-blue-900/20 p-4">
+                    <h3 class="text-sm font-semibold text-blue-700 dark:text-blue-300 mb-3 flex items-center gap-2">
+                        <span>🔗</span> تنفيذ DailyCard
+                    </h3>
+
+                    <div class="space-y-2 text-xs text-slate-600 dark:text-slate-300">
+                        <div class="flex justify-between">
+                            <span>رقم المعاملة</span>
+                            <span class="font-mono font-semibold">{{ $order->provider_transaction_id ?? '—' }}</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span>حالة التنفيذ</span>
+                            @php
+                                $execStatus = $order->provider_execution_status ?? null;
+                                $execColor = match($execStatus) {
+                                    'success', 'completed' => 'text-emerald-700 bg-emerald-100',
+                                    'failed', 'error'      => 'text-red-700 bg-red-100',
+                                    'processing'           => 'text-amber-700 bg-amber-100',
+                                    default                => 'text-gray-600 bg-gray-100',
+                                };
+                            @endphp
+                            <span class="px-2 py-0.5 rounded-full text-[11px] font-medium {{ $execColor }}">
+                                {{ $execStatus ?? 'لم يُرسل بعد' }}
+                            </span>
+                        </div>
+                        @if($order->provider_replay)
+                            <div class="pt-2 border-t border-blue-100 dark:border-blue-800">
+                                <p class="text-[11px] text-gray-500 mb-1">نتيجة التنفيذ</p>
+                                <p class="text-xs text-slate-700 dark:text-slate-200 font-medium break-words">{{ $order->provider_replay }}</p>
+                            </div>
+                        @endif
+                    </div>
+
+                    @if(!in_array($order->status, ['done', 'rejected']))
+                        <form method="POST" action="{{ route('admin.orders.sync-provider', $order) }}" class="mt-4">
+                            @csrf
+                            <button type="submit"
+                                    onclick="return confirm('تحديث حالة الطلب من DailyCard؟')"
+                                    class="w-full px-4 py-2 text-xs font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition">
+                                🔄 تحديث الحالة من DailyCard
+                            </button>
+                        </form>
+                    @endif
+                </div>
+            @endif
+
             <div class="mt-8 border-t border-slate-200 dark:border-slate-700 pt-6">
                 <h3 class="text-base font-semibold text-emerald-700 dark:text-emerald-400">سجل الطلب</h3>
                 @php

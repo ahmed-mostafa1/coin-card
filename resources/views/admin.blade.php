@@ -22,6 +22,7 @@
             <a href="{{ route('admin.popups.index') }}" class="cc-pill">النوافذ المنبثقة</a>
             <a href="{{ route('admin.pages.edit') }}" class="cc-pill">محتوى الصفحات</a>
             <a href="{{ route('admin.site-settings.edit') }}" class="cc-pill">إدارة الموقع</a>
+            <a href="{{ route('admin.dailycard.index') }}" class="cc-pill">استيراد DailyCard</a>
         </div>
     </div>
 @endsection

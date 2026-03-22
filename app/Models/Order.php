@@ -46,6 +46,9 @@ class Order extends Model
         'external_payload',
         'external_raw',
         'has_purchase_password',
+        'provider_transaction_id',
+        'provider_execution_status',
+        'provider_replay',
     ];
 
     protected $casts = [

@@ -14,7 +14,8 @@ class OrderStatusService
 {
     public function __construct(
         private readonly WalletService $walletService,
-        private readonly VipService $vipService
+        private readonly VipService $vipService,
+        private readonly DailyCardOrderService $dailyCardOrderService
     ) {
     }
 
@@ -154,6 +155,13 @@ class OrderStatusService
             $order->refresh();
             $order->load(['service', 'user']);
             $order->user->notify(new OrderStatusChangedNotification($order, $oldStatus, $newStatus));
+
+            // Auto-place order on DailyCard when moving to processing
+            if ($newStatus === Order::STATUS_PROCESSING
+                && $order->service
+                && $order->service->source === \App\Models\Service::SOURCE_DAILYCARD) {
+                $this->dailyCardOrderService->place($order);
+            }
 
             if ($shouldUpdateVip && $newStatus === Order::STATUS_DONE) {
                 $this->vipService->updateUserVipStatus($order->user);

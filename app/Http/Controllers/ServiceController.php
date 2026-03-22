@@ -22,7 +22,10 @@ class ServiceController extends Controller
     public function show(Service $service): View
     {
         abort_unless($service->is_active && $service->category->is_active, 404);
-        abort_unless(($service->source ?? Service::SOURCE_MANUAL) === Service::SOURCE_MANUAL, 404);
+        abort_unless(
+            in_array($service->source ?? Service::SOURCE_MANUAL, [Service::SOURCE_MANUAL, Service::SOURCE_DAILYCARD], true),
+            404
+        );
 
         $service->load([
             'formFields' => fn ($query) => $query->orderBy('sort_order'),
@@ -50,8 +53,10 @@ class ServiceController extends Controller
         NotificationService $notificationService
     ): RedirectResponse {
         abort_unless($service->is_active && $service->category->is_active, 404);
-        abort_unless(($service->source ?? Service::SOURCE_MANUAL) === Service::SOURCE_MANUAL, 404);
-
+        abort_unless(
+            in_array($service->source ?? Service::SOURCE_MANUAL, [Service::SOURCE_MANUAL, Service::SOURCE_DAILYCARD], true),
+            404
+        );
         $user = $request->user();
 
         $payload = $request->input('fields', []);
@@ -149,7 +154,7 @@ class ServiceController extends Controller
                 'user_id' => $user->id,
                 'service_id' => $service->id,
                 'variant_id' => $variant?->id,
-                'status' => Order::STATUS_NEW,
+                'status'            => $isDailyCard ? Order::STATUS_PROCESSING : Order::STATUS_NEW,
                 'price_at_purchase' => $price,
                 'original_price' => $discountAmount > 0 ? round((float) $basePrice, 2) : null,
                 'discount_percentage' => $discountPercentage,
@@ -184,7 +189,7 @@ class ServiceController extends Controller
             ], false);
         });
 
-        DB::afterCommit(function () use ($order, $notificationService, $user): void {
+        DB::afterCommit(function () use ($order, $notificationService, $user, $isDailyCard, $dailyCardOrderService): void {
             if (! $order) {
                 return;
             }
@@ -193,6 +198,10 @@ class ServiceController extends Controller
 
             $user->notify(new \App\Notifications\UserOrderCreatedNotification($order));
             $notificationService->notifyAdmins(new NewOrderNotification($order));
+
+            if ($isDailyCard) {
+                $dailyCardOrderService->place($order);
+            }
         });
 
         return redirect()->route('account.orders')

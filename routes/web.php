@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\OpsController as AdminOpsController;
 use App\Http\Controllers\Admin\OpsOrderController as AdminOpsOrderController;
 use App\Http\Controllers\Admin\PageController as AdminPageController;
+use App\Http\Controllers\Admin\DailyCardCatalogController as AdminDailyCardCatalogController;
+use App\Http\Controllers\Admin\DailyCardOrderSyncController as AdminDailyCardOrderSyncController;
 use App\Http\Controllers\Admin\AgencyRequestController as AdminAgencyRequestController;
 use App\Http\Controllers\Admin\AgencyRequestFieldController as AdminAgencyRequestFieldController;
 use App\Http\Controllers\Admin\ReportsController as AdminReportsController;
@@ -264,6 +266,11 @@ Route::middleware(['auth', 'not_banned', 'role:admin'])->prefix('admin')->name('
     Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
     Route::put('/orders/{order}', [AdminOrderController::class, 'update'])->name('orders.update');
+    Route::post('/orders/{order}/sync-provider', [AdminDailyCardOrderSyncController::class, 'syncStatus'])->name('orders.sync-provider');
+
+    // DailyCard catalog browser
+    Route::get('/dailycard', [AdminDailyCardCatalogController::class, 'index'])->name('dailycard.index');
+    Route::post('/dailycard/import', [AdminDailyCardCatalogController::class, 'import'])->name('dailycard.import');
 });
 
 Route::get('/debug/test-email', function () {

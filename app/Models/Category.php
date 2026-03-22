@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Category extends Model
 {
     public const SOURCE_MANUAL = 'manual';
-    public const SOURCE_MARKETCARD99 = 'marketcard99';
+    public const SOURCE_DAILYCARD = 'dailycard';
 
     protected $fillable = [
         'parent_id',
