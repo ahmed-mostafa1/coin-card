@@ -1,7 +1,73 @@
 @extends('layouts.app')
 
-@section('title', $category->localized_name)
+@php
+    $categoryPreviewNames = ($hasChildren ? $subcategories : $services)
+        ->take(4)
+        ->pluck('localized_name')
+        ->filter()
+        ->implode('، ');
+    $categoryTitle = app()->getLocale() === 'ar'
+        ? $category->localized_name.' - خدمات وبطاقات رقمية'
+        : $category->localized_name.' - Digital services and top ups';
+    $categoryDescription = $categoryPreviewNames !== ''
+        ? (
+            app()->getLocale() === 'ar'
+                ? 'تصفح قسم '.$category->localized_name.' واكتشف أبرز الخيارات المتاحة مثل '.$categoryPreviewNames.'.'
+                : 'Browse '.$category->localized_name.' and discover featured options like '.$categoryPreviewNames.'.'
+        )
+        : (
+            app()->getLocale() === 'ar'
+                ? 'تصفح خدمات وبطاقات '.$category->localized_name.' مع خيارات رقمية محدثة وأسعار واضحة.'
+                : 'Browse '.$category->localized_name.' digital services with updated options and clear pricing.'
+        );
+    $categoryDescription = \Illuminate\Support\Str::limit(strip_tags($categoryDescription), 160, '');
+    $categoryImage = $category->image_path ? asset('storage/'.$category->image_path) : asset('img/placeholder-category.jpg');
+    $breadcrumbItems = array_values(array_filter([
+        [
+            '@type' => 'ListItem',
+            'position' => 1,
+            'name' => app()->getLocale() === 'ar' ? 'الرئيسية' : 'Home',
+            'item' => route('home'),
+        ],
+        $category->parent ? [
+            '@type' => 'ListItem',
+            'position' => 2,
+            'name' => $category->parent->localized_name,
+            'item' => route('categories.show', $category->parent->slug),
+        ] : null,
+        [
+            '@type' => 'ListItem',
+            'position' => $category->parent ? 3 : 2,
+            'name' => $category->localized_name,
+            'item' => route('categories.show', $category->slug),
+        ],
+    ]));
+    $categorySchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'CollectionPage',
+        'name' => $category->localized_name,
+        'url' => route('categories.show', $category->slug),
+        'description' => $categoryDescription,
+        'inLanguage' => app()->getLocale(),
+    ];
+    $breadcrumbSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'BreadcrumbList',
+        'itemListElement' => $breadcrumbItems,
+    ];
+@endphp
+
+@section('title', $categoryTitle)
+@section('meta_description', $categoryDescription)
+@section('meta_canonical', route('categories.show', $category->slug))
+@section('meta_image', $categoryImage)
+@section('meta_robots', $search ? 'noindex,follow' : 'index,follow')
 @section('mainWidth', 'w-full max-w-full')
+
+@push('structured-data')
+    <script type="application/ld+json">{!! json_encode($categorySchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
+    <script type="application/ld+json">{!! json_encode($breadcrumbSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
+@endpush
 
 @section('content')
     <div class="store-shell space-y-6">

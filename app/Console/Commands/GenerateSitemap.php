@@ -32,12 +32,24 @@ class GenerateSitemap extends Command
         $sitemap = Sitemap::create();
 
         $sitemap->add(Url::create(route('home'))
+            ->setLastModificationDate(now())
             ->setPriority(1.0)
             ->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY));
+
+        $sitemap->add(Url::create(route('about'))
+            ->setLastModificationDate(now())
+            ->setPriority(0.3)
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY));
+
+        $sitemap->add(Url::create(route('privacy-policy'))
+            ->setLastModificationDate(now())
+            ->setPriority(0.2)
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY));
 
         // Add Categories
         Category::active()->manual()->get()->each(function (Category $category) use ($sitemap) {
             $sitemap->add(Url::create(route('categories.show', $category->slug))
+                ->setLastModificationDate($category->updated_at ?? now())
                 ->setPriority(0.9)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY));
         });
@@ -47,6 +59,7 @@ class GenerateSitemap extends Command
             $query->active()->manual();
         })->get()->each(function (Service $service) use ($sitemap) {
             $sitemap->add(Url::create(route('services.show', $service->slug))
+                ->setLastModificationDate($service->updated_at ?? now())
                 ->setPriority(0.8)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY));
         });

@@ -1,6 +1,30 @@
 @extends('layouts.app')
 
-@section('title', __('messages.about_us'))
+@php
+    $aboutTitle = app()->getLocale() === 'ar' ? 'من نحن' : 'About Us';
+    $aboutDescriptionSource = app()->getLocale() === 'ar'
+        ? ($sharedAboutAr ?: 'تعرف على المتجر وخدماته الرقمية وآلية العمل والدعم المتاح للعملاء والوكلاء.')
+        : ($sharedAboutEn ?: 'Learn more about the store, its digital services, and how support works for customers and agents.');
+    $aboutDescription = \Illuminate\Support\Str::limit(strip_tags($aboutDescriptionSource), 160, '');
+    $aboutSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'AboutPage',
+        'name' => $aboutTitle,
+        'url' => route('about'),
+        'description' => $aboutDescription,
+        'inLanguage' => app()->getLocale(),
+    ];
+@endphp
+
+@section('title', $aboutTitle)
+@section('meta_description', $aboutDescription)
+@section('meta_canonical', route('about'))
+@section('meta_type', 'website')
+@section('meta_robots', 'index,follow')
+
+@push('structured-data')
+    <script type="application/ld+json">{!! json_encode($aboutSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
+@endpush
 
 @section('content')
     <x-card :hover="false">

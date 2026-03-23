@@ -1,6 +1,40 @@
 @extends('layouts.app')
 
-@section('title', __('messages.home'))
+@php
+    $homeTitle = app()->getLocale() === 'ar'
+        ? 'شراء بطاقات الألعاب والخدمات الرقمية أونلاين'
+        : 'Buy digital services and gaming top ups online';
+    $homeDescriptionSource = app()->getLocale() === 'en' && ! empty($sharedStoreDescriptionEn)
+        ? $sharedStoreDescriptionEn
+        : $sharedStoreDescription;
+    $homeDescription = \Illuminate\Support\Str::limit(
+        trim(strip_tags($homeDescriptionSource ?: $homeTitle)),
+        160,
+        ''
+    );
+    $homeImage = $sharedBanners->first()?->image_path
+        ? asset('storage/'.$sharedBanners->first()->image_path)
+        : asset('img/placeholder-banner.jpg');
+    $homeSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'CollectionPage',
+        'name' => $homeTitle,
+        'url' => route('home'),
+        'description' => $homeDescription,
+        'inLanguage' => app()->getLocale(),
+    ];
+@endphp
+
+@section('title', $homeTitle)
+@section('meta_description', $homeDescription)
+@section('meta_canonical', route('home'))
+@section('meta_type', 'website')
+@section('meta_image', $homeImage)
+@section('meta_robots', 'index,follow')
+
+@push('structured-data')
+    <script type="application/ld+json">{!! json_encode($homeSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
+@endpush
 
 @section('content')
     @if(isset($activePopups) && $activePopups->isNotEmpty())

@@ -10,10 +10,8 @@ use App\Models\Wallet;
 use App\Notifications\NewOrderNotification;
 use App\Services\NotificationService;
 use App\Services\WalletService;
-use Artesaos\SEOTools\Facades\SEOTools;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
@@ -32,14 +30,6 @@ class ServiceController extends Controller
             'variants' => fn ($query) => $query->where('is_active', true)->orderBy('sort_order'),
             'buttons' => fn ($query) => $query->orderBy('sort_order'),
         ]);
-
-        SEOTools::setTitle($service->localized_name);
-        if ($service->localized_description) {
-            SEOTools::setDescription(Str::limit(strip_tags($service->localized_description), 160));
-        }
-        if ($service->image_path) {
-            SEOTools::opengraph()->addImage(asset('storage/' . $service->image_path));
-        }
 
         $wallet = auth()->check() ? auth()->user()->wallet()->firstOrCreate([]) : null;
 

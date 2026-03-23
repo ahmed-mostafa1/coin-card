@@ -1,6 +1,30 @@
 @extends('layouts.app')
 
-@section('title', __('messages.privacy_policy'))
+@php
+    $privacyTitle = app()->getLocale() === 'ar' ? 'سياسة الخصوصية' : 'Privacy Policy';
+    $privacyDescriptionSource = app()->getLocale() === 'ar'
+        ? ($sharedPrivacyAr ?: 'اطلع على سياسة الخصوصية وآلية جمع البيانات واستخدامها وحماية معلومات المستخدمين داخل المنصة.')
+        : ($sharedPrivacyEn ?: 'Read the privacy policy covering data collection, usage, and how user information is protected on the platform.');
+    $privacyDescription = \Illuminate\Support\Str::limit(strip_tags($privacyDescriptionSource), 160, '');
+    $privacySchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'WebPage',
+        'name' => $privacyTitle,
+        'url' => route('privacy-policy'),
+        'description' => $privacyDescription,
+        'inLanguage' => app()->getLocale(),
+    ];
+@endphp
+
+@section('title', $privacyTitle)
+@section('meta_description', $privacyDescription)
+@section('meta_canonical', route('privacy-policy'))
+@section('meta_type', 'website')
+@section('meta_robots', 'index,follow')
+
+@push('structured-data')
+    <script type="application/ld+json">{!! json_encode($privacySchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
+@endpush
 
 @section('content')
     <x-card :hover="false">

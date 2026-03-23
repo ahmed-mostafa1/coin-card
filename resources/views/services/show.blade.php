@@ -1,7 +1,93 @@
 @extends('layouts.app')
 
-@section('title', $service->localized_name)
+@php
+    $serviceImage = $service->offer_image_path
+        ? asset('storage/'.$service->offer_image_path)
+        : ($service->image_path ? asset('storage/'.$service->image_path) : asset('img/placeholder-category.jpg'));
+    $serviceMetaDescriptionSource = $service->localized_description ?: (
+        app()->getLocale() === 'ar'
+            ? 'شراء '.$service->localized_name.' ضمن قسم '.$service->category->localized_name.' مع تنفيذ واضح وتسعير محدث.'
+            : 'Buy '.$service->localized_name.' in '.$service->category->localized_name.' with clear fulfillment details and updated pricing.'
+    );
+    $serviceMetaDescription = \Illuminate\Support\Str::limit(strip_tags($serviceMetaDescriptionSource), 160, '');
+    $serviceTitle = $service->localized_name;
+    $variantPrices = $service->variants->pluck('price')->filter();
+    $offersSchema = $variantPrices->count() > 1
+        ? [
+            '@type' => 'AggregateOffer',
+            'priceCurrency' => 'USD',
+            'lowPrice' => number_format((float) $variantPrices->min(), 2, '.', ''),
+            'highPrice' => number_format((float) $variantPrices->max(), 2, '.', ''),
+            'offerCount' => $variantPrices->count(),
+            'availability' => 'https://schema.org/InStock',
+            'url' => route('services.show', $service->slug),
+        ]
+        : [
+            '@type' => 'Offer',
+            'priceCurrency' => 'USD',
+            'price' => number_format((float) ($service->is_quantity_based ? $service->price_per_unit : ($variantPrices->first() ?? $service->price)), 2, '.', ''),
+            'availability' => 'https://schema.org/InStock',
+            'url' => route('services.show', $service->slug),
+        ];
+    $productSchema = array_filter([
+        '@context' => 'https://schema.org',
+        '@type' => 'Product',
+        'name' => $service->localized_name,
+        'description' => $serviceMetaDescription,
+        'image' => $serviceImage ? [$serviceImage] : null,
+        'sku' => $service->slug,
+        'category' => $service->category->localized_name,
+        'brand' => [
+            '@type' => 'Brand',
+            'name' => $sharedLogoText ?: config('app.name', 'Arab 8BP'),
+        ],
+        'offers' => $offersSchema,
+    ], fn ($value) => $value !== null && $value !== []);
+    $serviceBreadcrumbItems = array_values(array_filter([
+        [
+            '@type' => 'ListItem',
+            'position' => 1,
+            'name' => app()->getLocale() === 'ar' ? 'الرئيسية' : 'Home',
+            'item' => route('home'),
+        ],
+        $service->category->parent ? [
+            '@type' => 'ListItem',
+            'position' => 2,
+            'name' => $service->category->parent->localized_name,
+            'item' => route('categories.show', $service->category->parent->slug),
+        ] : null,
+        [
+            '@type' => 'ListItem',
+            'position' => $service->category->parent ? 3 : 2,
+            'name' => $service->category->localized_name,
+            'item' => route('categories.show', $service->category->slug),
+        ],
+        [
+            '@type' => 'ListItem',
+            'position' => $service->category->parent ? 4 : 3,
+            'name' => $service->localized_name,
+            'item' => route('services.show', $service->slug),
+        ],
+    ]));
+    $serviceBreadcrumbSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'BreadcrumbList',
+        'itemListElement' => $serviceBreadcrumbItems,
+    ];
+@endphp
+
+@section('title', $serviceTitle)
+@section('meta_description', $serviceMetaDescription)
+@section('meta_canonical', route('services.show', $service->slug))
+@section('meta_type', 'product')
+@section('meta_image', $serviceImage)
+@section('meta_robots', 'index,follow')
 @section('mainWidth', 'w-full max-w-full')
+
+@push('structured-data')
+    <script type="application/ld+json">{!! json_encode($productSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
+    <script type="application/ld+json">{!! json_encode($serviceBreadcrumbSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
+@endpush
 
 @section('content')
     <style>
