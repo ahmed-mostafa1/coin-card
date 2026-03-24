@@ -28,8 +28,8 @@ AI rule: If any of these are missing, proceed with safe assumptions and request 
 
 ================================================
 
-you are a senior fullstack laravel developer and your task i to connect this project with this api https://dailycard.shop/UAPI/api-keys/ 
-and our task is to update the import products from any api to our project to be able to import products from any api to our project 
-while keeping it compatible with our current database structure and features and also make it easy to add new apis in the future from admin dashboard.
-note that api authentication is using api key in the header or query parameter or username and password in the header or query parameter.
+you are a senior fullstack laravel developer and your task is to create 2 new pages
+1- "contact us" page that contain email contact form and submitted emails are sent to admin email same as service request and deposit requests
+2- "شروط الاستخدام" and can be modified from "/admin/pages" same as other 2 pages (about us and privacy policy)
+3- in all services (manual / imported) show a checkbox for (أوافق على شروط الاستخدام الخاصة بالمتجر وأتحمل مسوولية صحة المعلومات المدخلة) and disable clicking purchase/ request / شراء الان button without confirming this checkbox is checked
 give me suggestion to improve this to be more professional and if you have questions ask me then plan before any coding
