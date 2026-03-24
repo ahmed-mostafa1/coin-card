@@ -325,6 +325,43 @@ class AdminProviderCatalogTest extends TestCase
         $this->assertTrue($result['ok']);
     }
 
+    public function test_dailycard_catalog_service_uses_page_number_params_even_if_provider_pagination_type_is_none(): void
+    {
+        $provider = $this->makeProvider();
+        $provider->forceFill([
+            'catalog_pagination_type' => ApiProvider::PAGINATION_NONE,
+            'catalog_page_param' => '',
+            'catalog_page_size_param' => '',
+            'catalog_page_size' => 20,
+        ]);
+
+        $client = Mockery::mock(ApiProviderClient::class, [$provider])->makePartial();
+        $client->shouldReceive('get')
+            ->once()
+            ->with('/catalog', [
+                'page' => '2',
+                'page_size' => '5000',
+            ])
+            ->andReturn([
+                'ok' => true,
+                'data' => [
+                    'results' => [],
+                    'count' => 0,
+                    'next' => null,
+                ],
+            ]);
+        $client->shouldReceive('resolvePath')->passthru();
+
+        $service = new ApiProviderCatalogService($provider, $client);
+
+        $result = $service->browse([
+            'page' => 2,
+            'page_size' => 5000,
+        ]);
+
+        $this->assertTrue($result['ok']);
+    }
+
     private function makeProvider(): ApiProvider
     {
         return ApiProvider::create([

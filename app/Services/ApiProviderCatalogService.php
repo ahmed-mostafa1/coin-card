@@ -177,7 +177,7 @@ class ApiProviderCatalogService
         $query = [];
         $pageSize = max(1, (int) (($filters['page_size'] ?? null) ?: $this->provider->catalog_page_size ?: 50));
 
-        if ($this->provider->catalog_pagination_type === ApiProvider::PAGINATION_PAGE_NUMBER) {
+        if ($this->usesPageNumberPagination()) {
             $pageParam = filled($this->provider->catalog_page_param)
                 ? $this->provider->catalog_page_param
                 : 'page';
@@ -211,6 +211,12 @@ class ApiProviderCatalogService
         }
 
         return $query;
+    }
+
+    private function usesPageNumberPagination(): bool
+    {
+        return $this->provider->catalog_pagination_type === ApiProvider::PAGINATION_PAGE_NUMBER
+            || $this->provider->slug === 'dailycard';
     }
 
     private function resolveDefaultCategory(): Category
