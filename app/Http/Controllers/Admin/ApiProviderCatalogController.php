@@ -10,6 +10,7 @@ use App\Services\ApiProviderManager;
 use App\Services\DailyCardClient;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -84,10 +85,30 @@ class ApiProviderCatalogController extends Controller
         ]);
 
         $mapped = json_decode($request->input('product_data'), true);
+        $admin = $request->user();
+
+        Log::info('Provider catalog import requested', [
+            'provider_id' => $provider->id,
+            'provider_slug' => $provider->slug,
+            'admin_id' => $admin?->id,
+            'external_product_id' => $mapped['external_id'] ?? null,
+            'product_name' => $mapped['name'] ?? null,
+            'product_type' => $mapped['type'] ?? null,
+            'price' => $mapped['price'] ?? null,
+        ]);
 
         try {
             $catalogService = $this->manager->forProvider($provider);
             $service = $catalogService->import($mapped);
+
+            Log::info('Provider catalog import succeeded', [
+                'provider_id' => $provider->id,
+                'provider_slug' => $provider->slug,
+                'admin_id' => $admin?->id,
+                'service_id' => $service->id,
+                'external_product_id' => $service->external_product_id,
+                'service_name' => $service->name,
+            ]);
 
             return back()->with(
                 'success',

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\ApiProvider;
 use App\Models\Category;
 use App\Models\Service;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 /**
@@ -121,12 +122,27 @@ class ApiProviderCatalogService
     {
         $externalId = $mapped['external_id'];
 
+        Log::info('ApiProviderCatalogService import started', [
+            'provider_id' => $this->provider->id,
+            'provider_slug' => $this->provider->slug,
+            'external_product_id' => $externalId,
+            'product_name' => $mapped['name'] ?? null,
+            'product_type' => $mapped['type'] ?? null,
+            'price' => $mapped['price'] ?? null,
+        ]);
+
         // Prevent duplicates
         $existing = Service::where('provider_id', $this->provider->id)
             ->where('external_product_id', (string) $externalId)
             ->first();
 
         if ($existing) {
+            Log::warning('ApiProviderCatalogService import skipped duplicate', [
+                'provider_id' => $this->provider->id,
+                'provider_slug' => $this->provider->slug,
+                'external_product_id' => $externalId,
+                'existing_service_id' => $existing->id,
+            ]);
             throw new \RuntimeException('هذا المنتج مستورد مسبقاً.');
         }
 
@@ -138,7 +154,7 @@ class ApiProviderCatalogService
             ''
         );
 
-        return Service::create([
+        $service = Service::create([
             'provider_id'            => $this->provider->id,
             'category_id'            => $category->id,
             'source'                 => $this->provider->slug,
@@ -155,6 +171,17 @@ class ApiProviderCatalogService
             'is_active'              => false,
             'sync_rule_mode'         => Service::SYNC_RULE_MANUAL,
         ]);
+
+        Log::info('ApiProviderCatalogService import created service', [
+            'provider_id' => $this->provider->id,
+            'provider_slug' => $this->provider->slug,
+            'service_id' => $service->id,
+            'category_id' => $service->category_id,
+            'external_product_id' => $service->external_product_id,
+            'service_name' => $service->name,
+        ]);
+
+        return $service;
     }
 
     // ── Private helpers ───────────────────────────────────────────────────────
