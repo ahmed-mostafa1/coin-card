@@ -40,7 +40,10 @@ class AdminProviderCatalogTest extends TestCase
         $provider = $this->makeProvider();
 
         $catalogService = Mockery::mock();
-        $catalogService->shouldReceive('browse')->once()->with(['page' => 1])->andReturn([
+        $catalogService->shouldReceive('browse')->once()->with([
+            'page' => 1,
+            'page_size' => 5000,
+        ])->andReturn([
             'ok' => true,
             'products' => [
                 ['external_id' => '1', 'name' => 'Product One', 'type' => 'stock', 'price' => 10, 'available' => true],
@@ -50,7 +53,10 @@ class AdminProviderCatalogTest extends TestCase
             'next_page_url' => null,
             'error_message' => null,
         ]);
-        $catalogService->shouldReceive('browse')->once()->with(['page' => 2])->andReturn([
+        $catalogService->shouldReceive('browse')->once()->with([
+            'page' => 2,
+            'page_size' => 5000,
+        ])->andReturn([
             'ok' => true,
             'products' => [
                 ['external_id' => '2', 'name' => 'Product Two', 'type' => 'stock', 'price' => 20, 'available' => true],
@@ -86,7 +92,10 @@ class AdminProviderCatalogTest extends TestCase
         $provider = $this->makeProvider();
 
         $catalogService = Mockery::mock();
-        $catalogService->shouldReceive('browse')->once()->with(['page' => 1])->andReturn([
+        $catalogService->shouldReceive('browse')->once()->with([
+            'page' => 1,
+            'page_size' => 5000,
+        ])->andReturn([
             'ok' => true,
             'products' => [
                 ['external_id' => '1', 'name' => 'Product One', 'type' => 'stock', 'price' => 10, 'available' => true],
@@ -98,6 +107,7 @@ class AdminProviderCatalogTest extends TestCase
         ]);
         $catalogService->shouldReceive('browse')->once()->with([
             'page' => 2,
+            'page_size' => 5000,
             'page_url' => 'https://example.com/catalog?page=2&page_size=500',
         ])->andReturn([
             'ok' => true,
@@ -136,7 +146,10 @@ class AdminProviderCatalogTest extends TestCase
         $provider = $this->makeProvider();
 
         $catalogService = Mockery::mock();
-        $catalogService->shouldReceive('browse')->once()->with(['page' => 1])->andReturn([
+        $catalogService->shouldReceive('browse')->once()->with([
+            'page' => 1,
+            'page_size' => 5000,
+        ])->andReturn([
             'ok' => true,
             'products' => [
                 ['external_id' => '1', 'name' => 'Product One', 'type' => 'stock', 'price' => 10, 'available' => true],
@@ -146,7 +159,10 @@ class AdminProviderCatalogTest extends TestCase
             'next_page_url' => null,
             'error_message' => null,
         ]);
-        $catalogService->shouldReceive('browse')->once()->with(['page' => 2])->andReturn([
+        $catalogService->shouldReceive('browse')->once()->with([
+            'page' => 2,
+            'page_size' => 5000,
+        ])->andReturn([
             'ok' => true,
             'products' => [
                 ['external_id' => '1', 'name' => 'Product One', 'type' => 'stock', 'price' => 10, 'available' => true],
@@ -167,6 +183,48 @@ class AdminProviderCatalogTest extends TestCase
             ->assertOk()
             ->assertViewHas('products', fn (array $products): bool => count($products) === 1)
             ->assertViewHas('wasTruncated', true);
+    }
+
+    public function test_provider_catalog_page_mode_passes_search_to_provider(): void
+    {
+        Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
+
+        $admin = User::factory()->create();
+        $admin->assignRole('admin');
+
+        $provider = $this->makeProvider();
+
+        $catalogService = Mockery::mock();
+        $catalogService->shouldReceive('browse')->once()->with([
+            'page' => 1,
+            'page_size' => 500,
+            'search' => 'bigo',
+        ])->andReturn([
+            'ok' => true,
+            'products' => [
+                ['external_id' => '1', 'name' => 'Bigo Live 100 Diamonds', 'type' => 'topup', 'price' => 1.77, 'available' => true],
+            ],
+            'count' => 1,
+            'has_next' => false,
+            'next_page_url' => null,
+            'error_message' => null,
+        ]);
+
+        $manager = Mockery::mock(ApiProviderManager::class);
+        $manager->shouldReceive('forProvider')->once()->andReturn($catalogService);
+
+        $this->app->instance(ApiProviderManager::class, $manager);
+
+        $this->actingAs($admin)
+            ->get(route('admin.providers.catalog.index', [
+                'provider' => $provider,
+                'mode' => 'page',
+                'search' => 'bigo',
+            ]))
+            ->assertOk()
+            ->assertViewHas('mode', 'page')
+            ->assertViewHas('search', 'bigo')
+            ->assertSee('Bigo Live 100 Diamonds');
     }
 
     public function test_catalog_service_does_not_append_page_query_when_following_next_page_url(): void
@@ -226,6 +284,43 @@ class AdminProviderCatalogTest extends TestCase
         $service = new ApiProviderCatalogService($provider, $client);
 
         $result = $service->browse(['page' => 3]);
+
+        $this->assertTrue($result['ok']);
+    }
+
+    public function test_catalog_service_supports_search_filters_and_page_size_override(): void
+    {
+        $provider = $this->makeProvider();
+
+        $client = Mockery::mock(ApiProviderClient::class, [$provider])->makePartial();
+        $client->shouldReceive('get')
+            ->once()
+            ->with('/catalog', [
+                'page' => '1',
+                'page_size' => '5000',
+                'search' => 'bigo',
+                'category' => '12',
+                'product_type' => 'stock',
+            ])
+            ->andReturn([
+                'ok' => true,
+                'data' => [
+                    'results' => [],
+                    'count' => 0,
+                    'next' => null,
+                ],
+            ]);
+        $client->shouldReceive('resolvePath')->passthru();
+
+        $service = new ApiProviderCatalogService($provider, $client);
+
+        $result = $service->browse([
+            'page' => 1,
+            'page_size' => 5000,
+            'search' => 'bigo',
+            'category' => '12',
+            'product_type' => 'stock',
+        ]);
 
         $this->assertTrue($result['ok']);
     }

@@ -14,6 +14,7 @@ use Illuminate\View\View;
 class ApiProviderCatalogController extends Controller
 {
     private const MAX_FULL_CATALOG_PAGES = 50;
+    private const DAILYCARD_FULL_FETCH_PAGE_SIZE = 5000;
 
     public function __construct(
         private readonly ApiProviderManager $manager
@@ -27,13 +28,17 @@ class ApiProviderCatalogController extends Controller
         }
 
         $catalogService = $this->manager->forProvider($provider);
-        $fetchResult = $this->browseAllPages($catalogService);
+        $mode = $this->resolveMode($request, $provider);
+        $filters = $this->catalogFilters($request, $provider, $mode);
+
+        $fetchResult = $mode === 'page'
+            ? $this->browseSinglePage($provider, $catalogService, $filters)
+            : $this->browseAllPages($catalogService, $filters);
 
         if (! $fetchResult['ok']) {
             return back()->with('error', 'فشل جلب المنتجات: ' . ($fetchResult['error_message'] ?? 'خطأ غير معروف'));
         }
 
-        // Track already-imported external IDs for this provider
         $importedIds = Service::where('provider_id', $provider->id)
             ->whereNotNull('external_product_id')
             ->pluck('id', 'external_product_id')
@@ -45,6 +50,15 @@ class ApiProviderCatalogController extends Controller
             'count' => $fetchResult['count'],
             'importedIds' => $importedIds,
             'wasTruncated' => $fetchResult['was_truncated'] ?? false,
+            'mode' => $mode,
+            'search' => $filters['search'] ?? '',
+            'categoryFilter' => $filters['category'] ?? '',
+            'productTypeFilter' => $filters['product_type'] ?? '',
+            'currentPage' => $fetchResult['current_page'] ?? 1,
+            'totalPages' => $fetchResult['total_pages'] ?? null,
+            'hasPreviousPage' => $fetchResult['has_previous'] ?? false,
+            'hasNextPage' => $fetchResult['has_next'] ?? false,
+            'isDailyCard' => $this->isDailyCard($provider),
         ]);
     }
 
@@ -72,9 +86,10 @@ class ApiProviderCatalogController extends Controller
     }
 
     /**
-     * @return array{ok:bool, products:array, count:int, has_next:bool, error_message:?string, was_truncated:bool}
+     * @param  array<string, mixed>  $baseFilters
+     * @return array{ok:bool, products:array, count:int, has_next:bool, error_message:?string, was_truncated:bool, current_page:int, total_pages:int, has_previous:bool}
      */
-    private function browseAllPages(ApiProviderCatalogService $catalogService): array
+    private function browseAllPages(ApiProviderCatalogService $catalogService, array $baseFilters = []): array
     {
         $products = [];
         $seenProducts = [];
@@ -95,7 +110,7 @@ class ApiProviderCatalogController extends Controller
 
             $seenRequests[$requestKey] = true;
 
-            $filters = ['page' => $page];
+            $filters = [...$baseFilters, 'page' => $page];
             if ($nextPageUrl) {
                 $filters['page_url'] = $nextPageUrl;
             }
@@ -110,6 +125,9 @@ class ApiProviderCatalogController extends Controller
                     'has_next' => false,
                     'error_message' => $result['error_message'] ?? null,
                     'was_truncated' => false,
+                    'current_page' => 1,
+                    'total_pages' => 1,
+                    'has_previous' => false,
                 ];
             }
 
@@ -150,6 +168,50 @@ class ApiProviderCatalogController extends Controller
             'has_next' => false,
             'error_message' => null,
             'was_truncated' => $wasTruncated,
+            'current_page' => 1,
+            'total_pages' => 1,
+            'has_previous' => false,
+        ];
+    }
+
+    /**
+     * @param  array<string, mixed>  $filters
+     * @return array{ok:bool, products:array, count:int, has_next:bool, error_message:?string, was_truncated:bool, current_page:int, total_pages:int, has_previous:bool}
+     */
+    private function browseSinglePage(ApiProvider $provider, ApiProviderCatalogService $catalogService, array $filters): array
+    {
+        $currentPage = max(1, (int) ($filters['page'] ?? 1));
+        $result = $catalogService->browse($filters);
+
+        if (! $result['ok']) {
+            return [
+                'ok' => false,
+                'products' => [],
+                'count' => 0,
+                'has_next' => false,
+                'error_message' => $result['error_message'] ?? null,
+                'was_truncated' => false,
+                'current_page' => $currentPage,
+                'total_pages' => 1,
+                'has_previous' => $currentPage > 1,
+            ];
+        }
+
+        $pageSize = max(1, (int) ($filters['page_size'] ?? $provider->catalog_page_size ?: 50));
+        $totalCount = max((int) ($result['count'] ?? 0), count($result['products']));
+        $totalPages = max(1, (int) ceil($totalCount / $pageSize));
+        $hasNext = (bool) $result['has_next'] || $currentPage < $totalPages;
+
+        return [
+            'ok' => true,
+            'products' => $result['products'],
+            'count' => $totalCount,
+            'has_next' => $hasNext,
+            'error_message' => null,
+            'was_truncated' => false,
+            'current_page' => $currentPage,
+            'total_pages' => $totalPages,
+            'has_previous' => $currentPage > 1,
         ];
     }
 
@@ -164,5 +226,56 @@ class ApiProviderCatalogController extends Controller
         $encoded = json_encode($raw, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
         return 'raw:' . sha1($encoded !== false ? $encoded : serialize($raw));
+    }
+
+    private function resolveMode(Request $request, ApiProvider $provider): string
+    {
+        $mode = strtolower(trim((string) $request->query('mode', '')));
+
+        if (in_array($mode, ['all', 'page'], true)) {
+            return $mode;
+        }
+
+        return $this->isDailyCard($provider) ? 'all' : 'page';
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function catalogFilters(Request $request, ApiProvider $provider, string $mode): array
+    {
+        $filters = [
+            'page' => max(1, (int) $request->integer('page', 1)),
+            'page_size' => $mode === 'all'
+                ? ($this->optimizedFullFetchPageSize($provider) ?? max(1, (int) ($provider->catalog_page_size ?: 50)))
+                : max(1, (int) ($provider->catalog_page_size ?: 50)),
+        ];
+
+        $search = trim((string) $request->query('search', ''));
+        if ($search !== '') {
+            $filters['search'] = $search;
+        }
+
+        $category = trim((string) $request->query('category', ''));
+        if ($category !== '') {
+            $filters['category'] = $category;
+        }
+
+        $productType = trim((string) $request->query('product_type', ''));
+        if ($productType !== '') {
+            $filters['product_type'] = $productType;
+        }
+
+        return $filters;
+    }
+
+    private function optimizedFullFetchPageSize(ApiProvider $provider): ?int
+    {
+        return $this->isDailyCard($provider) ? self::DAILYCARD_FULL_FETCH_PAGE_SIZE : null;
+    }
+
+    private function isDailyCard(ApiProvider $provider): bool
+    {
+        return $provider->slug === 'dailycard';
     }
 }

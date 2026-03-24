@@ -175,7 +175,7 @@ class ApiProviderCatalogService
         }
 
         $query = [];
-        $pageSize = max(1, (int) ($this->provider->catalog_page_size ?: 50));
+        $pageSize = max(1, (int) (($filters['page_size'] ?? null) ?: $this->provider->catalog_page_size ?: 50));
 
         if ($this->provider->catalog_pagination_type === ApiProvider::PAGINATION_PAGE_NUMBER) {
             $pageParam = filled($this->provider->catalog_page_param)
@@ -196,6 +196,18 @@ class ApiProviderCatalogService
             $page = (int) ($filters['page'] ?? 1);
             $query[$pageParam]     = (string) (($page - 1) * $pageSize);
             $query[$pageSizeParam] = (string) $pageSize;
+        }
+
+        if (filled($filters['search'] ?? null)) {
+            $query['search'] = (string) $filters['search'];
+        }
+
+        if (filled($filters['category'] ?? null)) {
+            $query['category'] = (string) $filters['category'];
+        }
+
+        if (filled($filters['product_type'] ?? null)) {
+            $query['product_type'] = (string) $filters['product_type'];
         }
 
         return $query;
