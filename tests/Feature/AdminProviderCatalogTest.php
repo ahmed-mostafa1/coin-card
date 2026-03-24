@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\ApiProvider;
 use App\Models\User;
+use App\Services\ApiProviderCatalogService;
+use App\Services\ApiProviderClient;
 use App\Services\ApiProviderManager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery;
@@ -165,6 +167,67 @@ class AdminProviderCatalogTest extends TestCase
             ->assertOk()
             ->assertViewHas('products', fn (array $products): bool => count($products) === 1)
             ->assertViewHas('wasTruncated', true);
+    }
+
+    public function test_catalog_service_does_not_append_page_query_when_following_next_page_url(): void
+    {
+        $provider = $this->makeProvider();
+
+        $client = Mockery::mock(ApiProviderClient::class, [$provider])->makePartial();
+        $client->shouldReceive('get')
+            ->once()
+            ->with('https://example.com/catalog?page=2&page_size=20', [])
+            ->andReturn([
+                'ok' => true,
+                'data' => [
+                    'results' => [],
+                    'count' => 0,
+                    'next' => null,
+                ],
+            ]);
+        $client->shouldReceive('resolvePath')->passthru();
+
+        $service = new ApiProviderCatalogService($provider, $client);
+
+        $result = $service->browse([
+            'page' => 2,
+            'page_url' => 'https://example.com/catalog?page=2&page_size=20',
+        ]);
+
+        $this->assertTrue($result['ok']);
+    }
+
+    public function test_catalog_service_falls_back_to_default_param_names_when_provider_values_are_blank(): void
+    {
+        $provider = $this->makeProvider();
+        $provider->forceFill([
+            'catalog_page_param' => '',
+            'catalog_page_size_param' => '',
+            'catalog_page_size' => 20,
+        ]);
+
+        $client = Mockery::mock(ApiProviderClient::class, [$provider])->makePartial();
+        $client->shouldReceive('get')
+            ->once()
+            ->with('/catalog', [
+                'page' => '3',
+                'page_size' => '20',
+            ])
+            ->andReturn([
+                'ok' => true,
+                'data' => [
+                    'results' => [],
+                    'count' => 0,
+                    'next' => null,
+                ],
+            ]);
+        $client->shouldReceive('resolvePath')->passthru();
+
+        $service = new ApiProviderCatalogService($provider, $client);
+
+        $result = $service->browse(['page' => 3]);
+
+        $this->assertTrue($result['ok']);
     }
 
     private function makeProvider(): ApiProvider

@@ -170,19 +170,32 @@ class ApiProviderCatalogService
 
     private function buildCatalogQuery(array $filters): array
     {
+        if (filled($filters['page_url'] ?? null)) {
+            return [];
+        }
+
         $query = [];
+        $pageSize = max(1, (int) ($this->provider->catalog_page_size ?: 50));
 
         if ($this->provider->catalog_pagination_type === ApiProvider::PAGINATION_PAGE_NUMBER) {
-            $pageParam     = $this->provider->catalog_page_param ?? 'page';
-            $pageSizeParam = $this->provider->catalog_page_size_param ?? 'page_size';
+            $pageParam = filled($this->provider->catalog_page_param)
+                ? $this->provider->catalog_page_param
+                : 'page';
+            $pageSizeParam = filled($this->provider->catalog_page_size_param)
+                ? $this->provider->catalog_page_size_param
+                : 'page_size';
             $query[$pageParam]     = (string) ($filters['page'] ?? 1);
-            $query[$pageSizeParam] = (string) $this->provider->catalog_page_size;
+            $query[$pageSizeParam] = (string) $pageSize;
         } elseif ($this->provider->catalog_pagination_type === ApiProvider::PAGINATION_OFFSET) {
-            $pageParam     = $this->provider->catalog_page_param ?? 'offset';
-            $pageSizeParam = $this->provider->catalog_page_size_param ?? 'limit';
+            $pageParam = filled($this->provider->catalog_page_param)
+                ? $this->provider->catalog_page_param
+                : 'offset';
+            $pageSizeParam = filled($this->provider->catalog_page_size_param)
+                ? $this->provider->catalog_page_size_param
+                : 'limit';
             $page = (int) ($filters['page'] ?? 1);
-            $query[$pageParam]     = (string) (($page - 1) * $this->provider->catalog_page_size);
-            $query[$pageSizeParam] = (string) $this->provider->catalog_page_size;
+            $query[$pageParam]     = (string) (($page - 1) * $pageSize);
+            $query[$pageSizeParam] = (string) $pageSize;
         }
 
         return $query;
