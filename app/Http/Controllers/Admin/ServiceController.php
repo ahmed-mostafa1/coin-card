@@ -26,9 +26,9 @@ class ServiceController extends Controller
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhereHas('category', function ($q) use ($search) {
-                      $q->where('name', 'like', "%{$search}%");
-                  });
+                    ->orWhereHas('category', function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%");
+                    });
             });
         }
 
@@ -90,9 +90,13 @@ class ServiceController extends Controller
 
     public function edit(Service $service): View
     {
-        abort_unless(in_array($service->source ?? Service::SOURCE_MANUAL, [Service::SOURCE_MANUAL, Service::SOURCE_DAILYCARD], true), 404);
+        $this->ensureServiceIsEditable($service);
 
-        $service->load(['formFields.options' => fn($query) => $query->orderBy('sort_order'), 'buttons' => fn($q) => $q->orderBy('sort_order')]);
+        $service->load([
+            'formFields.options' => fn ($query) => $query->orderBy('sort_order'),
+            'buttons' => fn ($q) => $q->orderBy('sort_order'),
+        ]);
+
         $categories = Category::query()
             ->manual()
             ->with('parent')
@@ -106,7 +110,7 @@ class ServiceController extends Controller
 
     public function update(ServiceRequest $request, Service $service): RedirectResponse
     {
-        abort_unless(in_array($service->source ?? Service::SOURCE_MANUAL, [Service::SOURCE_MANUAL, Service::SOURCE_DAILYCARD], true), 404);
+        $this->ensureServiceIsEditable($service);
 
         $data = $this->prepareData($request, $service);
 
@@ -169,33 +173,35 @@ class ServiceController extends Controller
         }
 
         $slug = $data['slug'] ?? null;
-        if (!$slug) {
+        if (! $slug) {
             $slug = Str::slug($data['name']);
         }
-        if (!$slug) {
+        if (! $slug) {
             $slug = Str::random(8);
         }
+
         $baseSlug = $slug;
         $counter = 1;
-        while (Service::where('slug', $slug)->when($service, fn($q) => $q->where('id', '!=', $service->id))->exists()) {
+        while (Service::where('slug', $slug)->when($service, fn ($q) => $q->where('id', '!=', $service->id))->exists()) {
             $slug = $baseSlug . '-' . $counter;
             $counter++;
         }
         $data['slug'] = $slug;
 
-        if ($request->hasFile('image') && !$service) {
+        if ($request->hasFile('image') && ! $service) {
             $data['image_path'] = $request->file('image')->store('services', 'public');
         }
 
-        if ($request->hasFile('offer_image') && !$service) {
+        if ($request->hasFile('offer_image') && ! $service) {
             $data['offer_image_path'] = $request->file('offer_image')->store('services/offers', 'public');
         }
 
         return $data;
     }
+
     public function destroy(Service $service): RedirectResponse
     {
-        abort_unless(in_array($service->source ?? Service::SOURCE_MANUAL, [Service::SOURCE_MANUAL, Service::SOURCE_DAILYCARD], true), 404);
+        $this->ensureServiceIsEditable($service);
 
         if ($service->image_path) {
             Storage::disk('public')->delete($service->image_path);
@@ -209,5 +215,14 @@ class ServiceController extends Controller
 
         return redirect()->route('admin.services.index')
             ->with('status', 'تم حذف الخدمة بنجاح.');
+    }
+
+    private function ensureServiceIsEditable(Service $service): void
+    {
+        $isManual = ($service->source ?? Service::SOURCE_MANUAL) === Service::SOURCE_MANUAL;
+        $isLegacyDailyCard = $service->source === Service::SOURCE_DAILYCARD;
+        $isProviderBacked = $service->provider_id !== null;
+
+        abort_unless($isManual || $isLegacyDailyCard || $isProviderBacked, 404);
     }
 }

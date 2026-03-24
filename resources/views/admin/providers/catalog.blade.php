@@ -7,10 +7,16 @@
     <x-card :hover="false">
         <x-page-header title="كتالوج: {{ $provider->name }}"
                        subtitle="إجمالي المنتجات: {{ number_format($count) }}">
-            <a href="{{ route('admin.providers.index') }}"
-               class="inline-flex items-center rounded-xl border border-slate-200 dark:border-slate-700 px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition">
-                ← المزودون
-            </a>
+            <div class="flex items-center gap-2">
+                <a href="{{ route('admin.services.index') }}"
+                   class="inline-flex items-center rounded-xl bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700 transition">
+                    إدارة الخدمات
+                </a>
+                <a href="{{ route('admin.providers.index') }}"
+                   class="inline-flex items-center rounded-xl border border-slate-200 dark:border-slate-700 px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition">
+                    ← المزودون
+                </a>
+            </div>
         </x-page-header>
 
         @if(session('success'))
@@ -23,8 +29,15 @@
                 {{ session('error') }}
             </div>
         @endif
+        <div class="mt-4 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400">
+            تم عرض الكتالوج كاملاً في صفحة واحدة.
+        </div>
+        @if($wasTruncated)
+            <div class="mt-4 rounded-xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/30 px-4 py-3 text-sm text-amber-700 dark:text-amber-400">
+                تم عرض أول {{ count($products) }} منتج فقط. راجع العرض العادي للصفحات إذا احتجت بقية الكتالوج.
+            </div>
+        @endif
 
-        {{-- Search --}}
         <div class="mt-4 mb-4">
             <input type="text" id="product-search" placeholder="بحث في المنتجات..."
                    class="w-full md:w-80 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-sm text-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
@@ -81,23 +94,6 @@
                 @endforelse
             </tbody>
         </x-table>
-
-        {{-- Pagination --}}
-        <div class="flex items-center gap-4 mt-4 text-sm">
-            @if($currentPage > 1)
-                <a href="{{ request()->fullUrlWithQuery(['page' => $currentPage - 1]) }}"
-                   class="rounded-xl border border-slate-200 dark:border-slate-700 px-3 py-1.5 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition">
-                    ← السابقة
-                </a>
-            @endif
-            <span class="text-slate-500">صفحة {{ $currentPage }}</span>
-            @if($hasNext)
-                <a href="{{ request()->fullUrlWithQuery(['page' => $currentPage + 1]) }}"
-                   class="rounded-xl border border-slate-200 dark:border-slate-700 px-3 py-1.5 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition">
-                    التالية →
-                </a>
-            @endif
-        </div>
     </x-card>
 @endsection
 

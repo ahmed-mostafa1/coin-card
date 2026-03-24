@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\ApiProvider;
 use App\Models\Category;
 use App\Models\Service;
 use App\Models\ServiceFormField;
@@ -241,5 +242,48 @@ class ServiceCreateTest extends TestCase
                 ],
             ])
             ->assertSessionHasErrors('variants');
+    }
+
+    public function test_admin_can_edit_provider_backed_service_with_non_dailycard_source(): void
+    {
+        $admin = $this->makeAdmin();
+
+        $category = Category::create([
+            'name' => 'Cat',
+            'slug' => 'cat-provider-edit',
+            'is_active' => true,
+            'sort_order' => 0,
+        ]);
+
+        $provider = ApiProvider::create([
+            'name' => 'Future Provider',
+            'slug' => 'future-provider',
+            'is_active' => true,
+            'auth_type' => ApiProvider::AUTH_API_KEY_HEADER,
+            'credentials' => ['key' => 'test', 'secret' => 'test'],
+            'base_url' => 'https://example.com',
+            'catalog_endpoint' => '/catalog',
+            'catalog_method' => 'GET',
+            'catalog_response_path' => 'results',
+            'catalog_pagination_type' => ApiProvider::PAGINATION_NONE,
+            'field_map_name' => 'name',
+            'field_map_price' => 'price',
+            'field_map_external_id' => 'id',
+        ]);
+
+        $service = Service::create([
+            'provider_id' => $provider->id,
+            'category_id' => $category->id,
+            'source' => $provider->slug,
+            'name' => 'Imported Provider Service',
+            'slug' => 'imported-provider-service',
+            'price' => 10,
+            'is_active' => true,
+        ]);
+
+        $this->actingAs($admin)
+            ->get(route('admin.services.edit', $service))
+            ->assertOk()
+            ->assertSee('Imported Provider Service');
     }
 }

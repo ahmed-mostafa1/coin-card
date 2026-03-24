@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ApiProvider;
 use App\Models\Service;
+use App\Services\ApiProviderCatalogService;
 use App\Services\ApiProviderManager;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -12,6 +13,8 @@ use Illuminate\View\View;
 
 class ApiProviderCatalogController extends Controller
 {
+    private const MAX_FULL_CATALOG_PAGES = 50;
+
     public function __construct(
         private readonly ApiProviderManager $manager
     ) {}
@@ -24,11 +27,10 @@ class ApiProviderCatalogController extends Controller
         }
 
         $catalogService = $this->manager->forProvider($provider);
-        $page = (int) $request->input('page', 1);
-        $result = $catalogService->browse(['page' => $page]);
+        $fetchResult = $this->browseAllPages($catalogService);
 
-        if (! $result['ok']) {
-            return back()->with('error', 'فشل جلب المنتجات: ' . ($result['error_message'] ?? 'خطأ غير معروف'));
+        if (! $fetchResult['ok']) {
+            return back()->with('error', 'فشل جلب المنتجات: ' . ($fetchResult['error_message'] ?? 'خطأ غير معروف'));
         }
 
         // Track already-imported external IDs for this provider
@@ -38,12 +40,11 @@ class ApiProviderCatalogController extends Controller
             ->toArray();
 
         return view('admin.providers.catalog', [
-            'provider'    => $provider,
-            'products'    => $result['products'],
-            'count'       => $result['count'],
-            'hasNext'     => $result['has_next'],
-            'currentPage' => $page,
+            'provider' => $provider,
+            'products' => $fetchResult['products'],
+            'count' => $fetchResult['count'],
             'importedIds' => $importedIds,
+            'wasTruncated' => $fetchResult['was_truncated'] ?? false,
         ]);
     }
 
@@ -68,5 +69,45 @@ class ApiProviderCatalogController extends Controller
         } catch (\Throwable $e) {
             return back()->with('error', 'فشل الاستيراد: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * @return array{ok:bool, products:array, count:int, has_next:bool, error_message:?string, was_truncated:bool}
+     */
+    private function browseAllPages(ApiProviderCatalogService $catalogService): array
+    {
+        $products = [];
+        $count = 0;
+        $page = 1;
+        $hasNext = false;
+
+        do {
+            $result = $catalogService->browse(['page' => $page]);
+
+            if (! $result['ok']) {
+                return [
+                    'ok' => false,
+                    'products' => [],
+                    'count' => 0,
+                    'has_next' => false,
+                    'error_message' => $result['error_message'] ?? null,
+                    'was_truncated' => false,
+                ];
+            }
+
+            $products = [...$products, ...$result['products']];
+            $count = max($count, (int) $result['count'], count($products));
+            $hasNext = (bool) $result['has_next'];
+            $page++;
+        } while ($hasNext && $page <= self::MAX_FULL_CATALOG_PAGES);
+
+        return [
+            'ok' => true,
+            'products' => $products,
+            'count' => $count,
+            'has_next' => false,
+            'error_message' => null,
+            'was_truncated' => $hasNext,
+        ];
     }
 }
