@@ -23,7 +23,7 @@ class AdminProviderCatalogTest extends TestCase
         $admin = User::factory()->create();
         $admin->assignRole('admin');
 
-        $provider = $this->makeProvider();
+        $provider = $this->makeDailyCardProvider();
 
         $this->actingAs($admin)
             ->get('/admin/dailycard')
@@ -37,7 +37,7 @@ class AdminProviderCatalogTest extends TestCase
         $admin = User::factory()->create();
         $admin->assignRole('admin');
 
-        $provider = $this->makeProvider();
+        $provider = $this->makeGenericProvider();
 
         $catalogService = Mockery::mock();
         $catalogService->shouldReceive('browse')->once()->with([
@@ -75,7 +75,10 @@ class AdminProviderCatalogTest extends TestCase
         $this->app->instance(ApiProviderManager::class, $manager);
 
         $this->actingAs($admin)
-            ->get(route('admin.providers.catalog.index', $provider))
+            ->get(route('admin.providers.catalog.index', [
+                'provider' => $provider,
+                'mode' => 'all',
+            ]))
             ->assertOk()
             ->assertSee('Product One')
             ->assertSee('Product Two')
@@ -89,7 +92,7 @@ class AdminProviderCatalogTest extends TestCase
         $admin = User::factory()->create();
         $admin->assignRole('admin');
 
-        $provider = $this->makeProvider();
+        $provider = $this->makeGenericProvider();
 
         $catalogService = Mockery::mock();
         $catalogService->shouldReceive('browse')->once()->with([
@@ -126,7 +129,10 @@ class AdminProviderCatalogTest extends TestCase
         $this->app->instance(ApiProviderManager::class, $manager);
 
         $this->actingAs($admin)
-            ->get(route('admin.providers.catalog.index', $provider))
+            ->get(route('admin.providers.catalog.index', [
+                'provider' => $provider,
+                'mode' => 'all',
+            ]))
             ->assertOk()
             ->assertViewHas('products', function (array $products): bool {
                 return count($products) === 2
@@ -143,7 +149,7 @@ class AdminProviderCatalogTest extends TestCase
         $admin = User::factory()->create();
         $admin->assignRole('admin');
 
-        $provider = $this->makeProvider();
+        $provider = $this->makeGenericProvider();
 
         $catalogService = Mockery::mock();
         $catalogService->shouldReceive('browse')->once()->with([
@@ -179,7 +185,10 @@ class AdminProviderCatalogTest extends TestCase
         $this->app->instance(ApiProviderManager::class, $manager);
 
         $this->actingAs($admin)
-            ->get(route('admin.providers.catalog.index', $provider))
+            ->get(route('admin.providers.catalog.index', [
+                'provider' => $provider,
+                'mode' => 'all',
+            ]))
             ->assertOk()
             ->assertViewHas('products', fn (array $products): bool => count($products) === 1)
             ->assertViewHas('wasTruncated', true);
@@ -192,7 +201,7 @@ class AdminProviderCatalogTest extends TestCase
         $admin = User::factory()->create();
         $admin->assignRole('admin');
 
-        $provider = $this->makeProvider();
+        $provider = $this->makeGenericProvider();
 
         $catalogService = Mockery::mock();
         $catalogService->shouldReceive('browse')->once()->with([
@@ -229,7 +238,7 @@ class AdminProviderCatalogTest extends TestCase
 
     public function test_catalog_service_does_not_append_page_query_when_following_next_page_url(): void
     {
-        $provider = $this->makeProvider();
+        $provider = $this->makeGenericProvider();
 
         $client = Mockery::mock(ApiProviderClient::class, [$provider])->makePartial();
         $client->shouldReceive('get')
@@ -257,7 +266,7 @@ class AdminProviderCatalogTest extends TestCase
 
     public function test_catalog_service_falls_back_to_default_param_names_when_provider_values_are_blank(): void
     {
-        $provider = $this->makeProvider();
+        $provider = $this->makeGenericProvider();
         $provider->forceFill([
             'catalog_page_param' => '',
             'catalog_page_size_param' => '',
@@ -290,7 +299,7 @@ class AdminProviderCatalogTest extends TestCase
 
     public function test_catalog_service_supports_search_filters_and_page_size_override(): void
     {
-        $provider = $this->makeProvider();
+        $provider = $this->makeGenericProvider();
 
         $client = Mockery::mock(ApiProviderClient::class, [$provider])->makePartial();
         $client->shouldReceive('get')
@@ -327,7 +336,7 @@ class AdminProviderCatalogTest extends TestCase
 
     public function test_dailycard_catalog_service_uses_page_number_params_even_if_provider_pagination_type_is_none(): void
     {
-        $provider = $this->makeProvider();
+        $provider = $this->makeDailyCardProvider();
         $provider->forceFill([
             'catalog_pagination_type' => ApiProvider::PAGINATION_NONE,
             'catalog_page_param' => '',
@@ -338,7 +347,7 @@ class AdminProviderCatalogTest extends TestCase
         $client = Mockery::mock(ApiProviderClient::class, [$provider])->makePartial();
         $client->shouldReceive('get')
             ->once()
-            ->with('/catalog', [
+            ->with('/api-keys/products/', [
                 'page' => '2',
                 'page_size' => '5000',
             ])
@@ -362,11 +371,11 @@ class AdminProviderCatalogTest extends TestCase
         $this->assertTrue($result['ok']);
     }
 
-    private function makeProvider(): ApiProvider
+    private function makeGenericProvider(): ApiProvider
     {
         return ApiProvider::create([
-            'name' => 'DailyCard',
-            'slug' => 'dailycard',
+            'name' => 'Test Provider',
+            'slug' => 'test-provider',
             'is_active' => true,
             'auth_type' => ApiProvider::AUTH_API_KEY_HEADER,
             'credentials' => ['key' => 'test', 'secret' => 'test'],
@@ -374,6 +383,30 @@ class AdminProviderCatalogTest extends TestCase
             'catalog_endpoint' => '/catalog',
             'catalog_method' => 'GET',
             'catalog_response_path' => 'results',
+            'catalog_pagination_type' => ApiProvider::PAGINATION_PAGE_NUMBER,
+            'catalog_page_param' => 'page',
+            'catalog_page_size_param' => 'page_size',
+            'catalog_page_size' => 500,
+            'field_map_name' => 'name',
+            'field_map_price' => 'price',
+            'field_map_external_id' => 'id',
+        ]);
+    }
+
+    private function makeDailyCardProvider(): ApiProvider
+    {
+        return ApiProvider::create([
+            'name' => 'DailyCard',
+            'slug' => 'dailycard',
+            'is_active' => true,
+            'auth_type' => ApiProvider::AUTH_API_KEY_HEADER,
+            'credentials' => ['key' => 'test', 'secret' => 'test'],
+            'base_url' => 'https://dailycard.shop/UAPI',
+            'catalog_endpoint' => '/api-keys/products/',
+            'catalog_method' => 'GET',
+            'catalog_response_path' => 'results',
+            'catalog_count_path' => 'count',
+            'catalog_next_path' => 'next',
             'catalog_pagination_type' => ApiProvider::PAGINATION_PAGE_NUMBER,
             'catalog_page_param' => 'page',
             'catalog_page_size_param' => 'page_size',

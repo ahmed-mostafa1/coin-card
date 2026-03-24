@@ -102,6 +102,12 @@
             </div>
         </form>
 
+        @if($isDailyCard && $searchIsLocal)
+            <div class="mt-4 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600 dark:border-slate-700 dark:bg-slate-800/70 dark:text-slate-300">
+                بحث DailyCard يتم محليًا بعد تحميل النتائج، لأن واجهة المزود تعيد أخطاء عند استخدام `search` مباشرة.
+            </div>
+        @endif
+
         @if($mode === 'all' && ! $wasTruncated)
             <div class="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">
                 تم تحميل الكتالوج الكامل في صفحة واحدة.
