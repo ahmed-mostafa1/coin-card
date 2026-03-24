@@ -548,6 +548,14 @@ class ApiProviderCatalogController extends Controller
 
     private function isDailyCard(ApiProvider $provider): bool
     {
-        return $provider->slug === 'dailycard';
+        return $this->normalizedProviderSlug($provider) === 'dailycard';
+    }
+
+    private function normalizedProviderSlug(ApiProvider $provider): string
+    {
+        return Str::of((string) $provider->slug)
+            ->lower()
+            ->replace(['-', '_', ' '], '')
+            ->value();
     }
 }

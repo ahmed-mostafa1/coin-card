@@ -371,6 +371,77 @@ class AdminProviderCatalogTest extends TestCase
         $this->assertTrue($result['ok']);
     }
 
+    public function test_hyphenated_dailycard_slug_is_treated_as_dailycard_provider(): void
+    {
+        Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
+
+        $admin = User::factory()->create();
+        $admin->assignRole('admin');
+
+        $provider = $this->makeDailyCardProvider('daily-card');
+
+        config([
+            'services.dailycard.enabled' => true,
+            'services.dailycard.base_url' => 'https://dailycard.shop/UAPI',
+            'services.dailycard.api_key' => 'test-key',
+            'services.dailycard.secret' => 'test-secret',
+        ]);
+
+        $this->mock(\App\Services\DailyCardClient::class, function ($mock): void {
+            $mock->shouldReceive('isEnabled')->once()->andReturn(true);
+            $mock->shouldReceive('getProducts')->twice()->andReturn(
+                [
+                    'ok' => true,
+                    'http_status' => 200,
+                    'data' => [
+                        'count' => 22,
+                        'next' => 2,
+                        'previous' => null,
+                        'results' => collect(range(1, 20))->map(fn (int $id) => [
+                            'id' => $id,
+                            'name' => 'Product '.$id,
+                            'price' => '1.00',
+                            'available' => true,
+                            'product_type' => 'stock',
+                        ])->all(),
+                    ],
+                ],
+                [
+                    'ok' => true,
+                    'http_status' => 200,
+                    'data' => [
+                        'count' => 22,
+                        'next' => null,
+                        'previous' => 1,
+                        'results' => collect(range(21, 22))->map(fn (int $id) => [
+                            'id' => $id,
+                            'name' => 'Product '.$id,
+                            'price' => '1.00',
+                            'available' => true,
+                            'product_type' => 'stock',
+                        ])->all(),
+                    ],
+                ],
+            );
+        });
+
+        $this->actingAs($admin)
+            ->get(route('admin.providers.catalog.index', [
+                'provider' => $provider,
+                'mode' => 'page',
+                'page' => 2,
+            ]))
+            ->assertOk()
+            ->assertViewHas('isDailyCard', true)
+            ->assertViewHas('searchIsLocal', true)
+            ->assertViewHas('currentPage', 2)
+            ->assertViewHas('products', function (array $products): bool {
+                return count($products) === 2
+                    && $products[0]['external_id'] === 21
+                    && $products[1]['external_id'] === 22;
+            });
+    }
+
     private function makeGenericProvider(): ApiProvider
     {
         return ApiProvider::create([
@@ -393,11 +464,11 @@ class AdminProviderCatalogTest extends TestCase
         ]);
     }
 
-    private function makeDailyCardProvider(): ApiProvider
+    private function makeDailyCardProvider(string $slug = 'dailycard'): ApiProvider
     {
         return ApiProvider::create([
             'name' => 'DailyCard',
-            'slug' => 'dailycard',
+            'slug' => $slug,
             'is_active' => true,
             'auth_type' => ApiProvider::AUTH_API_KEY_HEADER,
             'credentials' => ['key' => 'test', 'secret' => 'test'],

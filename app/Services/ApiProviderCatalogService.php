@@ -243,7 +243,15 @@ class ApiProviderCatalogService
     private function usesPageNumberPagination(): bool
     {
         return $this->provider->catalog_pagination_type === ApiProvider::PAGINATION_PAGE_NUMBER
-            || $this->provider->slug === 'dailycard';
+            || $this->normalizedProviderSlug() === 'dailycard';
+    }
+
+    private function normalizedProviderSlug(): string
+    {
+        return Str::of((string) $this->provider->slug)
+            ->lower()
+            ->replace(['-', '_', ' '], '')
+            ->value();
     }
 
     private function resolveDefaultCategory(): Category
