@@ -8,7 +8,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <h1 class="text-2xl font-semibold text-emerald-800 dark:text-emerald-400">إدارة الصفحات</h1>
-                <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">تحكم بمحتوى صفحات "من نحن" و "سياسة الخصوصية".</p>
+                <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">تحكم بمحتوى صفحات من نحن وسياسة الخصوصية وشروط الاستخدام.</p>
             </div>
             <a href="{{ route('dashboard') }}" class="rounded-full bg-slate-200 dark:bg-slate-700 px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 transition hover:bg-slate-300 dark:hover:bg-slate-600">
                 <i class="fa-solid fa-arrow-right ml-2 rtl:ml-0 rtl:mr-2"></i> {{ __('messages.dashboard') ?? 'لوحة التحكم' }}
@@ -26,45 +26,48 @@
             @method('PUT')
 
             <div class="rounded-3xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm" x-data="{ tab: 'about' }">
-                
-                <div class="flex gap-2 mb-6 border-b border-slate-200 dark:border-slate-700 pb-2">
+                <div class="mb-6 flex gap-2 border-b border-slate-200 pb-2 dark:border-slate-700">
                     <button type="button" @click="tab = 'about'" :class="{ 'text-emerald-600 border-b-2 border-emerald-600 font-bold': tab === 'about', 'text-slate-500 hover:text-slate-700': tab !== 'about' }" class="px-4 py-2 text-sm transition">من نحن (About Us)</button>
                     <button type="button" @click="tab = 'privacy'" :class="{ 'text-emerald-600 border-b-2 border-emerald-600 font-bold': tab === 'privacy', 'text-slate-500 hover:text-slate-700': tab !== 'privacy' }" class="px-4 py-2 text-sm transition">سياسة الخصوصية (Privacy)</button>
+                    <button type="button" @click="tab = 'terms'" :class="{ 'text-emerald-600 border-b-2 border-emerald-600 font-bold': tab === 'terms', 'text-slate-500 hover:text-slate-700': tab !== 'terms' }" class="px-4 py-2 text-sm transition">شروط الاستخدام (Terms)</button>
                 </div>
 
-                <!-- About Us Tab -->
                 <div x-show="tab === 'about'" class="space-y-6">
                     <div>
                         <x-input-label for="about_ar" value="من نحن (عربي)" />
-                        <textarea id="about_ar" name="about_ar" rows="15" 
-                            class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500" 
-                            >{{ old('about_ar', $aboutAr ?? '') }}</textarea>
+                        <textarea id="about_ar" name="about_ar" rows="15" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 focus:border-emerald-500 focus:ring-emerald-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200">{{ old('about_ar', $aboutAr ?? '') }}</textarea>
                         <x-input-error :messages="$errors->get('about_ar')" />
                     </div>
                     <div>
                         <x-input-label for="about_en" value="من نحن (إنجليزي)" />
-                        <textarea id="about_en" name="about_en" rows="15" 
-                            class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500" 
-                            dir="ltr">{{ old('about_en', $aboutEn ?? '') }}</textarea>
+                        <textarea id="about_en" name="about_en" rows="15" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 focus:border-emerald-500 focus:ring-emerald-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200" dir="ltr">{{ old('about_en', $aboutEn ?? '') }}</textarea>
                         <x-input-error :messages="$errors->get('about_en')" />
                     </div>
                 </div>
 
-                <!-- Privacy Tab -->
                 <div x-show="tab === 'privacy'" class="space-y-6" style="display: none;">
                     <div>
                         <x-input-label for="privacy_ar" value="سياسة الخصوصية (عربي)" />
-                        <textarea id="privacy_ar" name="privacy_ar" rows="15" 
-                            class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500" 
-                            >{{ old('privacy_ar', $privacyAr ?? '') }}</textarea>
+                        <textarea id="privacy_ar" name="privacy_ar" rows="15" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 focus:border-emerald-500 focus:ring-emerald-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200">{{ old('privacy_ar', $privacyAr ?? '') }}</textarea>
                         <x-input-error :messages="$errors->get('privacy_ar')" />
                     </div>
                     <div>
                         <x-input-label for="privacy_en" value="سياسة الخصوصية (إنجليزي)" />
-                        <textarea id="privacy_en" name="privacy_en" rows="15" 
-                            class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500" 
-                            dir="ltr">{{ old('privacy_en', $privacyEn ?? '') }}</textarea>
+                        <textarea id="privacy_en" name="privacy_en" rows="15" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 focus:border-emerald-500 focus:ring-emerald-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200" dir="ltr">{{ old('privacy_en', $privacyEn ?? '') }}</textarea>
                         <x-input-error :messages="$errors->get('privacy_en')" />
+                    </div>
+                </div>
+
+                <div x-show="tab === 'terms'" class="space-y-6" style="display: none;">
+                    <div>
+                        <x-input-label for="terms_ar" value="شروط الاستخدام (عربي)" />
+                        <textarea id="terms_ar" name="terms_ar" rows="15" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 focus:border-emerald-500 focus:ring-emerald-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200">{{ old('terms_ar', $termsAr ?? '') }}</textarea>
+                        <x-input-error :messages="$errors->get('terms_ar')" />
+                    </div>
+                    <div>
+                        <x-input-label for="terms_en" value="شروط الاستخدام (إنجليزي)" />
+                        <textarea id="terms_en" name="terms_en" rows="15" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 focus:border-emerald-500 focus:ring-emerald-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200" dir="ltr">{{ old('terms_en', $termsEn ?? '') }}</textarea>
+                        <x-input-error :messages="$errors->get('terms_en')" />
                     </div>
                 </div>
             </div>

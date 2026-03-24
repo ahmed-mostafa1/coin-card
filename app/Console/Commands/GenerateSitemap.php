@@ -46,6 +46,16 @@ class GenerateSitemap extends Command
             ->setPriority(0.2)
             ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY));
 
+        $sitemap->add(Url::create(route('terms-of-use'))
+            ->setLastModificationDate(now())
+            ->setPriority(0.2)
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY));
+
+        $sitemap->add(Url::create(route('contact-us.show'))
+            ->setLastModificationDate(now())
+            ->setPriority(0.3)
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY));
+
         // Add Categories
         Category::active()->manual()->get()->each(function (Category $category) use ($sitemap) {
             $sitemap->add(Url::create(route('categories.show', $category->slug))

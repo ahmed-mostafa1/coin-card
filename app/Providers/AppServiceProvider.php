@@ -59,6 +59,8 @@ class AppServiceProvider extends ServiceProvider
             $sharedAboutEn = Cache::remember('shared_about_en', 300, fn () => SiteSetting::get('about_en', ''));
             $sharedPrivacyAr = Cache::remember('shared_privacy_ar', 300, fn () => SiteSetting::get('privacy_ar', ''));
             $sharedPrivacyEn = Cache::remember('shared_privacy_en', 300, fn () => SiteSetting::get('privacy_en', ''));
+            $sharedTermsAr = Cache::remember('shared_terms_ar', 300, fn () => SiteSetting::get('terms_ar', ''));
+            $sharedTermsEn = Cache::remember('shared_terms_en', 300, fn () => SiteSetting::get('terms_en', ''));
         } catch (\Throwable $e) {
             $sharedBanners = collect();
             $sharedTickerText = 'ملاحظة لأصحاب المحلات يرجى التواصل مع الإدارة للحصول على أسعار الجملة •';
@@ -80,6 +82,8 @@ class AppServiceProvider extends ServiceProvider
             $sharedAboutEn = '';
             $sharedPrivacyAr = '';
             $sharedPrivacyEn = '';
+            $sharedTermsAr = '';
+            $sharedTermsEn = '';
         }
 
         View::share('sharedBanners', $sharedBanners);
@@ -102,6 +106,8 @@ class AppServiceProvider extends ServiceProvider
         View::share('sharedAboutEn', $sharedAboutEn);
         View::share('sharedPrivacyAr', $sharedPrivacyAr);
         View::share('sharedPrivacyEn', $sharedPrivacyEn);
+        View::share('sharedTermsAr', $sharedTermsAr);
+        View::share('sharedTermsEn', $sharedTermsEn);
 
         View::composer('layouts.app', function ($view): void {
             if (auth()->check()) {

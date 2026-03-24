@@ -465,6 +465,25 @@
                                 <p class="text-sm text-slate-500">{{ __('messages.no_required_fields') }}</p>
                             @endforelse
 
+                        @php
+                            $termsLink = '<a href="'.route('terms-of-use').'" class="font-semibold text-emerald-700 hover:underline dark:text-emerald-400">'.e(__('messages.terms_of_use')).'</a>';
+                        @endphp
+
+                        <div class="rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-3">
+                            <label for="accept-terms-checkbox" class="flex items-start gap-3 text-sm text-slate-700 dark:text-slate-200">
+                                <input
+                                    id="accept-terms-checkbox"
+                                    name="accept_terms"
+                                    type="checkbox"
+                                    value="1"
+                                    class="mt-1 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                                    @checked(old('accept_terms'))
+                                >
+                                <span class="leading-7">{!! __('messages.accept_terms_purchase_label', ['terms' => $termsLink]) !!}</span>
+                            </label>
+                            <x-input-error :messages="$errors->get('accept_terms')" />
+                        </div>
+
                         @auth
                             <button id="purchase-button" type="submit"
                                 class="w-full rounded-lg bg-[#f2a900] px-5 py-3 text-sm font-semibold text-slate-900 transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-60">
@@ -564,6 +583,7 @@
                 const priceInput = document.getElementById('selected-price-input');
                 const insufficientMessage = document.getElementById('insufficient-message');
                 const purchaseButton = document.getElementById('purchase-button');
+                const termsCheckbox = document.getElementById('accept-terms-checkbox');
                 const variantInputs = document.querySelectorAll('input[name="variant_id"]');
                 const quantityInput = document.getElementById('quantity-input');
                 const offerAmountInput = document.getElementById('offer_amount');
@@ -687,8 +707,9 @@
 
                     const needsBalance = price !== null && !Number.isNaN(price) && price > 0;
                     const insufficientBalance = needsBalance && availableBalance < price;
+                    const hasAcceptedTerms = termsCheckbox ? termsCheckbox.checked : true;
 
-                    if (countdownExpired || price === null || insufficientBalance) {
+                    if (countdownExpired || price === null || insufficientBalance || !hasAcceptedTerms) {
                         purchaseButton.setAttribute('disabled', 'disabled');
                         if (insufficientMessage) {
                             if (!countdownExpired && insufficientBalance) {
@@ -715,6 +736,10 @@
 
                 if (offerAmountInput) {
                     offerAmountInput.addEventListener('input', updateState);
+                }
+
+                if (termsCheckbox) {
+                    termsCheckbox.addEventListener('change', updateState);
                 }
 
                 updateState();

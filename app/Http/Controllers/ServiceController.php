@@ -8,6 +8,7 @@ use App\Models\OrderEvent;
 use App\Models\Service;
 use App\Models\Wallet;
 use App\Notifications\NewOrderNotification;
+use App\Services\DailyCardOrderService;
 use App\Services\NotificationService;
 use App\Services\WalletService;
 use Illuminate\Http\RedirectResponse;
@@ -40,13 +41,15 @@ class ServiceController extends Controller
         PurchaseServiceRequest $request,
         Service $service,
         WalletService $walletService,
-        NotificationService $notificationService
+        NotificationService $notificationService,
+        DailyCardOrderService $dailyCardOrderService
     ): RedirectResponse {
         abort_unless($service->is_active && $service->category->is_active, 404);
         abort_unless(
             in_array($service->source ?? Service::SOURCE_MANUAL, [Service::SOURCE_MANUAL, Service::SOURCE_DAILYCARD], true),
             404
         );
+        $isDailyCard = ($service->source ?? Service::SOURCE_MANUAL) === Service::SOURCE_DAILYCARD;
         $user = $request->user();
 
         $payload = $request->input('fields', []);

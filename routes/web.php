@@ -33,6 +33,7 @@ use App\Http\Controllers\Admin\SiteSettingsController as AdminSiteSettingsContro
 use App\Http\Controllers\Admin\PopupController as AdminPopupController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepositController;
 use App\Http\Controllers\HomeController;
@@ -52,6 +53,9 @@ Route::get('/categories/{category:slug}', [CategoryController::class, 'show'])->
 Route::get('/services/{service:slug}', [ServiceController::class, 'show'])->name('services.show');
 Route::get('/privacy-policy', fn() => view('pages.privacy-policy'))->name('privacy-policy');
 Route::get('/about', fn() => view('pages.about'))->name('about');
+Route::get('/terms-of-use', fn() => view('pages.terms-of-use'))->name('terms-of-use');
+Route::get('/contact-us', [ContactController::class, 'show'])->name('contact-us.show');
+Route::post('/contact-us', [ContactController::class, 'store'])->middleware('throttle:5,1')->name('contact-us.send');
 
 Route::middleware(['auth', 'not_banned'])->group(function () {
     Route::post('/otp/verify', [\App\Http\Controllers\Auth\OtpController::class, 'verify'])->name('otp.verify');

@@ -18,7 +18,7 @@
     $metaDescription = trim($__env->yieldContent('meta_description', $defaultDescription));
     $metaDescription = \Illuminate\Support\Str::limit(strip_tags($metaDescription ?: $defaultDescription), 160, '');
 
-    $publicSeoRoutes = ['home', 'categories.show', 'services.show', 'about', 'privacy-policy'];
+    $publicSeoRoutes = ['home', 'categories.show', 'services.show', 'about', 'privacy-policy', 'terms-of-use', 'contact-us.show'];
     $isPublicSeoPage = isset($forcePublicSeo)
         ? (bool) $forcePublicSeo
         : in_array($routeName, $publicSeoRoutes, true);

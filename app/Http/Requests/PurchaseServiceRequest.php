@@ -35,6 +35,7 @@ class PurchaseServiceRequest extends FormRequest
         }
 
         $rules['selected_price'] = ['nullable', 'numeric', 'min:0'];
+        $rules['accept_terms'] = ['accepted'];
 
         if ($isDiscountedInput) {
             $rules['offer_image'] = ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'];
@@ -52,5 +53,12 @@ class PurchaseServiceRequest extends FormRequest
         }
 
         return $rules;
+    }
+
+    public function messages(): array
+    {
+        return [
+            'accept_terms.accepted' => __('messages.accept_terms_required'),
+        ];
     }
 }

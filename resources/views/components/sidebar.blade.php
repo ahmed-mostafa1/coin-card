@@ -210,6 +210,16 @@
                 <i class="fa-solid fa-shield-alt text-orange-400 w-5"></i>
                 <span>{{ __('messages.privacy_policy') }}</span>
             </a>
+
+            <a href="{{ route('terms-of-use') }}" class="flex items-center gap-3 rounded-lg border border-slate-400 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-700">
+                <i class="fa-solid fa-file-contract text-orange-400 w-5"></i>
+                <span>{{ __('messages.terms_of_use') }}</span>
+            </a>
+
+            <a href="{{ route('contact-us.show') }}" class="flex items-center gap-3 rounded-lg border border-slate-400 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-700">
+                <i class="fa-solid fa-envelope text-orange-400 w-5"></i>
+                <span>{{ __('messages.contact_page') }}</span>
+            </a>
             @endif
             
             @if($sharedWhatsappLink)

@@ -72,6 +72,71 @@ class StorefrontTest extends TestCase
             ->assertRedirect(route('login'));
     }
 
+    public function test_purchase_requires_accepting_terms_of_use(): void
+    {
+        Role::firstOrCreate(['name' => 'customer', 'guard_name' => 'web']);
+
+        $user = User::factory()->create();
+        $user->assignRole('customer');
+
+        Wallet::firstOrCreate(['user_id' => $user->id])->update(['balance' => 100]);
+
+        $category = Category::create([
+            'name' => 'Gaming Terms',
+            'slug' => 'gaming-terms',
+            'is_active' => true,
+        ]);
+
+        $service = Service::create([
+            'category_id' => $category->id,
+            'name' => 'PUBG Terms',
+            'slug' => 'pubg-terms',
+            'price' => 25,
+            'is_active' => true,
+        ]);
+
+        $response = $this->actingAs($user)->post('/services/'.$service->slug.'/purchase', [
+            'fields' => [],
+        ]);
+
+        $response->assertSessionHasErrors('accept_terms');
+    }
+
+    public function test_imported_service_purchase_requires_accepting_terms_of_use(): void
+    {
+        Role::firstOrCreate(['name' => 'customer', 'guard_name' => 'web']);
+
+        $user = User::factory()->create();
+        $user->assignRole('customer');
+
+        Wallet::firstOrCreate(['user_id' => $user->id])->update(['balance' => 100]);
+
+        $category = Category::create([
+            'name' => 'Imported Terms',
+            'slug' => 'imported-terms',
+            'is_active' => true,
+        ]);
+
+        $service = Service::create([
+            'category_id' => $category->id,
+            'name' => 'Imported Service',
+            'slug' => 'imported-service-terms',
+            'source' => Service::SOURCE_DAILYCARD,
+            'price' => 25,
+            'is_active' => true,
+        ]);
+
+        $this->actingAs($user)->get('/services/'.$service->slug)
+            ->assertOk()
+            ->assertSee('name="accept_terms"', false);
+
+        $response = $this->actingAs($user)->post('/services/'.$service->slug.'/purchase', [
+            'fields' => [],
+        ]);
+
+        $response->assertSessionHasErrors('accept_terms');
+    }
+
     public function test_expired_limited_offer_deactivates_service_on_storefront(): void
     {
         Role::firstOrCreate(['name' => 'customer', 'guard_name' => 'web']);
@@ -155,6 +220,7 @@ class StorefrontTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)->post('/services/'.$service->slug.'/purchase', [
+            'accept_terms' => '1',
             'fields' => [
                 'player_id' => '12345',
                 'region' => 'MENA',
@@ -226,6 +292,7 @@ class StorefrontTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)->post('/services/'.$service->slug.'/purchase', [
+            'accept_terms' => '1',
             'fields' => [],
         ]);
 
@@ -265,6 +332,7 @@ class StorefrontTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)->post('/services/'.$service->slug.'/purchase', [
+            'accept_terms' => '1',
             'fields' => [],
         ]);
 
@@ -304,6 +372,7 @@ class StorefrontTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)->post('/services/'.$service->slug.'/purchase', [
+            'accept_terms' => '1',
             'variant_id' => $variant->id,
             'fields' => [],
         ]);
@@ -350,6 +419,7 @@ class StorefrontTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)->post('/services/'.$service->slug.'/purchase', [
+            'accept_terms' => '1',
             'offer_amount' => '0.00',
             'selected_price' => '0.00',
             'offer_image' => UploadedFile::fake()->image('offer.jpg'),
@@ -397,6 +467,7 @@ class StorefrontTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)->post('/services/'.$service->slug.'/purchase', [
+            'accept_terms' => '1',
             'offer_amount' => '100.00',
             'selected_price' => '90.00',
             'offer_image' => UploadedFile::fake()->image('offer.jpg'),
@@ -433,6 +504,7 @@ class StorefrontTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)->post('/services/'.$service->slug.'/purchase', [
+            'accept_terms' => '1',
             'offer_amount' => '40.00',
             'selected_price' => '32.00',
             'offer_image' => UploadedFile::fake()->image('offer.jpg'),
