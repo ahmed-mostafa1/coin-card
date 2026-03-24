@@ -35,6 +35,15 @@ class ApiProviderCatalogController extends Controller
         $mode = $this->resolveMode($request, $provider);
         $filters = $this->catalogFilters($request, $provider, $mode);
 
+        Log::info('Provider catalog index hit', [
+            'provider_id' => $provider->id,
+            'provider_slug' => $provider->slug,
+            'mode' => $mode,
+            'filters' => $filters,
+            'is_dailycard' => $this->isDailyCard($provider),
+            'request_url' => $request->fullUrl(),
+        ]);
+
         $fetchResult = $this->isDailyCard($provider)
             ? $this->browseDailyCardCatalog($filters, $mode)
             : $this->browseGenericCatalog($provider, $filters, $mode);
@@ -182,10 +191,25 @@ class ApiProviderCatalogController extends Controller
         $totalPages = max(1, (int) ceil(max(1, $totalCount) / self::DAILYCARD_LOCAL_PAGE_SIZE));
         $currentPage = min($currentPage, $totalPages);
         $offset = ($currentPage - 1) * self::DAILYCARD_LOCAL_PAGE_SIZE;
+        $pageProducts = array_slice($products, $offset, self::DAILYCARD_LOCAL_PAGE_SIZE);
+
+        Log::info('DailyCard catalog page slice', [
+            'mode' => $mode,
+            'requested_page' => (int) ($filters['page'] ?? 1),
+            'current_page' => $currentPage,
+            'total_pages' => $totalPages,
+            'total_count' => $totalCount,
+            'offset' => $offset,
+            'returned_count' => count($pageProducts),
+            'first_external_id' => $pageProducts[0]['external_id'] ?? null,
+            'search' => $filters['search'] ?? null,
+            'category' => $filters['category'] ?? null,
+            'product_type' => $filters['product_type'] ?? null,
+        ]);
 
         return [
             'ok' => true,
-            'products' => array_slice($products, $offset, self::DAILYCARD_LOCAL_PAGE_SIZE),
+            'products' => $pageProducts,
             'count' => $totalCount,
             'has_next' => $currentPage < $totalPages,
             'error_message' => null,
