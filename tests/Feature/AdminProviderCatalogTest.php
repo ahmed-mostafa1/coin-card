@@ -45,6 +45,7 @@ class AdminProviderCatalogTest extends TestCase
             ],
             'count' => 2,
             'has_next' => true,
+            'next_page_url' => null,
             'error_message' => null,
         ]);
         $catalogService->shouldReceive('browse')->once()->with(['page' => 2])->andReturn([
@@ -54,6 +55,7 @@ class AdminProviderCatalogTest extends TestCase
             ],
             'count' => 2,
             'has_next' => false,
+            'next_page_url' => null,
             'error_message' => null,
         ]);
 
@@ -70,6 +72,99 @@ class AdminProviderCatalogTest extends TestCase
             ->assertSee('Product One')
             ->assertSee('Product Two')
             ->assertSee('تم عرض الكتالوج كاملاً في صفحة واحدة.');
+    }
+
+    public function test_provider_catalog_follows_next_page_url_when_provider_returns_one(): void
+    {
+        Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
+
+        $admin = User::factory()->create();
+        $admin->assignRole('admin');
+
+        $provider = $this->makeProvider();
+
+        $catalogService = Mockery::mock();
+        $catalogService->shouldReceive('browse')->once()->with(['page' => 1])->andReturn([
+            'ok' => true,
+            'products' => [
+                ['external_id' => '1', 'name' => 'Product One', 'type' => 'stock', 'price' => 10, 'available' => true],
+            ],
+            'count' => 2,
+            'has_next' => true,
+            'next_page_url' => 'https://example.com/catalog?page=2&page_size=500',
+            'error_message' => null,
+        ]);
+        $catalogService->shouldReceive('browse')->once()->with([
+            'page' => 2,
+            'page_url' => 'https://example.com/catalog?page=2&page_size=500',
+        ])->andReturn([
+            'ok' => true,
+            'products' => [
+                ['external_id' => '2', 'name' => 'Product Two', 'type' => 'stock', 'price' => 20, 'available' => true],
+            ],
+            'count' => 2,
+            'has_next' => false,
+            'next_page_url' => null,
+            'error_message' => null,
+        ]);
+
+        $manager = Mockery::mock(ApiProviderManager::class);
+        $manager->shouldReceive('forProvider')->once()->andReturn($catalogService);
+
+        $this->app->instance(ApiProviderManager::class, $manager);
+
+        $this->actingAs($admin)
+            ->get(route('admin.providers.catalog.index', $provider))
+            ->assertOk()
+            ->assertViewHas('products', function (array $products): bool {
+                return count($products) === 2
+                    && $products[0]['name'] === 'Product One'
+                    && $products[1]['name'] === 'Product Two';
+            })
+            ->assertViewHas('wasTruncated', false);
+    }
+
+    public function test_provider_catalog_stops_when_provider_repeats_the_same_page(): void
+    {
+        Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
+
+        $admin = User::factory()->create();
+        $admin->assignRole('admin');
+
+        $provider = $this->makeProvider();
+
+        $catalogService = Mockery::mock();
+        $catalogService->shouldReceive('browse')->once()->with(['page' => 1])->andReturn([
+            'ok' => true,
+            'products' => [
+                ['external_id' => '1', 'name' => 'Product One', 'type' => 'stock', 'price' => 10, 'available' => true],
+            ],
+            'count' => 40,
+            'has_next' => true,
+            'next_page_url' => null,
+            'error_message' => null,
+        ]);
+        $catalogService->shouldReceive('browse')->once()->with(['page' => 2])->andReturn([
+            'ok' => true,
+            'products' => [
+                ['external_id' => '1', 'name' => 'Product One', 'type' => 'stock', 'price' => 10, 'available' => true],
+            ],
+            'count' => 40,
+            'has_next' => true,
+            'next_page_url' => null,
+            'error_message' => null,
+        ]);
+
+        $manager = Mockery::mock(ApiProviderManager::class);
+        $manager->shouldReceive('forProvider')->once()->andReturn($catalogService);
+
+        $this->app->instance(ApiProviderManager::class, $manager);
+
+        $this->actingAs($admin)
+            ->get(route('admin.providers.catalog.index', $provider))
+            ->assertOk()
+            ->assertViewHas('products', fn (array $products): bool => count($products) === 1)
+            ->assertViewHas('wasTruncated', true);
     }
 
     private function makeProvider(): ApiProvider

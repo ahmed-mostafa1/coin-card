@@ -21,17 +21,18 @@ class ApiProviderCatalogService
     /**
      * Browse products from the provider.
      *
-     * @param  array{page?:int, search?:string}  $filters
-     * @return array{ok:bool, products:array, count:int, has_next:bool, error_message:?string}
+     * @param  array{page?:int, page_url?:string, search?:string}  $filters
+     * @return array{ok:bool, products:array, count:int, has_next:bool, next_page_url:?string, error_message:?string}
      */
     public function browse(array $filters = []): array
     {
         $query = $this->buildCatalogQuery($filters);
         $method = strtolower($this->provider->catalog_method);
+        $endpoint = (string) ($filters['page_url'] ?? $this->provider->catalog_endpoint);
 
         $result = $method === 'post'
-            ? $this->client->post($this->provider->catalog_endpoint, $query)
-            : $this->client->get($this->provider->catalog_endpoint, $query);
+            ? $this->client->post($endpoint, $query)
+            : $this->client->get($endpoint, $query);
 
         if (! ($result['ok'] ?? false)) {
             return [
@@ -39,6 +40,7 @@ class ApiProviderCatalogService
                 'products'      => [],
                 'count'         => 0,
                 'has_next'      => false,
+                'next_page_url' => null,
                 'error_message' => $result['error_message'] ?? 'فشل جلب المنتجات من المزود.',
             ];
         }
@@ -50,8 +52,10 @@ class ApiProviderCatalogService
             $productList = [];
         }
 
-        $count   = (int) ($this->client->resolvePath($raw, $this->provider->catalog_count_path) ?? count($productList));
-        $hasNext = ! empty($this->client->resolvePath($raw, $this->provider->catalog_next_path));
+        $count = (int) ($this->client->resolvePath($raw, $this->provider->catalog_count_path) ?? count($productList));
+        $nextValue = $this->client->resolvePath($raw, $this->provider->catalog_next_path);
+        $hasNext = filled($nextValue);
+        $nextPageUrl = is_string($nextValue) && filled($nextValue) ? $nextValue : null;
 
         $products = [];
         foreach ($productList as $item) {
@@ -67,6 +71,7 @@ class ApiProviderCatalogService
             'products'      => $products,
             'count'         => $count,
             'has_next'      => $hasNext,
+            'next_page_url' => $nextPageUrl,
             'error_message' => null,
         ];
     }

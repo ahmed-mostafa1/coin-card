@@ -22,7 +22,7 @@ class ApiProviderClient
     {
         try {
             $request = $this->buildRequest();
-            $url     = $this->provider->fullUrl($path);
+            $url     = $this->resolveUrl($path);
 
             if ($this->isQueryAuth()) {
                 $query = array_merge($query, $this->queryAuthParams());
@@ -44,7 +44,7 @@ class ApiProviderClient
     {
         try {
             $request = $this->buildRequest();
-            $url     = $this->provider->fullUrl($path);
+            $url     = $this->resolveUrl($path);
 
             if ($this->isQueryAuth()) {
                 $url .= (str_contains($url, '?') ? '&' : '?')
@@ -108,6 +108,15 @@ class ApiProviderClient
             // Query-based auth: credentials appended in get()/post()
             default => $request,
         };
+    }
+
+    private function resolveUrl(string $path): string
+    {
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+            return $path;
+        }
+
+        return $this->provider->fullUrl($path);
     }
 
     private function isQueryAuth(): bool

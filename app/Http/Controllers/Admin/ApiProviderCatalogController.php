@@ -77,12 +77,30 @@ class ApiProviderCatalogController extends Controller
     private function browseAllPages(ApiProviderCatalogService $catalogService): array
     {
         $products = [];
+        $seenProducts = [];
+        $seenRequests = [];
         $count = 0;
         $page = 1;
         $hasNext = false;
+        $nextPageUrl = null;
+        $wasTruncated = false;
 
         do {
-            $result = $catalogService->browse(['page' => $page]);
+            $requestKey = $nextPageUrl ? 'url:' . $nextPageUrl : 'page:' . $page;
+
+            if (isset($seenRequests[$requestKey])) {
+                $wasTruncated = true;
+                break;
+            }
+
+            $seenRequests[$requestKey] = true;
+
+            $filters = ['page' => $page];
+            if ($nextPageUrl) {
+                $filters['page_url'] = $nextPageUrl;
+            }
+
+            $result = $catalogService->browse($filters);
 
             if (! $result['ok']) {
                 return [
@@ -95,11 +113,35 @@ class ApiProviderCatalogController extends Controller
                 ];
             }
 
-            $products = [...$products, ...$result['products']];
+            $newProductsOnPage = 0;
+
+            foreach ($result['products'] as $product) {
+                $productKey = $this->productKey($product);
+
+                if (isset($seenProducts[$productKey])) {
+                    continue;
+                }
+
+                $seenProducts[$productKey] = true;
+                $products[] = $product;
+                $newProductsOnPage++;
+            }
+
             $count = max($count, (int) $result['count'], count($products));
             $hasNext = (bool) $result['has_next'];
+            $nextPageUrl = $result['next_page_url'] ?? null;
+
+            if ($hasNext && $newProductsOnPage === 0) {
+                $wasTruncated = true;
+                break;
+            }
+
             $page++;
         } while ($hasNext && $page <= self::MAX_FULL_CATALOG_PAGES);
+
+        if ($hasNext && $page > self::MAX_FULL_CATALOG_PAGES) {
+            $wasTruncated = true;
+        }
 
         return [
             'ok' => true,
@@ -107,7 +149,20 @@ class ApiProviderCatalogController extends Controller
             'count' => $count,
             'has_next' => false,
             'error_message' => null,
-            'was_truncated' => $hasNext,
+            'was_truncated' => $wasTruncated,
         ];
+    }
+
+    private function productKey(array $product): string
+    {
+        $externalId = trim((string) ($product['external_id'] ?? ''));
+        if ($externalId !== '') {
+            return 'external:' . $externalId;
+        }
+
+        $raw = $product['_raw'] ?? $product;
+        $encoded = json_encode($raw, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+        return 'raw:' . sha1($encoded !== false ? $encoded : serialize($raw));
     }
 }
