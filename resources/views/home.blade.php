@@ -2,8 +2,8 @@
 
 @php
     $homeTitle = app()->getLocale() === 'ar'
-        ? 'شراء بطاقات الألعاب والخدمات الرقمية أونلاين'
-        : 'Buy digital services and gaming top ups online';
+        ? 'Arab8BP | خدمات رقمية وشحن ألعاب'
+        : 'Arab8BP | Digital Services and Game Top-up';
     $homeDescriptionSource = app()->getLocale() === 'en' && ! empty($sharedStoreDescriptionEn)
         ? $sharedStoreDescriptionEn
         : $sharedStoreDescription;

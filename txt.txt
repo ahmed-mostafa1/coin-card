@@ -1,20 +1,8 @@
 
 #pull to host
 
-cd ~/laravel-app
-git fetch origin
 
-git reset --hard origin/main
 
-git clean -fd \
-  -e .env \
-  -e storage \
-  -e vendor \
-  -e public/storage
-
-php artisan optimize:clear
-
-php artisan optimize
 
 ================================================
 
