@@ -103,7 +103,7 @@
         </form>
 
         @if($isDailyCard && $searchIsLocal)
-            <div class="mt-4 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600 dark:border-slate-700 dark:bg-slate-800/70 dark:text-slate-300">
+            <div class="mt-4 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600 dark:bg-slate-700/50 dark:text-slate-400">
                 بحث DailyCard يتم محليًا بعد تحميل النتائج، لأن واجهة المزود تعيد أخطاء عند استخدام `search` مباشرة.
             </div>
         @endif

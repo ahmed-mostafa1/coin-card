@@ -1,17 +1,17 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
-@section('title', 'Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø§Ù„Ù…ÙˆÙ‚Ø¹')
+@section('title', 'إعدادات الموقع')
 @section('mainWidth', 'w-[85%] max-w-none mx-auto')
 
 @section('content')
     <div class="space-y-6">
         <div class="flex items-center justify-between">
             <div>
-                <h1 class="text-2xl font-semibold text-emerald-800 dark:text-emerald-400">Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø§Ù„Ù…ÙˆÙ‚Ø¹</h1>
-                <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">ØªØ­ÙƒÙ… ÙÙŠ Ø§Ù„Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø§Ù„Ø¹Ø§Ù…Ø©ØŒ Ø§Ù„Ø´Ø¹Ø§Ø±ØŒ ÙˆØ±ÙˆØ§Ø¨Ø· Ø§Ù„ØªÙˆØ§ØµÙ„ Ø§Ù„Ø§Ø¬ØªÙ…Ø§Ø¹ÙŠ.</p>
+                <h1 class="text-2xl font-semibold text-emerald-800 dark:text-emerald-400">إعدادات الموقع</h1>
+                <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">تحكم في الإعدادات العامة، الشعار، وروابط التواصل الاجتماعي.</p>
             </div>
             <a href="{{ route('dashboard') }}" class="rounded-full bg-slate-200 dark:bg-slate-700 px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 transition hover:bg-slate-300 dark:hover:bg-slate-600">
-                <i class="fa-solid fa-arrow-right ml-2 rtl:ml-0 rtl:mr-2"></i> {{ __('messages.dashboard') ?? 'Ù„ÙˆØ­Ø© Ø§Ù„ØªØ­ÙƒÙ…' }}
+                <i class="fa-solid fa-arrow-right ml-2 rtl:ml-0 rtl:mr-2"></i> {{ __('messages.dashboard') ?? 'لوحة التحكم' }}
             </a>
         </div>
 
@@ -35,11 +35,11 @@
         <form action="{{ route('admin.site-settings.update-general') }}" method="POST">
             @csrf
             <div class="rounded-3xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm">
-                <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-6 pb-2 border-b border-slate-100 dark:border-slate-700">Ø§Ù„Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø§Ù„Ø¹Ø§Ù…Ø©</h2>
+                <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-6 pb-2 border-b border-slate-100 dark:border-slate-700">الإعدادات العامة</h2>
                 
                 <div class="space-y-4">
                     <div>
-                        <x-input-label for="ticker_text" value="Ù†Øµ Ø§Ù„Ø´Ø±ÙŠØ· Ø§Ù„Ù…ØªØ­Ø±Ùƒ (Ø¹Ø±Ø¨ÙŠ)" />
+                        <x-input-label for="ticker_text" value="نص الشريط المتحرك (عربي)" />
                         <textarea id="ticker_text" name="ticker_text" rows="2" 
                             class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500" 
                             required>{{ old('ticker_text', $tickerText) }}</textarea>
@@ -47,7 +47,7 @@
                     </div>
 
                     <div>
-                        <x-input-label for="ticker_text_en" value="Ù†Øµ Ø§Ù„Ø´Ø±ÙŠØ· Ø§Ù„Ù…ØªØ­Ø±Ùƒ (Ø¥Ù†Ø¬Ù„ÙŠØ²ÙŠ)" />
+                        <x-input-label for="ticker_text_en" value="نص الشريط المتحرك (إنجليزي)" />
                         <textarea id="ticker_text_en" name="ticker_text_en" rows="2" 
                             class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500" 
                             dir="ltr">{{ old('ticker_text_en', $tickerTextEn) }}</textarea>
@@ -55,7 +55,7 @@
                     </div>
 
                     <div>
-                        <x-input-label for="store_description" value="Ù†Øµ Ø§Ù„ÙˆØµÙ (Ø¹Ø±Ø¨ÙŠ)" />
+                        <x-input-label for="store_description" value="نص الوصف (عربي)" />
                         <textarea id="store_description" name="store_description" rows="4" 
                             class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500" 
                             required>{{ old('store_description', $storeDescription) }}</textarea>
@@ -63,7 +63,7 @@
                     </div>
 
                     <div>
-                        <x-input-label for="store_description_en" value="Ù†Øµ Ø§Ù„ÙˆØµÙ (Ø¥Ù†Ø¬Ù„ÙŠØ²ÙŠ)" />
+                        <x-input-label for="store_description_en" value="نص الوصف (إنجليزي)" />
                         <textarea id="store_description_en" name="store_description_en" rows="4" 
                             class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500" 
                             dir="ltr">{{ old('store_description_en', $storeDescriptionEn ?? '') }}</textarea>
@@ -74,7 +74,7 @@
                 </div>
 
                 <div class="mt-6 flex justify-end">
-                    <x-primary-button>Ø­ÙØ¸ Ø§Ù„Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø§Ù„Ø¹Ø§Ù…Ø©</x-primary-button>
+                    <x-primary-button>حفظ الإعدادات العامة</x-primary-button>
                 </div>
             </div>
         </form>
@@ -83,31 +83,31 @@
         <form action="{{ route('admin.site-settings.update-logo') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="rounded-3xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm" x-data="{ type: '{{ old('logo_type', $logoType) }}' }">
-                <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-6 pb-2 border-b border-slate-100 dark:border-slate-700">Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø§Ù„Ø´Ø¹Ø§Ø±</h2>
+                <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-6 pb-2 border-b border-slate-100 dark:border-slate-700">إعدادات الشعار</h2>
                 
                 <div class="space-y-4">
                      <div>
-                        <label class="text-sm font-medium text-slate-700 dark:text-slate-300">Ù†ÙˆØ¹ Ø§Ù„Ø´Ø¹Ø§Ø±</label>
+                        <label class="text-sm font-medium text-slate-700 dark:text-slate-300">نوع الشعار</label>
                         <div class="mt-2 flex gap-4">
                             <label class="flex items-center gap-2 cursor-pointer">
                                 <input type="radio" name="logo_type" value="text" x-model="type" class="text-emerald-600 focus:ring-emerald-500">
-                                <span class="text-sm text-slate-600 dark:text-slate-400">Ù†Øµ</span>
+                                <span class="text-sm text-slate-600 dark:text-slate-400">نص</span>
                             </label>
                             <label class="flex items-center gap-2 cursor-pointer">
                                 <input type="radio" name="logo_type" value="image" x-model="type" class="text-emerald-600 focus:ring-emerald-500">
-                                <span class="text-sm text-slate-600 dark:text-slate-400">ØµÙˆØ±Ø©</span>
+                                <span class="text-sm text-slate-600 dark:text-slate-400">صورة</span>
                             </label>
                         </div>
                     </div>
 
                     <div x-show="type === 'text'" style="display: none;">
-                        <x-input-label for="logo_text" value="Ù†Øµ Ø§Ù„Ø´Ø¹Ø§Ø±" />
+                        <x-input-label for="logo_text" value="نص الشعار" />
                         <x-text-input id="logo_text" name="logo_text" type="text" :value="old('logo_text', $logoText)" class="w-full" />
                         <x-input-error :messages="$errors->get('logo_text')" />
                     </div>
 
                     <div x-show="type === 'image'" style="display: none;">
-                        <x-input-label for="logo_image" value="ØµÙˆØ±Ø© Ø§Ù„Ø´Ø¹Ø§Ø±" />
+                        <x-input-label for="logo_image" value="صورة الشعار" />
                         <div class="mt-2 flex items-center gap-4">
                             @if($logoImage)
                                 <div class="h-12 w-12 rounded bg-slate-100 dark:bg-slate-700 flex items-center justify-center overflow-hidden border border-slate-200 dark:border-slate-600">
@@ -115,14 +115,14 @@
                                 </div>
                             @endif
                             <input type="file" id="logo_image" name="logo_image" accept="image/*" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 dark:file:bg-emerald-900/50 dark:file:text-emerald-400">
-                            <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Ø§Ù„Ù…Ù‚Ø§Ø³ Ø§Ù„Ù…ÙØ¶Ù„: 200Ã—60 Ø¨ÙƒØ³Ù„</p>
+                            <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">المقاس المفضل: 200×60 بكسل</p>
                         </div>
                         <x-input-error :messages="$errors->get('logo_image')" />
                     </div>
                 </div>
 
                 <div class="mt-6 flex justify-end">
-                    <x-primary-button>Ø­ÙØ¸ Ø§Ù„Ø´Ø¹Ø§Ø±</x-primary-button>
+                    <x-primary-button>حفظ الشعار</x-primary-button>
                 </div>
             </div>
         </form>
@@ -131,11 +131,11 @@
         <form action="{{ route('admin.site-settings.update-social') }}" method="POST">
             @csrf
             <div class="rounded-3xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm">
-                <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-6 pb-2 border-b border-slate-100 dark:border-slate-700">ÙˆØ³Ø§Ø¦Ù„ Ø§Ù„ØªÙˆØ§ØµÙ„ Ø§Ù„Ø§Ø¬ØªÙ…Ø§Ø¹ÙŠ</h2>
+                <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-6 pb-2 border-b border-slate-100 dark:border-slate-700">وسائل التواصل الاجتماعي</h2>
                 
                 <div class="grid gap-6 md:grid-cols-2">
                     <div>
-                        <x-input-label for="whatsapp_link" value="Ø±Ø§Ø¨Ø· ÙˆØ§ØªØ³Ø§Ø¨" />
+                        <x-input-label for="whatsapp_link" value="رابط واتساب" />
                         <div class="relative mt-1 rounded-md shadow-sm">
                             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                                 <i class="fa-brands fa-whatsapp text-slate-400"></i>
@@ -146,7 +146,7 @@
                     </div>
 
                     <div>
-                        <x-input-label for="instagram_link" value="Ø±Ø§Ø¨Ø· Ø§Ù†Ø³ØªØºØ±Ø§Ù…" />
+                        <x-input-label for="instagram_link" value="رابط انستغرام" />
                         <div class="relative mt-1 rounded-md shadow-sm">
                             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                                 <i class="fa-brands fa-instagram text-slate-400"></i>
@@ -157,7 +157,7 @@
                     </div>
 
                     <div>
-                        <x-input-label for="telegram_link" value="Ø±Ø§Ø¨Ø· ØªÙŠÙ„ÙŠØ¬Ø±Ø§Ù…" />
+                        <x-input-label for="telegram_link" value="رابط تيليغرام" />
                         <div class="relative mt-1 rounded-md shadow-sm">
                             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                                 <i class="fa-brands fa-telegram text-slate-400"></i>
@@ -168,7 +168,7 @@
                     </div>
 
                     <div>
-                        <x-input-label for="facebook_link" value="Ø±Ø§Ø¨Ø· ÙÙŠØ³Ø¨ÙˆÙƒ" />
+                        <x-input-label for="facebook_link" value="رابط فيسبوك" />
                         <div class="relative mt-1 rounded-md shadow-sm">
                             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                                 <i class="fa-brands fa-facebook text-slate-400"></i>
@@ -179,7 +179,7 @@
                     </div>
                     
                     <div>
-                        <x-input-label for="youtube_link" value="Ø±Ø§Ø¨Ø· ÙŠÙˆØªÙŠÙˆØ¨" />
+                        <x-input-label for="youtube_link" value="رابط يوتيوب" />
                         <div class="relative mt-1 rounded-md shadow-sm">
                             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                                 <i class="fa-brands fa-youtube text-slate-400"></i>
@@ -191,28 +191,28 @@
                 </div>
 
                 <div class="mt-6 flex justify-end">
-                    <x-primary-button>Ø­ÙØ¸ Ø±ÙˆØ§Ø¨Ø· Ø§Ù„ØªÙˆØ§ØµÙ„</x-primary-button>
+                    <x-primary-button>حفظ روابط التواصل</x-primary-button>
                 </div>
             </div>
         </form>
 
 
-        {{-- â”€â”€ SEO & Ads â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ --}}
+        {{-- ── SEO & Ads ────────────────────────────────────────────────── --}}
         <form action="{{ route('admin.site-settings.update-seo') }}" method="POST">
             @csrf
             <div class="rounded-3xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm">
                 <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-1 pb-2 border-b border-slate-100 dark:border-slate-700">
-                    <i class="fa-solid fa-magnifying-glass-chart ml-2 text-emerald-600"></i> SEO ÙˆØ§Ù„Ø¥Ø¹Ù„Ø§Ù†Ø§Øª
+                    <i class="fa-solid fa-magnifying-glass-chart ml-2 text-emerald-600"></i> SEO والإعلانات
                 </h2>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mb-6">ØªÙØ­ÙØ¸ ÙÙŠ Ù‚Ø§Ø¹Ø¯Ø© Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª â€” Ù„Ù† ØªÙÙÙ‚Ø¯ Ø¹Ù†Ø¯ ØªØ­Ø¯ÙŠØ« Ø§Ù„ÙƒÙˆØ¯.</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mb-6">تُحفظ في قاعدة البيانات – لن تُفقد عند تحديث الكود.</p>
 
                 <div class="space-y-6">
 
-                    {{-- â”€â”€ SERP Live Preview â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ --}}
+                    {{-- ── SERP Live Preview ───────────────────────────────────────── --}}
                     <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 p-4">
                         <p class="mb-3 flex items-center gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
                             <i class="fa-brands fa-google text-blue-500"></i>
-                            Ù…Ø¹Ø§ÙŠÙ†Ø© Ù…Ø¨Ø§Ø´Ø±Ø© â€” Ù‡ÙƒØ°Ø§ ØªØ¸Ù‡Ø± ÙÙŠ Ù†ØªØ§Ø¦Ø¬ Ø§Ù„Ø¨Ø­Ø«
+                            معاينة مباشرة – هكذا تظهر في نتائج البحث
                         </p>
                         {{-- Fake Google search bar --}}
                         <div class="mb-3 flex items-center gap-2 rounded-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-2 shadow-sm text-sm text-slate-400 max-w-md">
@@ -225,7 +225,7 @@
                                 <div class="w-5 h-5 rounded-full bg-emerald-600 flex items-center justify-center text-white text-[9px] font-bold">S</div>
                                 <div class="text-xs">
                                     <div class="text-slate-800 dark:text-slate-200 font-medium" id="serp_site_name">{{ $seoTitle ?: $logoText }}</div>
-                                    <div class="text-slate-500 dark:text-slate-400 text-[11px]" dir="ltr">{{ rtrim(config('app.url'), '/') }} â€º ...</div>
+                                    <div class="text-slate-500 dark:text-slate-400 text-[11px]" dir="ltr">{{ rtrim(config('app.url'), '/') }} › ...</div>
                                 </div>
                             </div>
                             <div id="serp_title_preview"
@@ -239,10 +239,10 @@
                         </div>
                     </div>
 
-                    {{-- â”€â”€ SEO Title â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ --}}
+                    {{-- ── SEO Title ─────────────────────────────────────────────── --}}
                     <div>
                         <div class="flex items-center justify-between mb-1">
-                            <x-input-label for="seo_title" value="Ø¹Ù†ÙˆØ§Ù† Ø§Ù„Ù…ÙˆÙ‚Ø¹ ÙÙŠ Ø§Ù„Ø¨Ø­Ø« (Title Tag)" />
+                            <x-input-label for="seo_title" value="عنوان الموقع في البحث (Title Tag)" />
                             <span id="seo_title_counter"
                                 class="text-xs font-mono tabular-nums transition-colors"
                                 :class="...">
@@ -250,8 +250,8 @@
                             </span>
                         </div>
                         <p class="mb-2 text-xs text-slate-500 dark:text-slate-400">
-                            ÙŠØ¸Ù‡Ø± ÙÙŠ ØªØ¨ÙˆÙŠØ¨ Ø§Ù„Ù…ØªØµÙØ­ ÙˆØ¹Ù†ÙˆØ§Ù† Ù†ØªÙŠØ¬Ø© Ø§Ù„Ø¨Ø­Ø«. Ø§Ù„Ù…Ø«Ø§Ù„ÙŠ: Ø£Ù‚Ù„ Ù…Ù† 60 Ø­Ø±ÙØ§Ù‹.
-                            Ø¥Ø°Ø§ ØªÙØ±Ùƒ ÙØ§Ø±ØºØ§Ù‹ Ø³ÙŠÙØ³ØªØ®Ø¯Ù… Ø§Ø³Ù… Ø§Ù„Ù…ÙˆÙ‚Ø¹ ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹.
+                            يظهر في تبويب المتصفح وعنوان نتيجة البحث. المثالي: أقل من 60 حرفاً.
+                            إذا تُرك فارغاً سيُستخدم اسم الموقع تلقائياً.
                         </p>
                         <x-text-input id="seo_title" name="seo_title" type="text"
                             :value="old('seo_title', $seoTitle)" class="w-full" dir="auto"
@@ -262,17 +262,17 @@
                         <x-input-error :messages="$errors->get('seo_title')" />
                     </div>
 
-                    {{-- â”€â”€ Meta Description â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ --}}
+                    {{-- ── Meta Description ──────────────────────────────────────── --}}
                     <div>
                         <div class="flex items-center justify-between mb-1">
-                            <x-input-label for="meta_description" value="ÙˆØµÙ Ø§Ù„Ù…ÙˆÙ‚Ø¹ ÙÙŠ Ø§Ù„Ø¨Ø­Ø« (Meta Description)" />
+                            <x-input-label for="meta_description" value="وصف الموقع في البحث (Meta Description)" />
                             <span id="meta_desc_counter" class="text-xs font-mono tabular-nums transition-colors">
                                 <span id="meta_desc_count">{{ mb_strlen($metaDescription) }}</span>/160
                             </span>
                         </div>
                         <p class="mb-2 text-xs text-slate-500 dark:text-slate-400">
-                            Ø§Ù„Ø¬Ù…Ù„Ø© Ø§Ù„ØµØºÙŠØ±Ø© Ø§Ù„ØªÙŠ ØªØ¸Ù‡Ø± Ø£Ø³ÙÙ„ Ø§Ù„Ø¹Ù†ÙˆØ§Ù† ÙÙŠ Ø¬ÙˆØ¬Ù„. Ø§Ù„Ø£ÙØ¶Ù„: 120â€“160 Ø­Ø±ÙØ§Ù‹.
-                            Ø¥Ø°Ø§ ØªÙØ±Ùƒ ÙØ§Ø±ØºØ§Ù‹ Ø³ÙŠÙØ³ØªØ®Ø¯Ù… ÙˆØµÙ Ø§Ù„Ù…ØªØ¬Ø± ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹.
+                            الجملة الصغيرة التي تظهر أسفل العنوان في جوجل. الأفضل: 120–160 حرفاً.
+                            إذا تُرك فارغاً سيُستخدم وصف المتجر تلقائياً.
                         </p>
                         <textarea id="meta_description" name="meta_description" rows="3" maxlength="500"
                             class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500"
@@ -283,25 +283,25 @@
                         <x-input-error :messages="$errors->get('meta_description')" />
                     </div>
 
-                    {{-- â”€â”€ Meta Keywords â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ --}}
+                    {{-- ── Meta Keywords ─────────────────────────────────────────── --}}
                     <div>
-                        <x-input-label for="meta_keywords" value="Ø§Ù„ÙƒÙ„Ù…Ø§Øª Ø§Ù„Ù…ÙØªØ§Ø­ÙŠØ© (Keywords)" />
-                        <p class="mb-2 text-xs text-slate-500 dark:text-slate-400">Ø§ÙØµÙ„ Ø¨ÙŠÙ† Ø§Ù„ÙƒÙ„Ù…Ø§Øª Ø¨ÙØ§ØµÙ„Ø© â€” Ù…Ø«Ø§Ù„: Ø¨Ø·Ø§Ù‚Ø§Øª Ø§Ù„Ø¹Ø§Ø¨ØŒ Ø´Ø­Ù† Ø±ØµÙŠØ¯ØŒ Ø®Ø¯Ù…Ø§Øª Ø±Ù‚Ù…ÙŠØ©</p>
+                        <x-input-label for="meta_keywords" value="الكلمات المفتاحية (Keywords)" />
+                        <p class="mb-2 text-xs text-slate-500 dark:text-slate-400">افصل بين الكلمات بفاصلة – مثال: بطاقات العاب، شحن رصيد، خدمات رقمية</p>
                         <x-text-input id="meta_keywords" name="meta_keywords" type="text"
                             :value="old('meta_keywords', $metaKeywords)" class="w-full" dir="auto"
-                            placeholder="Ø¨Ø·Ø§Ù‚Ø§Øª Ø§Ù„Ø¹Ø§Ø¨ØŒ Ø´Ø­Ù† Ø±ØµÙŠØ¯ØŒ ..." />
+                            placeholder="بطاقات العاب، شحن رصيد، ..." />
                         <x-input-error :messages="$errors->get('meta_keywords')" />
                     </div>
 
-                    {{-- â”€â”€ Tracking & Pixels â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ --}}
+                    {{-- ── Tracking & Pixels ─────────────────────────────────────── --}}
                     <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/40 p-4">
                         <p class="mb-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
-                            <i class="fa-solid fa-chart-line ml-1 text-emerald-500"></i> Ø§Ù„ØªØªØ¨Ø¹ ÙˆØ§Ù„ØªØ­Ù„ÙŠÙ„Ø§Øª
+                            <i class="fa-solid fa-chart-line ml-1 text-emerald-500"></i> التتبع والتحليلات
                         </p>
                         <div class="grid gap-4 md:grid-cols-2">
                             <div>
                                 <x-input-label for="fb_pixel_id" value="Facebook / Meta Pixel ID" />
-                                <p class="mb-1 text-xs text-slate-500 dark:text-slate-400">Ø£Ø±Ù‚Ø§Ù… ÙÙ‚Ø· â€” Ù…Ø«Ø§Ù„: 1234567890123456</p>
+                                <p class="mb-1 text-xs text-slate-500 dark:text-slate-400">أرقام فقط – مثال: 1234567890123456</p>
                                 <div class="relative">
                                     <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                                         <i class="fa-brands fa-meta text-blue-600 text-sm"></i>
@@ -314,7 +314,7 @@
                             </div>
                             <div>
                                 <x-input-label for="ga_id" value="Google Analytics ID" />
-                                <p class="mb-1 text-xs text-slate-500 dark:text-slate-400">Ù…Ø«Ø§Ù„: G-XXXXXXXXXX</p>
+                                <p class="mb-1 text-xs text-slate-500 dark:text-slate-400">مثال: G-XXXXXXXXXX</p>
                                 <div class="relative">
                                     <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                                         <i class="fa-brands fa-google text-orange-500 text-sm"></i>
@@ -328,27 +328,27 @@
                         </div>
                     </div>
 
-                    {{-- â”€â”€ Advanced Scripts â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ --}}
+                    {{-- ── Advanced Scripts ──────────────────────────────────────── --}}
                     <details class="rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
                         <summary class="cursor-pointer select-none bg-slate-50 dark:bg-slate-900/40 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition">
                             <i class="fa-solid fa-code ml-2 text-slate-400 text-xs"></i>
-                            Ø³ÙƒØ±ÙŠØ¨ØªØ§Øª Ù…ØªÙ‚Ø¯Ù…Ø© (Ù„Ù„Ù…Ø·ÙˆØ±ÙŠÙ† ÙÙ‚Ø·)
+                            سكريبتات متقدمة (للمطورين فقط)
                         </summary>
                         <div class="p-4 space-y-4 bg-white dark:bg-slate-800">
                             <div>
-                                <x-input-label for="head_scripts" value="ÙƒÙˆØ¯ Ù…Ø®ØµØµ Ø¯Ø§Ø®Ù„ <head>" />
-                                <p class="mb-1 text-xs text-slate-500 dark:text-slate-400">Ù…Ù†Ø§Ø³Ø¨ Ù„Ù€ TikTok Pixel Ø£Ùˆ Google Tag Manager.</p>
+                                <x-input-label for="head_scripts" value="كود مخصص داخل <head>" />
+                                <p class="mb-1 text-xs text-slate-500 dark:text-slate-400">مناسب لـ TikTok Pixel أو Google Tag Manager.</p>
                                 <textarea id="head_scripts" name="head_scripts" rows="5"
                                     class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 px-4 py-3 text-sm font-mono text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500"
-                                    dir="ltr" placeholder="<!-- Ø£Ø¯Ø®Ù„ Ø§Ù„ÙƒÙˆØ¯ Ù‡Ù†Ø§ -->">{{ old('head_scripts', $headScripts) }}</textarea>
+                                    dir="ltr" placeholder="<!-- أدخل الكود هنا -->">{{ old('head_scripts', $headScripts) }}</textarea>
                                 <x-input-error :messages="$errors->get('head_scripts')" />
                             </div>
                             <div>
-                                <x-input-label for="body_scripts" value="ÙƒÙˆØ¯ Ù…Ø®ØµØµ Ù‚Ø¨Ù„ </body>" />
-                                <p class="mb-1 text-xs text-slate-500 dark:text-slate-400">Ù…Ù†Ø§Ø³Ø¨ Ù„Ø£Ø¯ÙˆØ§Øª Ø§Ù„Ø¯Ø±Ø¯Ø´Ø© Ø§Ù„Ù…Ø¨Ø§Ø´Ø±Ø©.</p>
+                                <x-input-label for="body_scripts" value="كود مخصص قبل </body>" />
+                                <p class="mb-1 text-xs text-slate-500 dark:text-slate-400">مناسب لأدوات الدردشة المباشرة.</p>
                                 <textarea id="body_scripts" name="body_scripts" rows="5"
                                     class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 px-4 py-3 text-sm font-mono text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500"
-                                    dir="ltr" placeholder="<!-- Ø£Ø¯Ø®Ù„ Ø§Ù„ÙƒÙˆØ¯ Ù‡Ù†Ø§ -->">{{ old('body_scripts', $bodyScripts) }}</textarea>
+                                    dir="ltr" placeholder="<!-- أدخل الكود هنا -->">{{ old('body_scripts', $bodyScripts) }}</textarea>
                                 <x-input-error :messages="$errors->get('body_scripts')" />
                             </div>
                         </div>
@@ -358,7 +358,7 @@
 
                 <div class="mt-6 flex justify-end">
                     <x-primary-button>
-                        <i class="fa-solid fa-floppy-disk ml-2"></i> Ø­ÙØ¸ Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª SEO ÙˆØ§Ù„Ø¥Ø¹Ù„Ø§Ù†Ø§Øª
+                        <i class="fa-solid fa-floppy-disk ml-2"></i> حفظ إعدادات SEO والإعلانات
                     </x-primary-button>
                 </div>
             </div>
@@ -370,7 +370,7 @@
 @push('scripts')
 <script>
 (function () {
-    // â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Helpers ────────────────────────────────────────────────────────────
     const TITLE_MAX = 60, DESC_MAX = 160;
 
     function colorClass(len, soft, hard) {
@@ -398,7 +398,7 @@
         counterEl.className = 'text-xs font-mono tabular-nums transition-colors ' + colorClass(len, soft, hard);
     }
 
-    // â”€â”€ SEO Title â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── SEO Title ──────────────────────────────────────────────────────────
     const titleInput   = document.getElementById('seo_title');
     const titleCounter = document.getElementById('seo_title_counter');
     const titleCount   = document.getElementById('seo_title_count');
@@ -419,7 +419,7 @@
     titleInput.addEventListener('input', syncTitle);
     syncTitle();
 
-    // â”€â”€ Meta Description â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Meta Description ───────────────────────────────────────────────────
     const descInput   = document.getElementById('meta_description');
     const descCounter = document.getElementById('meta_desc_counter');
     const descCount   = document.getElementById('meta_desc_count');
