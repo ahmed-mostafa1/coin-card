@@ -146,8 +146,8 @@ class ServiceController extends Controller
         $data['is_limited_offer_label_active'] = $request->boolean('is_limited_offer_label_active');
         $data['is_limited_offer_countdown_active'] = $request->boolean('is_limited_offer_countdown_active');
         $data['is_quantity_based'] = $request->boolean('is_quantity_based');
-        $data['source'] = Service::SOURCE_MANUAL;
         $data['sort_order'] = $data['sort_order'] ?? 0;
+        // Do NOT overwrite source — imported services must keep their original source value.
 
         if ($data['pricing_mode'] === Service::PRICING_MODE_DISCOUNTED_INPUT) {
             $data['price'] = 0;
@@ -219,10 +219,11 @@ class ServiceController extends Controller
 
     private function ensureServiceIsEditable(Service $service): void
     {
-        $isManual = ($service->source ?? Service::SOURCE_MANUAL) === Service::SOURCE_MANUAL;
-        $isLegacyDailyCard = $service->source === Service::SOURCE_DAILYCARD;
+        // Allow editing any service that has a source (manual, dailycard, provider slug)
+        // or is provider-backed by ID. Only block records with no source AND no provider.
+        $hasSource = filled($service->source);
         $isProviderBacked = $service->provider_id !== null;
 
-        abort_unless($isManual || $isLegacyDailyCard || $isProviderBacked, 404);
+        abort_unless($hasSource || $isProviderBacked, 404);
     }
 }

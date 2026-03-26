@@ -1,11 +1,15 @@
 @php
     $routeName = request()->route()?->getName();
-    $siteName = trim($sharedLogoText ?: config('app.name', 'Arab 8BP'));
-    $defaultDescriptionSource = app()->getLocale() === 'en' && filled($sharedStoreDescriptionEn)
-        ? $sharedStoreDescriptionEn
-        : $sharedStoreDescription;
+    // SEO title setting overrides logo text for meta purposes only
+    $siteName = trim(filled($sharedSeoTitle) ? $sharedSeoTitle : ($sharedLogoText ?: config('app.name', 'Arab 8BP')));
+
+    // Use the dedicated meta_description DB setting if set; fall back to store_description.
+    $globalDescription = filled($sharedMetaDescription)
+        ? $sharedMetaDescription
+        : (app()->getLocale() === 'en' && filled($sharedStoreDescriptionEn) ? $sharedStoreDescriptionEn : $sharedStoreDescription);
+
     $defaultDescription = \Illuminate\Support\Str::limit(
-        trim(strip_tags($defaultDescriptionSource ?: 'Digital services and gaming top-ups.')),
+        trim(strip_tags($globalDescription ?: 'Digital services and gaming top-ups.')),
         160,
         ''
     );
@@ -31,7 +35,7 @@
     $metaRobots = trim($__env->yieldContent('meta_robots', $defaultRobots));
     $metaCanonical = trim($__env->yieldContent('meta_canonical', url()->current()));
     $metaType = trim($__env->yieldContent('meta_type', $routeName === 'services.show' ? 'product' : 'website'));
-    $metaKeywords = trim($__env->yieldContent('meta_keywords', ''));
+    $metaKeywords = trim($__env->yieldContent('meta_keywords', $sharedMetaKeywords ?? ''));
     $metaImage = trim($__env->yieldContent('meta_image', ''));
     $metaImage = $metaImage !== ''
         ? $metaImage
@@ -100,3 +104,34 @@
 <script type="application/ld+json">{!! json_encode($organizationSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
 <script type="application/ld+json">{!! json_encode($websiteSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
 @stack('structured-data')
+
+@if (filled($sharedGaId ?? ''))
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ $sharedGaId }}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '{{ $sharedGaId }}');
+</script>
+@endif
+
+@if (filled($sharedFbPixelId ?? ''))
+<!-- Meta (Facebook) Pixel -->
+<script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window,document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '{{ $sharedFbPixelId }}');
+  fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id={{ $sharedFbPixelId }}&ev=PageView&noscript=1"/></noscript>
+@endif
+
+@if (filled($sharedHeadScripts ?? ''))
+{!! $sharedHeadScripts !!}
+@endif

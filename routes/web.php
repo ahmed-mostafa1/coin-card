@@ -243,6 +243,7 @@ Route::middleware(['auth', 'not_banned', 'role:admin'])->prefix('admin')->name('
     Route::post('/site-settings/general', [AdminSiteSettingsController::class, 'updateGeneral'])->name('site-settings.update-general');
     Route::post('/site-settings/logo', [AdminSiteSettingsController::class, 'updateLogo'])->name('site-settings.update-logo');
     Route::post('/site-settings/social', [AdminSiteSettingsController::class, 'updateSocial'])->name('site-settings.update-social');
+    Route::post('/site-settings/seo', [AdminSiteSettingsController::class, 'updateSeo'])->name('site-settings.update-seo');
     
     // Pages Management Routes
     Route::get('/pages', [AdminPageController::class, 'edit'])->name('pages.edit');

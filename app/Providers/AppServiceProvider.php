@@ -61,6 +61,15 @@ class AppServiceProvider extends ServiceProvider
             $sharedPrivacyEn = Cache::remember('shared_privacy_en', 300, fn () => SiteSetting::get('privacy_en', ''));
             $sharedTermsAr = Cache::remember('shared_terms_ar', 300, fn () => SiteSetting::get('terms_ar', ''));
             $sharedTermsEn = Cache::remember('shared_terms_en', 300, fn () => SiteSetting::get('terms_en', ''));
+
+            // SEO & Ads
+            $sharedSeoTitle        = Cache::remember('shared_seo_title',        300, fn () => SiteSetting::get('seo_title', ''));
+            $sharedMetaDescription = Cache::remember('shared_meta_description', 300, fn () => SiteSetting::get('meta_description', ''));
+            $sharedMetaKeywords    = Cache::remember('shared_meta_keywords',    300, fn () => SiteSetting::get('meta_keywords', ''));
+            $sharedFbPixelId       = Cache::remember('shared_fb_pixel_id',      300, fn () => SiteSetting::get('fb_pixel_id', ''));
+            $sharedGaId            = Cache::remember('shared_ga_id',            300, fn () => SiteSetting::get('ga_id', ''));
+            $sharedHeadScripts     = Cache::remember('shared_head_scripts',      300, fn () => SiteSetting::get('head_scripts', ''));
+            $sharedBodyScripts     = Cache::remember('shared_body_scripts',      300, fn () => SiteSetting::get('body_scripts', ''));
         } catch (\Throwable $e) {
             $sharedBanners = collect();
             $sharedTickerText = 'ملاحظة لأصحاب المحلات يرجى التواصل مع الإدارة للحصول على أسعار الجملة •';
@@ -84,6 +93,15 @@ class AppServiceProvider extends ServiceProvider
             $sharedPrivacyEn = '';
             $sharedTermsAr = '';
             $sharedTermsEn = '';
+
+            // SEO & Ads
+            $sharedSeoTitle        = '';
+            $sharedMetaDescription = '';
+            $sharedMetaKeywords    = '';
+            $sharedFbPixelId       = '';
+            $sharedGaId            = '';
+            $sharedHeadScripts     = '';
+            $sharedBodyScripts     = '';
         }
 
         View::share('sharedBanners', $sharedBanners);
@@ -108,6 +126,15 @@ class AppServiceProvider extends ServiceProvider
         View::share('sharedPrivacyEn', $sharedPrivacyEn);
         View::share('sharedTermsAr', $sharedTermsAr);
         View::share('sharedTermsEn', $sharedTermsEn);
+
+        // SEO & Ads
+        View::share('sharedSeoTitle',       $sharedSeoTitle);
+        View::share('sharedMetaDescription', $sharedMetaDescription);
+        View::share('sharedMetaKeywords',    $sharedMetaKeywords);
+        View::share('sharedFbPixelId',       $sharedFbPixelId);
+        View::share('sharedGaId',            $sharedGaId);
+        View::share('sharedHeadScripts',     $sharedHeadScripts);
+        View::share('sharedBodyScripts',     $sharedBodyScripts);
 
         View::composer('layouts.app', function ($view): void {
             if (auth()->check()) {

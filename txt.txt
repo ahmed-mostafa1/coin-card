@@ -28,8 +28,8 @@ AI rule: If any of these are missing, proceed with safe assumptions and request 
 
 ================================================
 
-you are a senior fullstack laravel developer and your task is to create 2 new pages
-1- "contact us" page that contain email contact form and submitted emails are sent to admin email same as service request and deposit requests
-2- "شروط الاستخدام" and can be modified from "/admin/pages" same as other 2 pages (about us and privacy policy)
-3- in all services (manual / imported) show a checkbox for (أوافق على شروط الاستخدام الخاصة بالمتجر وأتحمل مسوولية صحة المعلومات المدخلة) and disable clicking purchase/ request / شراء الان button without confirming this checkbox is checked
+you are a senior fullstack laravel developer and your task is to fix these bugs
+1- when i add a provider all his services are imported automatically while i need to import only selected services
+2- now when i try to edit or delete a service i get 404 not found
+3- i made some changes previosly from admin dashboard but after updates my edits vanished and was resetted to defaults
 give me suggestion to improve this to be more professional and if you have questions ask me then plan before any coding

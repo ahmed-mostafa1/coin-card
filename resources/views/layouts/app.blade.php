@@ -264,6 +264,9 @@
     <x-otp-verify-popup :open="session('show_otp_verify', false)" />
 
     @stack('scripts')
+    @if (filled($sharedBodyScripts ?? ''))
+    {!! $sharedBodyScripts !!}
+    @endif
     <script>
         function confirmDelete(button) {
             Swal.fire({

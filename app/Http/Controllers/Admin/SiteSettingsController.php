@@ -34,6 +34,14 @@ class SiteSettingsController extends Controller
         
         $activePopupsCount = \App\Models\Popup::active()->count();
 
+        $metaDescription = SiteSetting::get('meta_description', '');
+        $metaKeywords    = SiteSetting::get('meta_keywords', '');
+        $seoTitle        = SiteSetting::get('seo_title', '');
+        $fbPixelId       = SiteSetting::get('fb_pixel_id', '');
+        $gaId            = SiteSetting::get('ga_id', '');
+        $headScripts     = SiteSetting::get('head_scripts', '');
+        $bodyScripts     = SiteSetting::get('body_scripts', '');
+
         return view('admin.site-settings.edit', compact(
             'tickerText',
             'tickerTextEn',
@@ -51,7 +59,8 @@ class SiteSettingsController extends Controller
             'telegramLink',
             'facebookLink',
             'activePopupsCount',
-            'aboutAr', 'aboutEn', 'privacyAr', 'privacyEn'
+            'aboutAr', 'aboutEn', 'privacyAr', 'privacyEn',
+            'metaDescription', 'metaKeywords', 'seoTitle', 'fbPixelId', 'gaId', 'headScripts', 'bodyScripts'
         ));
     }
 
@@ -131,5 +140,36 @@ class SiteSettingsController extends Controller
         cache()->forget('shared_whatsapp_number');
 
         return redirect()->route('admin.site-settings.edit')->with('status', 'تم تحديث روابط التواصل بنجاح.');
+    }
+
+    public function updateSeo(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'seo_title'        => ['nullable', 'string', 'max:70'],
+            'meta_description' => ['nullable', 'string', 'max:500'],
+            'meta_keywords'    => ['nullable', 'string', 'max:500'],
+            'fb_pixel_id'      => ['nullable', 'string', 'max:50', 'regex:/^\d*$/'],
+            'ga_id'            => ['nullable', 'string', 'max:30', 'regex:/^(G-|UA-)?[A-Z0-9\-]*$/i'],
+            'head_scripts'     => ['nullable', 'string'],
+            'body_scripts'     => ['nullable', 'string'],
+        ]);
+
+        SiteSetting::set('seo_title',        trim($data['seo_title']        ?? ''));
+        SiteSetting::set('meta_description', trim($data['meta_description'] ?? ''));
+        SiteSetting::set('meta_keywords',    trim($data['meta_keywords']    ?? ''));
+        SiteSetting::set('fb_pixel_id',      trim($data['fb_pixel_id']      ?? ''));
+        SiteSetting::set('ga_id',            trim($data['ga_id']            ?? ''));
+        SiteSetting::set('head_scripts',     trim($data['head_scripts']     ?? ''));
+        SiteSetting::set('body_scripts',     trim($data['body_scripts']     ?? ''));
+
+        cache()->forget('shared_seo_title');
+        cache()->forget('shared_meta_description');
+        cache()->forget('shared_meta_keywords');
+        cache()->forget('shared_fb_pixel_id');
+        cache()->forget('shared_ga_id');
+        cache()->forget('shared_head_scripts');
+        cache()->forget('shared_body_scripts');
+
+        return redirect()->route('admin.site-settings.edit')->with('status', 'تم تحديث إعدادات SEO والإعلانات بنجاح.');
     }
 }
