@@ -94,6 +94,44 @@
         color: #064e3b !important; /* emerald-900 */
     }
 
+    /* SweetAlert2 dark mode — popup renders outside .dark scope */
+    .dark .swal2-container .swal2-popup,
+    .dark .swal2-popup {
+        background-color: #1e293b !important; /* slate-800 */
+        color: #f1f5f9 !important;            /* slate-100 */
+    }
+
+    .dark .swal2-popup .swal2-title {
+        color: #f1f5f9 !important;
+    }
+
+    .dark .swal2-popup .swal2-html-container,
+    .dark .swal2-popup .swal2-content {
+        color: #cbd5e1 !important; /* slate-300 */
+    }
+
+    /* Warning icon border + dot */
+    .dark .swal2-icon.swal2-warning {
+        border-color: #f59e0b !important;
+        color: #f59e0b !important;
+    }
+
+    /* Confirm / Cancel buttons already styled by your calls;
+       only adjust default fallback colours */
+    .dark .swal2-popup .swal2-actions .swal2-confirm {
+        background-color: #10b981 !important; /* emerald-500 */
+    }
+
+    .dark .swal2-popup .swal2-actions .swal2-cancel {
+        background-color: #475569 !important; /* slate-600 */
+        color: #f1f5f9 !important;
+    }
+
+    /* Backdrop fix */
+    .dark .swal2-backdrop-show {
+        background: rgba(0, 0, 0, 0.7) !important;
+    }
+
     table tr:hover,
     table tr:hover > th,
     table tr:hover > td {
