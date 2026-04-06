@@ -4,8 +4,50 @@
 @section('mainWidth', 'max-w-none')
 
 @section('content')
+    @php
+        $accountExtraLinks = array_values(array_filter([
+            [
+                'url' => route('contact-us.show'),
+                'label' => __('messages.contact_page'),
+                'icon' => 'fa-solid fa-envelope',
+                'external' => false,
+            ],
+            [
+                'url' => route('about'),
+                'label' => __('messages.about_us'),
+                'icon' => 'fa-solid fa-circle-info',
+                'external' => false,
+            ],
+            [
+                'url' => route('privacy-policy'),
+                'label' => __('messages.privacy_policy'),
+                'icon' => 'fa-solid fa-shield-halved',
+                'external' => false,
+            ],
+            [
+                'url' => route('terms-of-use'),
+                'label' => __('messages.terms_of_use'),
+                'icon' => 'fa-solid fa-file-contract',
+                'external' => false,
+            ],
+            [
+                'url' => route('lang.switch', app()->getLocale() == 'ar' ? 'en' : 'ar'),
+                'label' => app()->getLocale() == 'ar' ? 'English' : 'العربية',
+                'icon' => 'fa-solid fa-language',
+                'external' => false,
+            ],
+            [
+                'url' => $sharedWhatsappLink ?? null,
+                'label' => __('messages.contact_whatsapp'),
+                'icon' => 'fa-brands fa-whatsapp',
+                'external' => true,
+            ],
+        ], fn ($link) => filled($link['url'])));
+    @endphp
+
     @role('admin')
         <div class="w-full lg:min-w-[1000px]">
+            <div class="grid gap-6 lg:grid-cols-[minmax(0,2fr),minmax(320px,1fr)]">
             <x-card :hover="false" class="w-full p-8">
             <x-page-header :title="__('messages.account_update_title')" :subtitle="__('messages.account_update_desc')" />
 
@@ -44,6 +86,36 @@
                 <x-primary-button class="w-full">{{ __('messages.save_changes') }}</x-primary-button>
             </form>
             </x-card>
+            <x-card :hover="false" class="p-8">
+                <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">روابط إضافية</h2>
+                <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">الروابط الثانوية نُقلت هنا للحفاظ على شريط علوي أخف وأوضح.</p>
+                <div class="mt-6 grid gap-3">
+                    @foreach ($accountExtraLinks as $link)
+                        <a href="{{ $link['url'] }}"
+                           @if($link['external']) target="_blank" rel="noreferrer noopener" @endif
+                           class="flex items-center justify-between rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-4 text-sm font-semibold text-slate-700 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-700">
+                            <span class="flex items-center gap-3">
+                                <i class="{{ $link['icon'] }} {{ $link['external'] ? 'text-green-500' : 'text-emerald-600 dark:text-emerald-400' }}"></i>
+                                <span>{{ $link['label'] }}</span>
+                            </span>
+                            <i class="fa-solid fa-chevron-left text-xs text-slate-400 rtl:rotate-180"></i>
+                        </a>
+                    @endforeach
+
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit"
+                            class="flex w-full items-center justify-between rounded-2xl border border-rose-200 bg-rose-50 px-4 py-4 text-sm font-semibold text-rose-600 transition hover:border-rose-300 hover:bg-rose-100 dark:border-rose-900/60 dark:bg-rose-950/30 dark:text-rose-300 dark:hover:border-rose-800 dark:hover:bg-rose-950/50">
+                            <span class="flex items-center gap-3">
+                                <i class="fa-solid fa-arrow-right-from-bracket rtl:rotate-180"></i>
+                                <span>{{ __('messages.logout') }}</span>
+                            </span>
+                            <i class="fa-solid fa-chevron-left text-xs rtl:rotate-180"></i>
+                        </button>
+                    </form>
+                </div>
+            </x-card>
+            </div>
         </div>
     @else
     <div class="w-full lg:min-w-[1000px]">
@@ -158,6 +230,40 @@
                 </x-table>
         </x-card>
     </div>
+
+    <x-card class="mt-8 p-8" :hover="false">
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">روابط إضافية</h2>
+                <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">نقلنا الروابط الثانوية من الشريط العلوي إلى هنا حتى تبقى الواجهة أوضح على الجوال.</p>
+            </div>
+        </div>
+        <div class="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+            @foreach ($accountExtraLinks as $link)
+                <a href="{{ $link['url'] }}"
+                   @if($link['external']) target="_blank" rel="noreferrer noopener" @endif
+                   class="flex items-center justify-between rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-4 text-sm font-semibold text-slate-700 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-700">
+                    <span class="flex items-center gap-3">
+                        <i class="{{ $link['icon'] }} {{ $link['external'] ? 'text-green-500' : 'text-emerald-600 dark:text-emerald-400' }}"></i>
+                        <span>{{ $link['label'] }}</span>
+                    </span>
+                    <i class="fa-solid fa-chevron-left text-xs text-slate-400 rtl:rotate-180"></i>
+                </a>
+            @endforeach
+
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit"
+                    class="flex w-full items-center justify-between rounded-2xl border border-rose-200 bg-rose-50 px-4 py-4 text-sm font-semibold text-rose-600 transition hover:border-rose-300 hover:bg-rose-100 dark:border-rose-900/60 dark:bg-rose-950/30 dark:text-rose-300 dark:hover:border-rose-800 dark:hover:bg-rose-950/50">
+                    <span class="flex items-center gap-3">
+                        <i class="fa-solid fa-arrow-right-from-bracket rtl:rotate-180"></i>
+                        <span>{{ __('messages.logout') }}</span>
+                    </span>
+                    <i class="fa-solid fa-chevron-left text-xs rtl:rotate-180"></i>
+                </button>
+            </form>
+        </div>
+    </x-card>
     </div>
     @endrole
 @endsection

@@ -70,16 +70,35 @@
 @endpush
 
 @section('content')
-    <div class="store-shell space-y-6">
-        <div class="w-[95%] md:w-[80%] mx-auto">
-            <x-store.hero :banners="$sharedBanners" :alt="$category->localized_name" />
+    <div class="store-shell space-y-4">
+
+        {{-- Compact category header (replaces full hero slider) --}}
+        <div class="flex items-center gap-3 px-3 pt-1">
+            @if($category->image_path)
+                <img src="{{ asset('storage/' . $category->image_path) }}"
+                     alt="{{ $category->localized_name }}"
+                     class="h-12 w-12 flex-shrink-0 rounded-full object-cover border-2 border-emerald-200 dark:border-emerald-800 shadow-sm">
+            @else
+                <div class="h-12 w-12 flex-shrink-0 rounded-full bg-emerald-100 dark:bg-emerald-900 flex items-center justify-center">
+                    <i class="fa-solid fa-layer-group text-emerald-600 dark:text-emerald-400"></i>
+                </div>
+            @endif
+            <div class="min-w-0">
+                <h1 class="text-base font-bold text-slate-800 dark:text-slate-100 leading-tight truncate">{{ $category->localized_name }}</h1>
+                {{-- Breadcrumb --}}
+                <div class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                    <a href="{{ route('home') }}" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition">{{ __('messages.home') }}</a>
+                    @if($category->parent)
+                        <i class="fa-solid fa-chevron-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} text-[9px]"></i>
+                        <a href="{{ route('categories.show', $category->parent->slug) }}" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition truncate">{{ $category->parent->localized_name }}</a>
+                    @endif
+                    <i class="fa-solid fa-chevron-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} text-[9px]"></i>
+                    <span class="truncate text-slate-700 dark:text-slate-300 font-medium">{{ $category->localized_name }}</span>
+                </div>
+            </div>
         </div>
 
-        <div class="w-[95%] md:w-[80%] mx-auto">
-            <x-store.notice :text="$sharedTickerText" />
-        </div>
-
-        <div class="w-full px-3 lg:w-4/5 lg:mx-auto">
+        <div class="w-full px-3">
             <form method="GET">
                 <x-store.search-bar
                     :placeholder="$hasChildren ? __('messages.search_section_placeholder') : __('messages.search_products_placeholder')"
@@ -88,23 +107,23 @@
         </div>
 
         @if ($hasChildren)
-            <div class="w-full px-3 lg:w-4/5 lg:mx-auto">
-                <div class="grid gap-2 sm:gap-3 lg:gap-4 grid-cols-2 lg:grid-cols-4" data-filter-list="subcategories">
+            <div class="w-full px-3">
+                <div class="grid gap-2.5 sm:gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" data-filter-list="subcategories">
                     @forelse ($subcategories as $sub)
                         <x-store.category-card :title="$sub->localized_name" :href="route('categories.show', $sub->slug)"
                             :image="$sub->image_path ? asset('storage/' . $sub->image_path) : null" searchTarget="subcategories" />
                     @empty
-                        <x-empty-state :message="__('messages.no_categories')" class="col-span-2 lg:col-span-4" />
+                        <x-empty-state :message="__('messages.no_categories')" class="col-span-full" />
                     @endforelse
                 </div>
             </div>
         @else
-            <div class="w-full px-3 lg:w-4/5 lg:mx-auto">
-                <div class="grid gap-2 sm:gap-3 lg:gap-4 grid-cols-2 lg:grid-cols-5" data-filter-list="products">
+            <div class="w-full px-3">
+                <div class="grid gap-2 sm:gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5" data-filter-list="products">
                     @forelse ($services as $service)
                         <x-store.product-card :service="$service" searchTarget="products" />
                     @empty
-                        <x-empty-state :message="__('messages.no_services_available')" class="col-span-2 lg:col-span-5" />
+                        <x-empty-state :message="__('messages.no_services_available')" class="col-span-full" />
                     @endforelse
                 </div>
             </div>
