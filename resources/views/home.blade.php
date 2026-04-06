@@ -356,7 +356,8 @@
 
             <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
                 @forelse ($categories as $category)
-                    <a href="{{ route('categories.show', $category->slug) }}" class="group home-category-card">
+                    <x-store.category-card :title="$category->localized_name" :href="route('categories.show', $category->slug)" :image="$category->image_path ? asset('storage/' . $category->image_path) : null" />
+                    @if (false)
                         <div class="home-category-card__image">
                             @if($category->image_path)
                                 <img src="{{ asset('storage/' . $category->image_path) }}" alt="{{ $category->localized_name }}" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
@@ -387,6 +388,7 @@
                             </div>
                         </div>
                     </a>
+                    @endif
                 @empty
                     <x-empty-state :message="__('messages.no_categories')" class="md:col-span-2 xl:col-span-4" />
                 @endforelse
@@ -405,11 +407,11 @@
                 </div>
             </div>
 
-            <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
                 @forelse($featuredServices as $service)
-                    <x-store.product-card :service="$service" />
+                    <x-store.product-card :service="$service" layout="feature" />
                 @empty
-                    <x-empty-state :message="__('messages.no_services')" class="md:col-span-2 xl:col-span-3" />
+                    <x-empty-state :message="__('messages.no_services')" class="md:col-span-2 xl:col-span-4" />
                 @endforelse
             </div>
         </section>

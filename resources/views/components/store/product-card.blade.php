@@ -1,8 +1,9 @@
 @props([
     'service',
-    'href'         => null,
+    'href' => null,
     'searchTarget' => 'products',
-    'subtitle'     => null,
+    'subtitle' => null,
+    'layout' => 'default',
 ])
 
 @php
@@ -14,17 +15,17 @@
         $price = $service->price;
     }
 
-    $image    = $service->image_path ? asset('storage/' . $service->image_path) : null;
+    $image = $service->image_path ? asset('storage/' . $service->image_path) : null;
     $subtitle ??= $service->category->localized_name ?? '';
+    $isFeatureLayout = $layout === 'feature';
 @endphp
 
 <a href="{{ $service->is_active ? ($href ?? route('services.show', $service->slug)) : '#' }}"
-    class="group relative block overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md {{ !$service->is_active ? 'opacity-70 grayscale cursor-not-allowed' : '' }}"
+    class="group relative block overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 {{ $isFeatureLayout ? 'bg-slate-800 shadow-md hover:shadow-lg' : 'bg-white dark:bg-slate-800 shadow-sm hover:shadow-md' }} transition-all duration-200 hover:-translate-y-0.5 {{ !$service->is_active ? 'opacity-70 grayscale cursor-not-allowed' : '' }}"
     data-filter-item="{{ $searchTarget }}"
     data-filter-name="{{ $service->localized_name }}"
     data-filter-alt="{{ $subtitle }}">
 
-    {{-- Square image --}}
     <div class="aspect-square w-full overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800">
         @if ($image)
             <img src="{{ $image }}"
@@ -36,30 +37,44 @@
             </div>
         @endif
 
-        {{-- Unavailable overlay --}}
         @if (!$service->is_active)
             <div class="absolute inset-0 flex items-center justify-center bg-black/20">
-                <span class="bg-slate-900/80 text-white px-2.5 py-1 rounded-full text-xs font-bold -rotate-12 shadow">
-                    {{ __('messages.unavailable') ?? 'غير متاحة' }}
+                <span class="rounded-full bg-slate-900/80 px-2.5 py-1 text-xs font-bold text-white shadow -rotate-12">
+                    {{ __('messages.unavailable') ?? 'Unavailable' }}
                 </span>
             </div>
         @endif
     </div>
 
-    {{-- Price badge top-start --}}
     @if ($price)
         <div class="absolute top-2 start-2 rounded-full bg-emerald-600 px-2 py-0.5 text-[11px] font-bold text-white shadow-sm" dir="ltr">
             ${{ number_format($price, 2) }}
         </div>
     @endif
 
-    {{-- Title --}}
-    <div class="px-2 pt-2 pb-3 text-center">
-        <p class="text-[13px] font-semibold text-slate-800 dark:text-slate-100 line-clamp-2 leading-snug">
-            {{ $service->localized_name }}
-        </p>
-        @if ($subtitle)
-            <p class="mt-0.5 text-[11px] text-slate-400 dark:text-slate-500 truncate">{{ $subtitle }}</p>
-        @endif
-    </div>
+    @if ($isFeatureLayout)
+        <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent"></div>
+
+        <div class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 px-3 pb-2.5 pt-6">
+            <div class="min-w-0">
+                <span class="block text-sm font-bold leading-tight text-white drop-shadow line-clamp-2">{{ $service->localized_name }}</span>
+                @if ($subtitle)
+                    <span class="mt-1 block truncate text-[11px] text-white/75">{{ $subtitle }}</span>
+                @endif
+            </div>
+
+            <span class="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-white/20 text-xs text-white backdrop-blur-sm transition group-hover:bg-emerald-500">
+                <i class="fa-solid fa-chevron-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} text-[10px]"></i>
+            </span>
+        </div>
+    @else
+        <div class="px-2 pt-2 pb-3 text-center">
+            <p class="text-[13px] font-semibold text-slate-800 dark:text-slate-100 line-clamp-2 leading-snug">
+                {{ $service->localized_name }}
+            </p>
+            @if ($subtitle)
+                <p class="mt-0.5 truncate text-[11px] text-slate-400 dark:text-slate-500">{{ $subtitle }}</p>
+            @endif
+        </div>
+    @endif
 </a>

@@ -17,8 +17,7 @@
     data-filter-name="{{ $title }}"
     data-filter-alt="{{ $subtitle }}">
 
-    {{-- 16:9 landscape image --}}
-    <div class="aspect-video w-full overflow-hidden">
+    <div class="aspect-square w-full overflow-hidden">
         @if ($image)
             <img src="{{ $image }}"
                  alt="{{ $title }}"
