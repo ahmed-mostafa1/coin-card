@@ -188,12 +188,6 @@
             </a>
             @endif
 
-            <!-- Other links based on image/routes -->
-            {{-- <a href="#" class="flex items-center gap-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-700">
-                <i class="fa-solid fa-money-bill-transfer text-orange-400 w-5"></i>
-                <span>{{ __('messages.earnings') ?? 'الأرباح' }}</span>
-            </a> --}}
-            
              <a href="{{ route('account.notifications') }}" class="flex items-center gap-3 rounded-lg border border-slate-400 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-700">
                 <i class="fa-solid fa-bell text-orange-400 w-5"></i>
                 <span>{{ __('messages.notifications') }}</span>

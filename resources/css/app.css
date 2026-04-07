@@ -203,6 +203,66 @@
         @apply border-emerald-600 bg-emerald-900 text-emerald-300 hover:bg-emerald-800;
     }
 
+    .cc-nav-utility {
+        @apply relative inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-600 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400;
+    }
+
+    .dark .cc-nav-utility {
+        @apply border-slate-700 bg-slate-900 text-slate-300 hover:border-slate-600 hover:bg-slate-800 hover:text-white;
+    }
+
+    .cc-nav-utility-label {
+        @apply w-auto gap-1.5 px-3 text-sm font-bold;
+    }
+
+    .cc-nav-cta {
+        @apply inline-flex h-10 items-center justify-center rounded-2xl px-4 text-sm font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400;
+    }
+
+    .cc-nav-cta-primary {
+        @apply bg-emerald-600 text-white shadow-sm hover:bg-emerald-700;
+    }
+
+    .cc-nav-cta-secondary {
+        @apply border border-slate-200 bg-white text-slate-700 hover:border-emerald-200 hover:text-emerald-700;
+    }
+
+    .dark .cc-nav-cta-secondary {
+        @apply border-slate-700 bg-slate-900 text-slate-200 hover:border-emerald-700 hover:text-emerald-300;
+    }
+
+    .cc-profile-chip {
+        @apply inline-flex h-10 items-center gap-2 rounded-2xl bg-white px-1.5 pe-3 text-right  transition hover:border-emerald-200 hover:bg-emerald-50/70 focus-visible:outline-none;
+    }
+
+    .dark .cc-profile-chip {
+        @apply border-slate-700 bg-slate-900 hover:border-emerald-700 hover:bg-emerald-950/20;
+    }
+
+    .cc-profile-chip-active {
+        @apply border-emerald-200 bg-emerald-50/90;
+    }
+
+    .dark .cc-profile-chip-active {
+        @apply border-emerald-700 bg-emerald-950/30;
+    }
+
+    .cc-nav-tab {
+        @apply inline-flex shrink-0 items-center gap-2 rounded-2xl px-3 py-2.5 text-sm font-semibold text-slate-500 transition hover:bg-slate-50 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400;
+    }
+
+    .dark .cc-nav-tab {
+        @apply text-slate-400 hover:bg-slate-800 hover:text-white;
+    }
+
+    .cc-nav-tab-active {
+        @apply bg-emerald-50 text-emerald-700 shadow-sm;
+    }
+
+    .dark .cc-nav-tab-active {
+        @apply bg-emerald-950/30 text-emerald-300;
+    }
+
     .store-shell {
         @apply w-full max-w-6xl lg:mx-auto;
     }
