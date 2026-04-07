@@ -33,6 +33,35 @@
         $isAr = app()->getLocale() == 'ar';
         $currentUser = auth()->user();
         $isAdmin = $currentUser?->hasRole('admin') ?? false;
+        $logoTextValue = filled(trim($sharedLogoText ?? '')) ? trim($sharedLogoText) : config('app.name', 'Coin Card');
+        $logoImageUrl = $sharedLogoType === 'image' && filled($sharedLogoImage ?? null)
+            ? asset('storage/' . $sharedLogoImage)
+            : null;
+        $languageToggleLocale = $isAr ? 'en' : 'ar';
+        $languageToggleLabel = $isAr ? 'EN' : 'AR';
+        $languageToggleTitle = $isAr ? 'Switch to English' : 'التبديل إلى العربية';
+        $legalLinks = [
+            [
+                'route' => route('about'),
+                'label' => __('messages.about_us'),
+                'active' => request()->routeIs('about'),
+            ],
+            [
+                'route' => route('contact-us.show'),
+                'label' => __('messages.contact_page'),
+                'active' => request()->routeIs('contact-us.*'),
+            ],
+            [
+                'route' => route('privacy-policy'),
+                'label' => __('messages.privacy_policy'),
+                'active' => request()->routeIs('privacy-policy'),
+            ],
+            [
+                'route' => route('terms-of-use'),
+                'label' => app()->getLocale() === 'ar' ? 'الشروط والأحكام' : 'Terms & Conditions',
+                'active' => request()->routeIs('terms-of-use') || request()->routeIs('terms-and-conditions'),
+            ],
+        ];
         $isAccountOverviewActive = request()->routeIs('account')
             && !request()->routeIs('account.orders*')
             && !request()->routeIs('account.notifications*')
@@ -186,14 +215,16 @@
             <div class="px-3 py-3 sm:px-4">
                 <div class="flex items-center justify-between gap-2 lg:gap-3">
                     <a href="{{ route('home') }}"
-                       class="flex min-w-0 shrink items-center gap-2.5 rounded-2xl border border-emerald-200 bg-white px-3 py-2 shadow-sm transition hover:border-emerald-300 hover:bg-emerald-50 dark:border-emerald-900/70 dark:bg-slate-900 dark:hover:bg-emerald-950/30 sm:gap-3 sm:px-4 sm:py-2.5">
-                        <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl bg-emerald-600 text-white shadow-sm sm:h-10 sm:w-10">
-                            <i class="fa-solid fa-credit-card text-sm"></i>
-                        </span>
-                        <span class="min-w-0 max-w-[8.75rem] sm:max-w-none">
-                            <span class="block text-sm font-black tracking-wide text-slate-900 dark:text-white">شام كاش</span>
-                            <span class="block text-[11px] font-semibold text-slate-500 dark:text-slate-400">{{ $isAr ? 'خدمات رقمية سريعة' : 'Fast Digital Services' }}</span>
-                        </span>
+                       class="flex min-w-0 shrink items-center ">
+                        @if($logoImageUrl)
+                            <img src="{{ $logoImageUrl }}"
+                                 alt="{{ $logoTextValue }}"
+                                 class="block h-10 w-auto max-w-[10rem] object-contain sm:h-12 sm:max-w-[12rem]">
+                        @else
+                            <span class="block min-w-0 max-w-[11rem] truncate text-sm font-black tracking-wide text-slate-900 dark:text-white sm:max-w-[14rem] sm:text-base">
+                                {{ $logoTextValue }}
+                            </span>
+                        @endif
                     </a>
 
                     @auth
@@ -224,6 +255,14 @@
                                 @endif
                             </a>
                         @endauth
+
+                        <a href="{{ route('lang.switch', $languageToggleLocale) }}"
+                           class="inline-flex h-11 min-w-11 shrink-0 items-center justify-center gap-1 rounded-full border border-slate-200 bg-white px-3 text-sm font-bold text-slate-600 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
+                           aria-label="{{ $languageToggleTitle }}"
+                           title="{{ $languageToggleTitle }}">
+                            <i class="fa-solid fa-language text-sm"></i>
+                            <span>{{ $languageToggleLabel }}</span>
+                        </a>
 
                         <button type="button" @click="darkMode = !darkMode"
                             class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400 dark:hover:bg-slate-800">
@@ -368,6 +407,22 @@
         <main class="flex-1 py-4 sm:py-6 {{ $mainWidth }}">
             @yield('content')
         </main>
+
+        <footer class="border-t border-slate-200 bg-white/90 px-4 py-5 backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/90">
+            <div class="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-3 text-center sm:flex-row sm:text-start">
+                <p class="text-xs font-medium text-slate-500 dark:text-slate-400">
+                    {{ $logoTextValue }}
+                </p>
+                <div class="flex flex-wrap items-center justify-center gap-2 sm:justify-end">
+                    @foreach($legalLinks as $link)
+                        <a href="{{ $link['route'] }}"
+                           class="inline-flex items-center rounded-full border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600 transition hover:border-emerald-200 hover:text-emerald-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-emerald-700 dark:hover:text-emerald-300">
+                            {{ $link['label'] }}
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+        </footer>
     </div>
 
     <x-otp-verify-popup :open="session('show_otp_verify', false)" />

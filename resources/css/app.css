@@ -513,20 +513,6 @@
         @apply absolute inset-0;
     }
 
-    .home-hero-card__media::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background:
-            linear-gradient(145deg, rgba(2, 6, 23, 0.12), rgba(2, 6, 23, 0.82)),
-            radial-gradient(circle at top right, rgba(16, 185, 129, 0.32), transparent 34%);
-    }
-
-    .home-hero-fallback {
-        @apply relative flex h-full items-end overflow-hidden p-7;
-        background:
-            linear-gradient(135deg, #052e1b 0%, #0f172a 48%, #111827 100%);
-    }
 
     .home-hero-fallback__orbit {
         position: absolute;

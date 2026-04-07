@@ -26,6 +26,14 @@
     ];
     $categoryCount = $categories->count();
     $featuredServicesCount = $featuredServices->count();
+    $heroSlides = $sharedBanners
+        ->filter(fn ($banner) => filled($banner->image_path))
+        ->values()
+        ->map(fn ($banner) => [
+            'image' => asset('storage/' . $banner->image_path),
+            'title' => $banner->localized_title ?: __('messages.home'),
+        ])
+        ->all();
 @endphp
 
 @section('title', $homeTitle)
@@ -135,11 +143,6 @@
     <div class="home-scene space-y-5 sm:space-y-8">
         <section class="home-hero">
             <div class="home-hero__content">
-                <span class="home-kicker">
-                    <i class="fa-solid fa-star text-[11px]"></i>
-                    <span>{{ app()->getLocale() === 'ar' ? 'واجهة أسرع وأكثر وضوحًا لشراء الخدمات الرقمية' : 'A clearer way to buy digital services' }}</span>
-                </span>
-
                 <div class="space-y-3 sm:space-y-4">
                     <h1 class="home-hero__title">{{ __('messages.professional_platform') }}</h1>
                     <p class="home-hero__text">
@@ -176,34 +179,34 @@
 
             <div class="home-hero__visual hidden lg:block">
                 <div class="home-hero-card">
-                    <div class="home-hero-card__media">
-                        @if($heroBanner?->image_path)
-                            <img src="{{ $homeImage }}" alt="{{ $heroBanner->title ?? __('messages.home') }}" class="h-full w-full object-cover">
-                        @else
-                            <div class="home-hero-fallback">
-                                <div class="home-hero-fallback__orbit"></div>
-                                <div class="space-y-3">
-                                    <span class="inline-flex w-fit items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-semibold text-white/80">
-                                        <i class="fa-solid fa-bolt"></i>
-                                        {{ app()->getLocale() === 'ar' ? 'تجربة شراء أسرع' : 'Faster checkout flow' }}
-                                    </span>
-                                    <p class="max-w-sm text-2xl font-black leading-tight text-white">
-                                        {{ app()->getLocale() === 'ar' ? 'كل شيء في مكان واحد: فئات واضحة، أسعار منظمة، وحالة حساب مفهومة.' : 'Everything in one place: cleaner categories, pricing, and account status.' }}
-                                    </p>
+                    <div class="home-hero-card__media"
+                         x-data="homeHeroSlider(@js($heroSlides))"
+                         x-init="start()"
+                         @mouseenter="stop()"
+                         @mouseleave="start()">
+                        @if(!empty($heroSlides))
+                            <div class="relative h-full w-full">
+                                <template x-for="(slide, index) in slides" :key="`${index}-${slide.image}`">
+                                    <div class="absolute inset-0 transition-opacity duration-500 ease-out"
+                                         :class="activeIndex === index ? 'opacity-100 z-[1]' : 'pointer-events-none opacity-0 z-0'">
+                                        <img :src="slide.image" :alt="slide.title" class="h-full w-full object-cover">
+                                    </div>
+                                </template>
+                            </div>
+
+                            @if(count($heroSlides) > 1)
+                                <div class="pointer-events-none absolute inset-x-0 bottom-4 z-10 flex items-center justify-center gap-2">
+                                    <template x-for="(slide, index) in slides" :key="`indicator-${index}`">
+                                        <span class="block h-2 rounded-full bg-white/65 shadow-sm transition-all duration-300"
+                                              :class="activeIndex === index ? 'w-6 bg-white' : 'w-2'"></span>
+                                    </template>
                                 </div>
+                            @endif
+                        @else
+                            <div class="flex h-full items-center justify-center bg-slate-100 text-sm font-semibold text-slate-500 dark:bg-slate-800 dark:text-slate-300">
+                                {{ app()->getLocale() === 'ar' ? 'لا توجد صور مفعلة للواجهة حالياً.' : 'No active hero images available yet.' }}
                             </div>
                         @endif
-                    </div>
-
-                    <div class="home-hero-card__overlay">
-                        <div class="home-floating-card">
-                            <span class="home-floating-card__label">{{ app()->getLocale() === 'ar' ? 'خطوات التنفيذ' : 'Process' }}</span>
-                            <div class="grid gap-2">
-                                <div class="home-step-chip"><span>01</span><span>{{ app()->getLocale() === 'ar' ? 'اختر القسم المناسب' : 'Choose a category' }}</span></div>
-                                <div class="home-step-chip"><span>02</span><span>{{ app()->getLocale() === 'ar' ? 'اشحن رصيدك أو استخدم رصيدك الحالي' : 'Top up or use your wallet' }}</span></div>
-                                <div class="home-step-chip"><span>03</span><span>{{ app()->getLocale() === 'ar' ? 'تابع الطلب حتى الإنجاز' : 'Track the order to completion' }}</span></div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -441,3 +444,32 @@
         </section>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('homeHeroSlider', (slides = []) => ({
+                slides,
+                activeIndex: 0,
+                intervalId: null,
+                start() {
+                    this.stop();
+
+                    if (!Array.isArray(this.slides) || this.slides.length < 2) {
+                        return;
+                    }
+
+                    this.intervalId = window.setInterval(() => {
+                        this.activeIndex = (this.activeIndex + 1) % this.slides.length;
+                    }, 1500);
+                },
+                stop() {
+                    if (this.intervalId !== null) {
+                        window.clearInterval(this.intervalId);
+                        this.intervalId = null;
+                    }
+                },
+            }));
+        });
+    </script>
+@endpush

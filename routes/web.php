@@ -54,6 +54,7 @@ Route::get('/services/{service:slug}', [ServiceController::class, 'show'])->name
 Route::get('/privacy-policy', fn() => view('pages.privacy-policy'))->name('privacy-policy');
 Route::get('/about', fn() => view('pages.about'))->name('about');
 Route::get('/terms-of-use', fn() => view('pages.terms-of-use'))->name('terms-of-use');
+Route::redirect('/terms-and-conditions', '/terms-of-use', 301)->name('terms-and-conditions');
 Route::get('/contact-us', [ContactController::class, 'show'])->name('contact-us.show');
 Route::post('/contact-us', [ContactController::class, 'store'])->middleware('throttle:5,1')->name('contact-us.send');
 

@@ -29,8 +29,7 @@ AI rule: If any of these are missing, proceed with safe assumptions and request 
 
 ================================================
 
-you are a senior fullstack laravel developer and your task is to fix these bugs
-1- when i add a provider all his services are imported automatically while i need to import only selected services
-2- now when i try to edit or delete a service i get 404 not found
-3- i made some changes previosly from admin dashboard but after updates my edits vanished and was resetted to defaults
+you are a senior fullstack laravel developer and your task is 
+1- check attached image1 that is current navbar ui for loggedout user
+2- check attached image2 that is current navbar ui for logged in user
 give me suggestion to improve this to be more professional and if you have questions ask me then plan before any coding
