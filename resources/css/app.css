@@ -691,7 +691,7 @@
     }
 
     .home-feature-card {
-        @apply transition duration-200 hover:-translate-y-1;
+        @apply flex h-full flex-col items-center justify-center text-center transition duration-200 hover:-translate-y-1;
     }
 
     .home-feature-card__icon {
@@ -711,7 +711,7 @@
     }
 
     .home-feature-card__text {
-        @apply mt-3 text-sm leading-7 text-slate-600;
+        @apply mt-3 max-w-[18rem] text-sm leading-7 text-slate-600;
     }
 
     .dark .home-feature-card__text {

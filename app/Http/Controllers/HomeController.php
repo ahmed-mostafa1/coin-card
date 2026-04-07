@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\SiteSetting;
 use App\Models\Service;
 use Illuminate\View\View;
 
@@ -10,6 +11,32 @@ class HomeController extends Controller
 {
     public function index(): View
     {
+        $homeHeroDefaults = SiteSetting::homeHeroDefaults();
+        $homeHeroTitle = app()->getLocale() === 'en'
+            ? SiteSetting::get('home_hero_title_en', $homeHeroDefaults['title_en'])
+            : SiteSetting::get('home_hero_title_ar', $homeHeroDefaults['title_ar']);
+        $homeHeroText = app()->getLocale() === 'en'
+            ? SiteSetting::get('home_hero_text_en', $homeHeroDefaults['description_en'])
+            : SiteSetting::get('home_hero_text_ar', $homeHeroDefaults['description_ar']);
+
+        $homeFeatureCards = collect(SiteSetting::homeFeatureDefaults())
+            ->map(function (array $feature, int $index): array {
+                $title = app()->getLocale() === 'en'
+                    ? SiteSetting::get("home_feature_{$index}_title_en", $feature['title_en'])
+                    : SiteSetting::get("home_feature_{$index}_title_ar", $feature['title_ar']);
+
+                $description = app()->getLocale() === 'en'
+                    ? SiteSetting::get("home_feature_{$index}_description_en", $feature['description_en'])
+                    : SiteSetting::get("home_feature_{$index}_description_ar", $feature['description_ar']);
+
+                return [
+                    'icon' => $feature['icon'],
+                    'title' => $title,
+                    'description' => $description,
+                ];
+            })
+            ->values();
+
         $categories = Category::query()
             ->roots()
             ->active()
@@ -33,6 +60,6 @@ class HomeController extends Controller
             ->limit(6)
             ->get();
 
-        return view('home', compact('categories', 'featuredServices'));
+        return view('home', compact('categories', 'featuredServices', 'homeFeatureCards', 'homeHeroTitle', 'homeHeroText'));
     }
 }

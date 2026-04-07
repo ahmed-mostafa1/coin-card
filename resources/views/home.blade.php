@@ -144,9 +144,9 @@
         <section class="home-hero">
             <div class="home-hero__content">
                 <div class="space-y-3 sm:space-y-4">
-                    <h1 class="home-hero__title">{{ __('messages.professional_platform') }}</h1>
+                    <h1 class="home-hero__title">{{ $homeHeroTitle }}</h1>
                     <p class="home-hero__text">
-                        {{ __('messages.platform_desc') }}
+                        {{ $homeHeroText }}
                     </p>
                 </div>
 
@@ -161,20 +161,7 @@
                     </a>
                 </div>
 
-                <div class="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                    <div class="home-mini-stat">
-                        <span class="home-mini-stat__label">{{ app()->getLocale() === 'ar' ? 'الأقسام النشطة' : 'Active Categories' }}</span>
-                        <strong class="home-mini-stat__value">{{ $categoryCount }}</strong>
-                    </div>
-                    <div class="home-mini-stat">
-                        <span class="home-mini-stat__label">{{ app()->getLocale() === 'ar' ? 'خدمات جاهزة للشراء' : 'Ready Services' }}</span>
-                        <strong class="home-mini-stat__value">{{ $featuredServicesCount }}</strong>
-                    </div>
-                    <div class="home-mini-stat col-span-2 sm:col-span-1">
-                        <span class="home-mini-stat__label">{{ app()->getLocale() === 'ar' ? 'متابعة وتنبيهات' : 'Tracking & Alerts' }}</span>
-                        <strong class="home-mini-stat__value">24/7</strong>
-                    </div>
-                </div>
+                
             </div>
 
             <div class="home-hero__visual hidden lg:block">
@@ -218,7 +205,7 @@
                     <i class="fa-solid fa-bullhorn"></i>
                     <span>{{ app()->getLocale() === 'ar' ? 'تنبيه' : 'Notice' }}</span>
                 </div>
-                <div class="min-w-0 overflow-hidden">
+                <div class="min-w-0 flex-1 overflow-hidden">
                     <div class="store-ticker-track">
                         {{ (app()->getLocale() === 'en' && !empty($sharedTickerTextEn)) ? $sharedTickerTextEn : $sharedTickerText }}
                     </div>
@@ -319,26 +306,13 @@
         @endauth
 
         <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            <article class="home-feature-card">
-                <span class="home-feature-card__icon"><i class="fa-solid fa-bolt"></i></span>
-                <h3 class="home-feature-card__title">{{ __('messages.reliable_experience') }}</h3>
-                <p class="home-feature-card__text">{{ __('messages.experience_desc') }}</p>
-            </article>
-            <article class="home-feature-card">
-                <span class="home-feature-card__icon"><i class="fa-solid fa-wallet"></i></span>
-                <h3 class="home-feature-card__title">{{ __('messages.top_up_balance') }}</h3>
-                <p class="home-feature-card__text">{{ __('messages.balance_deduction') }}</p>
-            </article>
-            <article class="home-feature-card">
-                <span class="home-feature-card__icon"><i class="fa-solid fa-sliders"></i></span>
-                <h3 class="home-feature-card__title">{{ __('messages.dynamic_forms') }}</h3>
-                <p class="home-feature-card__text">{{ app()->getLocale() === 'ar' ? 'نماذج الطلب تتكيّف حسب كل خدمة لتقليل الأخطاء وتسريع الإدخال.' : 'Service forms adapt to each product to reduce mistakes and speed up input.' }}</p>
-            </article>
-            <article class="home-feature-card">
-                <span class="home-feature-card__icon"><i class="fa-solid fa-list-check"></i></span>
-                <h3 class="home-feature-card__title">{{ __('messages.clear_history') }}</h3>
-                <p class="home-feature-card__text">{{ app()->getLocale() === 'ar' ? 'سجل واضح للطلبات والرصيد والإشعارات حتى تبقى الصورة كاملة أمامك.' : 'Clear order, wallet, and notification history so nothing feels hidden.' }}</p>
-            </article>
+            @foreach($homeFeatureCards as $featureCard)
+                <article class="home-feature-card">
+                    <span class="home-feature-card__icon"><i class="{{ $featureCard['icon'] }}"></i></span>
+                    <h3 class="home-feature-card__title">{{ $featureCard['title'] }}</h3>
+                    <p class="home-feature-card__text">{{ $featureCard['description'] }}</p>
+                </article>
+            @endforeach
         </section>
 
         <section id="home-categories" class="space-y-5">
@@ -350,10 +324,6 @@
                 </span>
                     <h2 class="mt-3 text-2xl font-black text-slate-900 dark:text-white">{{ app()->getLocale() === 'ar' ? 'ابدأ من القسم المناسب لك' : 'Start from the right category' }}</h2>
                     <p class="mt-2 max-w-2xl text-sm leading-7 text-slate-600 dark:text-slate-300">{{ __('messages.choose_category') }}</p>
-                </div>
-                <div class="home-heading-note">
-                    <span>{{ app()->getLocale() === 'ar' ? 'تنظيم أوضح' : 'Clearer structure' }}</span>
-                    <strong>{{ $categoryCount }}</strong>
                 </div>
             </div>
 
@@ -435,10 +405,6 @@
                 <a href="{{ route('agency-requests.create') }}" class="home-btn home-btn--primary">
                     <i class="fa-solid fa-handshake"></i>
                     <span>{{ __('messages.request_agency') }}</span>
-                </a>
-                <a href="{{ route('about') }}" class="home-btn home-btn--ghost">
-                    <i class="fa-solid fa-circle-info"></i>
-                    <span>{{ __('messages.about_us') }}</span>
                 </a>
             </div>
         </section>

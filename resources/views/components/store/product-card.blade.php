@@ -46,12 +46,6 @@
         @endif
     </div>
 
-    @if ($price)
-        <div class="absolute top-2 start-2 rounded-full bg-emerald-600 px-2 py-0.5 text-[11px] font-bold text-white shadow-sm" dir="ltr">
-            ${{ number_format($price, 2) }}
-        </div>
-    @endif
-
     @if ($isFeatureLayout)
         <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent"></div>
 

@@ -69,8 +69,79 @@
                             dir="ltr">{{ old('store_description_en', $storeDescriptionEn ?? '') }}</textarea>
                         <x-input-error :messages="$errors->get('store_description_en')" />
                     </div>
+                    <div class="border-t border-slate-100 pt-5 dark:border-slate-700">
+                        <h3 class="text-lg font-semibold text-slate-800 dark:text-slate-200">نصوص الهيرو في الصفحة الرئيسية</h3>
+                        <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">هذه الحقول تتحكم في العنوان والوصف الرئيسي أعلى الصفحة الرئيسية.</p>
+                    </div>
 
+                    <div class="grid gap-4 md:grid-cols-2">
+                        <div>
+                            <x-input-label for="home_hero_title_ar" value="عنوان الهيرو (عربي)" />
+                            <x-text-input id="home_hero_title_ar" name="home_hero_title_ar" type="text" :value="old('home_hero_title_ar', $homeHeroTitleAr)" class="w-full" />
+                            <x-input-error :messages="$errors->get('home_hero_title_ar')" />
+                        </div>
+                        <div>
+                            <x-input-label for="home_hero_title_en" value="Hero Title (English)" />
+                            <x-text-input id="home_hero_title_en" name="home_hero_title_en" type="text" :value="old('home_hero_title_en', $homeHeroTitleEn)" class="w-full" dir="ltr" />
+                            <x-input-error :messages="$errors->get('home_hero_title_en')" />
+                        </div>
+                        <div>
+                            <x-input-label for="home_hero_text_ar" value="وصف الهيرو (عربي)" />
+                            <textarea id="home_hero_text_ar" name="home_hero_text_ar" rows="3"
+                                class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500">{{ old('home_hero_text_ar', $homeHeroTextAr) }}</textarea>
+                            <x-input-error :messages="$errors->get('home_hero_text_ar')" />
+                        </div>
+                        <div>
+                            <x-input-label for="home_hero_text_en" value="Hero Description (English)" />
+                            <textarea id="home_hero_text_en" name="home_hero_text_en" rows="3" dir="ltr"
+                                class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500">{{ old('home_hero_text_en', $homeHeroTextEn) }}</textarea>
+                            <x-input-error :messages="$errors->get('home_hero_text_en')" />
+                        </div>
+                    </div>
 
+                    <div class="border-t border-slate-100 pt-5 dark:border-slate-700">
+                        <h3 class="text-lg font-semibold text-slate-800 dark:text-slate-200">بطاقات مزايا الصفحة الرئيسية</h3>
+                        <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">يمكنك تعديل العنوان والوصف لكل بطاقة كما ستظهر في الصفحة الرئيسية.</p>
+                    </div>
+
+                    @foreach($homeFeatureSettings as $feature)
+                        <div class="rounded-2xl border border-slate-200 p-4 dark:border-slate-700">
+                            <div class="mb-4 flex items-center gap-3">
+                                <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300">
+                                    <i class="{{ $feature['icon'] }}"></i>
+                                </span>
+                                <div>
+                                    <h4 class="font-semibold text-slate-800 dark:text-slate-200">البطاقة {{ $feature['index'] }}</h4>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400">الأيقونة ثابتة، والنصوص قابلة للتعديل.</p>
+                                </div>
+                            </div>
+
+                            <div class="grid gap-4 md:grid-cols-2">
+                                <div>
+                                    <x-input-label for="home_feature_{{ $feature['index'] }}_title_ar" value="العنوان (عربي)" />
+                                    <x-text-input id="home_feature_{{ $feature['index'] }}_title_ar" name="home_feature_{{ $feature['index'] }}_title_ar" type="text" :value="old('home_feature_'.$feature['index'].'_title_ar', $feature['title_ar'])" class="w-full" />
+                                    <x-input-error :messages="$errors->get('home_feature_'.$feature['index'].'_title_ar')" />
+                                </div>
+                                <div>
+                                    <x-input-label for="home_feature_{{ $feature['index'] }}_title_en" value="Title (English)" />
+                                    <x-text-input id="home_feature_{{ $feature['index'] }}_title_en" name="home_feature_{{ $feature['index'] }}_title_en" type="text" :value="old('home_feature_'.$feature['index'].'_title_en', $feature['title_en'])" class="w-full" dir="ltr" />
+                                    <x-input-error :messages="$errors->get('home_feature_'.$feature['index'].'_title_en')" />
+                                </div>
+                                <div>
+                                    <x-input-label for="home_feature_{{ $feature['index'] }}_description_ar" value="الوصف (عربي)" />
+                                    <textarea id="home_feature_{{ $feature['index'] }}_description_ar" name="home_feature_{{ $feature['index'] }}_description_ar" rows="3"
+                                        class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500">{{ old('home_feature_'.$feature['index'].'_description_ar', $feature['description_ar']) }}</textarea>
+                                    <x-input-error :messages="$errors->get('home_feature_'.$feature['index'].'_description_ar')" />
+                                </div>
+                                <div>
+                                    <x-input-label for="home_feature_{{ $feature['index'] }}_description_en" value="Description (English)" />
+                                    <textarea id="home_feature_{{ $feature['index'] }}_description_en" name="home_feature_{{ $feature['index'] }}_description_en" rows="3" dir="ltr"
+                                        class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500">{{ old('home_feature_'.$feature['index'].'_description_en', $feature['description_en']) }}</textarea>
+                                    <x-input-error :messages="$errors->get('home_feature_'.$feature['index'].'_description_en')" />
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
 
                 <div class="mt-6 flex justify-end">
@@ -100,9 +171,10 @@
                         </div>
                     </div>
 
-                    <div x-show="type === 'text'" style="display: none;">
+                    <div>
                         <x-input-label for="logo_text" value="نص الشعار" />
                         <x-text-input id="logo_text" name="logo_text" type="text" :value="old('logo_text', $logoText)" class="w-full" />
+                        <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">يظهر هذا النص بجانب الشعار في الهيدر سواء كان الشعار نصًا أو صورة.</p>
                         <x-input-error :messages="$errors->get('logo_text')" />
                     </div>
 

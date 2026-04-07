@@ -13,6 +13,23 @@ class SiteSettingsController extends Controller
 {
     public function edit(): View
     {
+        $homeFeatureSettings = collect(SiteSetting::homeFeatureDefaults())
+            ->map(function (array $feature, int $index): array {
+                return [
+                    'index' => $index,
+                    'icon' => $feature['icon'],
+                    'title_ar' => SiteSetting::get("home_feature_{$index}_title_ar", $feature['title_ar']),
+                    'title_en' => SiteSetting::get("home_feature_{$index}_title_en", $feature['title_en']),
+                    'description_ar' => SiteSetting::get("home_feature_{$index}_description_ar", $feature['description_ar']),
+                    'description_en' => SiteSetting::get("home_feature_{$index}_description_en", $feature['description_en']),
+                ];
+            })
+            ->values();
+        $homeHeroDefaults = SiteSetting::homeHeroDefaults();
+        $homeHeroTitleAr = SiteSetting::get('home_hero_title_ar', $homeHeroDefaults['title_ar']);
+        $homeHeroTitleEn = SiteSetting::get('home_hero_title_en', $homeHeroDefaults['title_en']);
+        $homeHeroTextAr = SiteSetting::get('home_hero_text_ar', $homeHeroDefaults['description_ar']);
+        $homeHeroTextEn = SiteSetting::get('home_hero_text_en', $homeHeroDefaults['description_en']);
         $tickerText = SiteSetting::get('ticker_text', 'ملاحظة لأصحاب المحلات يرجى التواصل مع الإدارة للحصول على أسعار الجملة •');
         $tickerTextEn = SiteSetting::get('ticker_text_en', '');
         $logoType = SiteSetting::get('logo_type', 'text'); // 'text' or 'image'
@@ -59,6 +76,8 @@ class SiteSettingsController extends Controller
             'telegramLink',
             'facebookLink',
             'activePopupsCount',
+            'homeHeroTitleAr', 'homeHeroTitleEn', 'homeHeroTextAr', 'homeHeroTextEn',
+            'homeFeatureSettings',
             'aboutAr', 'aboutEn', 'privacyAr', 'privacyEn',
             'metaDescription', 'metaKeywords', 'seoTitle', 'fbPixelId', 'gaId', 'headScripts', 'bodyScripts'
         ));
@@ -71,12 +90,43 @@ class SiteSettingsController extends Controller
             'ticker_text_en' => ['nullable', 'string', 'max:500'],
             'store_description' => ['required', 'string', 'max:1000'],
             'store_description_en' => ['nullable', 'string', 'max:1000'],
+            'home_hero_title_ar' => ['required', 'string', 'max:200'],
+            'home_hero_title_en' => ['nullable', 'string', 'max:200'],
+            'home_hero_text_ar' => ['required', 'string', 'max:1000'],
+            'home_hero_text_en' => ['nullable', 'string', 'max:1000'],
+            'home_feature_1_title_ar' => ['required', 'string', 'max:120'],
+            'home_feature_1_title_en' => ['nullable', 'string', 'max:120'],
+            'home_feature_1_description_ar' => ['required', 'string', 'max:500'],
+            'home_feature_1_description_en' => ['nullable', 'string', 'max:500'],
+            'home_feature_2_title_ar' => ['required', 'string', 'max:120'],
+            'home_feature_2_title_en' => ['nullable', 'string', 'max:120'],
+            'home_feature_2_description_ar' => ['required', 'string', 'max:500'],
+            'home_feature_2_description_en' => ['nullable', 'string', 'max:500'],
+            'home_feature_3_title_ar' => ['required', 'string', 'max:120'],
+            'home_feature_3_title_en' => ['nullable', 'string', 'max:120'],
+            'home_feature_3_description_ar' => ['required', 'string', 'max:500'],
+            'home_feature_3_description_en' => ['nullable', 'string', 'max:500'],
+            'home_feature_4_title_ar' => ['required', 'string', 'max:120'],
+            'home_feature_4_title_en' => ['nullable', 'string', 'max:120'],
+            'home_feature_4_description_ar' => ['required', 'string', 'max:500'],
+            'home_feature_4_description_en' => ['nullable', 'string', 'max:500'],
         ]);
 
         SiteSetting::set('ticker_text', $data['ticker_text']);
         SiteSetting::set('ticker_text_en', $data['ticker_text_en'] ?? '');
         SiteSetting::set('store_description', $data['store_description']);
         SiteSetting::set('store_description_en', $data['store_description_en'] ?? '');
+        SiteSetting::set('home_hero_title_ar', $data['home_hero_title_ar']);
+        SiteSetting::set('home_hero_title_en', $data['home_hero_title_en'] ?? '');
+        SiteSetting::set('home_hero_text_ar', $data['home_hero_text_ar']);
+        SiteSetting::set('home_hero_text_en', $data['home_hero_text_en'] ?? '');
+
+        foreach (array_keys(SiteSetting::homeFeatureDefaults()) as $index) {
+            SiteSetting::set("home_feature_{$index}_title_ar", $data["home_feature_{$index}_title_ar"]);
+            SiteSetting::set("home_feature_{$index}_title_en", $data["home_feature_{$index}_title_en"] ?? '');
+            SiteSetting::set("home_feature_{$index}_description_ar", $data["home_feature_{$index}_description_ar"]);
+            SiteSetting::set("home_feature_{$index}_description_en", $data["home_feature_{$index}_description_en"] ?? '');
+        }
 
         cache()->forget('shared_ticker');
         cache()->forget('shared_ticker_en');
@@ -95,10 +145,9 @@ class SiteSettingsController extends Controller
         ]);
 
         SiteSetting::set('logo_type', $data['logo_type']);
+        SiteSetting::set('logo_text', $data['logo_text'] ?? 'Arab 8BP.in');
 
-        if ($data['logo_type'] === 'text') {
-            SiteSetting::set('logo_text', $data['logo_text'] ?? 'Arab 8BP.in');
-        } elseif ($data['logo_type'] === 'image' && $request->hasFile('logo_image')) {
+        if ($data['logo_type'] === 'image' && $request->hasFile('logo_image')) {
             $oldLogoImage = SiteSetting::get('logo_image');
             if ($oldLogoImage && Storage::disk('public')->exists($oldLogoImage)) {
                 Storage::disk('public')->delete($oldLogoImage);
