@@ -41,8 +41,6 @@ return [
     'dynamic_forms' => 'Dynamic forms per service',
     'balance_deduction' => 'Deduction from available balance only',
     'clear_history' => 'Clear order and payment history',
-    'available_categories' => 'Available Categories',
-    'choose_category' => 'Choose the appropriate category to start.',
     'no_categories' => 'No active categories at the moment.',
     'featured_services' => 'Featured Services',
     'discover_services' => 'Discover our latest available services.',

@@ -40,8 +40,6 @@ return [
     'dynamic_forms' => 'نماذج ديناميكية حسب الخدمة',
     'balance_deduction' => 'خصم من الرصيد المتاح فقط',
     'clear_history' => 'سجل طلبات ودفعات واضح',
-    'available_categories' => 'الفئات المتاحة',
-    'choose_category' => 'اختر الفئة المناسبة للبدء.',
     'no_categories' => 'لا توجد فئات مفعلة حالياً.',
     'featured_services' => 'خدمات مميزة',
     'discover_services' => 'اكتشف أحدث الخدمات المتاحة لدينا.',

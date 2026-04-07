@@ -143,14 +143,14 @@
     <div class="home-scene space-y-5 sm:space-y-8">
         <section class="home-hero">
             <div class="home-hero__content">
-                <div class="space-y-3 sm:space-y-4">
+                <div class="space-y-4 sm:space-y-5">
                     <h1 class="home-hero__title">{{ $homeHeroTitle }}</h1>
                     <p class="home-hero__text">
                         {{ $homeHeroText }}
                     </p>
                 </div>
 
-                <div class="grid gap-2 sm:flex sm:flex-wrap sm:gap-3">
+                <div class="home-hero__actions">
                     <a href="#home-categories" class="home-btn home-btn--primary w-full sm:w-auto">
                         <i class="fa-solid fa-table-cells-large"></i>
                         <span>{{ __('messages.browse_services') }}</span>
@@ -161,10 +161,23 @@
                     </a>
                 </div>
 
-                
+                <div class="home-trust-strip">
+                    <div class="home-trust-pill">
+                        <span class="home-trust-pill__icon"><i class="fa-solid fa-bolt"></i></span>
+                        <span>{{ app()->getLocale() === 'ar' ? 'تنفيذ سريع للطلبات' : 'Fast order execution' }}</span>
+                    </div>
+                    <div class="home-trust-pill">
+                        <span class="home-trust-pill__icon"><i class="fa-solid fa-headset"></i></span>
+                        <span>{{ app()->getLocale() === 'ar' ? 'متابعة ودعم مباشر' : 'Live support and follow-up' }}</span>
+                    </div>
+                    <div class="home-trust-pill">
+                        <span class="home-trust-pill__icon"><i class="fa-solid fa-clock-rotate-left"></i></span>
+                        <span>{{ app()->getLocale() === 'ar' ? 'تحديث واضح لحالة الطلب' : 'Clear order status updates' }}</span>
+                    </div>
+                </div>
             </div>
 
-            <div class="home-hero__visual hidden lg:block">
+            <div class="home-hero__visual">
                 <div class="home-hero-card">
                     <div class="home-hero-card__media"
                          x-data="homeHeroSlider(@js($heroSlides))"
@@ -172,25 +185,50 @@
                          @mouseenter="stop()"
                          @mouseleave="start()">
                         @if(!empty($heroSlides))
-                            <div class="relative h-full w-full">
-                                <template x-for="(slide, index) in slides" :key="`${index}-${slide.image}`">
-                                    <div class="absolute inset-0 transition-opacity duration-500 ease-out"
-                                         :class="activeIndex === index ? 'opacity-100 z-[1]' : 'pointer-events-none opacity-0 z-0'">
-                                        <img :src="slide.image" :alt="slide.title" class="h-full w-full object-cover">
-                                    </div>
-                                </template>
+                            <div class="home-hero-card__chrome">
+                                <span class="home-hero-card__badge">
+                                    <i class="fa-solid fa-star"></i>
+                                    <span>{{ app()->getLocale() === 'ar' ? 'عروض مميزة' : 'Featured offers' }}</span>
+                                </span>
+
+                                <div class="home-hero-card__caption" x-show="slides.length" x-cloak>
+                                    <span class="truncate" x-text="slides[activeIndex] && slides[activeIndex].title ? slides[activeIndex].title : ''"></span>
+                                    <span class="shrink-0" dir="ltr" x-text="`${activeIndex + 1} / ${slides.length}`"></span>
+                                </div>
                             </div>
 
-                            @if(count($heroSlides) > 1)
-                                <div class="pointer-events-none absolute inset-x-0 bottom-4 z-10 flex items-center justify-center gap-2">
-                                    <template x-for="(slide, index) in slides" :key="`indicator-${index}`">
-                                        <span class="block h-2 rounded-full bg-white/65 shadow-sm transition-all duration-300"
-                                              :class="activeIndex === index ? 'w-6 bg-white' : 'w-2'"></span>
-                                    </template>
-                                </div>
-                            @endif
+                            <div class="home-hero-card__viewport">
+                                <template x-for="(slide, index) in slides" :key="`${index}-${slide.image}`">
+                                    <div class="home-hero-card__slide"
+                                         :class="activeIndex === index ? 'opacity-100 z-[1]' : 'pointer-events-none opacity-0 z-0'">
+                                        <img :src="slide.image" :alt="slide.title" class="home-hero-card__image">
+                                    </div>
+                                </template>
+
+                                @if(count($heroSlides) > 1)
+                                    <div class="home-hero-card__controls">
+                                        <button type="button" class="home-hero-card__nav" @click="next()" aria-label="Next slide">
+                                            <i class="fa-solid fa-chevron-left"></i>
+                                        </button>
+
+                                        <div class="home-hero-card__dots">
+                                            <template x-for="(slide, index) in slides" :key="`indicator-${index}`">
+                                                <button type="button"
+                                                        class="home-hero-card__dot"
+                                                        :class="activeIndex === index ? 'home-hero-card__dot--active' : ''"
+                                                        @click="go(index)"
+                                                        :aria-label="slide.title || `Slide ${index + 1}`"></button>
+                                            </template>
+                                        </div>
+
+                                        <button type="button" class="home-hero-card__nav" @click="prev()" aria-label="Previous slide">
+                                            <i class="fa-solid fa-chevron-right"></i>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
                         @else
-                            <div class="flex h-full items-center justify-center bg-slate-100 text-sm font-semibold text-slate-500 dark:bg-slate-800 dark:text-slate-300">
+                            <div class="home-hero-card__fallback">
                                 {{ app()->getLocale() === 'ar' ? 'لا توجد صور مفعلة للواجهة حالياً.' : 'No active hero images available yet.' }}
                             </div>
                         @endif
@@ -318,15 +356,9 @@
         <section id="home-categories" class="space-y-5">
             <div class="home-section-heading">
                 <div>
-                <span class="home-section-badge">
-                    <i class="fa-solid fa-table-cells-large"></i>
-                    {{ __('messages.available_categories') }}
-                </span>
                     <h2 class="mt-3 text-2xl font-black text-slate-900 dark:text-white">{{ app()->getLocale() === 'ar' ? 'ابدأ من القسم المناسب لك' : 'Start from the right category' }}</h2>
-                    <p class="mt-2 max-w-2xl text-sm leading-7 text-slate-600 dark:text-slate-300">{{ __('messages.choose_category') }}</p>
                 </div>
             </div>
-
             <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
                 @forelse ($categories as $category)
                     <x-store.category-card :title="$category->localized_name" :href="route('categories.show', $category->slug)" :image="$category->image_path ? asset('storage/' . $category->image_path) : null" />
@@ -371,12 +403,7 @@
         <section id="home-services" class="space-y-5">
             <div class="home-section-heading">
                 <div>
-                <span class="home-section-badge">
-                    <i class="fa-solid fa-fire"></i>
-                    {{ __('messages.featured_services') }}
-                    </span>
-                    <h2 class="mt-3 text-2xl font-black text-slate-900 dark:text-white">{{ app()->getLocale() === 'ar' ? 'خدمات جاهزة للشراء الآن' : 'Services ready to purchase now' }}</h2>
-                    <p class="mt-2 max-w-2xl text-sm leading-7 text-slate-600 dark:text-slate-300">{{ __('messages.discover_services') }}</p>
+                    <h2 class="mt-3 text-2xl font-black text-slate-900 dark:text-white">{{ __('messages.featured_services') }}</h2>
                 </div>
             </div>
 
@@ -418,6 +445,20 @@
                 slides,
                 activeIndex: 0,
                 intervalId: null,
+                go(index) {
+                    if (!Array.isArray(this.slides) || !this.slides.length) {
+                        return;
+                    }
+
+                    const normalizedIndex = ((index % this.slides.length) + this.slides.length) % this.slides.length;
+                    this.activeIndex = normalizedIndex;
+                },
+                next() {
+                    this.go(this.activeIndex + 1);
+                },
+                prev() {
+                    this.go(this.activeIndex - 1);
+                },
                 start() {
                     this.stop();
 
@@ -426,8 +467,8 @@
                     }
 
                     this.intervalId = window.setInterval(() => {
-                        this.activeIndex = (this.activeIndex + 1) % this.slides.length;
-                    }, 1500);
+                        this.next();
+                    }, 4500);
                 },
                 stop() {
                     if (this.intervalId !== null) {
