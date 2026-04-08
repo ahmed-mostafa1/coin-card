@@ -199,11 +199,11 @@
 
     <div class="min-h-screen flex flex-col">
         <nav class="sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 backdrop-blur-md transition-colors duration-200 dark:border-slate-700/80 dark:bg-slate-900/95">
-            <div class="mx-auto w-[85%] px-3 py-3 sm:px-4">
+            <div class="mx-auto w-[92%] py-3 sm:w-[85%] sm:px-4">
                 <div class="rounded-[1.75rem] border border-white/70 bg-white/90 px-3 py-3 shadow-[0_18px_40px_rgba(15,23,42,0.06)] backdrop-blur dark:border-slate-800/80 dark:bg-slate-950/90 sm:px-4">
                     <div class="flex items-center justify-between gap-3">
-                        <a href="{{ route('home') }}" class="flex min-w-0 items-center gap-3">
-                            <span class="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-2xl">
+                        <a href="{{ route('home') }}" class="flex min-w-0 items-center gap-3 sm:gap-4">
+                            <span class="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-emerald-50 ring-1 ring-emerald-100 dark:bg-emerald-950/30 dark:ring-emerald-900/70">
                                 @if($logoImageUrl)
                                     <img src="{{ $logoImageUrl }}"
                                          alt="{{ $logoTextValue }}"
@@ -244,17 +244,9 @@
                         @endauth
 
                         <div class="flex shrink-0 items-center gap-2">
-                            <a href="{{ route('lang.switch', $languageToggleLocale) }}"
-                               class="cc-nav-utility cc-nav-utility-label"
-                               aria-label="{{ $languageToggleTitle }}"
-                               title="{{ $languageToggleTitle }}">
-                                <i class="fa-solid fa-language text-sm"></i>
-                                <span>{{ $languageToggleLabel }}</span>
-                            </a>
-
                             <button type="button"
                                     @click="darkMode = !darkMode"
-                                    class="cc-nav-utility"
+                                    class="cc-nav-utility @auth hidden @endauth"
                                     aria-label="{{ $isAr ? 'تبديل السمة' : 'Toggle theme' }}">
                                 <i class="fa-solid fa-sun text-sm" x-show="!darkMode" x-cloak></i>
                                 <i class="fa-solid fa-moon text-sm" x-show="darkMode" x-cloak></i>
@@ -332,6 +324,32 @@
                                             </div>
                                         </div>
 
+                                        <div class="mt-4 grid grid-cols-2 gap-2">
+                                            <a href="{{ route('lang.switch', $languageToggleLocale) }}"
+                                               class="flex items-center gap-3 rounded-[1rem] border border-slate-200 bg-slate-50 px-3 py-3 text-sm font-semibold text-slate-700 transition hover:border-emerald-200 hover:text-emerald-700 dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-200 dark:hover:border-emerald-700 dark:hover:text-emerald-300">
+                                                <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl bg-white text-slate-600 shadow-sm dark:bg-slate-900 dark:text-slate-200">
+                                                    <i class="fa-solid fa-language text-sm"></i>
+                                                </span>
+                                                <span class="min-w-0">
+                                                    <span class="block text-xs font-medium text-slate-500 dark:text-slate-400">{{ $isAr ? 'اللغة' : 'Language' }}</span>
+                                                    <span class="block truncate">{{ $languageToggleLabel }}</span>
+                                                </span>
+                                            </a>
+
+                                            <button type="button"
+                                                    @click="darkMode = !darkMode"
+                                                    class="flex items-center gap-3 rounded-[1rem] border border-slate-200 bg-slate-50 px-3 py-3 text-sm font-semibold text-slate-700 transition hover:border-emerald-200 hover:text-emerald-700 dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-200 dark:hover:border-emerald-700 dark:hover:text-emerald-300">
+                                                <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl bg-white text-slate-600 shadow-sm dark:bg-slate-900 dark:text-slate-200">
+                                                    <i class="fa-solid fa-sun text-sm" x-show="!darkMode" x-cloak></i>
+                                                    <i class="fa-solid fa-moon text-sm" x-show="darkMode" x-cloak></i>
+                                                </span>
+                                                <span class="min-w-0 text-start">
+                                                    <span class="block text-xs font-medium text-slate-500 dark:text-slate-400">{{ $isAr ? 'المظهر' : 'Theme' }}</span>
+                                                    <span class="block truncate" x-text="darkMode ? '{{ $isAr ? 'داكن' : 'Dark' }}' : '{{ $isAr ? 'فاتح' : 'Light' }}'"></span>
+                                                </span>
+                                            </button>
+                                        </div>
+
                                         @if($menuNextTier)
                                             <div class="mt-4 rounded-[1.15rem] border border-emerald-100 bg-emerald-50/70 px-3 py-3 dark:border-emerald-900/50 dark:bg-emerald-950/20">
                                                 <div class="flex items-center justify-between gap-3 text-xs font-semibold text-slate-600 dark:text-slate-300">
@@ -377,6 +395,14 @@
                                     </div>
                                 </div>
                             @else
+                                <a href="{{ route('lang.switch', $languageToggleLocale) }}"
+                                   class="cc-nav-utility cc-nav-utility-label"
+                                   aria-label="{{ $languageToggleTitle }}"
+                                   title="{{ $languageToggleTitle }}">
+                                    <i class="fa-solid fa-language text-sm"></i>
+                                    <span>{{ $languageToggleLabel }}</span>
+                                </a>
+
                                 @if (Route::has('register'))
                                     <a href="{{ route('register') }}" class="cc-nav-cta cc-nav-cta-secondary">
                                         {{ __('messages.register') }}

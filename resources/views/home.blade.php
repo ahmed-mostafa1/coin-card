@@ -42,7 +42,7 @@
 @section('meta_type', 'website')
 @section('meta_image', $homeImage)
 @section('meta_robots', 'index,follow')
-@section('mainWidth', 'w-[85%] mx-auto')
+@section('mainWidth', 'w-full px-4 sm:w-[85%] sm:px-0 sm:mx-auto')
 
 @push('structured-data')
     <script type="application/ld+json">{!! json_encode($homeSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
@@ -142,40 +142,6 @@
 
     <div class="home-scene space-y-5 sm:space-y-8">
         <section class="home-hero">
-            <div class="home-hero__content">
-                <div class="space-y-4 sm:space-y-5">
-                    <h1 class="home-hero__title">{{ $homeHeroTitle }}</h1>
-                    <p class="home-hero__text">
-                        {{ $homeHeroText }}
-                    </p>
-                </div>
-
-                <div class="home-hero__actions">
-                    <a href="#home-categories" class="home-btn home-btn--primary w-full sm:w-auto">
-                        <i class="fa-solid fa-table-cells-large"></i>
-                        <span>{{ __('messages.browse_services') }}</span>
-                    </a>
-                    <a href="{{ auth()->check() ? route('deposit.index') : route('login') }}" class="home-btn home-btn--secondary w-full sm:w-auto">
-                        <i class="fa-solid fa-wallet"></i>
-                        <span>{{ __('messages.top_up_balance') }}</span>
-                    </a>
-                </div>
-
-                <div class="home-trust-strip">
-                    <div class="home-trust-pill">
-                        <span class="home-trust-pill__icon"><i class="fa-solid fa-bolt"></i></span>
-                        <span>{{ app()->getLocale() === 'ar' ? 'تنفيذ سريع للطلبات' : 'Fast order execution' }}</span>
-                    </div>
-                    <div class="home-trust-pill">
-                        <span class="home-trust-pill__icon"><i class="fa-solid fa-headset"></i></span>
-                        <span>{{ app()->getLocale() === 'ar' ? 'متابعة ودعم مباشر' : 'Live support and follow-up' }}</span>
-                    </div>
-                    <div class="home-trust-pill">
-                        <span class="home-trust-pill__icon"><i class="fa-solid fa-clock-rotate-left"></i></span>
-                        <span>{{ app()->getLocale() === 'ar' ? 'تحديث واضح لحالة الطلب' : 'Clear order status updates' }}</span>
-                    </div>
-                </div>
-            </div>
 
             <div class="home-hero__visual">
                 <div class="home-hero-card">
@@ -343,16 +309,6 @@
             </section>
         @endauth
 
-        <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            @foreach($homeFeatureCards as $featureCard)
-                <article class="home-feature-card">
-                    <span class="home-feature-card__icon"><i class="{{ $featureCard['icon'] }}"></i></span>
-                    <h3 class="home-feature-card__title">{{ $featureCard['title'] }}</h3>
-                    <p class="home-feature-card__text">{{ $featureCard['description'] }}</p>
-                </article>
-            @endforeach
-        </section>
-
         <section id="home-categories" class="space-y-5">
             <div class="home-section-heading">
                 <div>
@@ -400,6 +356,17 @@
             </div>
         </section>
 
+                <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            @foreach($homeFeatureCards as $featureCard)
+                <article class="home-feature-card">
+                    <span class="home-feature-card__icon"><i class="{{ $featureCard['icon'] }}"></i></span>
+                    <h3 class="home-feature-card__title">{{ $featureCard['title'] }}</h3>
+                    <p class="home-feature-card__text">{{ $featureCard['description'] }}</p>
+                </article>
+            @endforeach
+        </section>
+
+        
         <section id="home-services" class="space-y-5">
             <div class="home-section-heading">
                 <div>
