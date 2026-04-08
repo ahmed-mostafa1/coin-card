@@ -232,19 +232,19 @@
     }
 
     .cc-profile-chip {
-        @apply inline-flex h-10 items-center gap-2 rounded-2xl border border-slate-200/80 bg-white px-1.5 pe-3 text-right transition hover:border-emerald-200 hover:bg-emerald-50/70 focus-visible:outline-none;
+        @apply inline-flex h-10 items-center gap-2 rounded-2xl bg-white px-1.5 pe-3 text-right transition hover:bg-emerald-50/70 focus-visible:outline-none;
     }
 
     .dark .cc-profile-chip {
-        @apply border-slate-700 bg-slate-900 hover:border-emerald-700 hover:bg-emerald-950/20;
+        @apply bg-slate-900 hover:bg-emerald-950/20;
     }
 
     .cc-profile-chip-active {
-        @apply border-emerald-200 bg-emerald-50/90;
+        @apply bg-emerald-50/90;
     }
 
     .dark .cc-profile-chip-active {
-        @apply border-emerald-700 bg-emerald-950/30;
+        @apply bg-emerald-950/30;
     }
 
     .cc-nav-tab {
