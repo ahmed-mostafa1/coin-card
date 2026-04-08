@@ -48,17 +48,35 @@ class HomeController extends Controller
             ->orderBy('name')
             ->get();
 
-        $featuredServices = Service::query()
+        $servicesQuery = Service::query()
             ->with(['category', 'variants'])
             ->where('is_active', true)
             ->whereHas('category', function ($query): void {
                 $query->active();
-            })
+            });
+
+        $featuredServices = (clone $servicesQuery)
+            ->where('is_featured', true)
             ->orderByDesc('is_offer_active')
             ->orderBy('sort_order')
             ->orderBy('name')
             ->limit(6)
             ->get();
+
+        if ($featuredServices->count() < 6) {
+            $featuredServices = $featuredServices->concat(
+                (clone $servicesQuery)
+                    ->when(
+                        $featuredServices->isNotEmpty(),
+                        fn ($query) => $query->whereNotIn('id', $featuredServices->pluck('id'))
+                    )
+                    ->orderByDesc('is_offer_active')
+                    ->orderBy('sort_order')
+                    ->orderBy('name')
+                    ->limit(6 - $featuredServices->count())
+                    ->get()
+            );
+        }
 
         return view('home', compact('categories', 'featuredServices', 'homeFeatureCards', 'homeHeroTitle', 'homeHeroText'));
     }

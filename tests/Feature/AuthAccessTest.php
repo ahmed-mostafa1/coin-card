@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\Category;
+use App\Models\Service;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\Permission\Models\Role;
@@ -29,6 +31,44 @@ class AuthAccessTest extends TestCase
         $user->assignRole('customer');
 
         $this->actingAs($user)->get('/')->assertOk();
+    }
+
+    public function test_home_page_prioritizes_admin_featured_services(): void
+    {
+        Role::firstOrCreate(['name' => 'customer', 'guard_name' => 'web']);
+
+        $user = User::factory()->create();
+        $user->assignRole('customer');
+
+        $category = Category::create([
+            'name' => 'Games',
+            'slug' => 'games',
+            'is_active' => true,
+        ]);
+
+        Service::create([
+            'category_id' => $category->id,
+            'name' => 'Normal Service',
+            'slug' => 'normal-service',
+            'price' => 50,
+            'is_active' => true,
+            'sort_order' => 2,
+        ]);
+
+        Service::create([
+            'category_id' => $category->id,
+            'name' => 'Featured Service',
+            'slug' => 'featured-service-home',
+            'price' => 60,
+            'is_active' => true,
+            'is_featured' => true,
+            'sort_order' => 1,
+        ]);
+
+        $this->actingAs($user)
+            ->get('/')
+            ->assertOk()
+            ->assertSeeInOrder(['Featured Service', 'Normal Service']);
     }
 
     public function test_customer_cannot_access_admin(): void

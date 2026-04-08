@@ -267,6 +267,9 @@ return [
     'category' => 'Category',
     'select_category' => 'Choose Category',
     'activate_service' => 'Activate Service',
+    'feature_on_home' => 'Show in home featured services',
+    'featured_only_hint' => 'Marked services appear first in the home page services grid.',
+    'featured_badge' => 'Featured',
     'back_to_services' => 'Back to Services',
 
     // Admin - Variant Management

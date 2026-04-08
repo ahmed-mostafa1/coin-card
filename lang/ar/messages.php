@@ -536,4 +536,7 @@ return [
     'status_frozen' => 'مجمّد',
     'active_user' => 'نشط',
     'no_users_found' => 'لا يوجد مستخدمون.',
+    'feature_on_home' => 'إظهارها ضمن الخدمات المميزة في الرئيسية',
+    'featured_only_hint' => 'الخدمات المعلمة هنا تظهر أولًا في شبكة خدمات الصفحة الرئيسية.',
+    'featured_badge' => 'مميزة',
 ];

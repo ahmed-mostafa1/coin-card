@@ -142,6 +142,7 @@ class ServiceController extends Controller
         $data['pricing_mode'] = $data['pricing_mode'] ?? Service::PRICING_MODE_FIXED;
         $data['admin_discount_percent'] = $data['admin_discount_percent'] ?? 0;
         $data['is_active'] = $request->boolean('is_active');
+        $data['is_featured'] = $request->boolean('is_featured');
         $data['is_offer_active'] = $request->boolean('is_offer_active');
         $data['is_limited_offer_label_active'] = $request->boolean('is_limited_offer_label_active');
         $data['is_limited_offer_countdown_active'] = $request->boolean('is_limited_offer_countdown_active');
