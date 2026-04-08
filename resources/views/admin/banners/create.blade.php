@@ -3,7 +3,7 @@
 @section('title', __('messages.add_banner'))
 
 @section('content')
-    <div class="mx-auto max-w-2xl rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm transition-colors duration-200">
+    <div class="w-full rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm transition-colors duration-200">
         <h1 class="text-2xl font-semibold text-emerald-700 dark:text-emerald-400">{{ __('messages.add_banner') }}</h1>
 
         <form method="POST" action="{{ route('admin.banners.store') }}" enctype="multipart/form-data" class="mt-6 space-y-4">

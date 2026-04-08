@@ -3,7 +3,7 @@
 @section('title', 'استيراد منتجات DailyCard')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 py-6">
+<div class="w-full px-4 py-6">
     <div class="flex items-center justify-between mb-6">
         <x-page-header title="استيراد منتجات DailyCard" subtitle="تصفح الكتالوج واستورد المنتجات المطلوبة" />
         <a href="{{ route('admin.services.index') }}"

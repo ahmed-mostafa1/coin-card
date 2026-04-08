@@ -3,7 +3,7 @@
 @section('title', __('messages.edit_variant'))
 
 @section('content')
-    <div class="mx-auto max-w-3xl rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm transition-colors duration-200">
+    <div class="w-full rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm transition-colors duration-200">
         <div class="flex items-center justify-between">
             <h1 class="text-2xl font-semibold text-emerald-700 dark:text-emerald-400">{{ __('messages.edit_variant_name', ['variant' => $variant->name]) }}</h1>
             <a href="{{ route('admin.services.variants.index', $service) }}" class="text-sm text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300">{{ __('messages.back_to_variants') }}</a>

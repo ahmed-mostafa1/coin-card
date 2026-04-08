@@ -42,7 +42,7 @@
 @section('meta_type', 'website')
 @section('meta_image', $homeImage)
 @section('meta_robots', 'index,follow')
-@section('mainWidth', 'w-[95%] xl:w-[90%] mx-auto')
+@section('mainWidth', 'w-[85%] mx-auto')
 
 @push('structured-data')
     <script type="application/ld+json">{!! json_encode($homeSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', __('messages.my_orders_title'))
-@section('mainWidth', 'max-w-none w-full')
+@section('mainWidth', 'w-[85%] mx-auto')
 
 @section('content')
     <x-card :hover="false">

@@ -3,7 +3,7 @@
 @section('title', __('messages.add_variant'))
 
 @section('content')
-    <div class="mx-auto max-w-3xl rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm">
+    <div class="w-full rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm">
         <div class="flex items-center justify-between">
             <h1 class="text-2xl font-semibold text-emerald-700">{{ __('messages.add_variant_for_service', ['service' => $service->name]) }}</h1>
             <a href="{{ route('admin.services.variants.index', $service) }}" class="text-sm text-emerald-700">{{ __('messages.back_to_variants') }}</a>

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'إعدادات الموقع')
-@section('mainWidth', 'w-[85%] max-w-none mx-auto')
+@section('mainWidth', 'w-[85%] mx-auto')
 
 @section('content')
     <div class="space-y-6">

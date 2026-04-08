@@ -82,7 +82,7 @@
 @section('meta_type', 'product')
 @section('meta_image', $serviceImage)
 @section('meta_robots', 'index,follow')
-@section('mainWidth', 'w-full max-w-full')
+@section('mainWidth', 'w-[85%] mx-auto')
 
 @push('structured-data')
     <script type="application/ld+json">{!! json_encode($productSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
@@ -172,15 +172,15 @@
     @endphp
 
     <div class="store-shell space-y-6">
-        <div class="w-[95%] md:w-[80%] mx-auto">
+        <div class="w-full">
             <x-store.hero :banners="$sharedBanners" :alt="$service->localized_name" />
         </div>
 
-        <div class="w-[95%] md:w-[80%] mx-auto">
+        <div class="w-full">
             <x-store.notice :text="$sharedTickerText" />
         </div>
 
-        <div class="w-full sm:w-4/5 sm:mx-auto flex flex-col gap-4">
+        <div class="flex w-full flex-col gap-4">
             @if ($service->is_offer_active)
             <div class="order-1 w-full">
                 <div class="store-card relative overflow-hidden p-4">

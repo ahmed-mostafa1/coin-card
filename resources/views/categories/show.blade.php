@@ -62,7 +62,7 @@
 @section('meta_canonical', route('categories.show', $category->slug))
 @section('meta_image', $categoryImage)
 @section('meta_robots', $search ? 'noindex,follow' : 'index,follow')
-@section('mainWidth', 'w-full max-w-full')
+@section('mainWidth', 'w-[85%] mx-auto')
 
 @push('structured-data')
     <script type="application/ld+json">{!! json_encode($categorySchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>

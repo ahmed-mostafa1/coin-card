@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', __('messages.edit_field'))
-@section('mainWidth', 'max-w-3xl w-full')
+@section('mainWidth', 'w-[85%] mx-auto')
 
 @section('content')
     <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-8 shadow-sm">

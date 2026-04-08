@@ -49,7 +49,7 @@
           else document.documentElement.classList.remove('dark');
       })">
     
-    <main class="mx-auto flex min-h-screen w-full max-w-md flex-col justify-start px-4 py-10 md:py-16">
+    <main class="mx-auto flex min-h-screen w-[85%] max-w-none flex-col justify-start px-4 py-10 md:py-16">
         {{-- Logo & Theme Toggle --}}
         <div class="mb-8 flex items-center justify-center relative">
             <a href="{{ route('home') }}" class="flex items-center justify-center">

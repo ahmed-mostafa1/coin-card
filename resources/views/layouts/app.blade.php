@@ -28,7 +28,7 @@
       })">
 
     @php
-        $containerWidth = 'w-[95%] md:w-[80%] mx-auto';
+        $containerWidth = 'w-[85%] mx-auto';
         $mainWidth = trim($__env->yieldContent('mainWidth', $containerWidth));
         $isAr = app()->getLocale() == 'ar';
         $currentUser = auth()->user();
@@ -199,7 +199,7 @@
 
     <div class="min-h-screen flex flex-col">
         <nav class="sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 backdrop-blur-md transition-colors duration-200 dark:border-slate-700/80 dark:bg-slate-900/95">
-            <div class="px-3 py-3 sm:px-4">
+            <div class="mx-auto w-[85%] px-3 py-3 sm:px-4">
                 <div class="rounded-[1.75rem] border border-white/70 bg-white/90 px-3 py-3 shadow-[0_18px_40px_rgba(15,23,42,0.06)] backdrop-blur dark:border-slate-800/80 dark:bg-slate-950/90 sm:px-4">
                     <div class="flex items-center justify-between gap-3">
                         <a href="{{ route('home') }}" class="flex min-w-0 items-center gap-3">
@@ -399,7 +399,7 @@
         </main>
 
         <footer class="mb-24 border-t border-slate-200 bg-white/90 px-4 py-5 backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/90 lg:mb-0">
-            <div class="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-3 text-center sm:flex-row sm:text-start">
+            <div class="mx-auto flex w-[85%] max-w-none flex-col items-center justify-between gap-3 text-center sm:flex-row sm:text-start">
                 <p class="text-xs font-medium text-slate-500 dark:text-slate-400">
                  {{ __('messages.all_rights_reserved') ?? 'All rights reserved.' }}
                 </p>

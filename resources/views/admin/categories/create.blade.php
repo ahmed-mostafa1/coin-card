@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', __('messages.add_category'))
-@section('mainWidth', 'max-w-none w-full')
+@section('mainWidth', 'w-[85%] mx-auto')
 
 @section('content')
     <div class="w-full rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm transition-colors duration-200">

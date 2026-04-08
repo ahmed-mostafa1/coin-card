@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'كتالوج ' . $provider->name)
-@section('mainWidth', 'max-w-none w-full')
+@section('mainWidth', 'w-[85%] mx-auto')
 
 @section('content')
     @php

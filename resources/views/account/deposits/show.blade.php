@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', __('messages.deposit_request_title', ['id' => $depositRequest->id]))
-@section('mainWidth', 'max-w-none w-full')
+@section('mainWidth', 'w-[85%] mx-auto')
 
 @section('content')
     <div class="grid gap-6 lg:grid-cols-3">

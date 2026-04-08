@@ -3,7 +3,7 @@
 @section('title', 'إضافة نافذة منبثقة')
 
 @section('content')
-    <div class="mx-auto max-w-2xl rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm transition-colors duration-200">
+    <div class="w-full rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm transition-colors duration-200">
         <div class="flex items-center justify-between mb-6">
             <h1 class="text-2xl font-semibold text-emerald-700 dark:text-emerald-400">إضافة نافذة منبثقة</h1>
             <a href="{{ route('admin.popups.index') }}" class="inline-flex items-center gap-2 rounded-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-300 transition hover:bg-slate-50 dark:hover:bg-slate-700">

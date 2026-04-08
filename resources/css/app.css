@@ -264,7 +264,7 @@
     }
 
     .store-shell {
-        @apply w-full max-w-6xl lg:mx-auto;
+        @apply w-full;
     }
 
     .store-pill {
