@@ -144,12 +144,13 @@
         <section class="home-hero">
 
             <div class="home-hero__visual">
-                <div class="home-hero-card">
-                    <div class="home-hero-card__media"
-                         x-data="homeHeroSlider(@js($heroSlides))"
-                         x-init="start()"
-                         @mouseenter="stop()"
-                         @mouseleave="start()">
+                <div class="home-hero-card"
+                     x-data="homeHeroSlider(@js($heroSlides))"
+                     x-init="start()"
+                     @mouseenter="stop()"
+                     @mouseleave="start()"
+                     :style="`--home-hero-ratio: ${heroRatio}`">
+                    <div class="home-hero-card__media">
                         @if(!empty($heroSlides))
                             <div class="home-hero-card__chrome">
                                 <span class="home-hero-card__badge">
@@ -167,7 +168,10 @@
                                 <template x-for="(slide, index) in slides" :key="`${index}-${slide.image}`">
                                     <div class="home-hero-card__slide"
                                          :class="activeIndex === index ? 'opacity-100 z-[1]' : 'pointer-events-none opacity-0 z-0'">
-                                        <img :src="slide.image" :alt="slide.title" class="home-hero-card__image">
+                                        <img :src="slide.image"
+                                             :alt="slide.title"
+                                             class="home-hero-card__image"
+                                             @load="updateRatio($event.target, index)">
                                     </div>
                                 </template>
 
@@ -411,7 +415,24 @@
             Alpine.data('homeHeroSlider', (slides = []) => ({
                 slides,
                 activeIndex: 0,
+                heroRatio: '16 / 8',
                 intervalId: null,
+                syncRatio() {
+                    this.$nextTick(() => {
+                        const activeImage = this.$root.querySelectorAll('.home-hero-card__image')[this.activeIndex];
+
+                        if (activeImage && activeImage.complete) {
+                            this.updateRatio(activeImage, this.activeIndex);
+                        }
+                    });
+                },
+                updateRatio(image, index) {
+                    if (!image || index !== this.activeIndex || !image.naturalWidth || !image.naturalHeight) {
+                        return;
+                    }
+
+                    this.heroRatio = `${image.naturalWidth} / ${image.naturalHeight}`;
+                },
                 go(index) {
                     if (!Array.isArray(this.slides) || !this.slides.length) {
                         return;
@@ -419,6 +440,7 @@
 
                     const normalizedIndex = ((index % this.slides.length) + this.slides.length) % this.slides.length;
                     this.activeIndex = normalizedIndex;
+                    this.syncRatio();
                 },
                 next() {
                     this.go(this.activeIndex + 1);
@@ -428,6 +450,7 @@
                 },
                 start() {
                     this.stop();
+                    this.syncRatio();
 
                     if (!Array.isArray(this.slides) || this.slides.length < 2) {
                         return;

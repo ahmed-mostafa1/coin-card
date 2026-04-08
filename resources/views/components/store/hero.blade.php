@@ -1,7 +1,7 @@
 @props([
     'image'   => null,
     'alt'     => '',
-    'height'  => 'h-44 sm:h-56 md:h-[300px]',
+    'height'  => '',
     'banners' => collect(),
 ])
 
@@ -13,6 +13,7 @@
 @endphp
 
 <div class="relative w-full overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-900 shadow-md {{ $height }}"
+    style="aspect-ratio: var(--store-hero-ratio, 16 / 8);"
     dir="ltr" data-hero-slider>
 
     @if($bannerItems->isNotEmpty())
@@ -24,11 +25,11 @@
                     $src       = $isAbs ? $rawPath : asset('storage/' . ltrim($rawPath, '/'));
                     $fallback  = asset('img/placeholder-banner.jpg');
                 @endphp
-                <div class="relative w-full h-full shrink-0 flex-[0_0_100%]">
+                <div class="relative flex h-full w-full shrink-0 flex-[0_0_100%] items-center justify-center bg-slate-100 dark:bg-slate-900">
                     <img src="{{ $src }}"
                         alt="{{ is_array($banner) ? ($banner['title'] ?? '') : ($banner->localized_title ?? $banner->title ?? '') }}"
                         onerror="this.onerror=null;this.src='{{ $fallback }}';"
-                        class="h-full w-full object-cover">
+                        class="h-full w-full object-contain">
                     {{-- Bottom gradient scrim for readability --}}
                     <div class="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/50 to-transparent pointer-events-none"></div>
                 </div>
@@ -79,8 +80,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const slides = track ? Array.from(track.children) : [];
         const btnPrev = slider.querySelector('[data-hero-prev]');
         const btnNext = slider.querySelector('[data-hero-next]');
+        const setRatioFromIndex = (currentIndex) => {
+            const currentImage = slides[currentIndex]?.querySelector('img');
+
+            if (!currentImage || !currentImage.naturalWidth || !currentImage.naturalHeight) {
+                return;
+            }
+
+            slider.style.setProperty('--store-hero-ratio', `${currentImage.naturalWidth} / ${currentImage.naturalHeight}`);
+        };
 
         if (!track || slides.length <= 1) {
+            setRatioFromIndex(0);
             if (btnPrev) btnPrev.style.display = 'none';
             if (btnNext) btnNext.style.display = 'none';
             return;
@@ -99,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const update = () => {
             track.style.transform = `translateX(${-index * 100}%)`;
+            setRatioFromIndex(index);
             dots.forEach((dot, i) => {
                 dot.style.background  = i === index ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.3)';
                 dot.style.fontWeight  = i === index ? '800' : '600';
@@ -114,6 +126,26 @@ document.addEventListener('DOMContentLoaded', () => {
         dots.forEach((dot, i) => dot.addEventListener('click', () => { go(i); resetTimer(); }));
         if (btnPrev) btnPrev.addEventListener('click', () => { go(index - 1); resetTimer(); });
         if (btnNext) btnNext.addEventListener('click', () => { go(index + 1); resetTimer(); });
+        slides.forEach((slide, slideIndex) => {
+            const image = slide.querySelector('img');
+
+            if (!image) {
+                return;
+            }
+
+            const applyRatio = () => {
+                if (slideIndex === index) {
+                    setRatioFromIndex(slideIndex);
+                }
+            };
+
+            if (image.complete) {
+                applyRatio();
+                return;
+            }
+
+            image.addEventListener('load', applyRatio);
+        });
 
         update();
         let timer = setInterval(() => go(index + 1), 5000);

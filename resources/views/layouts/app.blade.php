@@ -203,7 +203,7 @@
                 <div class="rounded-[1.75rem] border border-white/70 bg-white/90 px-3 py-3 shadow-[0_18px_40px_rgba(15,23,42,0.06)] backdrop-blur dark:border-slate-800/80 dark:bg-slate-950/90 sm:px-4">
                     <div class="flex items-center justify-between gap-3">
                         <a href="{{ route('home') }}" class="flex min-w-0 items-center gap-3 sm:gap-4">
-                            <span class="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-emerald-50 ring-1 ring-emerald-100 dark:bg-emerald-950/30 dark:ring-emerald-900/70">
+                            <span class="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-2xl">
                                 @if($logoImageUrl)
                                     <img src="{{ $logoImageUrl }}"
                                          alt="{{ $logoTextValue }}"
