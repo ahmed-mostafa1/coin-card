@@ -2,8 +2,8 @@
 
 @php
     $homeTitle = app()->getLocale() === 'ar'
-        ? 'خدمات رقمية وشحن ألعاب'
-        : 'Digital Services and Game Top-up';
+        ? 'شحن ألعاب وتطبيقات'
+        : 'Games and Apps topup';
     $homeDescriptionSource = app()->getLocale() === 'en' && ! empty($sharedStoreDescriptionEn)
         ? $sharedStoreDescriptionEn
         : $sharedStoreDescription;
