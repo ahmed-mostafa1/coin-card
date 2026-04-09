@@ -11,7 +11,7 @@
   :actionUrl="$actionUrl ?? null"
   :helperText="$helperText ?? null"
   :fallbackUrl="$fallbackUrl ?? null"
-  :signatureName="$signatureName ?? 'Arab 8BP'"
+  :signatureName="$signatureName ?? 'Sham Cash'"
   :showDivider="$showDivider ?? true"
   :direction="$direction ?? 'ltr'"
 >

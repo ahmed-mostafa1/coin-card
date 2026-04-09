@@ -27,7 +27,7 @@ class SiteSettingsSeeder extends Seeder
             ],
             [
                 'key' => 'logo_text',
-                'value' => 'Arab 8BP.in',
+                'value' => 'Sham Cash.in',
             ],
             [
                 'key' => 'logo_image',

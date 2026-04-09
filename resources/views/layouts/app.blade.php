@@ -121,12 +121,6 @@
                         'icon' => 'fa-solid fa-wallet',
                         'active' => $adminDepositsActive,
                     ],
-                    [
-                        'route' => route('admin.users.index'),
-                        'label' => $isAr ? 'المستخدمون' : 'Users',
-                        'icon' => 'fa-solid fa-users',
-                        'active' => $adminUsersActive,
-                    ],
                 ]
                 : [
                     [
@@ -349,21 +343,6 @@
                                                 </span>
                                             </button>
                                         </div>
-
-                                        @if($menuNextTier)
-                                            <div class="mt-4 rounded-[1.15rem] border border-emerald-100 bg-emerald-50/70 px-3 py-3 dark:border-emerald-900/50 dark:bg-emerald-950/20">
-                                                <div class="flex items-center justify-between gap-3 text-xs font-semibold text-slate-600 dark:text-slate-300">
-                                                    <span>{{ $isAr ? 'التقدم للمستوى التالي' : 'Next VIP Progress' }}</span>
-                                                    <span>{{ round($menuProgress) }}%</span>
-                                                </div>
-                                                <div class="mt-2 h-2 overflow-hidden rounded-full bg-emerald-100 dark:bg-emerald-900/70">
-                                                    <div class="h-full rounded-full bg-amber-400 transition-all" style="width: {{ $menuProgress }}%"></div>
-                                                </div>
-                                                <p class="mt-2 text-[11px] font-medium text-slate-500 dark:text-slate-400">
-                                                    {{ $isAr ? 'المستوى التالي:' : 'Next rank:' }} {{ $isAr ? $menuNextTier->title_ar : ($menuNextTier->title_en ?: $menuNextTier->title_ar) }}
-                                                </p>
-                                            </div>
-                                        @endif
 
                                         @if(!empty($menuLinks))
                                             <div class="mt-4 space-y-1.5">

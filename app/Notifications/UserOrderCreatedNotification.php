@@ -22,7 +22,7 @@ class UserOrderCreatedNotification extends Notification
 
     public function toMail(object $notifiable): MailMessage
     {
-        $appName = config('app.name', 'Arab 8bp.in');
+        $appName = config('app.name', 'Sham Cash.in');
         $subjectAr = __('messages.email_subjects.order_created_user', ['app_name' => $appName], 'ar');
         $subjectEn = __('messages.email_subjects.order_created_user', ['app_name' => $appName], 'en');
 

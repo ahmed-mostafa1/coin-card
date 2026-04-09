@@ -35,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
             $sharedTickerText = Cache::remember('shared_ticker', 300, fn () => SiteSetting::get('ticker_text', 'ملاحظة لأصحاب المحلات يرجى التواصل مع الإدارة للحصول على أسعار الجملة •'));
             
             $sharedLogoType = Cache::remember('shared_logo_type', 300, fn () => SiteSetting::get('logo_type', 'text'));
-            $sharedLogoText = Cache::remember('shared_logo_text', 300, fn () => SiteSetting::get('logo_text', 'Arab 8BP.in'));
+            $sharedLogoText = Cache::remember('shared_logo_text', 300, fn () => SiteSetting::get('logo_text', 'Sham Cash.in'));
             $sharedLogoImage = Cache::remember('shared_logo_image', 300, fn () => SiteSetting::get('logo_image', null));
             $sharedYoutubeLink = Cache::remember('shared_youtube_link', 300, fn () => SiteSetting::get('youtube_link', '#'));
             $sharedStoreDescription = Cache::remember('shared_store_description', 300, fn () => SiteSetting::get('store_description', 'متجر عربي متخصص في بيع بطاقات الألعاب والخدمات الرقمية بأسعار تنافسية وجودة عالية. نحن نقدم خدمة سريعة وموثوقة لجميع عملائنا. للاستفسارات أو الدعم، يرجى'));
@@ -74,7 +74,7 @@ class AppServiceProvider extends ServiceProvider
             $sharedBanners = collect();
             $sharedTickerText = 'ملاحظة لأصحاب المحلات يرجى التواصل مع الإدارة للحصول على أسعار الجملة •';
             $sharedLogoType = 'text';
-            $sharedLogoText = 'Arab 8BP.in';
+            $sharedLogoText = 'Sham Cash.in';
             $sharedLogoImage = null;
             $sharedYoutubeLink = null;
             $sharedStoreDescription = 'متجر عربي متخصص في بيع بطاقات الألعاب والخدمات الرقمية بأسعار تنافسية وجودة عالية. نحن نقدم خدمة سريعة وموثوقة لجميع عملائنا. للاستفسارات أو الدعم، يرجى';

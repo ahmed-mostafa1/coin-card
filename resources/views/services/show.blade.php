@@ -39,7 +39,7 @@
         'category' => $service->category->localized_name,
         'brand' => [
             '@type' => 'Brand',
-            'name' => $sharedLogoText ?: config('app.name', 'Arab 8BP'),
+            'name' => $sharedLogoText ?: config('app.name', 'Sham Cash'),
         ],
         'offers' => $offersSchema,
     ], fn ($value) => $value !== null && $value !== []);

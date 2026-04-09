@@ -7,7 +7,7 @@
     'actionUrl' => null,
     'helperText' => null,
     'fallbackUrl' => null,
-    'signatureName' => 'Arab 8BP',
+    'signatureName' => 'Sham Cash',
     'arTitle' => null,
     'enTitle' => null,
     'arIntroLines' => null,
