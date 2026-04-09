@@ -219,7 +219,7 @@
                                     {{ $logoTextValue }}
                                 </span>
                                 <span class="hidden truncate text-[11px] font-medium text-slate-500 dark:text-slate-400 sm:block">
-                                    {{ $isAr ? 'منصة الخدمات الرقمية' : 'Digital services platform' }}
+                                    {{ $isAr ? 'شحن ألعاب وتطبيقات ' : 'Games and Apps topup' }}
                                 </span>
                             </span>
                         </a>
