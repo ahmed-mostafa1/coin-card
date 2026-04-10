@@ -5,10 +5,13 @@
 
 @section('content')
     <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-8 shadow-sm">
+
         <div class="flex flex-wrap items-center justify-between gap-4">
             <div>
                 <h1 class="text-2xl font-semibold text-emerald-700 dark:text-emerald-400">طلبات الوكالة</h1>
-                <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">متابعة الطلبات الواردة.</p>
+                <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                    {{ $requests->total() }} طلب وارد
+                </p>
             </div>
         </div>
 
@@ -22,36 +25,48 @@
             $fieldDefs = \App\Models\AgencyRequestField::orderBy('sort_order')->orderBy('id')->get()->keyBy('name_key');
         @endphp
 
-        <x-table class="mt-6">
-            <thead class="border-b border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400">
-                <tr>
-                    <th class="py-2">البيانات</th>
-                    <th class="py-2">التاريخ</th>
-                    <th class="py-2">عرض</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
-                @forelse ($requests as $request)
-                    @php $payload = $request->payload ?? []; @endphp
-                    <tr>
-                        <td class="py-3 text-slate-700 dark:text-white">
-                            @foreach ($payload as $key => $value)
-                                <span class="block text-xs text-slate-500">{{ $fieldDefs[$key]->localized_label ?? $key }}:</span>
-                                <span class="block text-sm font-medium">{{ $value }}</span>
-                            @endforeach
-                        </td>
-                        <td class="py-3 text-slate-500 dark:text-slate-400">{{ $request->created_at->format('Y-m-d H:i') }}</td>
-                        <td class="py-3">
-                            <a href="{{ route('admin.agency-requests.show', $request) }}" class="text-emerald-700 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">عرض</a>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="6" class="py-6 text-center text-slate-500 dark:text-slate-400">لا توجد طلبات بعد.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </x-table>
+        <div class="mt-6 space-y-4">
+            @forelse ($requests as $request)
+                @php $payload = $request->payload ?? []; @endphp
+
+                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/40 p-5 transition hover:shadow-md">
+                    {{-- Header row --}}
+                    <div class="flex items-center justify-between gap-4 mb-4">
+                        <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 dark:bg-emerald-900/40 px-3 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-300">
+                            #{{ $request->id }}
+                        </span>
+                        <span class="text-xs text-slate-400 dark:text-slate-500">{{ $request->created_at->format('Y-m-d H:i') }}</span>
+                    </div>
+
+                    {{-- Fields grid --}}
+                    <div class="grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-3 lg:grid-cols-4">
+                        @foreach ($payload as $key => $value)
+                            <div>
+                                <p class="text-[11px] font-medium uppercase tracking-wide text-slate-400 dark:text-slate-500">
+                                    {{ $fieldDefs[$key]->localized_label ?? $key }}
+                                </p>
+                                <p class="mt-0.5 text-sm font-semibold text-slate-700 dark:text-white break-words">
+                                    {{ $value }}
+                                </p>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    {{-- Footer action --}}
+                    <div class="mt-4 flex justify-start">
+                        <a href="{{ route('admin.agency-requests.show', $request) }}"
+                           class="inline-flex items-center gap-1.5 rounded-full border border-emerald-300 dark:border-emerald-700 px-4 py-1.5 text-xs font-semibold text-emerald-700 dark:text-emerald-300 transition hover:bg-emerald-50 dark:hover:bg-emerald-900/30">
+                            عرض التفاصيل &larr;
+                        </a>
+                    </div>
+                </div>
+
+            @empty
+                <div class="py-16 text-center text-slate-400 dark:text-slate-500">
+                    <p class="text-lg font-medium">لا توجد طلبات بعد.</p>
+                </div>
+            @endforelse
+        </div>
 
         <div class="mt-6">{{ $requests->links() }}</div>
     </div>
