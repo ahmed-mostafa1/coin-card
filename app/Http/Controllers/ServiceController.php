@@ -44,14 +44,16 @@ class ServiceController extends Controller
         NotificationService $notificationService,
         DailyCardOrderService $dailyCardOrderService
     ): RedirectResponse {
-        $isDailyCard = false;
         abort_unless($service->is_active && $service->category->is_active, 404);
         abort_unless(
             ($service->source ?? Service::SOURCE_MANUAL) === Service::SOURCE_MANUAL || $service->provider_id !== null,
             404
         );
-        $isDailyCard = ($service->source ?? Service::SOURCE_MANUAL) === Service::SOURCE_DAILYCARD
-            || ($service->provider_id !== null && str_contains(strtolower((string) $service->source), 'dailycard'));
+
+        $isDailyCard = (($service->source ?? Service::SOURCE_MANUAL) === Service::SOURCE_DAILYCARD)
+            || ($service->provider_id !== null && str_contains(strtolower((string) $service->source), 'dailycard'))
+            || (optional($service->provider)->slug === 'daily-card');
+
         $user = $request->user();
 
         $payload = $request->input('fields', []);
@@ -64,7 +66,18 @@ class ServiceController extends Controller
 
         $order = null;
 
-        DB::transaction(function () use ($user, $service, $payload, $walletService, $variantId, $quantity, $request, $isDiscountedInput, &$order) {
+        DB::transaction(function () use (
+            $user,
+            $service,
+            $payload,
+            $walletService,
+            $variantId,
+            $quantity,
+            $request,
+            $isDiscountedInput,
+            $isDailyCard,
+            &$order
+        ) {
             $wallet = Wallet::where('user_id', $user->id)->lockForUpdate()->firstOrCreate(['user_id' => $user->id]);
             $variant = null;
 
@@ -83,6 +96,7 @@ class ServiceController extends Controller
                 if ($request->hasFile('offer_image')) {
                     $payload['offer_image_path'] = $request->file('offer_image')->store('orders/offer-images', 'public');
                 }
+
                 $payload['offer_amount'] = number_format($offerAmount, 2, '.', '');
                 $payload['service_discount_percent'] = number_format($serviceDiscountPercent, 2, '.', '');
                 $payload['payable_after_discount'] = number_format($price, 2, '.', '');
@@ -143,13 +157,14 @@ class ServiceController extends Controller
             $discountPercentage = $isDiscountedInput
                 ? (float) $service->admin_discount_percent
                 : $vipDiscount;
+
             $discountAmount = round(max(0, (float) $basePrice - (float) $price), 2);
 
             $order = Order::create([
                 'user_id' => $user->id,
                 'service_id' => $service->id,
                 'variant_id' => $variant?->id,
-                'status'            => $isDailyCard ? Order::STATUS_PROCESSING : Order::STATUS_NEW,
+                'status' => $isDailyCard ? Order::STATUS_PROCESSING : Order::STATUS_NEW,
                 'price_at_purchase' => $price,
                 'original_price' => $discountAmount > 0 ? round((float) $basePrice, 2) : null,
                 'discount_percentage' => $discountPercentage,
