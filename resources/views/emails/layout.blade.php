@@ -229,7 +229,7 @@
                     {!! $slot ?? '' !!}
                 </div>
                 <div class="card-foot">
-                    &copy; {{ date('Y') }} {{ $appName }}. All rights reserved.
+                    &copy; {{ date('Y') }} شحنك شات | S7SH. All rights reserved.
                 </div>
             </div>
         </div>

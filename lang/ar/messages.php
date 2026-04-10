@@ -27,7 +27,7 @@ return [
     'terms_of_use' => 'شروط الاستخدام',
     'contact_page' => 'تواصل معنا',
     'menu' => 'القائمة',
-    'all_rights_reserved' => 'جميع الحقوق محفوظة لموقع 8pb.in© ',
+    'all_rights_reserved' => 'جميع الحقوق محفوظة لموقع شحنك شات | S7SH© ',
     'contact_whatsapp' => 'تواصل واتساب',
     'accept_terms_purchase_label' => 'أوافق على :terms الخاصة بالمتجر وأتحمل مسؤولية صحة المعلومات المدخلة',
     'accept_terms_required' => 'يجب الموافقة على شروط الاستخدام الخاصة بالمتجر قبل تنفيذ الطلب.',

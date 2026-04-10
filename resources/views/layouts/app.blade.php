@@ -238,13 +238,15 @@
                         @endauth
 
                         <div class="flex shrink-0 items-center gap-2">
+                            @auth
                             <button type="button"
                                     @click="darkMode = !darkMode"
-                                    class="cc-nav-utility @auth hidden @endauth"
+                                    class="cc-nav-utility"
                                     aria-label="{{ $isAr ? 'تبديل السمة' : 'Toggle theme' }}">
                                 <i class="fa-solid fa-sun text-sm" x-show="!darkMode" x-cloak></i>
                                 <i class="fa-solid fa-moon text-sm" x-show="darkMode" x-cloak></i>
                             </button>
+                            @endauth
 
                             @auth
                                 <div class="relative" x-data="{ open: false }">
@@ -374,23 +376,56 @@
                                     </div>
                                 </div>
                             @else
+                                {{-- Language icon-only --}}
                                 <a href="{{ route('lang.switch', $languageToggleLocale) }}"
-                                   class="cc-nav-utility cc-nav-utility-label"
+                                   class="cc-nav-utility"
                                    aria-label="{{ $languageToggleTitle }}"
                                    title="{{ $languageToggleTitle }}">
-                                    <i class="fa-solid fa-language text-sm"></i>
-                                    <span>{{ $languageToggleLabel }}</span>
+                                    <i class="fa-solid fa-globe text-sm"></i>
                                 </a>
 
-                                @if (Route::has('register'))
-                                    <a href="{{ route('register') }}" class="cc-nav-cta cc-nav-cta-secondary">
-                                        {{ __('messages.register') }}
-                                    </a>
-                                @endif
+                                {{-- Auth dropdown --}}
+                                <div class="relative" x-data="{ guestOpen: false }">
+                                    <button type="button"
+                                            @click="guestOpen = !guestOpen"
+                                            class="cc-nav-cta cc-nav-cta-primary flex items-center gap-1.5">
+                                        <i class="fa-solid fa-right-to-bracket text-sm"></i>
+                                        <span>{{ __('messages.login') }}</span>
+                                        <i class="fa-solid fa-chevron-down text-[10px] transition-transform duration-200" :class="guestOpen ? 'rotate-180' : ''"></i>
+                                    </button>
 
-                                <a href="{{ route('login') }}" class="cc-nav-cta cc-nav-cta-primary">
-                                    {{ __('messages.login') }}
-                                </a>
+                                    <div x-show="guestOpen"
+                                         x-cloak
+                                         x-transition.origin.top.end
+                                         @click.outside="guestOpen = false"
+                                         @keydown.escape.window="guestOpen = false"
+                                         class="absolute end-0 top-full z-50 mt-2 w-52 overflow-hidden rounded-2xl border border-slate-200 bg-white p-2 shadow-xl shadow-slate-900/10 dark:border-slate-700 dark:bg-slate-900">
+
+                                        <a href="{{ route('login') }}"
+                                           class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-800 transition hover:bg-emerald-50 hover:text-emerald-700 dark:text-slate-100 dark:hover:bg-emerald-950/30 dark:hover:text-emerald-300">
+                                            <i class="fa-solid fa-right-to-bracket w-4 text-center text-slate-400"></i>
+                                            <span>{{ __('messages.login') }}</span>
+                                        </a>
+
+                                        @if (Route::has('register'))
+                                            <a href="{{ route('register') }}"
+                                               class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-800 transition hover:bg-slate-50 hover:text-slate-950 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white">
+                                                <i class="fa-solid fa-user-plus w-4 text-center text-slate-400"></i>
+                                                <span>{{ __('messages.register') }}</span>
+                                            </a>
+                                        @endif
+
+                                        <div class="mt-1 border-t border-slate-100 pt-1 dark:border-slate-800">
+                                            <button type="button"
+                                                    @click="darkMode = !darkMode; guestOpen = false"
+                                                    class="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-800 transition hover:bg-slate-50 dark:text-slate-100 dark:hover:bg-slate-800">
+                                                <i class="fa-solid fa-sun w-4 text-center text-slate-400" x-show="!darkMode" x-cloak></i>
+                                                <i class="fa-solid fa-moon w-4 text-center text-slate-400" x-show="darkMode" x-cloak></i>
+                                                <span x-text="darkMode ? '{{ $isAr ? 'داكن' : 'Dark' }}' : '{{ $isAr ? 'فاتح' : 'Light' }}'"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             @endauth
                         </div>
                     </div>
