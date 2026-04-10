@@ -22,7 +22,7 @@ class ServiceController extends Controller
     {
         abort_unless($service->is_active && $service->category->is_active, 404);
         abort_unless(
-            in_array($service->source ?? Service::SOURCE_MANUAL, [Service::SOURCE_MANUAL, Service::SOURCE_DAILYCARD], true),
+            ($service->source ?? Service::SOURCE_MANUAL) === Service::SOURCE_MANUAL || $service->provider_id !== null,
             404
         );
 
@@ -46,10 +46,11 @@ class ServiceController extends Controller
     ): RedirectResponse {
         abort_unless($service->is_active && $service->category->is_active, 404);
         abort_unless(
-            in_array($service->source ?? Service::SOURCE_MANUAL, [Service::SOURCE_MANUAL, Service::SOURCE_DAILYCARD], true),
+            ($service->source ?? Service::SOURCE_MANUAL) === Service::SOURCE_MANUAL || $service->provider_id !== null,
             404
         );
-        $isDailyCard = ($service->source ?? Service::SOURCE_MANUAL) === Service::SOURCE_DAILYCARD;
+        $isDailyCard = ($service->source ?? Service::SOURCE_MANUAL) === Service::SOURCE_DAILYCARD
+            || ($service->provider_id !== null && str_contains(strtolower((string) $service->source), 'dailycard'));
         $user = $request->user();
 
         $payload = $request->input('fields', []);
