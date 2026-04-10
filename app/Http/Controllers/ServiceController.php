@@ -44,6 +44,7 @@ class ServiceController extends Controller
         NotificationService $notificationService,
         DailyCardOrderService $dailyCardOrderService
     ): RedirectResponse {
+        $isDailyCard = false;
         abort_unless($service->is_active && $service->category->is_active, 404);
         abort_unless(
             ($service->source ?? Service::SOURCE_MANUAL) === Service::SOURCE_MANUAL || $service->provider_id !== null,
