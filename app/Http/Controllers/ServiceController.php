@@ -42,7 +42,8 @@ class ServiceController extends Controller
         Service $service,
         WalletService $walletService,
         NotificationService $notificationService,
-        DailyCardOrderService $dailyCardOrderService
+        DailyCardOrderService $dailyCardOrderService,
+        \App\Services\ApiProviderManager $apiProviderManager
     ): RedirectResponse {
         abort_unless($service->is_active && $service->category->is_active, 404);
         abort_unless(
@@ -53,6 +54,9 @@ class ServiceController extends Controller
         $isDailyCard = (($service->source ?? Service::SOURCE_MANUAL) === Service::SOURCE_DAILYCARD)
             || ($service->provider_id !== null && str_contains(strtolower((string) $service->source), 'dailycard'))
             || (optional($service->provider)->slug === 'daily-card');
+
+        $isGenericProvider = !$isDailyCard && $service->provider_id !== null && optional($service->provider)->hasOrderFulfillment();
+        $shouldAutoPlace = $isDailyCard || $isGenericProvider;
 
         $user = $request->user();
 
@@ -75,7 +79,7 @@ class ServiceController extends Controller
             $quantity,
             $request,
             $isDiscountedInput,
-            $isDailyCard,
+            $shouldAutoPlace,
             &$order
         ) {
             $wallet = Wallet::where('user_id', $user->id)->lockForUpdate()->firstOrCreate(['user_id' => $user->id]);
@@ -164,7 +168,7 @@ class ServiceController extends Controller
                 'user_id' => $user->id,
                 'service_id' => $service->id,
                 'variant_id' => $variant?->id,
-                'status' => $isDailyCard ? Order::STATUS_PROCESSING : Order::STATUS_NEW,
+                'status' => $shouldAutoPlace ? Order::STATUS_PROCESSING : Order::STATUS_NEW,
                 'price_at_purchase' => $price,
                 'original_price' => $discountAmount > 0 ? round((float) $basePrice, 2) : null,
                 'discount_percentage' => $discountPercentage,
@@ -199,7 +203,7 @@ class ServiceController extends Controller
             ], false);
         });
 
-        DB::afterCommit(function () use ($order, $notificationService, $user, $isDailyCard, $dailyCardOrderService): void {
+        DB::afterCommit(function () use ($order, $notificationService, $user, $isDailyCard, $isGenericProvider, $shouldAutoPlace, $dailyCardOrderService, $apiProviderManager): void {
             if (! $order) {
                 return;
             }
@@ -209,8 +213,13 @@ class ServiceController extends Controller
             $user->notify(new \App\Notifications\UserOrderCreatedNotification($order));
             $notificationService->notifyAdmins(new NewOrderNotification($order));
 
-            if ($isDailyCard) {
-                $dailyCardOrderService->place($order);
+            if ($shouldAutoPlace) {
+                if ($isDailyCard) {
+                    $dailyCardOrderService->place($order);
+                } elseif ($isGenericProvider) {
+                    $orderService = $apiProviderManager->forOrder($order);
+                    $orderService?->place($order);
+                }
             }
         });
 
