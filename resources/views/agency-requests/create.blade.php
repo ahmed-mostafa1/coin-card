@@ -13,42 +13,44 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('agency-requests.store') }}" class="mt-6 space-y-4">
-            @csrf
+        @if ($fields->isNotEmpty())
+            <form method="POST" action="{{ route('agency-requests.store') }}" class="mt-6 space-y-4">
+                @csrf
 
-            <div>
-                <x-input-label for="contact_number" value="رقم للتواصل" />
-                <x-text-input id="contact_number" name="contact_number" type="text" :value="old('contact_number')" required />
-                @error('contact_number')
-                    <p class="mt-2 text-xs text-rose-600">{{ $message }}</p>
-                @enderror
-            </div>
+                @foreach ($fields as $field)
+                    <div>
+                        <x-input-label :for="$field->name_key" :value="$field->localized_label" />
 
-            <div>
-                <x-input-label for="full_name" value="اسمك الثلاثي" />
-                <x-text-input id="full_name" name="full_name" type="text" :value="old('full_name')" required />
-                @error('full_name')
-                    <p class="mt-2 text-xs text-rose-600">{{ $message }}</p>
-                @enderror
-            </div>
+                        @if ($field->type === 'textarea')
+                            <textarea
+                                id="{{ $field->name_key }}"
+                                name="{{ $field->name_key }}"
+                                rows="3"
+                                placeholder="{{ $field->localized_placeholder ?? '' }}"
+                                {{ $field->is_required ? 'required' : '' }}
+                                class="mt-1 block w-full rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-3 py-2 text-sm text-slate-900 dark:text-slate-100 shadow-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                            >{{ old($field->name_key) }}</textarea>
+                        @else
+                            <x-text-input
+                                :id="$field->name_key"
+                                :name="$field->name_key"
+                                :type="$field->type"
+                                :value="old($field->name_key)"
+                                :placeholder="$field->localized_placeholder ?? ''"
+                                :required="$field->is_required"
+                            />
+                        @endif
 
-            <div>
-                <x-input-label for="region" value="المنطقة الموجود فيها" />
-                <x-text-input id="region" name="region" type="text" :value="old('region')" required />
-                @error('region')
-                    <p class="mt-2 text-xs text-rose-600">{{ $message }}</p>
-                @enderror
-            </div>
+                        @error($field->name_key)
+                            <p class="mt-2 text-xs text-rose-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                @endforeach
 
-            <div>
-                <x-input-label for="starting_amount" value="المبلغ الذي تستطيع بدأ العمل به ؟" />
-                <x-text-input id="starting_amount" name="starting_amount" type="number" step="0.01" min="0" :value="old('starting_amount')" required />
-                @error('starting_amount')
-                    <p class="mt-2 text-xs text-rose-600">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <x-primary-button class="w-full">إرسال</x-primary-button>
-        </form>
+                <x-primary-button class="w-full">إرسال</x-primary-button>
+            </form>
+        @else
+            <p class="mt-6 text-sm text-slate-500 dark:text-slate-400">نموذج الطلب غير متاح حالياً. يرجى التواصل معنا مباشرة.</p>
+        @endif
     </div>
 @endsection

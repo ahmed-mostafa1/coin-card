@@ -13,22 +13,19 @@
         </div>
 
         <div class="mt-6 grid gap-4 sm:grid-cols-2">
-            <div class="rounded-2xl border border-slate-200 p-4">
-                <p class="text-xs text-slate-500">الاسم</p>
-                <p class="mt-2 text-sm font-semibold text-slate-700">{{ $agencyRequest->full_name }}</p>
-            </div>
-            <div class="rounded-2xl border border-slate-200 p-4">
-                <p class="text-xs text-slate-500">رقم التواصل</p>
-                <p class="mt-2 text-sm font-semibold text-slate-700">{{ $agencyRequest->contact_number }}</p>
-            </div>
-            <div class="rounded-2xl border border-slate-200 p-4">
-                <p class="text-xs text-slate-500">المنطقة</p>
-                <p class="mt-2 text-sm font-semibold text-slate-700">{{ $agencyRequest->region }}</p>
-            </div>
-            <div class="rounded-2xl border border-slate-200 p-4">
-                <p class="text-xs text-slate-500">المبلغ المتاح</p>
-                <p class="mt-2 text-sm font-semibold text-slate-700">{{ number_format($agencyRequest->starting_amount, 2) }} USD</p>
-            </div>
+            @php
+                $payload = $agencyRequest->payload ?? [];
+                $fields = \App\Models\AgencyRequestField::orderBy('sort_order')->orderBy('id')->get()->keyBy('name_key');
+            @endphp
+
+            @forelse ($payload as $key => $value)
+                <div class="rounded-2xl border border-slate-200 p-4">
+                    <p class="text-xs text-slate-500">{{ $fields[$key]->localized_label ?? $key }}</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ $value }}</p>
+                </div>
+            @empty
+                <p class="col-span-2 text-sm text-slate-500">لا توجد بيانات.</p>
+            @endforelse
         </div>
 
         <form method="POST" action="{{ route('admin.agency-requests.destroy', $agencyRequest) }}" class="mt-6">

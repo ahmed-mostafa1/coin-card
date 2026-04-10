@@ -394,7 +394,7 @@
                     {{ app()->getLocale() === 'ar' ? 'للبيع بالجملة والطلبات الخاصة' : 'For wholesale and special requests' }}
                 </span>
                 <h2 class="mt-4 text-2xl font-black text-slate-900 dark:text-white">
-                    {{ app()->getLocale() === 'ar' ? 'هل لديك محل أو تحتاج تسعير خاص؟' : 'Need wholesale pricing or a custom deal?' }}
+                    {{ app()->getLocale() === 'ar' ? 'هل تمتلك متجر ؟ تواصل معنا الآن للحصول على عروض الحملة الحصرية' : 'Own a shop ? Contact us now to get exclusive wholesale offers' }}
                 </h2>
                 <p class="mt-3 max-w-2xl text-sm leading-7 text-slate-600 dark:text-slate-300">{{ __('messages.wholesale_notice') }}</p>
             </div>
@@ -415,7 +415,7 @@
             Alpine.data('homeHeroSlider', (slides = []) => ({
                 slides,
                 activeIndex: 0,
-                heroRatio: '16 / 8',
+                heroRatio: '16 / 7',
                 intervalId: null,
                 syncRatio() {
                     this.$nextTick(() => {

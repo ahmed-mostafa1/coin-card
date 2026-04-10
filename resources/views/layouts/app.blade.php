@@ -376,9 +376,9 @@
                                     </div>
                                 </div>
                             @else
-                                {{-- Language icon-only --}}
+                                {{-- Language icon-only: hidden on mobile, shown on sm+ --}}
                                 <a href="{{ route('lang.switch', $languageToggleLocale) }}"
-                                   class="cc-nav-utility"
+                                   class="cc-nav-utility hidden sm:inline-flex"
                                    aria-label="{{ $languageToggleTitle }}"
                                    title="{{ $languageToggleTitle }}">
                                     <i class="fa-solid fa-globe text-sm"></i>
@@ -416,6 +416,13 @@
                                         @endif
 
                                         <div class="mt-1 border-t border-slate-100 pt-1 dark:border-slate-800">
+                                            {{-- Language switch: only in dropdown on mobile --}}
+                                            <a href="{{ route('lang.switch', $languageToggleLocale) }}"
+                                               class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-800 transition hover:bg-slate-50 hover:text-slate-950 dark:text-slate-100 dark:hover:bg-slate-800 sm:hidden">
+                                                <i class="fa-solid fa-globe w-4 text-center text-slate-400"></i>
+                                                <span>{{ $languageToggleLabel }}</span>
+                                            </a>
+
                                             <button type="button"
                                                     @click="darkMode = !darkMode; guestOpen = false"
                                                     class="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-800 transition hover:bg-slate-50 dark:text-slate-100 dark:hover:bg-slate-800">

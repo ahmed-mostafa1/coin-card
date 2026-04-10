@@ -7,13 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class AgencyRequest extends Model
 {
     protected $fillable = [
-        'contact_number',
-        'full_name',
-        'region',
-        'starting_amount',
+        'payload',
     ];
 
     protected $casts = [
-        'starting_amount' => 'decimal:2',
+        'payload' => 'array',
     ];
 }
