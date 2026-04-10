@@ -11,12 +11,11 @@ class CategoryController extends Controller
     public function show(Category $category): View
     {
         abort_unless($category->is_active, 404);
-        abort_unless(($category->source ?? Category::SOURCE_MANUAL) === Category::SOURCE_MANUAL, 404);
 
 
         $search = request('q');
 
-        $childrenBaseQuery = $category->children()->active()->manual();
+        $childrenBaseQuery = $category->children()->active();
         $hasChildren = $childrenBaseQuery->exists();
 
         $childrenQuery = (clone $childrenBaseQuery)
@@ -33,8 +32,7 @@ class CategoryController extends Controller
 
         if (! $hasChildren) {
             $services = $category->services()
-                ->manual()
-                // ->where('is_active', true) // Show all services including inactive
+                ->where('is_active', true)
                 ->when($search, fn ($query) => $query->where('name', 'like', "%{$search}%"))
                 ->with(['variants', 'category'])
                 ->orderBy('sort_order')
