@@ -45,8 +45,15 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        // Send OTP Email
-        \Illuminate\Support\Facades\Mail::to($user)->send(new \App\Mail\OtpMail($otp));
+        // Send OTP Email — catch transport errors so a broken SMTP config
+        // does not crash registration with a 500.
+        try {
+            \Illuminate\Support\Facades\Mail::to($user)->send(new \App\Mail\OtpMail($otp));
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('OTP mail failed: ' . $e->getMessage(), [
+                'user_id' => $user->id,
+            ]);
+        }
 
         // Set session to show OTP popup
         session(['show_otp_verify' => true]);
