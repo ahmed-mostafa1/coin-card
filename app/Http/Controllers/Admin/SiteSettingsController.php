@@ -33,7 +33,7 @@ class SiteSettingsController extends Controller
         $tickerText = SiteSetting::get('ticker_text', 'ملاحظة لأصحاب المحلات يرجى التواصل مع الإدارة للحصول على أسعار الجملة •');
         $tickerTextEn = SiteSetting::get('ticker_text_en', '');
         $logoType = SiteSetting::get('logo_type', 'text'); // 'text' or 'image'
-        $logoText = SiteSetting::get('logo_text', 'Sham Cash.in');
+        $logoText = SiteSetting::get('logo_text', 'S7SH.com|شحنك كاش.in');
         $logoImage = SiteSetting::get('logo_image', null);
         $youtubeLink = SiteSetting::get('youtube_link', '#');
         $aboutAr = SiteSetting::get('about_ar', '');
@@ -145,7 +145,7 @@ class SiteSettingsController extends Controller
         ]);
 
         SiteSetting::set('logo_type', $data['logo_type']);
-        SiteSetting::set('logo_text', $data['logo_text'] ?? 'Sham Cash.in');
+        SiteSetting::set('logo_text', $data['logo_text'] ?? 'S7SH.com|شحنك كاش.in');
 
         if ($data['logo_type'] === 'image' && $request->hasFile('logo_image')) {
             $oldLogoImage = SiteSetting::get('logo_image');

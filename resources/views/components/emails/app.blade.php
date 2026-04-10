@@ -7,7 +7,7 @@
     'actionUrl' => null,
     'helperText' => null,
     'fallbackUrl' => null,
-    'signatureName' => 'Sham Cash',
+    'signatureName' => 'S7SH.com|شحنك كاش',
     'arTitle' => null,
     'enTitle' => null,
     'arIntroLines' => null,

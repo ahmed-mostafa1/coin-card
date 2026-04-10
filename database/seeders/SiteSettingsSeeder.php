@@ -27,7 +27,7 @@ class SiteSettingsSeeder extends Seeder
             ],
             [
                 'key' => 'logo_text',
-                'value' => 'Sham Cash.in',
+                'value' => 'S7SH.com|شحنك كاش.in',
             ],
             [
                 'key' => 'logo_image',

@@ -300,9 +300,9 @@ Route::get('/debug/test-email', function () {
     }
 
     try {
-        \Illuminate\Support\Facades\Mail::raw('Test email from Sham Cash.in debug route.', function ($message) use ($user) {
+        \Illuminate\Support\Facades\Mail::raw('Test email from S7SH.com|شحنك كاش.in debug route.', function ($message) use ($user) {
             $message->to($user->email)
-                ->subject('Test Email - Sham Cash.in');
+                ->subject('Test Email - S7SH.com|شحنك كاش.in');
         });
         return 'Email sent to ' . $user->email;
     } catch (\Exception $e) {

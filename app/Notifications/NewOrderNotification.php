@@ -21,7 +21,7 @@ class NewOrderNotification extends Notification
      */
     public function toMail(object $notifiable): \Illuminate\Notifications\Messages\MailMessage
     {
-        $appName = config('app.name', 'Sham Cash.in');
+        $appName = config('app.name', 'S7SH.com|شحنك كاش.in');
         $subjectAr = __('messages.email_subjects.new_order_admin', ['app_name' => $appName], 'ar');
         $subjectEn = __('messages.email_subjects.new_order_admin', ['app_name' => $appName], 'en');
 
