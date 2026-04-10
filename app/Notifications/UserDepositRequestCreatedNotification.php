@@ -21,7 +21,7 @@ class UserDepositRequestCreatedNotification extends Notification
      */
     public function toMail(object $notifiable): \Illuminate\Notifications\Messages\MailMessage
     {
-        $appName = config('app.name', 'S7SH.com|شحنك كاش.in');
+        $appName = config('app.name', 'S7SH.com|شحنك شات.in');
         $subjectAr = __('messages.email_subjects.deposit_request_created_user', ['app_name' => $appName], 'ar');
         $subjectEn = __('messages.email_subjects.deposit_request_created_user', ['app_name' => $appName], 'en');
 

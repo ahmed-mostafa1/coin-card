@@ -1,7 +1,7 @@
 @php
     $routeName = request()->route()?->getName();
     // SEO title setting overrides logo text for meta purposes only
-    $siteName = trim(filled($sharedSeoTitle) ? $sharedSeoTitle : ($sharedLogoText ?: config('app.name', 'S7SH.com|شحنك كاش')));
+    $siteName = trim(filled($sharedSeoTitle) ? $sharedSeoTitle : ($sharedLogoText ?: config('app.name', 'S7SH.com|شحنك شات')));
 
     // Use the dedicated meta_description DB setting if set; fall back to store_description.
     $globalDescription = filled($sharedMetaDescription)

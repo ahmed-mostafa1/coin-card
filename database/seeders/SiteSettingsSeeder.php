@@ -27,7 +27,7 @@ class SiteSettingsSeeder extends Seeder
             ],
             [
                 'key' => 'logo_text',
-                'value' => 'S7SH.com|شحنك كاش.in',
+                'value' => 'S7SH.com|شحنك شات.in',
             ],
             [
                 'key' => 'logo_image',

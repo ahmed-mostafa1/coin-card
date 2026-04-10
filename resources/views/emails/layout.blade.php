@@ -1,5 +1,5 @@
 @php
-    $appName = config('app.name', 'S7SH.com|شحنك كاش');
+    $appName = config('app.name', 'S7SH.com|شحنك شات');
     $title = $title ?? $appName;
     $subtitle = $subtitle ?? null;
     $preheader = $preheader ?? strip_tags((string) $title);
@@ -213,7 +213,7 @@
     <div style="display:none;max-height:0;overflow:hidden;opacity:0;">{{ $preheader }}</div>
     <div class="email-shell">
         <div class="email-container">
-            <h1 class="brand">S7SH.com|شحنك كاش</h1>
+            <h1 class="brand">S7SH.com|شحنك شات</h1>
             <div class="card">
                 @if(!empty($title) || !empty($subtitle))
                     <div class="card-head">

@@ -7,7 +7,7 @@
     'actionUrl' => null,
     'helperText' => null,
     'fallbackUrl' => null,
-    'signatureName' => 'S7SH.com|شحنك كاش',
+    'signatureName' => 'S7SH.com|شحنك شات',
     'arTitle' => null,
     'enTitle' => null,
     'arIntroLines' => null,
