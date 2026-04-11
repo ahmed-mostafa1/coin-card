@@ -68,7 +68,13 @@
                         <td class="py-3 text-slate-500 dark:text-slate-400">{{ $service->category?->name }}</td>
                         <td class="py-3 text-slate-700 dark:text-white">{{ number_format($service->price, 2) }} USD</td>
                         <td class="py-3">
-                            <span class="rounded-full bg-slate-100 dark:bg-slate-700 px-3 py-1 text-xs text-slate-700 dark:text-slate-300">يدوي</span>
+                            @if (empty($service->source) || $service->source === 'manual')
+                                <span class="rounded-full bg-slate-100 dark:bg-slate-700 px-3 py-1 text-xs text-slate-700 dark:text-slate-300">يدوي</span>
+                            @else
+                                <span class="rounded-full bg-indigo-100 dark:bg-indigo-900/50 px-3 py-1 text-xs text-indigo-700 dark:text-indigo-400 font-medium">
+                                    {{ $service->source === 'dailycard' ? 'DailyCard' : ucfirst($service->source) }}
+                                </span>
+                            @endif
                         </td>
                         <td class="py-3">
                             @if ($service->is_active)
