@@ -5,7 +5,19 @@
 
 @section('content')
     <x-card :hover="false">
-        <x-page-header title="الطلبات" subtitle="متابعة طلبات الخدمات." />
+        <x-page-header title="الطلبات" subtitle="متابعة طلبات الخدمات.">
+            <x-slot:actions>
+                <form method="POST" action="{{ route('admin.orders.sync-all-providers') }}" onsubmit="return confirm('هل أنت متأكد من مزامنة جميع الطلبات المعلقة؟ قد يستغرق هذا بعض الوقت.')">
+                    @csrf
+                    <button type="submit" class="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-500">
+                        <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M15.312 11.424a5.5 5.5 0 01-9.201 2.466l-.312-.311h2.433a.75.75 0 000-1.5H3.989a.75.75 0 00-.75.75v4.242a.75.75 0 001.5 0v-2.665l.314.313a7 7 0 0011.712-3.138.75.75 0 00-1.453-.157zM4.688 8.576a5.5 5.5 0 019.201-2.466l.312.311H11.77a.75.75 0 000 1.5h4.243a.75.75 0 00.75-.75V2.929a.75.75 0 00-1.5 0v2.665l-.314-.313a7 7 0 00-11.712 3.138.75.75 0 001.453.157z" clip-rule="evenodd" />
+                        </svg>
+                        مزامنة المعلق
+                    </button>
+                </form>
+            </x-slot:actions>
+        </x-page-header>
 
         <form class="mt-6 flex flex-wrap gap-3" method="GET">
             <x-select name="status">

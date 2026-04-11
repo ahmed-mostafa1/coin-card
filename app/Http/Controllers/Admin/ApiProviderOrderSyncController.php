@@ -16,6 +16,56 @@ class ApiProviderOrderSyncController extends Controller
         private readonly OrderStatusService $orderStatusService
     ) {}
 
+    public function syncAllProcessingStatus(Request $request): RedirectResponse
+    {
+        $orders = Order::where('status', 'processing')
+                       ->whereNotNull('provider_transaction_id')
+                       ->with('service')
+                       ->get();
+
+        $totalChecked = 0;
+        $totalChanged = 0;
+        $totalFailed = 0;
+
+        foreach ($orders as $order) {
+            $orderService = $this->providerManager->forOrder($order);
+            if (! $orderService) {
+                continue;
+            }
+
+            $totalChecked++;
+            
+            try {
+                $sync = $orderService->syncStatus($order);
+                if (! ($sync['ok'] ?? false)) {
+                    $totalFailed++;
+                    continue;
+                }
+
+                $localStatus = $orderService->mapToLocalStatus($sync['execution_status'] ?? '');
+
+                if ($localStatus && ! in_array($order->status, [Order::STATUS_DONE, Order::STATUS_REJECTED], true)) {
+                    $this->orderStatusService->updateStatus(
+                        $order,
+                        $localStatus,
+                        'تم التحديث التلقائي الشامل من المزود: ' . ($sync['execution_status'] ?? ''),
+                        $request->user()
+                    );
+                }
+
+                if ($sync['changed'] ?? false) {
+                    $totalChanged++;
+                }
+
+            } catch (\Throwable $e) {
+                $totalFailed++;
+                \Illuminate\Support\Facades\Log::error('Bulk Sync Failed for order ' . $order->id, ['error' => $e->getMessage()]);
+            }
+        }
+
+        return back()->with('success', "تم فحص {$totalChecked} طلب(ات). تغيرت حالة {$totalChanged}، وفشل {$totalFailed}.");
+    }
+
     public function syncStatus(Order $order, Request $request): RedirectResponse
     {
         $orderService = $this->providerManager->forOrder($order);
