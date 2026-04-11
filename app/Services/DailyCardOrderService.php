@@ -22,40 +22,69 @@ class DailyCardOrderService
     {
         $service = $order->service;
 
-        if (! $service || $service->source !== Service::SOURCE_DAILYCARD) {
-            return ['ok' => false, 'error_message' => 'الطلب لا ينتمي لمزود DailyCard.'];
+        $isDailyCard = $service->source === Service::SOURCE_DAILYCARD
+            || ($service->provider_id !== null && str_contains(strtolower((string) $service->source), 'dailycard'))
+            || (optional($service->provider)->slug === 'daily-card');
+
+        if (! $service || ! $isDailyCard) {
+            $msg = 'الطلب لا ينتمي لمزود DailyCard.';
+            $order->update(['provider_execution_status' => 'failed', 'provider_replay' => $msg]);
+            return ['ok' => false, 'error_message' => $msg];
         }
 
         if (! $service->external_product_id) {
-            return ['ok' => false, 'error_message' => 'الخدمة غير مرتبطة بمنتج خارجي.'];
+            $msg = 'الخدمة غير مرتبطة بمنتج خارجي.';
+            $order->update(['provider_execution_status' => 'failed', 'provider_replay' => $msg]);
+            return ['ok' => false, 'error_message' => $msg];
         }
 
         $payload = $order->payload ?? [];
-        $accountId = $payload['customer_identifier'] ?? $order->customer_identifier ?? null;
-        $quantity  = isset($payload['external_amount']) && is_numeric($payload['external_amount'])
-            ? (int) $payload['external_amount']
-            : 1;
+        $accountId = $payload['account_id'] 
+            ?? $payload['customer_identifier'] 
+            ?? $payload['player_id'] 
+            ?? $payload['id']
+            ?? $order->customer_identifier 
+            ?? null;
+            
+        // Fallback: If no known key matches, pick the first scalar value
+        if (blank($accountId) && is_array($payload)) {
+            foreach ($payload as $val) {
+                if (is_scalar($val) && !blank($val)) {
+                    $accountId = $val;
+                    break;
+                }
+            }
+        }
+
+        $quantity = $payload['quantity'] ?? $payload['external_amount'] ?? 1;
+        if (!is_numeric($quantity) || $quantity < 1) {
+            $quantity = 1;
+        }
 
         if (blank($accountId)) {
-            return ['ok' => false, 'error_message' => 'معرف الحساب (account_id) مطلوب لإتمام الطلب.'];
+            $msg = 'معرف الحساب (account_id) مطلوب لإتمام الطلب.';
+            $order->update(['provider_execution_status' => 'failed', 'provider_replay' => $msg]);
+            return ['ok' => false, 'error_message' => $msg];
         }
 
         $apiPayload = [
             'product'         => (int) $service->external_product_id,
             'account_id'      => (string) $accountId,
-            'quantity'        => $quantity,
+            'quantity'        => (int) $quantity,
             'client_order_id' => 'COINCARD-' . $order->id,
         ];
 
         $result = $this->client->createOrder($apiPayload);
 
         if (! ($result['ok'] ?? false)) {
+            $msg = $result['error_message'] ?? 'فشل إرسال الطلب للمزود.';
             Log::error('DailyCard: failed to place order', [
                 'order_id'      => $order->id,
-                'error_message' => $result['error_message'] ?? null,
+                'error_message' => $msg,
             ]);
 
-            return ['ok' => false, 'error_message' => $result['error_message'] ?? 'فشل إرسال الطلب للمزود.'];
+            $order->update(['provider_execution_status' => 'failed', 'provider_replay' => $msg]);
+            return ['ok' => false, 'error_message' => $msg];
         }
 
         $data = $result['data'] ?? [];

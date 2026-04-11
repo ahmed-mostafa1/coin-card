@@ -29,7 +29,56 @@ AI rule: If any of these are missing, proceed with safe assumptions and request 
 
 ================================================
 
-you are a senior fullstack laravel developer and your task is 
-1- check attached image1 that is current navbar ui for loggedout user
-2- check attached image2 that is current navbar ui for logged in user
-give me suggestion to improve this to be more professional and if you have questions ask me then plan before any coding
+you are a senior fullstack laravel developer and your task is to diagnose and fix this bug
+when a user request or order an imported service it's stored sent to admin but it should be sent to the source of import 
+this is source api documentation for creating orders
+request: {
+  "product": "عدد صحيح (مطلوب) - معرف المنتج من /products/",
+  "account_id": "نص (مطلوب) - معرف اللاعب / الحساب للشحن",
+  "quantity": "عدد صحيح (اختياري) - الكمية (افتراضي: 1)",
+  "client_order_id": "نص (اختياري) - مرجع الطلب الداخلي الخاص بك (يجب أن يكون فريداً)",
+  "callback_url": "نص (اختياري) - تجاوز عنوان URL للاستدعاء الافتراضي لهذا الطلب"
+}
+response: {
+  "product": 245,
+  "product_name": "Bigo Live 100 Diamonds",
+  "product_type": "topup",
+  "product_image": "https://cdn.dailycard.shop/products/245.png",
+  "quantity": 1,
+  "total_price": "1.77",
+  "order_date": "2025-01-12T09:07:12.397Z",
+  "status": "pending",
+  "formatted_order_date": "12 Jan 2025, 09:07",
+  "params": {},
+  "transaction_id": "TXN-64AA12837",
+  "product_requirements_data": {},
+  "account_id": "1089066714",
+  "execution_time": null,
+  "execution_status": "processing",
+  "execution_start_time": "2025-01-12T09:07:12.397Z",
+  "execution_end_time": null,
+  "callback_url": "https://merchant.example.com/dailycard/callback",
+  "client_order_id": "ORDER-2025-0001",
+  "user_wallet": 1499,
+  "is_processing": true,
+  "replay": "Successful Recharge - NoNiNa 🐣🦆🐢"
+}
+example javascript code:fetch('https://dailycard.shop/UAPI/api-keys/orders/create/', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'X-API-Key': 'YOUR_API_KEY',
+    'X-API-Secret': 'YOUR_API_SECRET'
+  },
+  body: JSON.stringify({
+  "product": "عدد صحيح (مطلوب) - معرف المنتج من /products/",
+  "account_id": "نص (مطلوب) - معرف اللاعب / الحساب للشحن",
+  "quantity": "عدد صحيح (اختياري) - الكمية (افتراضي: 1)",
+  "client_order_id": "نص (اختياري) - مرجع الطلب الداخلي الخاص بك (يجب أن يكون فريداً)",
+  "callback_url": "نص (اختياري) - تجاوز عنوان URL للاستدعاء الافتراضي لهذا الطلب"
+})
+})
+.then(response => response.json())
+.then(data => console.log(data))
+.catch(error => console.error('Error:', error));
+give me suggestion to make it work corrrectly and if you have questions ask me then plan before any coding
