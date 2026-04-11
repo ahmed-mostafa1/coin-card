@@ -31,7 +31,7 @@
                 <tbody class="divide-y divide-slate-100">
                     @forelse ($deposits as $deposit)
                         <tr class="transition hover:bg-slate-50">
-                            <td class="py-3 text-slate-700">{{ $deposit->paymentMethod->name }}</td>
+                            <td class="py-3 text-slate-700">{{ $deposit->paymentMethod?->name ?? 'طريقة محذوفة' }}</td>
                             <td class="py-3 text-slate-700">{{ number_format($deposit->user_amount, 2) }} USD</td>
                             <td class="py-3 text-slate-700">
                                 @if ($deposit->approved_amount)

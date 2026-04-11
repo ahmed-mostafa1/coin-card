@@ -38,8 +38,8 @@
                 <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
                     @forelse ($deposits as $deposit)
                         <tr class="transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
-                            <td class="py-3 text-slate-700 dark:text-white">{{ $deposit->user->name }}<div class="text-xs text-slate-500 dark:text-slate-400">{{ $deposit->user->email }}</div></td>
-                            <td class="py-3 text-slate-700 dark:text-white">{{ $deposit->paymentMethod->name }}</td>
+                            <td class="py-3 text-slate-700 dark:text-white">{{ $deposit->user?->name ?? 'مستخدم محذوف' }}<div class="text-xs text-slate-500 dark:text-slate-400">{{ $deposit->user?->email }}</div></td>
+                            <td class="py-3 text-slate-700 dark:text-white">{{ $deposit->paymentMethod?->name ?? 'طريقة محذوفة' }}</td>
                             <td class="py-3 text-slate-700 dark:text-white">{{ number_format($deposit->user_amount, 2) }} USD</td>
                             <td class="py-3">
                                 @if ($deposit->status === 'pending')

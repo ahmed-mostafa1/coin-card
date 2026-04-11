@@ -81,7 +81,7 @@
                                     {{ $deposit->user?->name ?? 'مستخدم محذوف' }}
                                     <div class="text-xs text-slate-500 dark:text-slate-400">{{ $deposit->user?->email }}</div>
                                 </td>
-                                <td class="py-3 text-slate-700 dark:text-slate-300" data-label="الطريقة">{{ $deposit->paymentMethod->name }}</td>
+                                <td class="py-3 text-slate-700 dark:text-slate-300" data-label="الطريقة">{{ $deposit->paymentMethod?->name ?? 'طريقة محذوفة' }}</td>
                                 <td class="py-3 text-slate-700 dark:text-slate-300" data-label="المبلغ">{{ number_format($deposit->user_amount, 2) }} USD</td>
                                 <td class="py-3" data-label="الحالة">
                                     @if ($deposit->status === 'pending')

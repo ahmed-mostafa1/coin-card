@@ -16,12 +16,12 @@
             <div class="mt-6 grid gap-4 sm:grid-cols-2">
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4">
                     <p class="text-xs text-slate-500">المستخدم</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ $depositRequest->user->name }}</p>
-                    <p class="text-xs text-slate-500">{{ $depositRequest->user->email }}</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ $depositRequest->user?->name ?? 'مستخدم محذوف' }}</p>
+                    <p class="text-xs text-slate-500">{{ $depositRequest->user?->email }}</p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4">
                     <p class="text-xs text-slate-500">طريقة الدفع</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ $depositRequest->paymentMethod->name }}</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ $depositRequest->paymentMethod?->name ?? 'طريقة محذوفة' }}</p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4">
                     <p class="text-xs text-slate-500">المبلغ المطلوب</p>
@@ -48,7 +48,7 @@
             </div>
 
 
-            @if ($depositRequest->paymentMethod->fields->isNotEmpty())
+            @if ($depositRequest->paymentMethod && $depositRequest->paymentMethod->fields->isNotEmpty())
                 <div class="mt-6 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4">
                     <p class="text-xs text-slate-500">{{ __('messages.additional_details_label') }}</p>
                     <div class="mt-3 space-y-2 text-sm text-slate-700">
