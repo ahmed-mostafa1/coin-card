@@ -52,8 +52,8 @@
                 <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
                     @forelse ($orders as $order)
                         <tr class="transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
-                            <td class="py-3 text-slate-700 dark:text-white">{{ $order->user->name }}<div class="text-xs text-slate-500 dark:text-slate-400">{{ $order->user->email }}</div></td>
-                            <td class="py-3 text-slate-700 dark:text-white">{{ $order->service->name }}</td>
+                            <td class="py-3 text-slate-700 dark:text-white">{{ $order->user?->name ?? 'مستخدم محذوف' }}<div class="text-xs text-slate-500 dark:text-slate-400">{{ $order->user?->email }}</div></td>
+                            <td class="py-3 text-slate-700 dark:text-white">{{ $order->service?->name ?? 'خدمة محذوفة' }}</td>
                             <td class="py-3 text-slate-700 dark:text-white">{{ number_format($order->price_at_purchase, 2) }} USD</td>
                             <td class="py-3">
                                 @if ($order->status === 'new')

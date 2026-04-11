@@ -78,8 +78,8 @@
                             <tr class="transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
                                 <td class="py-3 text-slate-500 dark:text-slate-400" data-label="رقم الطلب">#{{ $deposit->id }}</td>
                                 <td class="py-3 text-slate-700 dark:text-slate-300" data-label="المستخدم">
-                                    {{ $deposit->user->name }}
-                                    <div class="text-xs text-slate-500 dark:text-slate-400">{{ $deposit->user->email }}</div>
+                                    {{ $deposit->user?->name ?? 'مستخدم محذوف' }}
+                                    <div class="text-xs text-slate-500 dark:text-slate-400">{{ $deposit->user?->email }}</div>
                                 </td>
                                 <td class="py-3 text-slate-700 dark:text-slate-300" data-label="الطريقة">{{ $deposit->paymentMethod->name }}</td>
                                 <td class="py-3 text-slate-700 dark:text-slate-300" data-label="المبلغ">{{ number_format($deposit->user_amount, 2) }} USD</td>
@@ -138,10 +138,10 @@
                             <tr class="transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
                                 <td class="py-3 text-slate-500 dark:text-slate-400" data-label="رقم الطلب">#{{ $order->id }}</td>
                                 <td class="py-3 text-slate-700 dark:text-slate-300" data-label="المستخدم">
-                                    {{ $order->user->name }}
-                                    <div class="text-xs text-slate-500 dark:text-slate-400">{{ $order->user->email }}</div>
+                                    {{ $order->user?->name ?? 'مستخدم محذوف' }}
+                                    <div class="text-xs text-slate-500 dark:text-slate-400">{{ $order->user?->email }}</div>
                                 </td>
-                                <td class="py-3 text-slate-700 dark:text-slate-300" data-label="الخدمة">{{ $order->service->name }}</td>
+                                <td class="py-3 text-slate-700 dark:text-slate-300" data-label="الخدمة">{{ $order->service?->name ?? 'خدمة محذوفة' }}</td>
                                 <td class="py-3 text-slate-700 dark:text-slate-300" data-label="الباقة">{{ $order->variant?->name ?? '-' }}</td>
                                 <td class="py-3 text-slate-700 dark:text-slate-300" data-label="المبلغ المعلّق">{{ number_format($order->amount_held, 2) }} USD</td>
                                 <td class="py-3" data-label="الحالة">
