@@ -37,8 +37,7 @@ class OrderController extends Controller
             'variant',
             'events' => fn ($query) => $query->oldest()->with('actor'),
         ]);
-        $fieldLabels = $order->service->formFields
-            ->pluck('label', 'name_key')
+        $fieldLabels = ($order->service ? $order->service->formFields->pluck('label', 'name_key') : collect())
             ->merge([
                 'offer_image_path' => __('messages.offer_image'),
                 'offer_amount' => __('messages.offer_amount_label'),
