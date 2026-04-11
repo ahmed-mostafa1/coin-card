@@ -176,6 +176,13 @@
                                                 <input type="hidden" name="status" value="rejected" />
                                                 <button type="submit" class="text-rose-700 dark:text-rose-400 hover:text-rose-900 dark:hover:text-rose-300">رفض</button>
                                             </form>
+                                            
+                                            @if ($order->service && $order->service->source === \App\Models\Service::SOURCE_DAILYCARD)
+                                                <form method="POST" action="{{ route('admin.orders.sync-provider', $order) }}" title="تحديث الحالة من المزود">
+                                                    @csrf
+                                                    <button type="submit" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">مزامنة</button>
+                                                </form>
+                                            @endif
                                         @endif
                                     </div>
                                 </td>

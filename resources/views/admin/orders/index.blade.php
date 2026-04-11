@@ -58,7 +58,16 @@
                             </td>
                             <td class="py-3 text-slate-500 dark:text-slate-400">{{ $order->created_at->format('Y-m-d') }}</td>
                             <td class="py-3">
-                                <a href="{{ route('admin.orders.show', $order) }}" class="text-emerald-700 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">عرض</a>
+                                <div class="flex flex-wrap gap-3 items-center text-sm">
+                                    <a href="{{ route('admin.orders.show', $order) }}" class="text-emerald-700 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">عرض</a>
+                                    
+                                    @if ($order->service && $order->service->source === \App\Models\Service::SOURCE_DAILYCARD && $order->status === 'processing')
+                                        <form method="POST" action="{{ route('admin.orders.sync-provider', $order) }}" title="تحديث الحالة من المزود">
+                                            @csrf
+                                            <button type="submit" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">مزامنة</button>
+                                        </form>
+                                    @endif
+                                </div>
                             </td>
                         </tr>
                     @empty
