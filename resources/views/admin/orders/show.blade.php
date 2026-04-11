@@ -8,7 +8,7 @@
             <div class="flex items-center justify-between gap-4">
                 <div>
                     <h1 class="text-2xl font-semibold text-emerald-700 dark:text-emerald-400">طلب #{{ $order->id }}</h1>
-                    <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">{{ $order->service->name }}</p>
+                    <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">{{ $order->service?->name ?? 'خدمة محذوفة' }}</p>
                 </div>
                 <a href="{{ route('admin.orders.index') }}" class="text-sm text-emerald-700 dark:text-emerald-400">عودة للقائمة</a>
             </div>
@@ -16,8 +16,8 @@
             <div class="mt-6 grid gap-4 sm:grid-cols-2">
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 p-4">
                     <p class="text-xs text-slate-500 dark:text-slate-400">المستخدم</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-700 dark:text-slate-200">{{ $order->user->name }}</p>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">{{ $order->user->email }}</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-700 dark:text-slate-200">{{ $order->user?->name ?? 'مستخدم محذوف' }}</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">{{ $order->user?->email }}</p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 p-4">
                     <p class="text-xs text-slate-500 dark:text-slate-400">السعر</p>
