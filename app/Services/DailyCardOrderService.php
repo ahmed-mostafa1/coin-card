@@ -72,6 +72,7 @@ class DailyCardOrderService
             'account_id'      => (string) $accountId,
             'quantity'        => (int) $quantity,
             'client_order_id' => 'COINCARD-' . $order->id,
+            'callback_url'    => route('api.dailycard.webhook'),
         ];
 
         $result = $this->client->createOrder($apiPayload);
