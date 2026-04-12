@@ -141,7 +141,7 @@ class DailyCardOrderService
     /**
      * Map DailyCard execution_status / order status to local order status.
      */
-    public function mapToLocalStatus(string $executionStatus, string $providerStatus): ?string
+    public function mapToLocalStatus(string $executionStatus, string $providerStatus = ''): ?string
     {
         if (in_array($executionStatus, ['success', 'completed', 'done'], true)
             || in_array($providerStatus, ['completed'], true)) {
