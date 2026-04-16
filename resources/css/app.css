@@ -614,7 +614,7 @@
     }
 
     .home-hero-card__image {
-        @apply h-full w-full object-contain object-center;
+        @apply h-full w-full object-cover object-center;
     }
 
     .home-hero-card__chrome {

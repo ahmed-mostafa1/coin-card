@@ -119,9 +119,9 @@
             </div>
         @else
             <div class="w-full px-3">
-                <div class="grid gap-2 sm:gap-3 grid-cols-2 lg:grid-cols-4" data-filter-list="products">
+                <div class="grid gap-2.5 sm:gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" data-filter-list="products">
                     @forelse ($services as $service)
-                        <x-store.product-card :service="$service" searchTarget="products" />
+                        <x-store.product-card :service="$service" searchTarget="products" layout="category" />
                     @empty
                         <x-empty-state :message="__('messages.no_services_available')" class="col-span-full" />
                     @endforelse

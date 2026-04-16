@@ -18,22 +18,23 @@
     $image = $service->image_path ? asset('storage/' . $service->image_path) : null;
     $subtitle ??= $service->category->localized_name ?? '';
     $isFeatureLayout = $layout === 'feature';
+    $isCategoryLayout = $layout === 'category';
 @endphp
 
 <a href="{{ $service->is_active ? ($href ?? route('services.show', $service->slug)) : '#' }}"
-    class="group relative block overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 {{ $isFeatureLayout ? 'bg-slate-800 shadow-md hover:shadow-lg' : 'bg-white dark:bg-slate-800 shadow-sm hover:shadow-md' }} transition-all duration-200 hover:-translate-y-0.5 {{ !$service->is_active ? 'opacity-70 grayscale cursor-not-allowed' : '' }}"
+    class="group relative block overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 {{ $isFeatureLayout || $isCategoryLayout ? 'bg-slate-800 shadow-md hover:shadow-lg' : 'bg-white dark:bg-slate-800 shadow-sm hover:shadow-md' }} transition-all duration-200 hover:-translate-y-0.5 {{ !$service->is_active ? 'opacity-70 grayscale cursor-not-allowed' : '' }}"
     data-filter-item="{{ $searchTarget }}"
     data-filter-name="{{ $service->localized_name }}"
     data-filter-alt="{{ $subtitle }}">
 
-    <div class="aspect-square w-full overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800">
+    <div class="{{ $isCategoryLayout ? 'aspect-square' : 'aspect-square' }} w-full overflow-hidden {{ $isCategoryLayout ? '' : 'bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800' }}">
         @if ($image)
             <img src="{{ $image }}"
                  alt="{{ $service->localized_name }}"
                  class="h-full w-full object-cover transition duration-300 group-hover:scale-105">
         @else
-            <div class="flex h-full w-full items-center justify-center">
-                <i class="fa-solid fa-box text-3xl text-slate-300 dark:text-slate-600"></i>
+            <div class="flex h-full w-full items-center justify-center {{ $isCategoryLayout ? 'bg-gradient-to-br from-slate-700 to-slate-900' : '' }}">
+                <i class="fa-solid fa-box text-3xl {{ $isCategoryLayout ? 'text-slate-400' : 'text-slate-300 dark:text-slate-600' }}"></i>
             </div>
         @endif
 
@@ -46,13 +47,13 @@
         @endif
     </div>
 
-    @if ($isFeatureLayout)
+    @if ($isFeatureLayout || $isCategoryLayout)
         <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent"></div>
 
         <div class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 px-3 pb-2.5 pt-6">
             <div class="min-w-0">
                 <span class="block text-sm font-bold leading-tight text-white drop-shadow line-clamp-2">{{ $service->localized_name }}</span>
-                @if ($subtitle)
+                @if ($subtitle && $isFeatureLayout)
                     <span class="mt-1 block truncate text-[11px] text-white/75">{{ $subtitle }}</span>
                 @endif
             </div>
