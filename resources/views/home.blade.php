@@ -141,7 +141,7 @@
     @endauth
 
     <div class="home-scene space-y-5 sm:space-y-8">
-        <section class="home-hero -mx-4 sm:mx-0">
+        <section class="home-hero" style="width: 100vw; margin-inline: calc(50% - 50vw);">
 
             <div class="home-hero__visual">
                 <div class="home-hero-card"
@@ -150,7 +150,7 @@
                      @mouseenter="stop()"
                      @mouseleave="start()"
                      :style="`--home-hero-ratio: ${heroRatio}`">
-                    <div class="home-hero-card__media min-h-[18rem] rounded-none sm:rounded-[2rem] lg:max-h-[23rem]">
+                    <div class="home-hero-card__media min-h-[18rem] rounded-none lg:max-h-[23rem]">
                         @if(!empty($heroSlides))
                             <div class="home-hero-card__chrome">
                                 <span class="home-hero-card__badge">
