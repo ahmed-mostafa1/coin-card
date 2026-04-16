@@ -141,7 +141,7 @@
     @endauth
 
     <div class="home-scene space-y-5 sm:space-y-8">
-        <section class="home-hero">
+        <section class="home-hero -mx-4 sm:mx-0">
 
             <div class="home-hero__visual">
                 <div class="home-hero-card"
@@ -150,7 +150,7 @@
                      @mouseenter="stop()"
                      @mouseleave="start()"
                      :style="`--home-hero-ratio: ${heroRatio}`">
-                    <div class="home-hero-card__media">
+                    <div class="home-hero-card__media min-h-[18rem] rounded-none sm:rounded-[2rem] lg:max-h-[23rem]">
                         @if(!empty($heroSlides))
                             <div class="home-hero-card__chrome">
                                 <span class="home-hero-card__badge">
@@ -394,9 +394,8 @@
                     {{ app()->getLocale() === 'ar' ? 'للبيع بالجملة والطلبات الخاصة' : 'For wholesale and special requests' }}
                 </span>
                 <h2 class="mt-4 text-2xl font-black text-slate-900 dark:text-white">
-                    {{ app()->getLocale() === 'ar' ? 'هل تمتلك متجر ؟ تواصل معنا الآن للحصول على عروض الجملة الحصرية' : 'Own a shop ? Contact us now to get exclusive wholesale offers' }}
+                    {{ app()->getLocale() === 'ar' ? 'تمتلك متجر أو تعمل في البيع ؟ تواصل معنا الآن للانضمام الى فريق شحنك شات | S7SH 🔥' : 'Own a shop ? Contact us now to get exclusive wholesale offers' }}
                 </h2>
-                <p class="mt-3 max-w-2xl text-sm leading-7 text-slate-600 dark:text-slate-300">{{ __('messages.wholesale_notice') }}</p>
             </div>
 
             <div class="flex flex-wrap gap-3">

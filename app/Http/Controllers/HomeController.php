@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Models\SiteSetting;
 use App\Models\Service;
+use App\Models\SiteSetting;
 use Illuminate\View\View;
 
 class HomeController extends Controller
@@ -55,15 +55,17 @@ class HomeController extends Controller
                 $query->active();
             });
 
+        $featuredServicesLimit = 4;
+
         $featuredServices = (clone $servicesQuery)
             ->where('is_featured', true)
             ->orderByDesc('is_offer_active')
             ->orderBy('sort_order')
             ->orderBy('name')
-            ->limit(6)
+            ->limit($featuredServicesLimit)
             ->get();
 
-        if ($featuredServices->count() < 6) {
+        if ($featuredServices->count() < $featuredServicesLimit) {
             $featuredServices = $featuredServices->concat(
                 (clone $servicesQuery)
                     ->when(
@@ -73,7 +75,7 @@ class HomeController extends Controller
                     ->orderByDesc('is_offer_active')
                     ->orderBy('sort_order')
                     ->orderBy('name')
-                    ->limit(6 - $featuredServices->count())
+                    ->limit($featuredServicesLimit - $featuredServices->count())
                     ->get()
             );
         }

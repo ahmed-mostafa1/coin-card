@@ -83,26 +83,20 @@
             </p>
 
             <div class="mt-6 space-y-3">
-                @if (!empty($sharedWhatsappLink) && $sharedWhatsappLink !== '#')
+                @if (($sharedWhatsappEnabled ?? '0') === '1' && !empty($sharedWhatsappLink) && $sharedWhatsappLink !== '#')
                     <a href="{{ $sharedWhatsappLink }}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm font-medium text-slate-700 transition hover:border-emerald-300 hover:bg-white dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:border-emerald-600">
                         <span>{{ __('messages.contact_whatsapp') }}</span>
                         <i class="fa-brands fa-whatsapp text-lg text-green-500"></i>
                     </a>
                 @endif
 
-                @if (!empty($sharedTelegramLink) && $sharedTelegramLink !== '#')
+                @if (($sharedTelegramEnabled ?? '0') === '1' && !empty($sharedTelegramLink) && $sharedTelegramLink !== '#')
                     <a href="{{ $sharedTelegramLink }}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm font-medium text-slate-700 transition hover:border-emerald-300 hover:bg-white dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:border-emerald-600">
                         <span>Telegram</span>
                         <i class="fa-brands fa-telegram text-lg text-sky-500"></i>
                     </a>
                 @endif
 
-                @if (!empty($sharedInstagramLink) && $sharedInstagramLink !== '#')
-                    <a href="{{ $sharedInstagramLink }}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm font-medium text-slate-700 transition hover:border-emerald-300 hover:bg-white dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:border-emerald-600">
-                        <span>Instagram</span>
-                        <i class="fa-brands fa-instagram text-lg text-pink-500"></i>
-                    </a>
-                @endif
             </div>
         </x-card>
     </div>

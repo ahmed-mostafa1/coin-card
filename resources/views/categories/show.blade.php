@@ -108,7 +108,7 @@
 
         @if ($hasChildren)
             <div class="w-full px-3">
-                <div class="grid gap-2.5 sm:gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" data-filter-list="subcategories">
+                <div class="grid gap-2.5 sm:gap-3 grid-cols-2 lg:grid-cols-4" data-filter-list="subcategories">
                     @forelse ($subcategories as $sub)
                         <x-store.category-card :title="$sub->localized_name" :href="route('categories.show', $sub->slug)"
                             :image="$sub->image_path ? asset('storage/' . $sub->image_path) : null" searchTarget="subcategories" />
@@ -119,7 +119,7 @@
             </div>
         @else
             <div class="w-full px-3">
-                <div class="grid gap-2 sm:gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5" data-filter-list="products">
+                <div class="grid gap-2 sm:gap-3 grid-cols-2 lg:grid-cols-4" data-filter-list="products">
                     @forelse ($services as $service)
                         <x-store.product-card :service="$service" searchTarget="products" />
                     @empty

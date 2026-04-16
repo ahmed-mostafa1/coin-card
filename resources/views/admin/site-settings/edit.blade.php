@@ -206,60 +206,49 @@
                 <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-6 pb-2 border-b border-slate-100 dark:border-slate-700">وسائل التواصل الاجتماعي</h2>
                 
                 <div class="grid gap-6 md:grid-cols-2">
-                    <div>
-                        <x-input-label for="whatsapp_link" value="رابط واتساب" />
-                        <div class="relative mt-1 rounded-md shadow-sm">
-                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                <i class="fa-brands fa-whatsapp text-slate-400"></i>
+                    @foreach ([
+                        ['key' => 'facebook', 'label' => 'فيسبوك', 'icon' => 'fa-facebook', 'link' => $facebookLink, 'enabled' => $facebookEnabled],
+                        ['key' => 'telegram', 'label' => 'تيليغرام', 'icon' => 'fa-telegram', 'link' => $telegramLink, 'enabled' => $telegramEnabled],
+                        ['key' => 'youtube', 'label' => 'يوتيوب', 'icon' => 'fa-youtube', 'link' => $youtubeLink, 'enabled' => $youtubeEnabled],
+                        ['key' => 'whatsapp', 'label' => 'واتساب', 'icon' => 'fa-whatsapp', 'link' => $whatsappLink, 'enabled' => $whatsappEnabled],
+                        ['key' => 'tiktok', 'label' => 'تيك توك', 'icon' => 'fa-tiktok', 'link' => $tiktokLink, 'enabled' => $tiktokEnabled],
+                    ] as $social)
+                        <div class="rounded-2xl border border-slate-200 p-4 dark:border-slate-700">
+                            <div class="flex items-center justify-between gap-3">
+                                <div class="flex items-center gap-3">
+                                    <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-200">
+                                        <i class="fa-brands {{ $social['icon'] }}"></i>
+                                    </span>
+                                    <div>
+                                        <h3 class="font-semibold text-slate-800 dark:text-slate-200">{{ $social['label'] }}</h3>
+                                        <p class="text-xs text-slate-500 dark:text-slate-400">رابط + تفعيل للظهور في الفوتر.</p>
+                                    </div>
+                                </div>
+                                <label class="inline-flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300">
+                                    <input type="checkbox"
+                                           name="{{ $social['key'] }}_enabled"
+                                           value="1"
+                                           class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 dark:border-slate-600 dark:bg-slate-700"
+                                           @checked(old($social['key'].'_enabled', $social['enabled']) == '1')>
+                                    <span>مفعّل</span>
+                                </label>
                             </div>
-                            <x-text-input id="whatsapp_link" name="whatsapp_link" type="text" :value="old('whatsapp_link', $whatsappLink)" class="pl-10 text-left" dir="ltr" placeholder="https://wa.me/..." />
-                        </div>
-                        <x-input-error :messages="$errors->get('whatsapp_link')" />
-                    </div>
 
-                    <div>
-                        <x-input-label for="instagram_link" value="رابط انستغرام" />
-                        <div class="relative mt-1 rounded-md shadow-sm">
-                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                <i class="fa-brands fa-instagram text-slate-400"></i>
+                            <div class="relative mt-4 rounded-md shadow-sm">
+                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                    <i class="fa-brands {{ $social['icon'] }} text-slate-400"></i>
+                                </div>
+                                <x-text-input id="{{ $social['key'] }}_link"
+                                              name="{{ $social['key'] }}_link"
+                                              type="text"
+                                              :value="old($social['key'].'_link', $social['link'])"
+                                              class="pl-10 text-left"
+                                              dir="ltr"
+                                              placeholder="https://" />
                             </div>
-                            <x-text-input id="instagram_link" name="instagram_link" type="text" :value="old('instagram_link', $instagramLink)" class="pl-10 text-left" dir="ltr" />
+                            <x-input-error :messages="$errors->get($social['key'].'_link')" />
                         </div>
-                        <x-input-error :messages="$errors->get('instagram_link')" />
-                    </div>
-
-                    <div>
-                        <x-input-label for="telegram_link" value="رابط تيليغرام" />
-                        <div class="relative mt-1 rounded-md shadow-sm">
-                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                <i class="fa-brands fa-telegram text-slate-400"></i>
-                            </div>
-                            <x-text-input id="telegram_link" name="telegram_link" type="text" :value="old('telegram_link', $telegramLink)" class="pl-10 text-left" dir="ltr" />
-                        </div>
-                        <x-input-error :messages="$errors->get('telegram_link')" />
-                    </div>
-
-                    <div>
-                        <x-input-label for="facebook_link" value="رابط فيسبوك" />
-                        <div class="relative mt-1 rounded-md shadow-sm">
-                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                <i class="fa-brands fa-facebook text-slate-400"></i>
-                            </div>
-                            <x-text-input id="facebook_link" name="facebook_link" type="text" :value="old('facebook_link', $facebookLink)" class="pl-10 text-left" dir="ltr" />
-                        </div>
-                        <x-input-error :messages="$errors->get('facebook_link')" />
-                    </div>
-                    
-                    <div>
-                        <x-input-label for="youtube_link" value="رابط يوتيوب" />
-                        <div class="relative mt-1 rounded-md shadow-sm">
-                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                <i class="fa-brands fa-youtube text-slate-400"></i>
-                            </div>
-                            <x-text-input id="youtube_link" name="youtube_link" type="text" :value="old('youtube_link', $youtubeLink)" class="pl-10 text-left" dir="ltr" />
-                        </div>
-                        <x-input-error :messages="$errors->get('youtube_link')" />
-                    </div>
+                    @endforeach
                 </div>
 
                 <div class="mt-6 flex justify-end">

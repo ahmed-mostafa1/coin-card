@@ -33,14 +33,14 @@ class AppServiceProvider extends ServiceProvider
             });
 
             $sharedTickerText = Cache::remember('shared_ticker', 300, fn () => SiteSetting::get('ticker_text', 'ملاحظة لأصحاب المحلات يرجى التواصل مع الإدارة للحصول على أسعار الجملة •'));
-            
+
             $sharedLogoType = Cache::remember('shared_logo_type', 300, fn () => SiteSetting::get('logo_type', 'text'));
             $sharedLogoText = Cache::remember('shared_logo_text', 300, fn () => SiteSetting::get('logo_text', 'S7SH.com|شحنك شات.in'));
             $sharedLogoImage = Cache::remember('shared_logo_image', 300, fn () => SiteSetting::get('logo_image', null));
             $sharedYoutubeLink = Cache::remember('shared_youtube_link', 300, fn () => SiteSetting::get('youtube_link', '#'));
             $sharedStoreDescription = Cache::remember('shared_store_description', 300, fn () => SiteSetting::get('store_description', 'متجر عربي متخصص في بيع بطاقات الألعاب والخدمات الرقمية بأسعار تنافسية وجودة عالية. نحن نقدم خدمة سريعة وموثوقة لجميع عملائنا. للاستفسارات أو الدعم، يرجى'));
             $sharedStoreDescriptionEn = Cache::remember('shared_store_description_en', 300, fn () => SiteSetting::get('store_description_en', ''));
-            
+
             $activePopups = Cache::remember('active_popups', 300, function () {
                 return \App\Models\Popup::where('is_active', true)
                     ->orderBy('display_order')
@@ -49,12 +49,17 @@ class AppServiceProvider extends ServiceProvider
             });
 
             $sharedTickerTextEn = Cache::remember('shared_ticker_en', 300, fn () => SiteSetting::get('ticker_text_en', ''));
-            
+
             $sharedWhatsappLink = Cache::remember('shared_whatsapp_link', 300, fn () => SiteSetting::get('whatsapp_link', 'https://wa.me/963991195136'));
-            $sharedInstagramLink = Cache::remember('shared_instagram_link', 300, fn () => SiteSetting::get('instagram_link', '#'));
+            $sharedWhatsappEnabled = Cache::remember('shared_whatsapp_enabled', 300, fn () => SiteSetting::get('whatsapp_enabled', '1'));
             $sharedTelegramLink = Cache::remember('shared_telegram_link', 300, fn () => SiteSetting::get('telegram_link', '#'));
+            $sharedTelegramEnabled = Cache::remember('shared_telegram_enabled', 300, fn () => SiteSetting::get('telegram_enabled', '1'));
             $sharedFacebookLink = Cache::remember('shared_facebook_link', 300, fn () => SiteSetting::get('facebook_link', '#'));
-            
+            $sharedFacebookEnabled = Cache::remember('shared_facebook_enabled', 300, fn () => SiteSetting::get('facebook_enabled', '1'));
+            $sharedYoutubeEnabled = Cache::remember('shared_youtube_enabled', 300, fn () => SiteSetting::get('youtube_enabled', '1'));
+            $sharedTiktokLink = Cache::remember('shared_tiktok_link', 300, fn () => SiteSetting::get('tiktok_link', '#'));
+            $sharedTiktokEnabled = Cache::remember('shared_tiktok_enabled', 300, fn () => SiteSetting::get('tiktok_enabled', '1'));
+
             $sharedAboutAr = Cache::remember('shared_about_ar', 300, fn () => SiteSetting::get('about_ar', ''));
             $sharedAboutEn = Cache::remember('shared_about_en', 300, fn () => SiteSetting::get('about_en', ''));
             $sharedPrivacyAr = Cache::remember('shared_privacy_ar', 300, fn () => SiteSetting::get('privacy_ar', ''));
@@ -63,13 +68,13 @@ class AppServiceProvider extends ServiceProvider
             $sharedTermsEn = Cache::remember('shared_terms_en', 300, fn () => SiteSetting::get('terms_en', ''));
 
             // SEO & Ads
-            $sharedSeoTitle        = Cache::remember('shared_seo_title',        300, fn () => SiteSetting::get('seo_title', ''));
+            $sharedSeoTitle = Cache::remember('shared_seo_title', 300, fn () => SiteSetting::get('seo_title', ''));
             $sharedMetaDescription = Cache::remember('shared_meta_description', 300, fn () => SiteSetting::get('meta_description', ''));
-            $sharedMetaKeywords    = Cache::remember('shared_meta_keywords',    300, fn () => SiteSetting::get('meta_keywords', ''));
-            $sharedFbPixelId       = Cache::remember('shared_fb_pixel_id',      300, fn () => SiteSetting::get('fb_pixel_id', ''));
-            $sharedGaId            = Cache::remember('shared_ga_id',            300, fn () => SiteSetting::get('ga_id', ''));
-            $sharedHeadScripts     = Cache::remember('shared_head_scripts',      300, fn () => SiteSetting::get('head_scripts', ''));
-            $sharedBodyScripts     = Cache::remember('shared_body_scripts',      300, fn () => SiteSetting::get('body_scripts', ''));
+            $sharedMetaKeywords = Cache::remember('shared_meta_keywords', 300, fn () => SiteSetting::get('meta_keywords', ''));
+            $sharedFbPixelId = Cache::remember('shared_fb_pixel_id', 300, fn () => SiteSetting::get('fb_pixel_id', ''));
+            $sharedGaId = Cache::remember('shared_ga_id', 300, fn () => SiteSetting::get('ga_id', ''));
+            $sharedHeadScripts = Cache::remember('shared_head_scripts', 300, fn () => SiteSetting::get('head_scripts', ''));
+            $sharedBodyScripts = Cache::remember('shared_body_scripts', 300, fn () => SiteSetting::get('body_scripts', ''));
         } catch (\Throwable $e) {
             $sharedBanners = collect();
             $sharedTickerText = 'ملاحظة لأصحاب المحلات يرجى التواصل مع الإدارة للحصول على أسعار الجملة •';
@@ -81,12 +86,16 @@ class AppServiceProvider extends ServiceProvider
             $activePopups = collect();
             $sharedTickerTextEn = '';
             $sharedWhatsappLink = 'https://wa.me/963991195136';
-            $sharedInstagramLink = '#';
+            $sharedWhatsappEnabled = '1';
             $sharedTelegramLink = '#';
+            $sharedTelegramEnabled = '1';
             $sharedFacebookLink = '#';
-            
+            $sharedFacebookEnabled = '1';
+            $sharedYoutubeEnabled = '1';
+            $sharedTiktokLink = '#';
+            $sharedTiktokEnabled = '1';
+
             $sharedStoreDescriptionEn = '';
-            $sharedWhatsappNumber = '';
             $sharedAboutAr = '';
             $sharedAboutEn = '';
             $sharedPrivacyAr = '';
@@ -95,13 +104,13 @@ class AppServiceProvider extends ServiceProvider
             $sharedTermsEn = '';
 
             // SEO & Ads
-            $sharedSeoTitle        = '';
+            $sharedSeoTitle = '';
             $sharedMetaDescription = '';
-            $sharedMetaKeywords    = '';
-            $sharedFbPixelId       = '';
-            $sharedGaId            = '';
-            $sharedHeadScripts     = '';
-            $sharedBodyScripts     = '';
+            $sharedMetaKeywords = '';
+            $sharedFbPixelId = '';
+            $sharedGaId = '';
+            $sharedHeadScripts = '';
+            $sharedBodyScripts = '';
         }
 
         View::share('sharedBanners', $sharedBanners);
@@ -113,13 +122,18 @@ class AppServiceProvider extends ServiceProvider
         View::share('sharedStoreDescription', $sharedStoreDescription);
         View::share('sharedStoreDescriptionEn', $sharedStoreDescriptionEn);
         View::share('activePopups', $activePopups);
-        
+
         View::share('sharedTickerTextEn', $sharedTickerTextEn);
         View::share('sharedWhatsappLink', $sharedWhatsappLink);
-        View::share('sharedInstagramLink', $sharedInstagramLink);
+        View::share('sharedWhatsappEnabled', $sharedWhatsappEnabled);
         View::share('sharedTelegramLink', $sharedTelegramLink);
+        View::share('sharedTelegramEnabled', $sharedTelegramEnabled);
         View::share('sharedFacebookLink', $sharedFacebookLink);
-        
+        View::share('sharedFacebookEnabled', $sharedFacebookEnabled);
+        View::share('sharedYoutubeEnabled', $sharedYoutubeEnabled);
+        View::share('sharedTiktokLink', $sharedTiktokLink);
+        View::share('sharedTiktokEnabled', $sharedTiktokEnabled);
+
         View::share('sharedAboutAr', $sharedAboutAr);
         View::share('sharedAboutEn', $sharedAboutEn);
         View::share('sharedPrivacyAr', $sharedPrivacyAr);
@@ -128,13 +142,13 @@ class AppServiceProvider extends ServiceProvider
         View::share('sharedTermsEn', $sharedTermsEn);
 
         // SEO & Ads
-        View::share('sharedSeoTitle',       $sharedSeoTitle);
+        View::share('sharedSeoTitle', $sharedSeoTitle);
         View::share('sharedMetaDescription', $sharedMetaDescription);
-        View::share('sharedMetaKeywords',    $sharedMetaKeywords);
-        View::share('sharedFbPixelId',       $sharedFbPixelId);
-        View::share('sharedGaId',            $sharedGaId);
-        View::share('sharedHeadScripts',     $sharedHeadScripts);
-        View::share('sharedBodyScripts',     $sharedBodyScripts);
+        View::share('sharedMetaKeywords', $sharedMetaKeywords);
+        View::share('sharedFbPixelId', $sharedFbPixelId);
+        View::share('sharedGaId', $sharedGaId);
+        View::share('sharedHeadScripts', $sharedHeadScripts);
+        View::share('sharedBodyScripts', $sharedBodyScripts);
 
         View::composer('layouts.app', function ($view): void {
             if (auth()->check()) {

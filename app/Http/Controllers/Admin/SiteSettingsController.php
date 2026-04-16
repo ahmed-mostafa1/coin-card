@@ -42,22 +42,27 @@ class SiteSettingsController extends Controller
         $privacyEn = SiteSetting::get('privacy_en', '');
         $storeDescription = SiteSetting::get('store_description', 'متجر عربي متخصص في بيع بطاقات الألعاب والخدمات الرقمية بأسعار تنافسية وجودة عالية. نحن نقدم خدمة سريعة وموثوقة لجميع عملائنا. للاستفسارات أو الدعم، يرجى');
         $storeDescriptionEn = SiteSetting::get('store_description_en', '');
-        
+
         $whatsappLink = SiteSetting::get('whatsapp_link', 'https://wa.me/963991195136');
-        $whatsappNumber = SiteSetting::get('whatsapp_number', '');
-        $instagramLink = SiteSetting::get('instagram_link', '#');
+        $whatsappEnabled = SiteSetting::get('whatsapp_enabled', '1');
         $telegramLink = SiteSetting::get('telegram_link', '#');
+        $telegramEnabled = SiteSetting::get('telegram_enabled', '1');
         $facebookLink = SiteSetting::get('facebook_link', '#');
-        
+        $facebookEnabled = SiteSetting::get('facebook_enabled', '1');
+        $youtubeLink = SiteSetting::get('youtube_link', '#');
+        $youtubeEnabled = SiteSetting::get('youtube_enabled', '1');
+        $tiktokLink = SiteSetting::get('tiktok_link', '#');
+        $tiktokEnabled = SiteSetting::get('tiktok_enabled', '1');
+
         $activePopupsCount = \App\Models\Popup::active()->count();
 
         $metaDescription = SiteSetting::get('meta_description', '');
-        $metaKeywords    = SiteSetting::get('meta_keywords', '');
-        $seoTitle        = SiteSetting::get('seo_title', '');
-        $fbPixelId       = SiteSetting::get('fb_pixel_id', '');
-        $gaId            = SiteSetting::get('ga_id', '');
-        $headScripts     = SiteSetting::get('head_scripts', '');
-        $bodyScripts     = SiteSetting::get('body_scripts', '');
+        $metaKeywords = SiteSetting::get('meta_keywords', '');
+        $seoTitle = SiteSetting::get('seo_title', '');
+        $fbPixelId = SiteSetting::get('fb_pixel_id', '');
+        $gaId = SiteSetting::get('ga_id', '');
+        $headScripts = SiteSetting::get('head_scripts', '');
+        $bodyScripts = SiteSetting::get('body_scripts', '');
 
         return view('admin.site-settings.edit', compact(
             'tickerText',
@@ -71,10 +76,15 @@ class SiteSettingsController extends Controller
             'storeDescription',
             'storeDescriptionEn',
             'whatsappLink',
-            'whatsappNumber',
-            'instagramLink',
+            'whatsappEnabled',
             'telegramLink',
+            'telegramEnabled',
             'facebookLink',
+            'facebookEnabled',
+            'youtubeLink',
+            'youtubeEnabled',
+            'tiktokLink',
+            'tiktokEnabled',
             'activePopupsCount',
             'homeHeroTitleAr', 'homeHeroTitleEn', 'homeHeroTextAr', 'homeHeroTextEn',
             'homeFeatureSettings',
@@ -167,26 +177,38 @@ class SiteSettingsController extends Controller
     {
         $data = $request->validate([
             'whatsapp_link' => ['nullable', 'string'],
-            'instagram_link' => ['nullable', 'string'],
+            'whatsapp_enabled' => ['nullable', 'boolean'],
             'telegram_link' => ['nullable', 'string'],
+            'telegram_enabled' => ['nullable', 'boolean'],
             'facebook_link' => ['nullable', 'string'],
+            'facebook_enabled' => ['nullable', 'boolean'],
             'youtube_link' => ['nullable', 'string'],
+            'youtube_enabled' => ['nullable', 'boolean'],
+            'tiktok_link' => ['nullable', 'string'],
+            'tiktok_enabled' => ['nullable', 'boolean'],
         ]);
 
-        SiteSetting::set('whatsapp_link', $data['whatsapp_link']);
-        SiteSetting::set('instagram_link', $data['instagram_link']);
-        SiteSetting::set('telegram_link', $data['telegram_link']);
-        SiteSetting::set('facebook_link', $data['facebook_link']);
-        SiteSetting::set('youtube_link', $data['youtube_link']);
+        SiteSetting::set('whatsapp_link', trim((string) ($data['whatsapp_link'] ?? '')));
+        SiteSetting::set('whatsapp_enabled', $request->boolean('whatsapp_enabled') ? '1' : '0');
+        SiteSetting::set('telegram_link', trim((string) ($data['telegram_link'] ?? '')));
+        SiteSetting::set('telegram_enabled', $request->boolean('telegram_enabled') ? '1' : '0');
+        SiteSetting::set('facebook_link', trim((string) ($data['facebook_link'] ?? '')));
+        SiteSetting::set('facebook_enabled', $request->boolean('facebook_enabled') ? '1' : '0');
+        SiteSetting::set('youtube_link', trim((string) ($data['youtube_link'] ?? '')));
+        SiteSetting::set('youtube_enabled', $request->boolean('youtube_enabled') ? '1' : '0');
+        SiteSetting::set('tiktok_link', trim((string) ($data['tiktok_link'] ?? '')));
+        SiteSetting::set('tiktok_enabled', $request->boolean('tiktok_enabled') ? '1' : '0');
 
         cache()->forget('shared_whatsapp_link');
-        cache()->forget('shared_instagram_link');
+        cache()->forget('shared_whatsapp_enabled');
         cache()->forget('shared_telegram_link');
+        cache()->forget('shared_telegram_enabled');
         cache()->forget('shared_facebook_link');
+        cache()->forget('shared_facebook_enabled');
         cache()->forget('shared_youtube_link');
-        
-        // Remove old whatsapp_number cache if it exists, as it is no longer used
-        cache()->forget('shared_whatsapp_number');
+        cache()->forget('shared_youtube_enabled');
+        cache()->forget('shared_tiktok_link');
+        cache()->forget('shared_tiktok_enabled');
 
         return redirect()->route('admin.site-settings.edit')->with('status', 'تم تحديث روابط التواصل بنجاح.');
     }
@@ -194,22 +216,22 @@ class SiteSettingsController extends Controller
     public function updateSeo(Request $request): RedirectResponse
     {
         $data = $request->validate([
-            'seo_title'        => ['nullable', 'string', 'max:70'],
+            'seo_title' => ['nullable', 'string', 'max:70'],
             'meta_description' => ['nullable', 'string', 'max:500'],
-            'meta_keywords'    => ['nullable', 'string', 'max:500'],
-            'fb_pixel_id'      => ['nullable', 'string', 'max:50', 'regex:/^\d*$/'],
-            'ga_id'            => ['nullable', 'string', 'max:30', 'regex:/^(G-|UA-)?[A-Z0-9\-]*$/i'],
-            'head_scripts'     => ['nullable', 'string'],
-            'body_scripts'     => ['nullable', 'string'],
+            'meta_keywords' => ['nullable', 'string', 'max:500'],
+            'fb_pixel_id' => ['nullable', 'string', 'max:50', 'regex:/^\d*$/'],
+            'ga_id' => ['nullable', 'string', 'max:30', 'regex:/^(G-|UA-)?[A-Z0-9\-]*$/i'],
+            'head_scripts' => ['nullable', 'string'],
+            'body_scripts' => ['nullable', 'string'],
         ]);
 
-        SiteSetting::set('seo_title',        trim($data['seo_title']        ?? ''));
+        SiteSetting::set('seo_title', trim($data['seo_title'] ?? ''));
         SiteSetting::set('meta_description', trim($data['meta_description'] ?? ''));
-        SiteSetting::set('meta_keywords',    trim($data['meta_keywords']    ?? ''));
-        SiteSetting::set('fb_pixel_id',      trim($data['fb_pixel_id']      ?? ''));
-        SiteSetting::set('ga_id',            trim($data['ga_id']            ?? ''));
-        SiteSetting::set('head_scripts',     trim($data['head_scripts']     ?? ''));
-        SiteSetting::set('body_scripts',     trim($data['body_scripts']     ?? ''));
+        SiteSetting::set('meta_keywords', trim($data['meta_keywords'] ?? ''));
+        SiteSetting::set('fb_pixel_id', trim($data['fb_pixel_id'] ?? ''));
+        SiteSetting::set('ga_id', trim($data['ga_id'] ?? ''));
+        SiteSetting::set('head_scripts', trim($data['head_scripts'] ?? ''));
+        SiteSetting::set('body_scripts', trim($data['body_scripts'] ?? ''));
 
         cache()->forget('shared_seo_title');
         cache()->forget('shared_meta_description');

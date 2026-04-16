@@ -74,6 +74,9 @@
         '@type' => 'BreadcrumbList',
         'itemListElement' => $serviceBreadcrumbItems,
     ];
+    $shareLabel = app()->getLocale() === 'ar' ? 'مشاركة الخدمة' : 'Share service';
+    $shareCopiedLabel = app()->getLocale() === 'ar' ? 'تم نسخ رابط الخدمة' : 'Service link copied';
+    $shareFailedLabel = app()->getLocale() === 'ar' ? 'تعذر نسخ الرابط' : 'Failed to copy link';
 @endphp
 
 @section('title', $serviceTitle)
@@ -173,10 +176,6 @@
 
     <div class="store-shell space-y-6">
         <div class="w-full">
-            <x-store.hero :banners="$sharedBanners" :alt="$service->localized_name" />
-        </div>
-
-        <div class="w-full">
             <x-store.notice :text="$sharedTickerText" />
         </div>
 
@@ -225,8 +224,20 @@
                                 class="h-32 w-32 rounded-xl object-cover">
                         @endif
                         <div class="space-y-1 text-center">
-                            <h1 class="text-xl font-bold text-slate-900">{{ $service->localized_name }}</h1>
-                            <p class="text-sm text-slate-600">{{ $service->category->localized_name }}</p>
+                            <h1 class="text-xl font-bold text-slate-900 dark:text-white">{{ $service->localized_name }}</h1>
+                            <p class="text-sm text-slate-600 dark:text-slate-300">{{ $service->category->localized_name }}</p>
+                            <div class="pt-2">
+                                <button type="button"
+                                        class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-emerald-200 hover:text-emerald-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:border-emerald-700 dark:hover:text-emerald-300"
+                                        data-share-service
+                                        data-share-title="{{ $service->localized_name }}"
+                                        data-share-url="{{ route('services.show', $service->slug) }}"
+                                        data-share-success="{{ $shareCopiedLabel }}"
+                                        data-share-failure="{{ $shareFailedLabel }}">
+                                    <i class="fa-solid fa-share-nodes text-xs"></i>
+                                    <span>{{ $shareLabel }}</span>
+                                </button>
+                            </div>
                             @if ($showLimitedOfferLabel || $showLimitedOfferCountdown)
                                 <div class="mt-2 flex items-center justify-center gap-2">
                                     @if ($showLimitedOfferLabel)
@@ -275,7 +286,7 @@
                                 </div>
                             @endif
                             @auth
-                                <p class="text-xs text-slate-500">
+                                <p class="text-xs text-slate-500 dark:text-slate-400">
                                     {{ __('messages.available_balance_text') }}:
                                     <span class="font-semibold text-emerald-700">{{ number_format($availableBalance, 2) }}
                                         USD</span>
@@ -745,5 +756,50 @@
                 updateState();
             });
         </script>
+
     @endauth
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('[data-share-service]').forEach((button) => {
+                button.addEventListener('click', async () => {
+                    const url = button.dataset.shareUrl;
+                    const title = button.dataset.shareTitle;
+                    const successMessage = button.dataset.shareSuccess;
+                    const failureMessage = button.dataset.shareFailure;
+
+                    try {
+                        if (navigator.share) {
+                            await navigator.share({ title, url });
+                            return;
+                        }
+
+                        await navigator.clipboard.writeText(url);
+
+                        Swal.fire({
+                            toast: true,
+                            position: 'top',
+                            icon: 'success',
+                            title: successMessage,
+                            showConfirmButton: false,
+                            timer: 1800,
+                        });
+                    } catch (error) {
+                        if (error?.name === 'AbortError') {
+                            return;
+                        }
+
+                        Swal.fire({
+                            toast: true,
+                            position: 'top',
+                            icon: 'error',
+                            title: failureMessage,
+                            showConfirmButton: false,
+                            timer: 2200,
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

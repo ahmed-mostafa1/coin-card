@@ -62,6 +62,43 @@
                 'active' => request()->routeIs('terms-of-use') || request()->routeIs('terms-and-conditions'),
             ],
         ];
+        $footerSocialLinks = collect([
+            [
+                'label' => 'Facebook',
+                'url' => $sharedFacebookLink ?? '',
+                'enabled' => ($sharedFacebookEnabled ?? '0') === '1',
+                'icon' => 'fa-brands fa-facebook-f',
+                'classes' => 'text-[#1877F2] hover:border-[#1877F2]/30 hover:bg-[#1877F2]/10',
+            ],
+            [
+                'label' => 'Telegram',
+                'url' => $sharedTelegramLink ?? '',
+                'enabled' => ($sharedTelegramEnabled ?? '0') === '1',
+                'icon' => 'fa-brands fa-telegram',
+                'classes' => 'text-[#229ED9] hover:border-[#229ED9]/30 hover:bg-[#229ED9]/10',
+            ],
+            [
+                'label' => 'YouTube',
+                'url' => $sharedYoutubeLink ?? '',
+                'enabled' => ($sharedYoutubeEnabled ?? '0') === '1',
+                'icon' => 'fa-brands fa-youtube',
+                'classes' => 'text-[#FF0000] hover:border-[#FF0000]/30 hover:bg-[#FF0000]/10',
+            ],
+            [
+                'label' => 'WhatsApp',
+                'url' => $sharedWhatsappLink ?? '',
+                'enabled' => ($sharedWhatsappEnabled ?? '0') === '1',
+                'icon' => 'fa-brands fa-whatsapp',
+                'classes' => 'text-[#25D366] hover:border-[#25D366]/30 hover:bg-[#25D366]/10',
+            ],
+            [
+                'label' => 'TikTok',
+                'url' => $sharedTiktokLink ?? '',
+                'enabled' => ($sharedTiktokEnabled ?? '0') === '1',
+                'icon' => 'fa-brands fa-tiktok',
+                'classes' => 'text-slate-900 dark:text-white hover:border-slate-400/40 hover:bg-slate-500/10',
+            ],
+        ])->filter(fn (array $social): bool => $social['enabled'] && filled(trim((string) $social['url'])) && trim((string) $social['url']) !== '#')->values();
     @endphp
 
     @auth
@@ -197,13 +234,13 @@
                 <div class="rounded-[1.75rem] border border-white/70 bg-white/90 px-3 py-3 shadow-[0_18px_40px_rgba(15,23,42,0.06)] backdrop-blur dark:border-slate-800/80 dark:bg-slate-950/90 sm:px-4">
                     <div class="flex items-center justify-between gap-3">
                         <a href="{{ route('home') }}" class="flex min-w-0 items-center gap-3 sm:gap-4">
-                            <span class="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-2xl">
+                            <span class="flex h-[5.5rem] w-[5.5rem] shrink-0 items-center justify-center overflow-hidden rounded-[1.75rem] sm:h-24 sm:w-24">
                                 @if($logoImageUrl)
                                     <img src="{{ $logoImageUrl }}"
                                          alt="{{ $logoTextValue }}"
-                                         class="h-full w-full object-contain p-1.5">
+                                         class="h-full w-full object-contain p-2 sm:p-2.5">
                                 @else
-                                    <span class="text-sm font-black text-emerald-700 dark:text-emerald-300">
+                                    <span class="text-xl font-black text-emerald-700 dark:text-emerald-300 sm:text-2xl">
                                         {{ mb_substr($logoTextValue, 0, 1) }}
                                     </span>
                                 @endif
@@ -458,6 +495,20 @@
                         </a>
                     @endforeach
                 </div>
+                @if($footerSocialLinks->isNotEmpty())
+                    <div class="flex flex-wrap items-center justify-center gap-2 sm:justify-end">
+                        @foreach($footerSocialLinks as $social)
+                            <a href="{{ $social['url'] }}"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               aria-label="{{ $social['label'] }}"
+                               title="{{ $social['label'] }}"
+                               class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-base transition dark:border-slate-700 dark:bg-slate-900 {{ $social['classes'] }}">
+                                <i class="{{ $social['icon'] }}"></i>
+                            </a>
+                        @endforeach
+                    </div>
+                @endif
             </div>
         </footer>
 

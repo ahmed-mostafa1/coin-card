@@ -217,7 +217,7 @@
                 <span>{{ __('messages.contact_page') }}</span>
             </a>
             
-            @if($sharedWhatsappLink)
+            @if(($sharedWhatsappEnabled ?? '0') === '1' && filled($sharedWhatsappLink ?? '') && $sharedWhatsappLink !== '#')
              <a href="{{ $sharedWhatsappLink }}" target="_blank" class="flex items-center gap-3 rounded-lg border border-slate-400 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-700">
                 <i class="fa-brands fa-whatsapp text-green-500 w-5 text-lg"></i>
                 <span>{{ __('messages.contact_whatsapp') ?? 'تواصل مع الإدارة' }}</span>
@@ -239,29 +239,29 @@
         <!-- Footer Socials -->
         <div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
             <div class="flex justify-center gap-6">
-                @if($sharedWhatsappLink)
+                @if(($sharedWhatsappEnabled ?? '0') === '1' && filled($sharedWhatsappLink ?? '') && $sharedWhatsappLink !== '#')
                  <a href="{{ $sharedWhatsappLink }}" target="_blank" class="text-green-500 hover:scale-110 transition">
                     <i class="fa-brands fa-whatsapp text-3xl"></i>
                 </a>
                 @endif
-                @if($sharedInstagramLink)
-                <a href="{{ $sharedInstagramLink }}" target="_blank" class="text-pink-600 hover:scale-110 transition">
-                    <i class="fa-brands fa-instagram text-3xl"></i>
-                </a>
-                @endif
-                @if($sharedTelegramLink)
+                @if(($sharedTelegramEnabled ?? '0') === '1' && filled($sharedTelegramLink ?? '') && $sharedTelegramLink !== '#')
                 <a href="{{ $sharedTelegramLink }}" target="_blank" class="text-blue-500 hover:scale-110 transition">
                     <i class="fa-brands fa-telegram text-3xl"></i>
                 </a>
                 @endif
-                @if($sharedFacebookLink)
+                @if(($sharedFacebookEnabled ?? '0') === '1' && filled($sharedFacebookLink ?? '') && $sharedFacebookLink !== '#')
                 <a href="{{ $sharedFacebookLink }}" target="_blank" class="text-blue-700 hover:scale-110 transition">
                     <i class="fa-brands fa-facebook text-3xl"></i>
                 </a>
                 @endif
-                @if(isset($sharedYoutubeLink) && $sharedYoutubeLink)
+                @if(($sharedYoutubeEnabled ?? '0') === '1' && filled($sharedYoutubeLink ?? '') && $sharedYoutubeLink !== '#')
                 <a href="{{ $sharedYoutubeLink }}" target="_blank" class="text-red-600 hover:scale-110 transition" title="YouTube">
                     <i class="fa-brands fa-youtube text-3xl"></i>
+                </a>
+                @endif
+                @if(($sharedTiktokEnabled ?? '0') === '1' && filled($sharedTiktokLink ?? '') && $sharedTiktokLink !== '#')
+                <a href="{{ $sharedTiktokLink }}" target="_blank" class="text-slate-900 dark:text-white hover:scale-110 transition">
+                    <i class="fa-brands fa-tiktok text-3xl"></i>
                 </a>
                 @endif
             </div>

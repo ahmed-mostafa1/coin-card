@@ -42,16 +42,40 @@ class SiteSettingsSeeder extends Seeder
                 'value' => 'https://wa.me/963991195136',
             ],
             [
-                'key' => 'instagram_link',
-                'value' => '#',
+                'key' => 'whatsapp_enabled',
+                'value' => '1',
             ],
             [
                 'key' => 'telegram_link',
                 'value' => '#',
             ],
             [
+                'key' => 'telegram_enabled',
+                'value' => '1',
+            ],
+            [
                 'key' => 'facebook_link',
                 'value' => '#',
+            ],
+            [
+                'key' => 'facebook_enabled',
+                'value' => '1',
+            ],
+            [
+                'key' => 'youtube_link',
+                'value' => '#',
+            ],
+            [
+                'key' => 'youtube_enabled',
+                'value' => '1',
+            ],
+            [
+                'key' => 'tiktok_link',
+                'value' => '#',
+            ],
+            [
+                'key' => 'tiktok_enabled',
+                'value' => '1',
             ],
         ];
 

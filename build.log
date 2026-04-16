@@ -1,0 +1,21 @@
+
+> build
+> vite build
+
+[36mvite v7.3.1 [32mbuilding client environment for production...[36m[39m
+transforming...
+[32m✓[39m 1 modules transformed.
+[31m✗[39m Build failed in 113ms
+[31merror during build:
+[31m[@tailwindcss/vite:generate:build] Cannot apply unknown utility class `neo-card`[31m
+file: [36mC:/xampp/htdocs/coin-card/resources/css/app.css[31m
+    at onInvalidCandidate (file:///C:/xampp/htdocs/coin-card/node_modules/tailwindcss/dist/chunk-CT46QCH7.mjs:21:1511)
+    at Ce (file:///C:/xampp/htdocs/coin-card/node_modules/tailwindcss/dist/chunk-CT46QCH7.mjs:16:36326)
+    at file:///C:/xampp/htdocs/coin-card/node_modules/tailwindcss/dist/chunk-CT46QCH7.mjs:21:355
+    at br (file:///C:/xampp/htdocs/coin-card/node_modules/tailwindcss/dist/chunk-CT46QCH7.mjs:3:1718)
+    at I (file:///C:/xampp/htdocs/coin-card/node_modules/tailwindcss/dist/chunk-CT46QCH7.mjs:3:1377)
+    at Ae (file:///C:/xampp/htdocs/coin-card/node_modules/tailwindcss/dist/chunk-CT46QCH7.mjs:21:172)
+    at Wi (file:///C:/xampp/htdocs/coin-card/node_modules/tailwindcss/dist/chunk-CT46QCH7.mjs:38:294)
+    at async Za (file:///C:/xampp/htdocs/coin-card/node_modules/tailwindcss/dist/chunk-CT46QCH7.mjs:38:631)
+    at async rf (file:///C:/xampp/htdocs/coin-card/node_modules/tailwindcss/dist/chunk-CT46QCH7.mjs:38:1406)
+    at async lu (file:///C:/xampp/htdocs/coin-card/node_modules/@tailwindcss/node/dist/index.mjs:10:3458)[39m

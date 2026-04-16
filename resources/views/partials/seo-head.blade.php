@@ -43,11 +43,11 @@
     $twitterCard = trim($__env->yieldContent('meta_twitter_card', 'summary_large_image'));
     $metaLocale = app()->getLocale() === 'ar' ? 'ar_AR' : 'en_US';
     $sameAs = array_values(array_filter([
-        $sharedWhatsappLink ?? null,
-        $sharedInstagramLink ?? null,
-        $sharedTelegramLink ?? null,
-        $sharedFacebookLink ?? null,
-        $sharedYoutubeLink ?? null,
+        ($sharedWhatsappEnabled ?? '0') === '1' ? ($sharedWhatsappLink ?? null) : null,
+        ($sharedTelegramEnabled ?? '0') === '1' ? ($sharedTelegramLink ?? null) : null,
+        ($sharedFacebookEnabled ?? '0') === '1' ? ($sharedFacebookLink ?? null) : null,
+        ($sharedYoutubeEnabled ?? '0') === '1' ? ($sharedYoutubeLink ?? null) : null,
+        ($sharedTiktokEnabled ?? '0') === '1' ? ($sharedTiktokLink ?? null) : null,
     ], fn ($url) => filled($url) && $url !== '#'));
 
     $organizationSchema = array_filter([
@@ -57,7 +57,7 @@
         'url' => url('/'),
         'logo' => $metaImage,
         'sameAs' => $sameAs ?: null,
-        'contactPoint' => ! empty($sharedWhatsappLink) && $sharedWhatsappLink !== '#'
+        'contactPoint' => ($sharedWhatsappEnabled ?? '0') === '1' && ! empty($sharedWhatsappLink) && $sharedWhatsappLink !== '#'
             ? [[
                 '@type' => 'ContactPoint',
                 'contactType' => 'customer support',
