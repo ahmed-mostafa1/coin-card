@@ -229,12 +229,12 @@
     @endauth
 
     <div class="min-h-screen flex flex-col">
-        <nav class="sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 backdrop-blur-md transition-colors duration-200 dark:border-slate-700/80 dark:bg-slate-900/95">
-            <div class="mx-auto w-[92%] py-3 sm:w-[85%] sm:px-4">
-                <div class="rounded-[1.75rem] border border-white/70 bg-white/90 px-3 py-3 shadow-[0_18px_40px_rgba(15,23,42,0.06)] backdrop-blur dark:border-slate-800/80 dark:bg-slate-950/90 sm:px-4">
+        <nav class="z-50 bg-white/95 backdrop-blur-md transition-colors duration-200 dark:border-slate-700/80 dark:bg-slate-900/95">
+            <div class="mx-auto w-[92%] py-2 sm:w-[85%] sm:px-4">
+                <div class="rounded-[1.75rem] border border-white/70 bg-white/90 px-3 py-1.5 backdrop-blur dark:border-slate-800/80 dark:bg-slate-950/90 sm:px-4">
                     <div class="flex items-center justify-between gap-3">
                         <a href="{{ route('home') }}" class="flex min-w-0 items-center gap-3 sm:gap-4">
-                            <span class="flex h-[5.5rem] w-[5.5rem] shrink-0 items-center justify-center overflow-hidden rounded-[1.75rem] sm:h-24 sm:w-24">
+                            <span class="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-[1.1rem] sm:h-12 sm:w-12">
                                 @if($logoImageUrl)
                                     <img src="{{ $logoImageUrl }}"
                                          alt="{{ $logoTextValue }}"
@@ -478,7 +478,7 @@
             </div>
         </nav>
 
-        <main class="flex-1 pb-24 pt-4 sm:pt-6 sm:pb-24 lg:py-6 {{ $mainWidth }}">
+        <main class="flex-1 pb-24 sm:pb-24 lg:pb-8 {{ $mainWidth }}">
             @yield('content')
         </main>
 
@@ -514,7 +514,7 @@
 
         @auth
             <div class="fixed inset-x-0 bottom-0 z-40 px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-2 lg:hidden">
-                <div class="rounded-[1.75rem] border border-white/70 bg-white/95 p-2 shadow-[0_-12px_30px_rgba(15,23,42,0.12)] backdrop-blur dark:border-slate-800/80 dark:bg-slate-950/95">
+                <div class="rounded-[1.75rem] border border-white/70 bg-white/95 p-2 backdrop-blur dark:border-slate-800/80 dark:bg-slate-950/95">
                     <div class="grid grid-cols-4 gap-1">
                         @foreach($topNavLinks as $link)
                             <a href="{{ $link['route'] }}"

@@ -16,31 +16,33 @@
     --radius-3xl: 1.25rem;
 
     /* Syrian flag green palette (brand primary) */
-    --color-brand-50:  #e6f4ed;
+    --color-brand-50: #e6f4ed;
     --color-brand-100: #c0e3cf;
     --color-brand-200: #93cfae;
     --color-brand-300: #5db88a;
     --color-brand-400: #27a468;
-    --color-brand-500: #007A3D; /* Syrian flag green */
+    --color-brand-500: #007A3D;
+    /* Syrian flag green */
     --color-brand-600: #006633;
     --color-brand-700: #005229;
     --color-brand-800: #003d1e;
     --color-brand-900: #002913;
 
     /* Syrian flag red palette (accent) */
-    --color-accent-50:  #fce8eb;
+    --color-accent-50: #fce8eb;
     --color-accent-100: #f7c5cb;
     --color-accent-200: #f09aa5;
     --color-accent-300: #e86e7d;
     --color-accent-400: #df4457;
-    --color-accent-500: #CE1126; /* Syrian flag red */
+    --color-accent-500: #CE1126;
+    /* Syrian flag red */
     --color-accent-600: #aa0e1f;
     --color-accent-700: #870b18;
     --color-accent-800: #640811;
     --color-accent-900: #42050b;
 
     /* map emerald utility names → Syrian green */
-    --color-emerald-50:  var(--color-brand-50);
+    --color-emerald-50: var(--color-brand-50);
     --color-emerald-100: var(--color-brand-100);
     --color-emerald-200: var(--color-brand-200);
     --color-emerald-300: var(--color-brand-300);
@@ -52,7 +54,7 @@
     --color-emerald-900: var(--color-brand-900);
 
     /* map orange utility names → Syrian red */
-    --color-orange-50:  var(--color-accent-50);
+    --color-orange-50: var(--color-accent-50);
     --color-orange-100: var(--color-accent-100);
     --color-orange-200: var(--color-accent-200);
     --color-orange-300: var(--color-accent-300);
@@ -63,7 +65,7 @@
     --color-orange-800: var(--color-accent-800);
     --color-orange-900: var(--color-accent-900);
 
-    --color-blue-50:  var(--color-accent-50);
+    --color-blue-50: var(--color-accent-50);
     --color-blue-100: var(--color-accent-100);
     --color-blue-200: var(--color-accent-200);
     --color-blue-300: var(--color-accent-300);
@@ -104,14 +106,17 @@
 
     .dark thead {
         @apply bg-slate-900;
-        color: #064e3b !important; /* emerald-900 */
+        color: #064e3b !important;
+        /* emerald-900 */
     }
 
     /* SweetAlert2 dark mode — popup renders outside .dark scope */
     .dark .swal2-container .swal2-popup,
     .dark .swal2-popup {
-        background-color: #1e293b !important; /* slate-800 */
-        color: #f1f5f9 !important;            /* slate-100 */
+        background-color: #1e293b !important;
+        /* slate-800 */
+        color: #f1f5f9 !important;
+        /* slate-100 */
     }
 
     .dark .swal2-popup .swal2-title {
@@ -120,7 +125,8 @@
 
     .dark .swal2-popup .swal2-html-container,
     .dark .swal2-popup .swal2-content {
-        color: #cbd5e1 !important; /* slate-300 */
+        color: #cbd5e1 !important;
+        /* slate-300 */
     }
 
     /* Warning icon border + dot */
@@ -132,11 +138,13 @@
     /* Confirm / Cancel buttons already styled by your calls;
        only adjust default fallback colours */
     .dark .swal2-popup .swal2-actions .swal2-confirm {
-        background-color: #10b981 !important; /* emerald-500 */
+        background-color: #10b981 !important;
+        /* emerald-500 */
     }
 
     .dark .swal2-popup .swal2-actions .swal2-cancel {
-        background-color: #475569 !important; /* slate-600 */
+        background-color: #475569 !important;
+        /* slate-600 */
         color: #f1f5f9 !important;
     }
 
@@ -146,8 +154,8 @@
     }
 
     table tr:hover,
-    table tr:hover > th,
-    table tr:hover > td {
+    table tr:hover>th,
+    table tr:hover>td {
         background-color: transparent !important;
     }
 
@@ -287,11 +295,11 @@
     }
 
     .store-card {
-        @apply rounded-xl border border-slate-300 bg-white shadow-[0_6px_12px_rgba(0,0,0,0.08)];
+        @apply rounded-xl border border-slate-300 bg-white;
     }
 
     .dark .store-card {
-        @apply border-slate-700 bg-slate-800 shadow-[0_6px_12px_rgba(0,0,0,0.3)];
+        @apply border-slate-700 bg-slate-800;
     }
 
     .store-card-title {
@@ -313,14 +321,18 @@
     .store-ticker-track {
         @apply inline-block min-w-max whitespace-nowrap text-[13px] font-semibold text-slate-700;
         will-change: transform;
-        animation: marquee-ltr 25s linear infinite both; /* Arabic now LTR (Left->Right) */
-        transform: translate3d(-100%, 0, 0); /* Start close to edge */
+        animation: marquee-ltr 25s linear infinite both;
+        /* Arabic now LTR (Left->Right) */
+        transform: translate3d(-100%, 0, 0);
+        /* Start close to edge */
         opacity: 1;
     }
 
     :root[dir='ltr'] .store-ticker-track {
-        animation-name: marquee-rtl; /* English now RTL (Right->Left) */
-        transform: translate3d(100%, 0, 0); /* Start close to edge */
+        animation-name: marquee-rtl;
+        /* English now RTL (Right->Left) */
+        transform: translate3d(100%, 0, 0);
+        /* Start close to edge */
     }
 
     .dark .store-ticker-track {
@@ -358,6 +370,7 @@
 
     /* Mobile: Card layout (<640px) */
     @media (max-width: 639px) {
+
         /* Hide table header on mobile */
         .rt-table thead {
             @apply hidden;
@@ -392,7 +405,7 @@
         }
 
         /* Value styling - more prominent */
-        .rt-table td > * {
+        .rt-table td>* {
             @apply text-slate-900 dark:text-slate-100;
         }
 
@@ -402,13 +415,13 @@
         }
 
         /* Handle flex containers in cells (like action buttons) */
-        .rt-table td > .flex {
+        .rt-table td>.flex {
             @apply justify-start;
         }
 
         /* Badge styling in mobile cards */
-        .rt-table td > span[class*="badge"],
-        .rt-table td > .inline-flex {
+        .rt-table td>span[class*="badge"],
+        .rt-table td>.inline-flex {
             @apply mt-0.5;
         }
     }
@@ -426,6 +439,7 @@
 
     /* RTL Mobile adjustments */
     @media (max-width: 639px) {
+
         :root[dir='rtl'] .rt-table td::before,
         [dir='rtl'] .rt-table td::before {
             @apply text-right;
@@ -468,17 +482,28 @@
         background: rgba(206, 17, 38, 0.08);
     }
 
-    .home-scene > * {
+    .home-scene>* {
         position: relative;
         z-index: 1;
     }
 
     .home-hero {
-        @apply flex flex-col gap-5 overflow-hidden rounded-[2rem] border border-white/70 bg-white/90 p-4 shadow-[0_30px_70px_rgba(15,23,42,0.08)] backdrop-blur sm:gap-6 sm:p-7 xl:p-8;
+        @apply flex flex-col overflow-hidden;
+        padding: 0;
+        margin: 10px;
+        gap: 0;
+        border: none;
+        background: transparent;
+        box-shadow: none;
+        backdrop-filter: none;
+        border-radius: 0;
+
     }
 
     .dark .home-hero {
-        @apply border-slate-700/80 bg-slate-900/90 shadow-[0_30px_70px_rgba(2,6,23,0.45)];
+        border: none;
+        background: transparent;
+        box-shadow: none;
     }
 
     .home-hero__content {
@@ -490,7 +515,7 @@
     }
 
     .home-hero__eyebrow {
-        @apply inline-flex w-fit items-center gap-2 rounded-full border border-emerald-300 bg-emerald-50/95 px-4 py-2 text-[11px] font-extrabold text-emerald-800 shadow-[0_10px_25px_rgba(5,150,105,0.08)];
+        @apply inline-flex w-fit items-center gap-2 rounded-full border border-emerald-300 bg-emerald-50/95 px-4 py-2 text-[11px] font-extrabold text-emerald-800;
     }
 
     .dark .home-hero__eyebrow {
@@ -530,7 +555,7 @@
     }
 
     .home-btn--primary {
-        @apply bg-emerald-600 text-white shadow-[0_14px_30px_rgba(5,150,105,0.2)] hover:bg-emerald-700 hover:shadow-[0_16px_34px_rgba(5,150,105,0.26)];
+        @apply bg-emerald-600 text-white hover:bg-emerald-700;
     }
 
     .home-btn--secondary {
@@ -546,7 +571,7 @@
     }
 
     .home-trust-pill {
-        @apply inline-flex w-fit items-center gap-2.5 rounded-full border border-slate-200/80 bg-white/90 px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-[0_10px_24px_rgba(15,23,42,0.05)];
+        @apply inline-flex w-fit items-center gap-2.5 rounded-full border border-slate-200/80 bg-white/90 px-4 py-2.5 text-sm font-semibold text-slate-700;
     }
 
     .dark .home-trust-pill {
@@ -599,8 +624,6 @@
 
     .home-hero-card {
         @apply relative isolate w-full overflow-hidden rounded-none border-0 shadow-none;
-        aspect-ratio: var(--home-hero-ratio, 16 / 7);
-        min-height: 360px;
         background: transparent;
     }
 
@@ -610,11 +633,11 @@
     }
 
     .home-hero-card__media {
-        @apply absolute inset-0 p-0;
+        @apply block w-full p-0 overflow-hidden;
     }
 
     .home-hero-card__image {
-        @apply h-full w-full object-cover object-center;
+        @apply h-full w-full object-contain object-center;
     }
 
     .home-hero-card__chrome {
@@ -638,7 +661,9 @@
     }
 
     .home-hero-card__viewport {
-        @apply relative h-full overflow-hidden rounded-none border-0 bg-transparent;
+        @apply relative overflow-hidden rounded-none border-0 bg-transparent;
+        aspect-ratio: var(--home-hero-ratio, 16 / 9);
+        max-height: 320px;
         box-shadow: none;
     }
 
@@ -702,7 +727,7 @@
         border-radius: 9999px;
         top: -5rem;
         inset-inline-end: -3rem;
-        background: radial-gradient(circle, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0) 65%);
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0) 65%);
     }
 
     .home-hero-card__overlay {
@@ -726,7 +751,7 @@
     }
 
     .home-ticker {
-        @apply flex items-center gap-3 overflow-hidden rounded-2xl border border-amber-200 bg-amber-50/80 px-4 py-3;
+        @apply flex items-center gap-3 overflow-hidden rounded-2xl border border-amber-200 bg-amber-50/80 px-4 py-3 w-full;
     }
 
     .dark .home-ticker {
@@ -745,14 +770,14 @@
     .home-alert-card,
     .home-feature-card,
     .home-callout {
-        @apply rounded-[1.75rem] border border-slate-200 bg-white p-5 shadow-[0_16px_40px_rgba(15,23,42,0.06)] sm:p-6;
+        @apply rounded-[1.75rem] border border-slate-200 bg-white p-5 sm:p-6;
     }
 
     .dark .home-account-card,
     .dark .home-alert-card,
     .dark .home-feature-card,
     .dark .home-callout {
-        @apply border-slate-700 bg-slate-900 shadow-[0_16px_40px_rgba(2,6,23,0.32)];
+        @apply border-slate-700 bg-slate-900;
     }
 
     .home-section-badge {
@@ -856,11 +881,11 @@
     }
 
     .home-category-card {
-        @apply flex h-full flex-col overflow-hidden rounded-[1.6rem] border border-slate-200 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.06)] transition duration-200 hover:-translate-y-1 hover:shadow-[0_24px_48px_rgba(15,23,42,0.1)];
+        @apply flex h-full flex-col overflow-hidden rounded-[1.6rem] border border-slate-200 bg-white transition duration-200 hover:-translate-y-1;
     }
 
     .dark .home-category-card {
-        @apply border-slate-700 bg-slate-900 shadow-[0_18px_40px_rgba(2,6,23,0.35)];
+        @apply border-slate-700 bg-slate-900;
     }
 
     .home-category-card__image {
@@ -882,12 +907,12 @@
     .home-callout {
         @apply flex flex-wrap items-center justify-between gap-4;
         background:
-            linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(230,244,237,0.95) 100%);
+            linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(230, 244, 237, 0.95) 100%);
     }
 
     .dark .home-callout {
         background:
-            linear-gradient(135deg, rgba(15,23,42,0.96) 0%, rgba(2,44,34,0.86) 100%);
+            linear-gradient(135deg, rgba(15, 23, 42, 0.96) 0%, rgba(2, 44, 34, 0.86) 100%);
     }
 
     .home-callout__content {
@@ -909,8 +934,13 @@
         }
 
         .home-hero {
-            @apply -mx-4 gap-0 rounded-none border-0 bg-transparent p-0;
+            padding: 0;
+            margin: 0;
+            gap: 0;
+            border: none;
+            background: transparent;
             box-shadow: none;
+            border-radius: 0;
         }
 
         .home-hero__content {
@@ -922,14 +952,13 @@
         }
 
         .home-hero-card {
-            aspect-ratio: var(--home-hero-ratio, 16 / 6);
-            min-height: 220px;
             @apply rounded-none;
             box-shadow: none;
         }
 
         .home-hero-card__viewport {
             @apply rounded-none;
+            max-height: 220px;
             box-shadow: none;
         }
 
@@ -958,7 +987,7 @@
             @apply flex-col items-start gap-2.5;
         }
 
-        .home-trust-strip > :nth-child(2) {
+        .home-trust-strip> :nth-child(2) {
             display: inline-flex !important;
         }
 
@@ -1068,6 +1097,7 @@
     0% {
         transform: translate3d(100%, 0, 0);
     }
+
     100% {
         transform: translate3d(-100%, 0, 0);
         opacity: 1;
@@ -1078,6 +1108,7 @@
     0% {
         transform: translate3d(-100%, 0, 0);
     }
+
     100% {
         transform: translate3d(100%, 0, 0);
         opacity: 1;

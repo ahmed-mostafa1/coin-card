@@ -141,7 +141,8 @@
     @endauth
 
     <div class="home-scene space-y-5 sm:space-y-8">
-        <section class="home-hero" style="width: 100vw; margin-inline: calc(50% - 50vw);">
+        <div class="space-y-0">
+        <section class="home-hero">
 
             <div class="home-hero__visual">
                 <div class="home-hero-card"
@@ -150,20 +151,8 @@
                      @mouseenter="stop()"
                      @mouseleave="start()"
                      :style="`--home-hero-ratio: ${heroRatio}`">
-                    <div class="home-hero-card__media min-h-[18rem] rounded-none lg:max-h-[23rem]">
+                    <div class="home-hero-card__media rounded-none lg:max-h-[16rem]">
                         @if(!empty($heroSlides))
-                            <div class="home-hero-card__chrome">
-                                <span class="home-hero-card__badge">
-                                    <i class="fa-solid fa-star"></i>
-                                    <span>{{ app()->getLocale() === 'ar' ? 'عروض مميزة' : 'Featured offers' }}</span>
-                                </span>
-
-                                <div class="home-hero-card__caption" x-show="slides.length" x-cloak>
-                                    <span class="truncate" x-text="slides[activeIndex] && slides[activeIndex].title ? slides[activeIndex].title : ''"></span>
-                                    <span class="shrink-0" dir="ltr" x-text="`${activeIndex + 1} / ${slides.length}`"></span>
-                                </div>
-                            </div>
-
                             <div class="home-hero-card__viewport">
                                 <template x-for="(slide, index) in slides" :key="`${index}-${slide.image}`">
                                     <div class="home-hero-card__slide"
@@ -220,6 +209,7 @@
                 </div>
             </section>
         @endif
+        </div>
 
         @auth
             <section class="grid gap-4 lg:grid-cols-[1.45fr_.95fr]">
