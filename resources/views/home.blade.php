@@ -151,7 +151,7 @@
                      @mouseenter="stop()"
                      @mouseleave="start()"
                      :style="`--home-hero-ratio: ${heroRatio}`">
-                    <div class="home-hero-card__media rounded-none lg:max-h-[16rem]">
+                    <div class="home-hero-card__media rounded-none">
                         @if(!empty($heroSlides))
                             <div class="home-hero-card__viewport">
                                 <template x-for="(slide, index) in slides" :key="`${index}-${slide.image}`">
