@@ -633,7 +633,7 @@
     }
 
     .home-hero-card__media {
-        @apply block w-full p-2;
+        @apply block w-full p-0;
     }
 
     .home-hero-card__image {
