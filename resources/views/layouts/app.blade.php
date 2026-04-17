@@ -234,13 +234,13 @@
                 <div class="rounded-[1.75rem] border border-white/70 bg-white/90 px-3 py-1.5 backdrop-blur dark:border-slate-800/80 dark:bg-slate-950/90 sm:px-4">
                     <div class="flex items-center justify-between gap-3">
                         <a href="{{ route('home') }}" class="flex min-w-0 items-center gap-3 sm:gap-4">
-                            <span class="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-[1.1rem] sm:h-12 sm:w-12">
+                            <span class="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-[1.1rem] sm:h-14 sm:w-14">
                                 @if($logoImageUrl)
                                     <img src="{{ $logoImageUrl }}"
                                          alt="{{ $logoTextValue }}"
-                                         class="h-full w-full object-contain p-2 sm:p-2.5">
+                                         class="h-full w-full object-contain p-1.5 sm:p-2">
                                 @else
-                                    <span class="text-xl font-black text-emerald-700 dark:text-emerald-300 sm:text-2xl">
+                                    <span class="text-2xl font-black text-emerald-700 dark:text-emerald-300 sm:text-3xl">
                                         {{ mb_substr($logoTextValue, 0, 1) }}
                                     </span>
                                 @endif

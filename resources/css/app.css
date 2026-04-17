@@ -947,7 +947,7 @@
 
         .home-hero {
             padding: 0;
-            margin: 0;
+            margin: 0.75rem 0;
             gap: 0;
             border: none;
             background: transparent;
