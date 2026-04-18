@@ -31,6 +31,11 @@ return [
     'contact_whatsapp' => 'تواصل واتساب',
     'accept_terms_purchase_label' => 'أوافق على :terms الخاصة بالمتجر وأتحمل مسؤولية صحة المعلومات المدخلة',
     'accept_terms_required' => 'يجب الموافقة على شروط الاستخدام الخاصة بالمتجر قبل تنفيذ الطلب.',
+    'purchase_confirmation_title' => 'تأكيد تنفيذ الطلب',
+    'purchase_confirmation_text' => 'يرجى مراجعة تفاصيل الطلب قبل المتابعة.',
+    'purchase_confirmation_confirm' => 'تأكيد الشراء',
+    'purchase_confirmation_cancel' => 'إلغاء',
+    'purchase_submitting' => 'جارٍ تنفيذ الطلب...',
     'professional_platform' => 'منصة احترافية لشحن الخدمات الرقمية',
     'platform_desc' => 'اختر الخدمة المناسبة، ادفع من رصيد محفظتك، وتابع الحالة بخطوات واضحة حتى اكتمال التنفيذ.',
     'browse_services' => 'تصفح الخدمات',
@@ -352,7 +357,7 @@ return [
     'dont_have_account' => 'لا تمتلك حساباً؟',
     'return_to_dashboard' => 'عودة للوحة التحكم',
     'member' => ' عضو جديد',
-    
+
     // Homepage Features
     'programming_design' => 'جميع البطاقات من وكلاء رسميين',
     'easy_payment' => 'يتم معالجة الطلبات بشكل سريع وآمن',

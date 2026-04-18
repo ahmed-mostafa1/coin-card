@@ -279,7 +279,7 @@
                                     @foreach ($service->buttons->sortBy('sort_order') as $btn)
                                         <a href="{{ $btn->url }}" target="_blank" rel="noopener noreferrer"
                                             class="flex w-full sm:w-auto items-center justify-center text-center rounded-lg px-6 py-3 min-w-[140px] text-sm font-semibold text-white shadow-sm transition hover:brightness-110 active:scale-95"
-                                            style="background-color: {{ $btn->bg_color }};">
+                                            data-button-bg="{{ $btn->bg_color }}">
                                             {{ $btn->localized_label }}
                                         </a>
                                     @endforeach
@@ -295,7 +295,7 @@
                         </div>
                     </div>
 
-                    <form method="POST" action="{{ route('services.purchase', $service->slug) }}" enctype="multipart/form-data" class="mt-4 space-y-4">
+                    <form id="purchase-form" method="POST" action="{{ route('services.purchase', $service->slug) }}" enctype="multipart/form-data" class="mt-4 space-y-4">
                         @csrf
 
                         @if (! $isDiscountedInputPricing && $service->variants->count())
@@ -315,6 +315,7 @@
                                                 <input type="radio" name="variant_id" value="{{ $variant->id }}"
                                                     data-price="{{ $discountedPrice }}"
                                                     data-original-price="{{ $originalPrice }}"
+                                                    data-variant-name="{{ $variant->localized_name }}"
                                                     data-discount="{{ $vipDiscount }}"
                                                     class="text-emerald-600 focus:ring-emerald-500"
                                                     @checked($isChecked) required>
@@ -497,6 +498,7 @@
 
                         @auth
                             <button id="purchase-button" type="submit"
+                                data-processing-label="{{ __('messages.purchase_submitting') }}"
                                 class="w-full rounded-lg bg-[#f2a900] px-5 py-3 text-sm font-semibold text-slate-900 transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-60">
                                 {{ __('messages.buy_now') }}
                             </button>
@@ -584,26 +586,70 @@
     @auth
         @php
             $selectPackageMessage = __("messages.select_package_first") ?? (app()->getLocale() == "ar" ? "اختر باقة أولاً" : "Select a package first");
+            $purchasePageConfig = [
+                'availableBalance' => (float) $availableBalance,
+                'isDiscountedInputPricing' => $isDiscountedInputPricing,
+                'serviceDiscountPercent' => (float) $serviceDiscountPercent,
+                'hasVariants' => ! $isDiscountedInputPricing && $service->variants->count() > 0,
+                'isQuantityBased' => ! $isDiscountedInputPricing && $service->is_quantity_based,
+                'vipDiscount' => (float) $vipDiscount,
+                'currentLocale' => str_replace('_', '-', app()->getLocale()),
+                'isRtl' => app()->getLocale() === 'ar',
+                'serviceName' => $service->localized_name,
+                'servicePrice' => (float) $service->price,
+                'selectPackageMessage' => $selectPackageMessage,
+                'confirmationLabels' => [
+                    'title' => __('messages.purchase_confirmation_title'),
+                    'text' => __('messages.purchase_confirmation_text'),
+                    'service' => __('messages.service'),
+                    'package' => __('messages.package'),
+                    'quantity' => __('messages.quantity'),
+                    'price' => __('messages.price_label'),
+                    'confirm' => __('messages.purchase_confirmation_confirm'),
+                    'cancel' => __('messages.purchase_confirmation_cancel'),
+                ],
+            ];
         @endphp
+        <script id="purchase-page-config" type="application/json">@json($purchasePageConfig)</script>
         <script>
             document.addEventListener('DOMContentLoaded', () => {
-                const availableBalance = parseFloat({{ $availableBalance }} || 0);
+                const configElement = document.getElementById('purchase-page-config');
+                if (!configElement) {
+                    return;
+                }
+
+                const config = JSON.parse(configElement.textContent || '{}');
+                const availableBalance = parseFloat(config.availableBalance || 0);
                 const priceElement = document.getElementById('current-price');
                 const originalPriceElement = document.getElementById('original-price');
                 const priceCurrency = document.getElementById('price-currency');
                 const priceInput = document.getElementById('selected-price-input');
                 const insufficientMessage = document.getElementById('insufficient-message');
+                const purchaseForm = document.getElementById('purchase-form');
                 const purchaseButton = document.getElementById('purchase-button');
                 const termsCheckbox = document.getElementById('accept-terms-checkbox');
                 const variantInputs = document.querySelectorAll('input[name="variant_id"]');
                 const quantityInput = document.getElementById('quantity-input');
                 const offerAmountInput = document.getElementById('offer_amount');
                 const countdownElement = document.querySelector('[data-limited-offer-countdown]');
-                const isDiscountedInputPricing = {{ $isDiscountedInputPricing ? 'true' : 'false' }};
-                const serviceDiscountPercent = {{ $serviceDiscountPercent }};
-                const hasVariants = {{ (! $isDiscountedInputPricing && $service->variants->count()) ? 'true' : 'false' }};
-                const isQuantityBased = {{ (! $isDiscountedInputPricing && $service->is_quantity_based) ? 'true' : 'false' }};
-                const vipDiscount = {{ $vipDiscount }};
+                const isDiscountedInputPricing = Boolean(config.isDiscountedInputPricing);
+                const serviceDiscountPercent = parseFloat(config.serviceDiscountPercent || 0);
+                const hasVariants = Boolean(config.hasVariants);
+                const isQuantityBased = Boolean(config.isQuantityBased);
+                const vipDiscount = parseFloat(config.vipDiscount || 0);
+                const currentLocale = config.currentLocale || 'en';
+                const isRtl = Boolean(config.isRtl);
+                const serviceName = config.serviceName || '';
+                const servicePrice = parseFloat(config.servicePrice || 0);
+                const selectPackageMessage = config.selectPackageMessage || '';
+                const confirmationLabels = config.confirmationLabels || {};
+
+                const escapeHtml = (value) => String(value)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;');
 
                 const formatPrice = (price) => {
                     // Avoid scientific notation and handle small numbers
@@ -612,6 +658,27 @@
                          return price.toFixed(12).replace(/\.?0+$/, "");
                     }
                     return price.toFixed(2);
+                };
+
+                const formatModalPrice = (price) => {
+                    if (price === null || Number.isNaN(price)) {
+                        return '';
+                    }
+
+                    try {
+                        return new Intl.NumberFormat(currentLocale, {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                        }).format(price) + ' USD';
+                    } catch (error) {
+                        return formatPrice(price) + ' USD';
+                    }
+                };
+
+                const getSelectedVariantLabel = () => {
+                    const checked = document.querySelector('input[name="variant_id"]:checked');
+
+                    return checked?.dataset.variantName || null;
                 };
 
                 const getSelectedPrice = () => {
@@ -640,7 +707,7 @@
                         return parseFloat(checked.dataset.price);
                     }
 
-                    let price = hasVariants ? null : parseFloat({{ $service->price }});
+                    let price = hasVariants ? null : servicePrice;
                     if (price !== null && vipDiscount > 0) {
                         price = price * (1 - vipDiscount / 100);
                     }
@@ -705,7 +772,7 @@
                                 }
                             }
                         } else if (hasVariants) {
-                            priceElement.textContent = {!! json_encode($selectPackageMessage) !!};
+                            priceElement.textContent = selectPackageMessage;
                             if (priceCurrency) priceCurrency.classList.add('hidden');
                             if (priceInput) priceInput.value = '';
                             if (originalPriceElement) originalPriceElement.classList.add('hidden');
@@ -737,6 +804,85 @@
                     }
                 };
 
+                if (purchaseForm) {
+                    purchaseForm.addEventListener('submit', (event) => {
+                        if (purchaseForm.dataset.confirmed === 'true') {
+                            return;
+                        }
+
+                        event.preventDefault();
+
+                        const selectedPrice = getSelectedPrice();
+                        const details = [
+                            {
+                                label: confirmationLabels.service,
+                                value: serviceName,
+                            },
+                            hasVariants
+                                ? {
+                                    label: confirmationLabels.package,
+                                    value: getSelectedVariantLabel(),
+                                }
+                                : null,
+                            isQuantityBased && quantityInput
+                                ? {
+                                    label: confirmationLabels.quantity,
+                                    value: quantityInput.value,
+                                }
+                                : null,
+                            {
+                                label: confirmationLabels.price,
+                                value: formatModalPrice(selectedPrice),
+                            },
+                        ].filter((item) => item && item.value !== null && item.value !== '');
+
+                        const detailsHtml = details.map((item) => `
+                            <div class="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm dark:border-slate-700 dark:bg-slate-800/70">
+                                <span class="text-slate-500 dark:text-slate-300">${escapeHtml(item.label)}</span>
+                                <span class="font-semibold text-slate-900 dark:text-white">${escapeHtml(item.value)}</span>
+                            </div>
+                        `).join('');
+
+                        Swal.fire({
+                            icon: 'question',
+                            title: confirmationLabels.title,
+                            html: `
+                                <div dir="${isRtl ? 'rtl' : 'ltr'}" class="space-y-4 text-start">
+                                    <p class="text-sm text-slate-600 dark:text-slate-300">${escapeHtml(confirmationLabels.text)}</p>
+                                    <div class="space-y-3">${detailsHtml}</div>
+                                </div>
+                            `,
+                            showCancelButton: true,
+                            confirmButtonText: confirmationLabels.confirm,
+                            cancelButtonText: confirmationLabels.cancel,
+                            reverseButtons: isRtl,
+                            focusCancel: true,
+                            buttonsStyling: false,
+                            customClass: {
+                                popup: 'rounded-3xl bg-white p-6 text-start shadow-2xl dark:bg-slate-900',
+                                title: 'text-xl font-bold text-slate-900 dark:text-white',
+                                htmlContainer: 'mt-3',
+                                actions: 'mt-6 flex gap-3',
+                                confirmButton: 'inline-flex items-center justify-center rounded-lg bg-[#f2a900] px-5 py-3 text-sm font-semibold text-slate-900 transition hover:brightness-105',
+                                cancelButton: 'inline-flex items-center justify-center rounded-lg border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800',
+                            },
+                        }).then((result) => {
+                            if (!result.isConfirmed) {
+                                return;
+                            }
+
+                            purchaseForm.dataset.confirmed = 'true';
+
+                            if (purchaseButton) {
+                                purchaseButton.setAttribute('disabled', 'disabled');
+                                purchaseButton.textContent = purchaseButton.dataset.processingLabel || purchaseButton.textContent;
+                            }
+
+                            HTMLFormElement.prototype.submit.call(purchaseForm);
+                        });
+                    });
+                }
+
                 variantInputs.forEach((input) => {
                     input.addEventListener('change', updateState);
                 });
@@ -761,6 +907,10 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('[data-button-bg]').forEach((element) => {
+                element.style.backgroundColor = element.dataset.buttonBg;
+            });
+
             document.querySelectorAll('[data-share-service]').forEach((button) => {
                 button.addEventListener('click', async () => {
                     const url = button.dataset.shareUrl;

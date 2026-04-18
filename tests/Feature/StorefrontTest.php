@@ -227,7 +227,10 @@ class StorefrontTest extends TestCase
             ],
         ]);
 
-        $response->assertRedirect(route('account.orders'));
+        $order = Order::where('user_id', $user->id)->firstOrFail();
+
+        $response->assertRedirect(route('account.orders.show', $order));
+        $response->assertSessionHas('status');
 
         $wallet->refresh();
 
@@ -240,7 +243,6 @@ class StorefrontTest extends TestCase
             'status' => Order::STATUS_NEW,
         ]);
 
-        $order = Order::where('user_id', $user->id)->firstOrFail();
         $this->assertSame('12345', $order->payload['player_id']);
         $this->assertSame('150.00', $order->amount_held);
 
@@ -377,9 +379,10 @@ class StorefrontTest extends TestCase
             'fields' => [],
         ]);
 
-        $response->assertRedirect(route('account.orders'));
-
         $order = Order::where('user_id', $user->id)->firstOrFail();
+
+        $response->assertRedirect(route('account.orders.show', $order));
+        $response->assertSessionHas('status');
 
         $this->assertSame('220.00', $order->price_at_purchase);
         $this->assertSame('220.00', $order->amount_held);

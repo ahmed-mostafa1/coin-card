@@ -32,6 +32,11 @@ return [
     'contact_whatsapp' => 'Contact via WhatsApp',
     'accept_terms_purchase_label' => 'I agree to the store :terms and accept responsibility for the accuracy of the entered information',
     'accept_terms_required' => 'You must agree to the store terms of use before placing the order.',
+    'purchase_confirmation_title' => 'Confirm Order Placement',
+    'purchase_confirmation_text' => 'Please review the order details before continuing.',
+    'purchase_confirmation_confirm' => 'Confirm Purchase',
+    'purchase_confirmation_cancel' => 'Cancel',
+    'purchase_submitting' => 'Placing order...',
     'professional_platform' => 'Professional platform for digital services top-up',
     'platform_desc' => 'Choose the right service, pay from your wallet balance, and follow the status with clear steps until completion.',
     'browse_services' => 'Browse Services',
@@ -455,7 +460,7 @@ return [
     'offer_time_left' => 'Time left',
     'days_hours_minutes' => 'Day : Hour : Minute',
     'offer_expired' => 'Offer expired',
-    'request_agency' => "Request Agency",
+    'request_agency' => 'Request Agency',
     'dashboard' => 'Dashboard',
     'account_activation_required' => 'Account activation required',
     'account_verification_required' => 'Please verify your account first.',
@@ -516,7 +521,7 @@ return [
     'success' => 'Success.',
     'quantity' => 'Quantity',
     'per_unit' => 'Per Unit',
-     'min_quantity' => 'Min Quantity',
+    'min_quantity' => 'Min Quantity',
     'max_quantity' => 'Max Quantity',
     'any_quantity' => 'Leave empty to allow any quantity',
     'quantity_limits' => 'Min: :min | Max: :max',
@@ -531,7 +536,5 @@ return [
     'notifications_custom.new_deposit_request_desc' => 'New deposit request Created',
     'notifications_custom.deposit_created_title' => 'Deposit request created',
     'notifications_custom.deposit_created_desc' => 'Deposit request created successfully',
-
-
 
 ];

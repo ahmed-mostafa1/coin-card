@@ -73,4 +73,26 @@
 
         <div class="mt-6">{{ $orders->links() }}</div>
     </x-card>
+
+    @if (session('status'))
+        <div id="orders-status-toast" data-message="{{ session('status') }}" data-position="{{ app()->getLocale() === 'ar' ? 'top-start' : 'top-end' }}" hidden></div>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const toastElement = document.getElementById('orders-status-toast');
+                if (!toastElement) {
+                    return;
+                }
+
+                Swal.fire({
+                    toast: true,
+                    position: toastElement.dataset.position || 'top-end',
+                    icon: 'success',
+                    title: toastElement.dataset.message || '',
+                    showConfirmButton: false,
+                    timer: 2600,
+                    timerProgressBar: true,
+                });
+            });
+        </script>
+    @endif
 @endsection

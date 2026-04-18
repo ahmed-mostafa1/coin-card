@@ -55,7 +55,7 @@ class ServiceController extends Controller
             || ($service->provider_id !== null && str_contains(strtolower((string) $service->source), 'dailycard'))
             || (optional($service->provider)->slug === 'daily-card');
 
-        $isGenericProvider = !$isDailyCard && $service->provider_id !== null && optional($service->provider)->hasOrderFulfillment();
+        $isGenericProvider = ! $isDailyCard && $service->provider_id !== null && optional($service->provider)->hasOrderFulfillment();
         $shouldAutoPlace = $isDailyCard || $isGenericProvider;
 
         $user = $request->user();
@@ -223,7 +223,7 @@ class ServiceController extends Controller
             }
         });
 
-        return redirect()->route('account.orders')
+        return redirect()->route('account.orders.show', $order)
             ->with('status', 'تم إنشاء الطلب، وسيظل المبلغ معلّقًا حتى تأكيد التنفيذ.');
     }
 }

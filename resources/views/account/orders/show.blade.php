@@ -5,6 +5,12 @@
 @section('content')
     <div class="grid gap-6 lg:grid-cols-3">
         <x-card class="p-8 lg:col-span-2" :hover="false">
+            @if (session('status'))
+                <div class="mb-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">
+                    {{ session('status') }}
+                </div>
+            @endif
+
             <div class="flex items-center justify-between gap-4">
                 <div>
                     <h1 class="text-2xl font-bold text-slate-900">{{ __('messages.order_id_title', ['id' => $order->id]) }}</h1>
@@ -178,4 +184,26 @@
             </div>
         </x-card>
     </div>
+
+    @if (session('status'))
+        <div id="order-status-toast" data-message="{{ session('status') }}" data-position="{{ app()->getLocale() === 'ar' ? 'top-start' : 'top-end' }}" hidden></div>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const toastElement = document.getElementById('order-status-toast');
+                if (!toastElement) {
+                    return;
+                }
+
+                Swal.fire({
+                    toast: true,
+                    position: toastElement.dataset.position || 'top-end',
+                    icon: 'success',
+                    title: toastElement.dataset.message || '',
+                    showConfirmButton: false,
+                    timer: 2600,
+                    timerProgressBar: true,
+                });
+            });
+        </script>
+    @endif
 @endsection

@@ -69,7 +69,7 @@ class DailyCardWebhookController extends Controller
                         $this->orderStatusService->updateStatus(
                             $order,
                             $localStatus,
-                            'تم تحديث الحالة تلقائياً عبر إشعار الـ Webhook الخاص بـ DailyCard',
+                            'تم تحديث حالة الطلب تلقائياً  ',
                             $admin
                         );
                     } else {
