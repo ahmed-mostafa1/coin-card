@@ -25,7 +25,7 @@
         'inLanguage' => app()->getLocale(),
     ];
     $categoryCount = $categories->count();
-    $featuredServicesCount = $featuredServices->count();
+    $homeFeatureCards = collect($homeFeatureCards ?? []);
     $heroSlides = $sharedBanners
         ->filter(fn ($banner) => filled($banner->image_path))
         ->values()
@@ -294,7 +294,7 @@
                             </div>
                         </div>
 
-                        <a href="#home-services" class="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-4 py-3 text-sm font-bold text-white transition hover:bg-emerald-700">
+                        <a href="#home-categories" class="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-4 py-3 text-sm font-bold text-white transition hover:bg-emerald-700">
                             <i class="fa-solid fa-arrow-down"></i>
                             <span>{{ app()->getLocale() === 'ar' ? 'انتقل إلى الخدمات' : 'Go to services' }}</span>
                         </a>
@@ -309,7 +309,7 @@
                     <h2 class="mt-3 text-2xl font-black text-slate-900 dark:text-white">{{ app()->getLocale() === 'ar' ? 'ابدأ من القسم المناسب لك' : 'Start from the right category' }}</h2>
                 </div>
             </div>
-            <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <div class="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
                 @forelse ($categories as $category)
                     <x-store.category-card :title="$category->localized_name" :href="route('categories.show', $category->slug)" :image="$category->image_path ? asset('storage/' . $category->image_path) : null" />
                     @if (false)
@@ -345,7 +345,7 @@
                     </a>
                     @endif
                 @empty
-                    <x-empty-state :message="__('messages.no_categories')" class="md:col-span-2 xl:col-span-4" />
+                    <x-empty-state :message="__('messages.no_categories')" class="col-span-full" />
                 @endforelse
             </div>
         </section>
@@ -358,23 +358,6 @@
                     <p class="home-feature-card__text">{{ $featureCard['description'] }}</p>
                 </article>
             @endforeach
-        </section>
-
-        
-        <section id="home-services" class="space-y-5">
-            <div class="home-section-heading">
-                <div>
-                    <h2 class="mt-3 text-2xl font-black text-slate-900 dark:text-white">{{ __('messages.featured_services') }}</h2>
-                </div>
-            </div>
-
-            <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-                @forelse($featuredServices as $service)
-                    <x-store.product-card :service="$service" layout="feature" />
-                @empty
-                    <x-empty-state :message="__('messages.no_services')" class="md:col-span-2 xl:col-span-4" />
-                @endforelse
-            </div>
         </section>
 
         <section class="home-callout">

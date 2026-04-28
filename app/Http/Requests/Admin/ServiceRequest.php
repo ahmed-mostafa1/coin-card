@@ -47,7 +47,6 @@ class ServiceRequest extends FormRequest
             'image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'offer_image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'is_active' => ['nullable', 'boolean'],
-            'is_featured' => ['nullable', 'boolean'],
             'is_offer_active' => ['nullable', 'boolean'],
             'is_limited_offer_label_active' => ['nullable', 'boolean'],
             'limited_offer_label' => ['exclude_unless:is_limited_offer_label_active,1', 'required', 'string', 'max:120'],

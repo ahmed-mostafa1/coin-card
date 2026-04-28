@@ -47,7 +47,6 @@ return [
     'balance_deduction' => 'Deduction from available balance only',
     'clear_history' => 'Clear order and payment history',
     'no_categories' => 'No active categories at the moment.',
-    'featured_services' => 'Featured Services',
     'discover_services' => 'Discover our latest available services.',
     'starts_from' => 'Starts from',
     'no_services' => 'No services available at the moment.',
@@ -272,9 +271,6 @@ return [
     'category' => 'Category',
     'select_category' => 'Choose Category',
     'activate_service' => 'Activate Service',
-    'feature_on_home' => 'Show in home featured services',
-    'featured_only_hint' => 'Marked services appear first in the home page services grid.',
-    'featured_badge' => 'Featured',
     'back_to_services' => 'Back to Services',
 
     // Admin - Variant Management

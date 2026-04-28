@@ -46,7 +46,6 @@ return [
     'balance_deduction' => 'خصم من الرصيد المتاح فقط',
     'clear_history' => 'سجل طلبات ودفعات واضح',
     'no_categories' => 'لا توجد فئات مفعلة حالياً.',
-    'featured_services' => 'خدمات مميزة',
     'discover_services' => 'اكتشف أحدث الخدمات المتاحة لدينا.',
     'starts_from' => 'يبدأ من',
     'no_services' => 'لا توجد خدمات متاحة حالياً.',
@@ -541,7 +540,4 @@ return [
     'status_frozen' => 'مجمّد',
     'active_user' => 'نشط',
     'no_users_found' => 'لا يوجد مستخدمون.',
-    'feature_on_home' => 'إظهارها ضمن الخدمات المميزة في الرئيسية',
-    'featured_only_hint' => 'الخدمات المعلمة هنا تظهر أولًا في شبكة خدمات الصفحة الرئيسية.',
-    'featured_badge' => 'مميزة',
 ];

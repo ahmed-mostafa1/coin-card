@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Models\Service;
 use App\Models\SiteSetting;
 use Illuminate\View\View;
 
@@ -48,38 +47,6 @@ class HomeController extends Controller
             ->orderBy('name')
             ->get();
 
-        $servicesQuery = Service::query()
-            ->with(['category', 'variants'])
-            ->where('is_active', true)
-            ->whereHas('category', function ($query): void {
-                $query->active();
-            });
-
-        $featuredServicesLimit = 4;
-
-        $featuredServices = (clone $servicesQuery)
-            ->where('is_featured', true)
-            ->orderByDesc('is_offer_active')
-            ->orderBy('sort_order')
-            ->orderBy('name')
-            ->limit($featuredServicesLimit)
-            ->get();
-
-        if ($featuredServices->count() < $featuredServicesLimit) {
-            $featuredServices = $featuredServices->concat(
-                (clone $servicesQuery)
-                    ->when(
-                        $featuredServices->isNotEmpty(),
-                        fn ($query) => $query->whereNotIn('id', $featuredServices->pluck('id'))
-                    )
-                    ->orderByDesc('is_offer_active')
-                    ->orderBy('sort_order')
-                    ->orderBy('name')
-                    ->limit($featuredServicesLimit - $featuredServices->count())
-                    ->get()
-            );
-        }
-
-        return view('home', compact('categories', 'featuredServices', 'homeFeatureCards', 'homeHeroTitle', 'homeHeroText'));
+        return view('home', compact('categories', 'homeFeatureCards', 'homeHeroTitle', 'homeHeroText'));
     }
 }

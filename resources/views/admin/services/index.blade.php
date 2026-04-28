@@ -60,9 +60,6 @@
                         <td class="py-3">
                             <div class="flex flex-wrap items-center gap-2 text-slate-700 dark:text-white">
                                 <span>{{ $service->name }}</span>
-                                @if ($service->is_featured)
-                                    <span class="rounded-full bg-amber-100 px-2.5 py-1 text-[11px] font-semibold text-amber-700 dark:bg-amber-900/40 dark:text-amber-300">{{ __('messages.featured_badge') }}</span>
-                                @endif
                             </div>
                         </td>
                         <td class="py-3 text-slate-500 dark:text-slate-400">{{ $service->category?->name }}</td>

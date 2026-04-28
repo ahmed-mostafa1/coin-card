@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ServiceRequest;
 use App\Models\Category;
 use App\Models\Service;
+use App\Services\SquareImageOptimizer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -115,11 +116,11 @@ class ServiceController extends Controller
         $data = $this->prepareData($request, $service);
 
         if ($request->hasFile('image')) {
+            $data['image_path'] = app(SquareImageOptimizer::class)->store($request->file('image'), 'services');
+
             if ($service->image_path) {
                 Storage::disk('public')->delete($service->image_path);
             }
-
-            $data['image_path'] = $request->file('image')->store('services', 'public');
         }
 
         if ($request->hasFile('offer_image')) {
@@ -142,7 +143,6 @@ class ServiceController extends Controller
         $data['pricing_mode'] = $data['pricing_mode'] ?? Service::PRICING_MODE_FIXED;
         $data['admin_discount_percent'] = $data['admin_discount_percent'] ?? 0;
         $data['is_active'] = $request->boolean('is_active');
-        $data['is_featured'] = $request->boolean('is_featured');
         $data['is_offer_active'] = $request->boolean('is_offer_active');
         $data['is_limited_offer_label_active'] = $request->boolean('is_limited_offer_label_active');
         $data['is_limited_offer_countdown_active'] = $request->boolean('is_limited_offer_countdown_active');
@@ -190,7 +190,7 @@ class ServiceController extends Controller
         $data['slug'] = $slug;
 
         if ($request->hasFile('image') && ! $service) {
-            $data['image_path'] = $request->file('image')->store('services', 'public');
+            $data['image_path'] = app(SquareImageOptimizer::class)->store($request->file('image'), 'services');
         }
 
         if ($request->hasFile('offer_image') && ! $service) {

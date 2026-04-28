@@ -189,36 +189,6 @@ class ServiceCreateTest extends TestCase
         $this->assertNotNull($service->limited_offer_ends_at);
     }
 
-    public function test_admin_can_mark_service_as_featured(): void
-    {
-        $admin = $this->makeAdmin();
-
-        $category = Category::create([
-            'name' => 'Cat',
-            'slug' => 'cat-featured',
-            'is_active' => true,
-            'sort_order' => 0,
-        ]);
-
-        $response = $this->actingAs($admin)->post(route('admin.services.store'), [
-            'category_id' => $category->id,
-            'name' => 'Featured Service',
-            'slug' => 'featured-service',
-            'price' => 10,
-            'is_active' => true,
-            'is_featured' => true,
-        ]);
-
-        $service = Service::where('slug', 'featured-service')->firstOrFail();
-
-        $response->assertRedirect(route('admin.services.edit', $service));
-        $this->assertTrue($service->is_featured);
-        $this->assertDatabaseHas('services', [
-            'id' => $service->id,
-            'is_featured' => true,
-        ]);
-    }
-
     public function test_admin_can_create_discounted_input_service_type(): void
     {
         $admin = $this->makeAdmin();

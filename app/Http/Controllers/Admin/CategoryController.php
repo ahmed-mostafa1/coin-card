@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CategoryRequest;
 use App\Models\Category;
+use App\Services\SquareImageOptimizer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -76,11 +77,11 @@ class CategoryController extends Controller
         $data = $this->prepareData($request, $category);
 
         if ($request->hasFile('image')) {
+            $data['image_path'] = app(SquareImageOptimizer::class)->store($request->file('image'), 'categories');
+
             if ($category->image_path) {
                 Storage::disk('public')->delete($category->image_path);
             }
-
-            $data['image_path'] = $request->file('image')->store('categories', 'public');
         }
 
         $category->update($data);
@@ -134,7 +135,7 @@ class CategoryController extends Controller
         $data['slug'] = $slug;
 
         if ($request->hasFile('image') && ! $category) {
-            $data['image_path'] = $request->file('image')->store('categories', 'public');
+            $data['image_path'] = app(SquareImageOptimizer::class)->store($request->file('image'), 'categories');
         }
 
         return $data;

@@ -128,14 +128,6 @@
                 <label for="is_active">{{ __('messages.activate_service') }}</label>
             </div>
 
-            <div class="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-400">
-                <input id="is_featured" name="is_featured" type="checkbox" value="1" class="mt-1 rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" @checked(old('is_featured'))>
-                <div class="space-y-1">
-                    <label for="is_featured" class="font-medium text-slate-700 dark:text-slate-200">{{ __('messages.feature_on_home') }}</label>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('messages.featured_only_hint') }}</p>
-                </div>
-            </div>
-
             <div class="mt-4 border-t border-slate-100 dark:border-slate-700 pt-4">
                  <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400 mb-4">{{ __('messages.offer_settings') ?? (app()->getLocale() == 'ar' ? 'إعدادات العرض' : 'Offer Settings') }}</h2>
                  
