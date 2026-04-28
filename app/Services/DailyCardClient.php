@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\ApiProvider;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -15,16 +16,33 @@ class DailyCardClient
 
     public function __construct()
     {
-        $this->baseUrl = rtrim((string) config('services.dailycard.base_url', 'https://dailycard.shop/UAPI'), '/');
-        $this->apiKey  = config('services.dailycard.api_key');
-        $this->secret  = config('services.dailycard.secret');
-        $this->timeout = (int) config('services.dailycard.timeout', 25);
-        $this->enabled = (bool) config('services.dailycard.enabled', true);
+        $provider = ApiProvider::where('slug', 'daily-card')->first()
+            ?? ApiProvider::where('slug', 'dailycard')->first();
+
+        $credentials = $provider?->credentials ?? [];
+
+        $this->baseUrl = rtrim((string) ($provider?->base_url ?: config('services.dailycard.base_url', 'https://dailycard.shop/UAPI')), '/');
+        $this->apiKey  = filled($credentials['key'] ?? null) ? $credentials['key'] : config('services.dailycard.api_key');
+        $this->secret  = filled($credentials['secret'] ?? null) ? $credentials['secret'] : config('services.dailycard.secret');
+        $this->timeout = (int) ($provider?->timeout ?: config('services.dailycard.timeout', 25));
+        $this->enabled = $provider ? (bool) $provider->is_active : (bool) config('services.dailycard.enabled', true);
     }
 
     public function isEnabled(): bool
     {
-        return $this->enabled && filled($this->apiKey) && filled($this->secret);
+        $isEnabled = $this->enabled && filled($this->apiKey) && filled($this->secret);
+
+        if (! $isEnabled) {
+            Log::warning('DailyCard: integration disabled or credentials missing', [
+                'enabled' => $this->enabled,
+                'has_api_key' => filled($this->apiKey),
+                'has_secret' => filled($this->secret),
+                'api_key_preview' => $this->maskCredential($this->apiKey),
+                'secret_preview' => $this->maskCredential($this->secret),
+            ]);
+        }
+
+        return $isEnabled;
     }
 
     /**
@@ -112,6 +130,17 @@ class DailyCardClient
                 'X-API-Secret' => (string) $this->secret,
                 'Content-Type' => 'application/json',
             ]);
+    }
+
+    private function maskCredential(?string $value): ?string
+    {
+        if (blank($value)) {
+            return null;
+        }
+
+        $value = (string) $value;
+
+        return str_repeat('*', max(0, strlen($value) - 4)) . substr($value, -4);
     }
 
 
