@@ -164,27 +164,6 @@
                                     </div>
                                 </template>
 
-                                @if(count($heroSlides) > 1)
-                                    <div class="home-hero-card__controls">
-                                        <button type="button" class="home-hero-card__nav" @click="next()" aria-label="Next slide">
-                                            <i class="fa-solid fa-chevron-left"></i>
-                                        </button>
-
-                                        <div class="home-hero-card__dots">
-                                            <template x-for="(slide, index) in slides" :key="`indicator-${index}`">
-                                                <button type="button"
-                                                        class="home-hero-card__dot"
-                                                        :class="activeIndex === index ? 'home-hero-card__dot--active' : ''"
-                                                        @click="go(index)"
-                                                        :aria-label="slide.title || `Slide ${index + 1}`"></button>
-                                            </template>
-                                        </div>
-
-                                        <button type="button" class="home-hero-card__nav" @click="prev()" aria-label="Previous slide">
-                                            <i class="fa-solid fa-chevron-right"></i>
-                                        </button>
-                                    </div>
-                                @endif
                             </div>
                         @else
                             <div class="home-hero-card__fallback">
@@ -202,8 +181,8 @@
                     <i class="fa-solid fa-bullhorn"></i>
                     <span>{{ app()->getLocale() === 'ar' ? 'تنبيه' : 'Notice' }}</span>
                 </div>
-                <div class="min-w-0 flex-1 overflow-hidden">
-                    <div class="store-ticker-track">
+                <div class="home-ticker__viewport min-w-0 flex-1 overflow-hidden">
+                    <div class="store-ticker-track" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
                         {{ (app()->getLocale() === 'en' && !empty($sharedTickerTextEn)) ? $sharedTickerTextEn : $sharedTickerText }}
                     </div>
                 </div>

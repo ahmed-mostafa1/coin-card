@@ -320,13 +320,15 @@
 
     .store-ticker-track {
         @apply inline-block min-w-max whitespace-nowrap text-[13px] font-semibold text-slate-700;
-        will-change: transform;
-        animation: marquee-ltr 25s linear infinite;
-        transform: translate3d(0, 0, 0);
+        line-height: 1.5rem;
+        position: absolute;
+        top: 50%;
+        will-change: left, transform;
+        animation: ticker-ltr 25s linear infinite;
     }
 
     :root[dir='ltr'] .store-ticker-track {
-        animation-name: marquee-rtl;
+        animation-name: ticker-rtl;
     }
 
     .dark .store-ticker-track {
@@ -483,21 +485,27 @@
 
     .home-hero {
         @apply flex flex-col overflow-hidden;
-        padding: 10px;
-        margin: 0;
+        padding: 0;
+        margin: 0.25rem 0 0;
         gap: 0;
-        border: none;
-        background: transparent;
-        box-shadow: none;
+        border: 1px solid rgba(16, 185, 129, 0.14);
+        background:
+            radial-gradient(circle at 16% 20%, rgba(16, 185, 129, 0.12), transparent 28%),
+            radial-gradient(circle at 88% 12%, rgba(245, 158, 11, 0.1), transparent 24%),
+            linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.72));
+        box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
         backdrop-filter: none;
-        border-radius: 0;
+        /* border-radius: 2rem; */
 
     }
 
     .dark .home-hero {
-        border: none;
-        background: transparent;
-        box-shadow: none;
+        border-color: rgba(16, 185, 129, 0.18);
+        background:
+            radial-gradient(circle at 16% 20%, rgba(16, 185, 129, 0.16), transparent 28%),
+            radial-gradient(circle at 88% 12%, rgba(245, 158, 11, 0.1), transparent 24%),
+            linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(2, 6, 23, 0.78));
+        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.24);
     }
 
     .home-hero__content {
@@ -617,8 +625,9 @@
     }
 
     .home-hero-card {
-        @apply relative isolate w-full overflow-hidden rounded-none border-0 shadow-none;
+        @apply relative isolate w-full overflow-hidden border-0 shadow-none;
         background: transparent;
+        /* border-radius: 2rem; */
     }
 
     .dark .home-hero-card {
@@ -631,7 +640,7 @@
     }
 
     .home-hero-card__image {
-        @apply h-full w-full object-contain object-center;
+        @apply h-full w-full object-fill object-center;
     }
 
     .home-hero-card__chrome {
@@ -655,19 +664,23 @@
     }
 
     .home-hero-card__viewport {
-        @apply relative overflow-hidden rounded-none border-0 bg-transparent;
+        @apply relative overflow-hidden border bg-transparent;
         aspect-ratio: var(--home-hero-ratio, 16 / 9);
-        max-height: 320px;
-        box-shadow: none;
+        border-color: rgba(226, 232, 240, 0.82);
+        /* border-radius: 1.95rem; */
+        max-height: 360px;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72), 0 12px 28px rgba(15, 23, 42, 0.1);
     }
 
     .dark .home-hero-card__viewport {
-        @apply border-0 bg-transparent;
+        @apply bg-transparent;
+        border-color: rgba(51, 65, 85, 0.82);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 16px 32px rgba(0, 0, 0, 0.28);
     }
 
     @media (min-width: 1024px) {
         .home-hero-card__media {
-            height: 16rem;
+            height: clamp(15rem, 21vw, 21.5rem);
         }
 
         .home-hero-card__viewport {
@@ -679,42 +692,6 @@
 
     .home-hero-card__slide {
         @apply absolute inset-0 flex items-center justify-center transition-opacity duration-500 ease-out;
-    }
-
-    .home-hero-card__controls {
-        @apply absolute inset-x-3 bottom-3 z-10 flex items-center justify-between gap-2 sm:inset-x-4 sm:bottom-4;
-    }
-
-    .home-hero-card__nav {
-        @apply inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200/80 bg-white/90 text-sm text-slate-700 shadow-sm backdrop-blur transition hover:border-emerald-200 hover:text-emerald-700;
-    }
-
-    .dark .home-hero-card__nav {
-        @apply border-slate-700/80 bg-slate-900/90 text-slate-200 hover:border-emerald-700 hover:text-emerald-300;
-    }
-
-    .home-hero-card__dots {
-        @apply mx-auto inline-flex items-center gap-1.5 rounded-full border border-slate-200/80 bg-white/90 px-2.5 py-1.5 shadow-sm backdrop-blur;
-    }
-
-    .dark .home-hero-card__dots {
-        @apply border-slate-700/80 bg-slate-900/90;
-    }
-
-    .home-hero-card__dot {
-        @apply block h-2.5 w-2.5 rounded-full bg-slate-300 transition-all duration-300;
-    }
-
-    .dark .home-hero-card__dot {
-        @apply bg-slate-600;
-    }
-
-    .home-hero-card__dot--active {
-        @apply w-8 bg-emerald-600;
-    }
-
-    .dark .home-hero-card__dot--active {
-        @apply bg-emerald-400;
     }
 
     .home-hero-card__fallback {
@@ -758,6 +735,11 @@
 
     .home-ticker {
         @apply flex items-center gap-3 overflow-hidden rounded-2xl border border-amber-200 bg-amber-50/80 px-4 py-3 w-full;
+    }
+
+    .home-ticker__viewport {
+        @apply relative;
+        min-height: 1.5rem;
     }
 
     .dark .home-ticker {
@@ -940,13 +922,10 @@
         }
 
         .home-hero {
-            padding: 1rem 0;
-            margin: 0.75rem 0;
+            padding: 0;
+            margin: 0.5rem 0 0;
             gap: 0;
-            border: none;
-            background: transparent;
-            box-shadow: none;
-            border-radius: 0;
+            /* border-radius: 1.3rem; */
         }
 
         .home-hero__content {
@@ -958,14 +937,14 @@
         }
 
         .home-hero-card {
-            @apply rounded-none;
+            /* border-radius: 1.3rem; */
             box-shadow: none;
         }
 
         .home-hero-card__viewport {
-            @apply rounded-none;
+            /* border-radius: 1.25rem; */
             max-height: 220px;
-            box-shadow: none;
+            box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
         }
 
         .home-hero__eyebrow {
@@ -1003,18 +982,6 @@
 
         .home-trust-pill {
             @apply justify-start text-start px-3.5 py-2.5;
-        }
-
-        .home-hero-card__controls {
-            @apply justify-center;
-        }
-
-        .home-hero-card__nav {
-            @apply hidden;
-        }
-
-        .home-hero-card__dots {
-            @apply px-2 py-1;
         }
 
         .home-mini-stat {
@@ -1095,26 +1062,26 @@
     }
 }
 
-:root[dir='rtl'] .store-ticker-track {
-    animation-name: marquee-ltr;
-}
-
-@keyframes marquee-rtl {
+@keyframes ticker-rtl {
     0% {
-        transform: translate3d(0, 0, 0);
+        left: 100%;
+        transform: translate3d(0, -50%, 0);
     }
 
     100% {
-        transform: translate3d(-100%, 0, 0);
+        left: 0;
+        transform: translate3d(-100%, -50%, 0);
     }
 }
 
-@keyframes marquee-ltr {
+@keyframes ticker-ltr {
     0% {
-        transform: translate3d(0, 0, 0);
+        left: 0;
+        transform: translate3d(-100%, -50%, 0);
     }
 
     100% {
-        transform: translate3d(100%, 0, 0);
+        left: 100%;
+        transform: translate3d(0, -50%, 0);
     }
 }
