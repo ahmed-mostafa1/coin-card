@@ -28,5 +28,8 @@ Homestead.json
 .env.production
 .phpactor.json
 auth.json
-*.md
-txt.txt
+/txt.txt
+env.txt
+AGENTS.md 
+api-documentation.md
+

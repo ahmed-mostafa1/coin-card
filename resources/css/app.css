@@ -79,7 +79,7 @@
 
 @layer base {
     body {
-        @apply bg-[#f3f6f5] text-slate-900 transition-colors duration-200;
+        @apply bg-[#ffffff] text-slate-900 transition-colors duration-200;
     }
 
     /* Dark mode styles */
@@ -734,7 +734,7 @@
     }
 
     .home-ticker {
-        @apply flex items-center gap-3 overflow-hidden rounded-2xl border border-amber-200 bg-amber-50/80 px-4 py-3 w-full;
+        @apply flex items-center gap-3 overflow-hidden rounded-2xl border border-amber-200 bg-amber-50/80 px-4 py-3 w-full mt-2.5;
     }
 
     .home-ticker__viewport {
