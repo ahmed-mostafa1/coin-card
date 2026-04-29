@@ -184,9 +184,11 @@
                     <div class="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700">
                         @if ($service->offer_image_path)
                             <img src="{{ asset('storage/' . $service->offer_image_path) }}" alt="{{ $service->localized_name }}"
+                                width="1200" height="675" loading="eager" decoding="async"
                                 class="w-full object-fill">
                         @elseif ($service->image_path)
                              <img src="{{ asset('storage/' . $service->image_path) }}" alt="{{ $service->localized_name }}"
+                                width="1200" height="675" loading="eager" decoding="async"
                                 class="w-full object-fill">
                         @endif
                     </div>
@@ -215,6 +217,7 @@
                         @if ($service->image_path)
                             <div class="relative">
                                 <img src="{{ asset('storage/' . $service->image_path) }}" alt="{{ $service->localized_name }}"
+                                    width="128" height="128" loading="eager" decoding="async"
                                     class="h-32 w-32 rounded-xl object-cover">
                                 @if ($service->topup_label_text)
                                     <span class="absolute -end-2 -top-2 rounded-full bg-emerald-600 px-2.5 py-1 text-[11px] font-bold text-white shadow">{{ $service->topup_label_text }}</span>

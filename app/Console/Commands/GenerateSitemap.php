@@ -3,10 +3,11 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Spatie\Sitemap\Sitemap;
-use Spatie\Sitemap\Tags\Url;
 use App\Models\Category;
 use App\Models\Service;
+use Illuminate\Support\Facades\URL as UrlGenerator;
+use Spatie\Sitemap\Sitemap;
+use Spatie\Sitemap\Tags\Url;
 
 class GenerateSitemap extends Command
 {
@@ -15,7 +16,7 @@ class GenerateSitemap extends Command
      *
      * @var string
      */
-    protected $signature = 'sitemap:generate';
+    protected $signature = 'sitemap:generate {--base-url=https://s7sh.com : Absolute base URL used for sitemap links.}';
 
     /**
      * The console command description.
@@ -27,8 +28,14 @@ class GenerateSitemap extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): int
     {
+        $baseUrl = rtrim((string) $this->option('base-url'), '/') ?: 'https://s7sh.com';
+        $scheme = parse_url($baseUrl, PHP_URL_SCHEME) ?: 'https';
+
+        UrlGenerator::forceRootUrl($baseUrl);
+        UrlGenerator::forceScheme($scheme);
+
         $sitemap = Sitemap::create();
 
         $sitemap->add(Url::create(route('home'))
@@ -56,30 +63,30 @@ class GenerateSitemap extends Command
             ->setPriority(0.3)
             ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY));
 
-        // Add Categories
-        Category::active()->manual()->chunkById(200, function ($categories) use ($sitemap) {
+        Category::active()->chunkById(200, function ($categories) use ($sitemap) {
             $categories->each(function (Category $category) use ($sitemap) {
-            $sitemap->add(Url::create(route('categories.show', $category->slug))
-                ->setLastModificationDate($category->updated_at ?? now())
-                ->setPriority(0.9)
-                ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY));
+                $sitemap->add(Url::create(route('categories.show', $category->slug))
+                    ->setLastModificationDate($category->updated_at ?? now())
+                    ->setPriority(0.9)
+                    ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY));
             });
         });
 
-        // Add Services
         Service::where('is_active', true)->providerAvailable()->whereHas('category', function ($query) {
-            $query->active()->manual();
+            $query->active();
         })->chunkById(200, function ($services) use ($sitemap) {
             $services->each(function (Service $service) use ($sitemap) {
-            $sitemap->add(Url::create(route('services.show', $service->slug))
-                ->setLastModificationDate($service->updated_at ?? now())
-                ->setPriority(0.8)
-                ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY));
+                $sitemap->add(Url::create(route('services.show', $service->slug))
+                    ->setLastModificationDate($service->updated_at ?? now())
+                    ->setPriority(0.8)
+                    ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY));
             });
         });
 
         $sitemap->writeToFile(public_path('sitemap.xml'));
 
         $this->info('Sitemap generated successfully.');
+
+        return self::SUCCESS;
     }
 }

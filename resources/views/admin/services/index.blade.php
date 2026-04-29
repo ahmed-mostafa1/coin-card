@@ -77,7 +77,7 @@
                         <td class="py-3 text-xs text-slate-500 dark:text-slate-400" data-label="حالة المزود">
                             @if ($service->provider_id)
                                 <div class="space-y-1">
-                                    <span class="rounded-full px-2 py-1 {{ $service->isProviderAvailable() ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700' }}">{{ $service->provider_status ?? ($service->provider_is_available ? 'available' : 'unavailable') }}</span>
+                                    <span class="rounded-full px-2 py-1 {{ $service->isProviderAvailable() ? 'bg-emerald-50 text-emerald-950' : 'bg-rose-100 text-rose-700' }}">{{ $service->provider_status ?? ($service->provider_is_available ? 'available' : 'unavailable') }}</span>
                                     <div>{{ $service->provider_status_synced_at?->format('Y-m-d H:i') ?? '-' }}</div>
                                 </div>
                             @else

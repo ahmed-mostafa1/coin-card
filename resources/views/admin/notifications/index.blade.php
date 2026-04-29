@@ -5,7 +5,9 @@
 @section('content')
     <x-card :hover="false" class="p-8">
         <x-page-header title="سجل الإشعارات المرسلة" subtitle="كل الإشعارات التي أرسلها الأدمن للمستخدمين.">
-            <a href="{{ route('admin.notifications.create') }}" class="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white">إرسال إشعار</a>
+            <x-slot:actions>
+                <a href="{{ route('admin.notifications.create') }}" class="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white">إرسال إشعار</a>
+            </x-slot:actions>
         </x-page-header>
 
         <div class="mt-6 space-y-4">

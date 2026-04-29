@@ -18,6 +18,7 @@
                         <div class="absolute inset-2 z-10 flex items-center justify-center overflow-hidden rounded-full border-[5px] border-yellow-400 bg-white dark:bg-slate-700">
                             @if ($method->icon_path)
                                 <img src="{{ asset('storage/' . $method->icon_path) }}" alt="{{ $method->localized_name }}"
+                                    width="320" height="320" loading="lazy" decoding="async"
                                     class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110">
                             @else
                                 <div class="flex h-full w-full items-center justify-center bg-slate-100 text-3xl font-bold text-slate-600">

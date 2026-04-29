@@ -101,6 +101,7 @@
 <meta name="twitter:card" content="{{ $twitterCard }}">
 <meta name="twitter:title" content="{{ $metaTitle }}">
 <meta name="twitter:description" content="{{ $metaDescription }}">
+<meta name="twitter:url" content="{{ $metaCanonical }}">
 <meta name="twitter:image" content="{{ $metaImage }}">
 
 <script type="application/ld+json">{!! json_encode($organizationSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>

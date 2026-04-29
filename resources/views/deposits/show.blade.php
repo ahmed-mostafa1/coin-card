@@ -8,6 +8,7 @@
             <div class="flex items-center gap-4">
                 @if ($paymentMethod->icon_path)
                     <img src="{{ asset('storage/' . $paymentMethod->icon_path) }}" alt="{{ $paymentMethod->localized_name }}"
+                        width="56" height="56" loading="eager" decoding="async"
                         class="h-14 w-14 rounded-xl object-cover">
                 @else
                     <div class="flex h-14 w-14 items-center justify-center rounded-xl bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">

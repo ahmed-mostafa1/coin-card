@@ -5,6 +5,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @include('partials.seo-head', ['forceNoindex' => true])
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap"></noscript>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <script>
@@ -18,6 +22,10 @@
     </script>
 
     <style>
+        [x-cloak] {
+            display: none !important;
+        }
+
         main {
             position: relative;
             z-index: 1;
@@ -57,7 +65,7 @@
                     $hasLogoImage = ($sharedLogoType === 'image') ? ($sharedLogoImage ? true : false) : false;
                 @endphp
                 @if($hasLogoImage)
-                    <img src="{{ asset('storage/' . $sharedLogoImage) }}" alt="Logo" class="h-12 object-contain">
+                    <img src="{{ asset('storage/' . $sharedLogoImage) }}" alt="Logo" width="160" height="48" loading="eager" decoding="async" class="h-12 object-contain">
                 @else
                     <span class="text-2xl font-bold text-emerald-700 dark:text-emerald-400 transition hover:text-emerald-800 dark:hover:text-emerald-300">{{ $sharedLogoText }}</span>
                 @endif
@@ -103,22 +111,6 @@
     </main>
 
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('body *').forEach((el) => {
-                const rect = el.getBoundingClientRect();
-                const style = getComputedStyle(el);
-                const isFullScreen = (rect.width >= window.innerWidth) ? (rect.height >= window.innerHeight) : false;
-                const isFixed = style.position === 'fixed';
-                const isOverlayCandidate = isFullScreen ? (isFixed ? (!['HTML', 'BODY', 'MAIN'].includes(el.tagName)) : false) : false;
-
-                if (isOverlayCandidate) {
-                    el.style.pointerEvents = 'none';
-                    el.style.display = 'none';
-                }
-            });
-        });
-    </script>
 </body>
 
 </html>

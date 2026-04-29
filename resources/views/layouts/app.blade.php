@@ -5,10 +5,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     @include('partials.seo-head')
+    @stack('head')
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap"></noscript>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer"></noscript>
     <style>[x-cloak] { display: none !important; }</style>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
     <script>
         const isDark = localStorage.theme === 'dark' || (!('theme' in localStorage) ? window.matchMedia('(prefers-color-scheme: dark)').matches : false);
@@ -232,9 +239,13 @@
                         <a href="{{ route('home') }}" class="flex min-w-0 items-center gap-3 sm:gap-4">
                             <span class="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-[1.1rem] sm:h-14 sm:w-14">
                                 @if($logoImageUrl)
-                                    <img src="{{ $logoImageUrl }}"
-                                         alt="{{ $logoTextValue }}"
-                                         class="h-full w-full object-contain p-1.5 sm:p-2">
+                                     <img src="{{ $logoImageUrl }}"
+                                          alt="{{ $logoTextValue }}"
+                                          width="56"
+                                          height="56"
+                                          loading="eager"
+                                          decoding="async"
+                                          class="h-full w-full object-contain p-1.5 sm:p-2">
                                 @else
                                     <span class="text-2xl font-black text-emerald-700 dark:text-emerald-300 sm:text-3xl">
                                         {{ mb_substr($logoTextValue, 0, 1) }}
@@ -290,7 +301,7 @@
                                             class="cc-profile-chip {{ $profileChipActive ? 'cc-profile-chip-active' : '' }}">
                                         <span class="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-emerald-600 text-sm font-black text-white">
                                             @if($profileAvatar)
-                                                <img src="{{ $profileAvatar }}" alt="{{ $currentUser->name }}" class="h-full w-full object-cover">
+                                                <img src="{{ $profileAvatar }}" alt="{{ $currentUser->name }}" width="40" height="40" loading="eager" decoding="async" class="h-full w-full object-cover">
                                             @else
                                                 {{ $profileInitial }}
                                             @endif
@@ -319,7 +330,7 @@
                                         <div class="flex items-start gap-3">
                                             <span class="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-[1.15rem] bg-emerald-600 text-lg font-black text-white">
                                                 @if($profileAvatar)
-                                                    <img src="{{ $profileAvatar }}" alt="{{ $currentUser->name }}" class="h-full w-full object-cover">
+                                                    <img src="{{ $profileAvatar }}" alt="{{ $currentUser->name }}" width="56" height="56" loading="lazy" decoding="async" class="h-full w-full object-cover">
                                                 @else
                                                     {{ $profileInitial }}
                                                 @endif
@@ -532,7 +543,9 @@
         @endauth
     </div>
 
-    <x-otp-verify-popup :open="session('show_otp_verify', false)" />
+    @auth
+        <x-otp-verify-popup :open="session('show_otp_verify', false)" />
+    @endauth
 
     @stack('scripts')
     @if (filled($sharedBodyScripts ?? ''))

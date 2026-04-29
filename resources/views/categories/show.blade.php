@@ -77,6 +77,10 @@
             @if($category->image_path)
                 <img src="{{ asset('storage/' . $category->image_path) }}"
                      alt="{{ $category->localized_name }}"
+                     width="48"
+                     height="48"
+                     loading="eager"
+                     decoding="async"
                      class="h-12 w-12 flex-shrink-0 rounded-full object-cover border-2 border-emerald-200 dark:border-emerald-800 shadow-sm">
             @else
                 <div class="h-12 w-12 flex-shrink-0 rounded-full bg-emerald-100 dark:bg-emerald-900 flex items-center justify-center">

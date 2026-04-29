@@ -34,6 +34,7 @@
             'title' => $banner->localized_title ?: __('messages.home'),
         ])
         ->all();
+    $firstHeroSlide = $heroSlides[0] ?? null;
 @endphp
 
 @section('title', $homeTitle)
@@ -43,6 +44,12 @@
 @section('meta_image', $homeImage)
 @section('meta_robots', 'index,follow')
 @section('mainWidth', 'w-full px-4 sm:mx-auto sm:w-[92%] sm:px-0 lg:w-[90%] 2xl:max-w-[1440px]')
+
+@if($firstHeroSlide)
+    @push('head')
+        <link rel="preload" as="image" href="{{ $firstHeroSlide['image'] }}" fetchpriority="high">
+    @endpush
+@endif
 
 @push('structured-data')
     <script type="application/ld+json">{!! json_encode($homeSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
@@ -66,7 +73,7 @@
                 </button>
 
                 <template x-if="currentPopup && currentPopup.image_path">
-                    <img :src="'/storage/' + currentPopup.image_path" class="h-auto max-h-60 w-full object-cover" :alt="currentPopup.localized_title">
+                    <img :src="'/storage/' + currentPopup.image_path" width="800" height="480" loading="lazy" decoding="async" class="h-auto max-h-60 w-full object-cover" :alt="currentPopup.localized_title">
                 </template>
 
                 <div class="p-6 text-center">
@@ -143,23 +150,26 @@
 
             <div class="home-hero__visual">
                 <div class="home-hero-card"
-                     x-data="homeHeroSlider(@js($heroSlides))"
+                     x-data="homeHeroSlider({{ count($heroSlides) }})"
                      x-init="start()"
                      @mouseenter="stop()"
-                     @mouseleave="start()"
-                     :style="`--home-hero-ratio: ${heroRatio}`">
+                     @mouseleave="start()">
                     <div class="home-hero-card__media rounded-none">
                         @if(!empty($heroSlides))
                             <div class="home-hero-card__viewport">
-                                <template x-for="(slide, index) in slides" :key="`${index}-${slide.image}`">
+                                @foreach($heroSlides as $index => $slide)
                                     <div class="home-hero-card__slide"
-                                         :class="activeIndex === index ? 'opacity-100 z-[1]' : 'pointer-events-none opacity-0 z-0'">
-                                        <img :src="slide.image"
-                                             :alt="slide.title"
-                                             class="home-hero-card__image"
-                                             @load="updateRatio($event.target, index)">
+                                         :class="activeIndex === {{ $index }} ? 'opacity-100 z-[1]' : 'pointer-events-none opacity-0 z-0'">
+                                        <img src="{{ $slide['image'] }}"
+                                             alt="{{ $slide['title'] }}"
+                                             width="1600"
+                                             height="700"
+                                             loading="{{ $index === 0 ? 'eager' : 'lazy' }}"
+                                             decoding="async"
+                                             @if($index === 0) fetchpriority="high" @endif
+                                             class="home-hero-card__image">
                                     </div>
-                                </template>
+                                @endforeach
 
                             </div>
                         @else
@@ -288,38 +298,6 @@
             <div class="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
                 @forelse ($categories as $category)
                     <x-store.category-card :title="$category->localized_name" :href="route('categories.show', $category->slug)" :image="$category->image_path ? asset('storage/' . $category->image_path) : null" />
-                    @if (false)
-                        <div class="home-category-card__image">
-                            @if($category->image_path)
-                                <img src="{{ asset('storage/' . $category->image_path) }}" alt="{{ $category->localized_name }}" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
-                            @else
-                                <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-emerald-100 to-white dark:from-emerald-950/40 dark:to-slate-900">
-                                    <i class="fa-solid fa-layer-group text-3xl text-emerald-600 dark:text-emerald-400"></i>
-                                </div>
-                            @endif
-                        </div>
-                        <div class="flex flex-1 flex-col justify-between p-5">
-                            <div>
-                                <div class="flex items-center justify-between gap-3">
-                                    <h3 class="text-lg font-black text-slate-900 dark:text-white">{{ $category->localized_name }}</h3>
-                                    <span class="home-category-card__arrow">
-                                        <i class="fa-solid fa-chevron-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} text-xs"></i>
-                                    </span>
-                                </div>
-                                <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">
-                                    {{ app()->getLocale() === 'ar'
-                                        ? 'تصفح الخدمات المرتبطة بهذا القسم ضمن واجهة مرتبة وسريعة.'
-                                        : 'Browse services in this category through a cleaner and faster layout.' }}
-                                </p>
-                            </div>
-
-                            <div class="mt-5 flex items-center justify-between gap-3 border-t border-slate-200 pt-4 dark:border-slate-700">
-                                <span class="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">{{ app()->getLocale() === 'ar' ? 'خدمات متاحة' : 'Available' }}</span>
-                                <span class="rounded-full bg-slate-100 px-3 py-1 text-sm font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-200">{{ $category->services_count }}</span>
-                            </div>
-                        </div>
-                    </a>
-                    @endif
                 @empty
                     <x-empty-state :message="__('messages.no_categories')" class="col-span-full" />
                 @endforelse
@@ -360,35 +338,17 @@
 @push('scripts')
     <script>
         document.addEventListener('alpine:init', () => {
-            Alpine.data('homeHeroSlider', (slides = []) => ({
-                slides,
+            Alpine.data('homeHeroSlider', (slideCount = 0) => ({
+                slideCount,
                 activeIndex: 0,
-                heroRatio: '16 / 7',
                 intervalId: null,
-                syncRatio() {
-                    this.$nextTick(() => {
-                        const activeImage = this.$root.querySelectorAll('.home-hero-card__image')[this.activeIndex];
-
-                        if (activeImage && activeImage.complete) {
-                            this.updateRatio(activeImage, this.activeIndex);
-                        }
-                    });
-                },
-                updateRatio(image, index) {
-                    if (!image || index !== this.activeIndex || !image.naturalWidth || !image.naturalHeight) {
-                        return;
-                    }
-
-                    this.heroRatio = `${image.naturalWidth} / ${image.naturalHeight}`;
-                },
                 go(index) {
-                    if (!Array.isArray(this.slides) || !this.slides.length) {
+                    if (!this.slideCount) {
                         return;
                     }
 
-                    const normalizedIndex = ((index % this.slides.length) + this.slides.length) % this.slides.length;
+                    const normalizedIndex = ((index % this.slideCount) + this.slideCount) % this.slideCount;
                     this.activeIndex = normalizedIndex;
-                    this.syncRatio();
                 },
                 next() {
                     this.go(this.activeIndex + 1);
@@ -398,9 +358,8 @@
                 },
                 start() {
                     this.stop();
-                    this.syncRatio();
 
-                    if (!Array.isArray(this.slides) || this.slides.length < 2) {
+                    if (this.slideCount < 2) {
                         return;
                     }
 

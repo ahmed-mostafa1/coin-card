@@ -28,6 +28,10 @@
                 <div class="relative flex h-full w-full shrink-0 flex-[0_0_100%] items-center justify-center bg-slate-100 dark:bg-slate-900">
                     <img src="{{ $src }}"
                         alt="{{ is_array($banner) ? ($banner['title'] ?? '') : ($banner->localized_title ?? $banner->title ?? '') }}"
+                        width="1600"
+                        height="800"
+                        loading="{{ $loop->first ? 'eager' : 'lazy' }}"
+                        decoding="async"
                         onerror="this.onerror=null;this.src='{{ $fallback }}';"
                         class="h-full w-full object-contain">
                     {{-- Bottom gradient scrim for readability --}}
