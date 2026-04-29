@@ -32,7 +32,12 @@
                     @forelse ($deposits as $deposit)
                         <tr class="transition hover:bg-slate-50">
                             <td class="py-3 text-slate-700">{{ $deposit->paymentMethod?->name ?? 'طريقة محذوفة' }}</td>
-                            <td class="py-3 text-slate-700">{{ number_format($deposit->user_amount, 2) }} USD</td>
+                            <td class="py-3 text-slate-700">
+                                {{ number_format($deposit->net_usd_amount ?? $deposit->user_amount, 2) }} USD
+                                @if ($deposit->currency_code)
+                                    <div class="text-xs text-slate-500">{{ number_format($deposit->local_amount, 2) }} {{ $deposit->currency_code }}</div>
+                                @endif
+                            </td>
                             <td class="py-3 text-slate-700">
                                 @if ($deposit->approved_amount)
                                     {{ number_format($deposit->approved_amount, 2) }} USD

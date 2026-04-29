@@ -28,6 +28,11 @@
     data-filter-alt="{{ $subtitle }}">
 
     <div class="relative aspect-square w-full overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800">
+        @if ($service->topup_label_text)
+            <span class="absolute end-2 top-2 z-10 rounded-full bg-emerald-600/95 px-2.5 py-1 text-[11px] font-bold text-white shadow">
+                {{ $service->topup_label_text }}
+            </span>
+        @endif
         @if ($image)
             <img src="{{ $image }}"
                  alt="{{ $service->localized_name }}"

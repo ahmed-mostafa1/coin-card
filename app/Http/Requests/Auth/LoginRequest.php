@@ -3,9 +3,10 @@
 namespace App\Http\Requests\Auth;
 
 use App\Models\User;
+use App\Services\SecurityLogger;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -38,19 +39,22 @@ class LoginRequest extends FormRequest
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function authenticate(): void
+    public function authenticate(): User
     {
         $this->ensureIsNotRateLimited();
 
         $user = User::where('email', $this->string('email'))->first();
         if ($user && $user->is_banned) {
+            app(SecurityLogger::class)->failedLogin($this->string('email')->toString(), $user, 'banned', $this);
+
             throw ValidationException::withMessages([
                 'email' => 'تم حظر حسابك. يرجى التواصل مع الإدارة.',
             ]);
         }
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        if (! $user || ! Hash::check($this->string('password')->toString(), $user->password)) {
             RateLimiter::hit($this->throttleKey());
+            app(SecurityLogger::class)->failedLogin($this->string('email')->toString(), $user, 'invalid_credentials', $this);
 
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
@@ -58,6 +62,8 @@ class LoginRequest extends FormRequest
         }
 
         RateLimiter::clear($this->throttleKey());
+
+        return $user;
     }
 
     /**

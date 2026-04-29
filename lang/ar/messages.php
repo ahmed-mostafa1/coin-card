@@ -164,7 +164,7 @@ return [
     'no_payment_methods' => 'لا توجد طرق دفع متاحة حالياً.',
     'deposit_method_details_title' => 'تفاصيل طريقة الشحن',
     'deposit_instruction_desc' => 'اتبع التعليمات ثم أرسل إثبات التحويل.',
-    'account_number_label' => 'الرقم المحول إليه',
+    'account_number_label' => 'رقم التحويل',
     'contact_us_button' => 'تواصل معنا',
     'show_account_number' => 'إظهار الرقم المحول إليه للعميل',
     'show_contact_button' => 'إظهار زر تواصل معنا',

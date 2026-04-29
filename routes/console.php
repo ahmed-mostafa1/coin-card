@@ -7,6 +7,7 @@ use App\Services\VipService;
 use Illuminate\Support\Facades\Schedule;
 
 Schedule::command('sitemap:generate')->daily();
+Schedule::command('services:sync-provider-statuses')->hourly();
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());

@@ -32,7 +32,7 @@
                     @forelse ($users as $user)
                         <tr>
                             <td class="py-3 text-slate-700 dark:text-white">
-                                {{ $user->name }}
+                                {{ $user->name }} <x-user-badge :user="$user" />
                                 <div class="text-xs text-slate-500 dark:text-slate-400">{{ $user->email }}</div>
                             </td>
                             <td class="py-3">

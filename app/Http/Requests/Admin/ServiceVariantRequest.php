@@ -17,6 +17,8 @@ class ServiceVariantRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'name_en' => ['nullable', 'string', 'max:255'],
             'price' => ['required', 'numeric', 'min:0.01'],
+            'service_fee_type' => ['nullable', 'in:percentage,fixed'],
+            'service_fee_value' => ['nullable', 'numeric', 'min:0'],
             'is_active' => ['nullable', 'boolean'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
         ];

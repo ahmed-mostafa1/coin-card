@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -36,8 +37,9 @@ return new class extends Migration
             $table->index(['status', 'external_bill_id']);
         });
         
-        // Update status enum to include new statuses
-        DB::statement("ALTER TABLE orders MODIFY COLUMN status ENUM('new', 'processing', 'done', 'rejected', 'cancelled', 'creating_external', 'submitted', 'fulfilled', 'failed', 'refunded') DEFAULT 'new'");
+        if (DB::getDriverName() === 'mysql') {
+            DB::statement("ALTER TABLE orders MODIFY COLUMN status ENUM('new', 'processing', 'done', 'rejected', 'cancelled', 'creating_external', 'submitted', 'fulfilled', 'failed', 'refunded') DEFAULT 'new'");
+        }
     }
 
     public function down(): void
@@ -61,7 +63,8 @@ return new class extends Migration
             ]);
         });
         
-        // Restore original status enum
-        DB::statement("ALTER TABLE orders MODIFY COLUMN status ENUM('new', 'processing', 'done', 'rejected', 'cancelled') DEFAULT 'new'");
+        if (DB::getDriverName() === 'mysql') {
+            DB::statement("ALTER TABLE orders MODIFY COLUMN status ENUM('new', 'processing', 'done', 'rejected', 'cancelled') DEFAULT 'new'");
+        }
     }
 };

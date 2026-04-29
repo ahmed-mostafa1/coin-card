@@ -5,7 +5,9 @@ use App\Http\Controllers\AccountDepositController;
 use App\Http\Controllers\AccountNotificationController;
 use App\Http\Controllers\AccountWalletController;
 use App\Http\Controllers\AccountOrderController;
+use App\Http\Controllers\AccountSecurityController;
 use App\Http\Controllers\AccountVipController;
+use App\Http\Controllers\AccountVerificationController;
 use App\Http\Controllers\AgencyRequestController;
 use App\Http\Controllers\Admin\DepositController as AdminDepositController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
@@ -22,6 +24,10 @@ use App\Http\Controllers\Admin\AgencyRequestFieldController as AdminAgencyReques
 use App\Http\Controllers\Admin\ReportsController as AdminReportsController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\PaymentMethodController as AdminPaymentMethodController;
+use App\Http\Controllers\Admin\CurrencyController as AdminCurrencyController;
+use App\Http\Controllers\Admin\VerificationFieldController as AdminVerificationFieldController;
+use App\Http\Controllers\Admin\VerificationRequestController as AdminVerificationRequestController;
+use App\Http\Controllers\Admin\LoyaltySettingController as AdminLoyaltySettingController;
 use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
 use App\Http\Controllers\Admin\ServiceFormFieldController as AdminServiceFormFieldController;
 use App\Http\Controllers\Admin\ServiceVariantController as AdminServiceVariantController;
@@ -47,16 +53,15 @@ Route::get('/lang/{locale}', function ($locale) {
     return back();
 })->name('lang.switch');
 
-// Public Storefront Routes
+Route::get('/terms-of-use', fn() => view('pages.terms-of-use'))->name('terms-of-use');
+Route::redirect('/terms-and-conditions', '/terms-of-use', 301)->name('terms-and-conditions');
+Route::get('/contact-us', [ContactController::class, 'show'])->name('contact-us.show');
+Route::post('/contact-us', [ContactController::class, 'store'])->middleware('throttle:5,1')->name('contact-us.send');
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/categories/{category:slug}', [CategoryController::class, 'show'])->name('categories.show');
 Route::get('/services/{service:slug}', [ServiceController::class, 'show'])->name('services.show');
 Route::get('/privacy-policy', fn() => view('pages.privacy-policy'))->name('privacy-policy');
 Route::get('/about', fn() => view('pages.about'))->name('about');
-Route::get('/terms-of-use', fn() => view('pages.terms-of-use'))->name('terms-of-use');
-Route::redirect('/terms-and-conditions', '/terms-of-use', 301)->name('terms-and-conditions');
-Route::get('/contact-us', [ContactController::class, 'show'])->name('contact-us.show');
-Route::post('/contact-us', [ContactController::class, 'store'])->middleware('throttle:5,1')->name('contact-us.send');
 
 Route::middleware(['auth', 'not_banned'])->group(function () {
     Route::post('/otp/verify', [\App\Http\Controllers\Auth\OtpController::class, 'verify'])->name('otp.verify');
@@ -73,11 +78,16 @@ Route::middleware(['auth', 'not_banned'])->group(function () {
     Route::get('/account/orders', [AccountOrderController::class, 'index'])->name('account.orders');
     Route::get('/account/orders/{order}', [AccountOrderController::class, 'show'])->name('account.orders.show');
     Route::get('/account/vip', [AccountVipController::class, 'show'])->name('account.vip');
+    Route::get('/account/verification', [AccountVerificationController::class, 'show'])->name('account.verification.show');
+    Route::post('/account/verification', [AccountVerificationController::class, 'store'])->name('account.verification.store');
     Route::get('/account/notifications', [AccountNotificationController::class, 'index'])->name('account.notifications');
     Route::post('/account/notifications/mark-all-read', [AccountNotificationController::class, 'markAllRead'])->name('account.notifications.mark-all-read');
     Route::post('/account/notifications/{id}/mark-read', [AccountNotificationController::class, 'markAsRead'])->name('account.notifications.mark-read');
     Route::get('/account/change-password', [AccountController::class, 'changePassword'])->name('account.password.change');
     Route::post('/account/change-password', [AccountController::class, 'updatePassword'])->name('account.password.update');
+    Route::get('/account/security', [AccountSecurityController::class, 'show'])->name('account.security');
+    Route::post('/account/security/2fa/enable', [AccountSecurityController::class, 'enable'])->name('account.security.2fa.enable');
+    Route::post('/account/security/2fa/disable', [AccountSecurityController::class, 'disable'])->name('account.security.2fa.disable');
 
 
     Route::get('/deposit', [DepositController::class, 'index'])->name('deposit.index');
@@ -85,100 +95,6 @@ Route::middleware(['auth', 'not_banned'])->group(function () {
     Route::post('/deposit/{paymentMethod:slug}', [DepositController::class, 'store'])->name('deposit.store')->middleware(['not_frozen', \App\Http\Middleware\EnsureAccountVerified::class]);
 
     Route::post('/services/{service:slug}/purchase', [ServiceController::class, 'purchase'])->name('services.purchase')->middleware(['not_frozen', \App\Http\Middleware\EnsureAccountVerified::class]);
-    
-    // Quick VIP Check
-    Route::get('/check-vip', function() {
-        $user = auth()->user();
-        $user->load('vipStatus.vipTier');
-        
-        $html = '<style>body{font-family:monospace;padding:20px;background:#1e293b;color:#e2e8f0;}</style>';
-        $html .= '<h1 style="color:#10b981;">VIP Discount Debug</h1>';
-        $html .= '<p><strong>User:</strong> ' . $user->name . ' (ID: ' . $user->id . ')</p>';
-        
-        if (!$user->vipStatus) {
-            $html .= '<p style="color:#ef4444;">❌ NO VIP STATUS</p>';
-            $html .= '<p>Visit <a href="/debug/vip-discount" style="color:#3b82f6;">/debug/vip-discount</a> to assign test VIP status</p>';
-            return $html;
-        }
-        
-        $html .= '<p style="color:#10b981;">✅ VIP Status exists</p>';
-        
-        if (!$user->vipStatus->vipTier) {
-            $html .= '<p style="color:#ef4444;">❌ NO VIP TIER</p>';
-            return $html;
-        }
-        
-        $tier = $user->vipStatus->vipTier;
-        $html .= '<p style="color:#10b981;">✅ VIP Tier: ' . $tier->title_en . '</p>';
-        $html .= '<p><strong>Discount:</strong> <span style="color:#10b981;font-size:24px;">' . $tier->discount_percentage . '%</span></p>';
-        
-        if ($tier->discount_percentage > 0) {
-            $html .= '<p style="color:#10b981;">✅ DISCOUNT SHOULD BE SHOWING</p>';
-            $html .= '<p>If not showing, clear cache and refresh (Ctrl+Shift+R)</p>';
-        } else {
-            $html .= '<p style="color:#f59e0b;">⚠️ Discount is 0%</p>';
-        }
-        
-        return $html;
-    })->name('check.vip');
-    
-    // Update VIP Discounts
-    Route::get('/update-vip-discounts', function() {
-        $updates = [
-            1 => 2,   // Rank 1 = 2%
-            2 => 4,   // Rank 2 = 4%
-            3 => 6,   // Rank 3 = 6%
-            4 => 8,   // Rank 4 = 8%
-            5 => 10,  // Rank 5 = 10%
-            6 => 12,  // Rank 6 = 12%
-        ];
-        
-        $html = '<style>body{font-family:monospace;padding:20px;background:#1e293b;color:#e2e8f0;}</style>';
-        $html .= '<h1 style="color:#10b981;">Update VIP Discounts</h1>';
-        
-        foreach ($updates as $rank => $discount) {
-            $tier = \App\Models\VipTier::where('rank', $rank)->first();
-            if ($tier) {
-                $tier->discount_percentage = $discount;
-                $tier->save();
-                $html .= '<p style="color:#10b981;">✅ Rank ' . $rank . ' (' . $tier->title_en . '): ' . $discount . '%</p>';
-            } else {
-                $html .= '<p style="color:#ef4444;">❌ Rank ' . $rank . ': Tier not found</p>';
-            }
-        }
-        
-        $html .= '<h2 style="color:#10b981;margin-top:20px;">Updated VIP Tiers</h2>';
-        $tiers = \App\Models\VipTier::orderBy('rank')->get();
-        foreach ($tiers as $tier) {
-            $html .= '<p>Rank ' . $tier->rank . ': ' . $tier->title_en . ' - <strong style="color:#10b981;">' . $tier->discount_percentage . '%</strong></p>';
-        }
-        
-        $html .= '<p style="margin-top:20px;"><a href="/check-vip" style="color:#3b82f6;">Check your VIP status</a></p>';
-        
-        return $html;
-    })->name('update.vip.discounts');
-    
-    // VIP Debug Routes (remove in production)
-    Route::get('/debug/vip-discount', function() {
-        return view('debug.vip-discount');
-    })->name('debug.vip-discount');
-    
-    Route::post('/admin/test/assign-vip', function() {
-        $user = auth()->user();
-        $tier = \App\Models\VipTier::where('rank', 2)->first();
-        if ($tier) {
-            \App\Models\UserVipStatus::updateOrCreate(
-                ['user_id' => $user->id],
-                [
-                    'vip_tier_id' => $tier->id,
-                    'lifetime_spent' => 500,
-                    'calculated_at' => now()
-                ]
-            );
-            return redirect()->route('debug.vip-discount')->with('status', 'VIP status assigned successfully!');
-        }
-        return redirect()->route('debug.vip-discount')->with('error', 'VIP tier not found');
-    })->name('admin.test.assign-vip');
 });
 
 Route::middleware(['auth', 'not_banned', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
@@ -190,10 +106,13 @@ Route::middleware(['auth', 'not_banned', 'role:admin'])->prefix('admin')->name('
     Route::get('/reports', [AdminReportsController::class, 'index'])->name('reports.index');
     Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
     Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('users.show');
+    Route::get('/users/{user}/security', [AdminUserController::class, 'security'])->name('users.security');
+    Route::post('/users/{user}/password', [AdminUserController::class, 'changePassword'])->name('users.password');
     Route::post('/users/{user}/ban', [AdminUserController::class, 'toggleBan'])->name('users.ban');
     Route::post('/users/{user}/freeze', [AdminUserController::class, 'toggleFreeze'])->name('users.freeze');
     Route::post('/users/{user}/credit', [AdminUserController::class, 'credit'])->name('users.credit');
     Route::post('/users/{user}/debit', [AdminUserController::class, 'debit'])->name('users.debit');
+    Route::post('/users/{user}/verification-discount', [AdminUserController::class, 'updateVerificationDiscount'])->name('users.verification-discount');
     Route::post('/users/{user}/send-email', [AdminUserController::class, 'sendEmail'])->name('users.send-email');
     Route::post('/users/{user}/send-notification', [AdminUserController::class, 'sendNotification'])->name('users.send-notification');
     Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
@@ -214,6 +133,15 @@ Route::middleware(['auth', 'not_banned', 'role:admin'])->prefix('admin')->name('
     Route::post('/payment-methods', [AdminPaymentMethodController::class, 'store'])->name('payment-methods.store');
     Route::get('/payment-methods/{paymentMethod}/edit', [AdminPaymentMethodController::class, 'edit'])->name('payment-methods.edit');
     Route::put('/payment-methods/{paymentMethod}', [AdminPaymentMethodController::class, 'update'])->name('payment-methods.update');
+    Route::resource('currencies', AdminCurrencyController::class)->except(['show', 'destroy']);
+    Route::resource('verification-fields', AdminVerificationFieldController::class)->except(['show']);
+    Route::get('/verification-requests', [AdminVerificationRequestController::class, 'index'])->name('verification-requests.index');
+    Route::get('/verification-requests/{verificationRequest}', [AdminVerificationRequestController::class, 'show'])->name('verification-requests.show');
+    Route::post('/verification-requests/{verificationRequest}/approve', [AdminVerificationRequestController::class, 'approve'])->name('verification-requests.approve');
+    Route::post('/verification-requests/{verificationRequest}/status', [AdminVerificationRequestController::class, 'updateStatus'])->name('verification-requests.status');
+    Route::get('/verification-requests/{verificationRequest}/files/{file}', [AdminVerificationRequestController::class, 'downloadFile'])->name('verification-requests.files.show');
+    Route::get('/loyalty-settings', [AdminLoyaltySettingController::class, 'edit'])->name('loyalty-settings.edit');
+    Route::post('/loyalty-settings', [AdminLoyaltySettingController::class, 'update'])->name('loyalty-settings.update');
 
     // Payment Method Buttons
     Route::get('payment-methods/{paymentMethod}/buttons/create', [AdminPaymentMethodButtonController::class, 'create'])->name('payment-methods.buttons.create');
@@ -233,6 +161,7 @@ Route::middleware(['auth', 'not_banned', 'role:admin'])->prefix('admin')->name('
     Route::resource('banners', AdminBannerController::class)->except(['show', 'destroy']);
     Route::resource('popups', AdminPopupController::class);
     
+    Route::get('/notifications', [\App\Http\Controllers\Admin\NotificationController::class, 'index'])->name('notifications.index');
     Route::get('/notifications/create', [\App\Http\Controllers\Admin\NotificationController::class, 'create'])->name('notifications.create');
     Route::post('/notifications', [\App\Http\Controllers\Admin\NotificationController::class, 'store'])->name('notifications.store');
 
@@ -278,8 +207,10 @@ Route::middleware(['auth', 'not_banned', 'role:admin'])->prefix('admin')->name('
     Route::post('/orders/{order}/sync-provider', [AdminApiProviderOrderSyncController::class, 'syncStatus'])->name('orders.sync-provider');
 
     // API Providers (generic multi-provider system)
+    Route::post('providers/sync-statuses', [AdminApiProviderController::class, 'syncStatuses'])->name('providers.sync-statuses');
     Route::resource('providers', AdminApiProviderController::class)->except(['show']);
     Route::post('providers/{provider}/test', [AdminApiProviderController::class, 'testConnection'])->name('providers.test');
+    Route::post('providers/{provider}/sync-statuses', [AdminApiProviderController::class, 'syncProviderStatuses'])->name('providers.sync-provider-statuses');
     Route::get('providers/{provider}/catalog', [AdminApiProviderCatalogController::class, 'index'])->name('providers.catalog.index');
     Route::post('providers/{provider}/catalog/import', [AdminApiProviderCatalogController::class, 'import'])->name('providers.catalog.import');
 

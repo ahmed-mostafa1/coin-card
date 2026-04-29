@@ -57,21 +57,25 @@ class GenerateSitemap extends Command
             ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY));
 
         // Add Categories
-        Category::active()->manual()->get()->each(function (Category $category) use ($sitemap) {
+        Category::active()->manual()->chunkById(200, function ($categories) use ($sitemap) {
+            $categories->each(function (Category $category) use ($sitemap) {
             $sitemap->add(Url::create(route('categories.show', $category->slug))
                 ->setLastModificationDate($category->updated_at ?? now())
                 ->setPriority(0.9)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY));
+            });
         });
 
         // Add Services
-        Service::where('is_active', true)->whereHas('category', function ($query) {
+        Service::where('is_active', true)->providerAvailable()->whereHas('category', function ($query) {
             $query->active()->manual();
-        })->get()->each(function (Service $service) use ($sitemap) {
+        })->chunkById(200, function ($services) use ($sitemap) {
+            $services->each(function (Service $service) use ($sitemap) {
             $sitemap->add(Url::create(route('services.show', $service->slug))
                 ->setLastModificationDate($service->updated_at ?? now())
                 ->setPriority(0.8)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY));
+            });
         });
 
         $sitemap->writeToFile(public_path('sitemap.xml'));

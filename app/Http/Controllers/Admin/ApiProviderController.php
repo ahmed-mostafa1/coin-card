@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ApiProvider;
 use App\Services\ApiProviderManager;
+use App\Services\ProviderServiceStatusSyncService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -105,6 +106,22 @@ class ApiProviderController extends Controller
                 'message' => $e->getMessage(),
             ]);
         }
+    }
+
+    public function syncStatuses(Request $request, ProviderServiceStatusSyncService $syncService): RedirectResponse
+    {
+        $result = $syncService->sync();
+
+        return redirect()->route('admin.providers.index')
+            ->with('success', "تمت مزامنة حالة الخدمات. تم فحص {$result['checked']} خدمة، وتغيير {$result['changed']}، وفشل {$result['failed']}.");
+    }
+
+    public function syncProviderStatuses(ApiProvider $provider, ProviderServiceStatusSyncService $syncService): RedirectResponse
+    {
+        $result = $syncService->sync($provider);
+
+        return redirect()->route('admin.providers.index')
+            ->with('success', "تمت مزامنة {$provider->name}. تم فحص {$result['checked']} خدمة، وتغيير {$result['changed']}، وفشل {$result['failed']}.");
     }
 
     // ── Private helpers ───────────────────────────────────────────────────────

@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Contracts\IpGeolocationServiceInterface;
 use App\Models\Banner;
 use App\Models\SiteSetting;
+use App\Services\NullIpGeolocationService;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -15,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(IpGeolocationServiceInterface::class, NullIpGeolocationService::class);
     }
 
     /**

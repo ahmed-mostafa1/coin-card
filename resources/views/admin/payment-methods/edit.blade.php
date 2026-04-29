@@ -84,6 +84,8 @@
                 <x-input-error :messages="$errors->get('sort_order')" />
             </div>
 
+            @include('admin.payment-methods.currencies', ['paymentMethod' => $paymentMethod, 'currencies' => $currencies])
+
             @php
                 $fields = old('fields', $paymentMethod->fields->sortBy('sort_order')->values()->map(fn ($field) => [
                     'label' => $field->label,

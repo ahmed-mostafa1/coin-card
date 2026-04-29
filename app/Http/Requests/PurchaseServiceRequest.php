@@ -52,6 +52,16 @@ class PurchaseServiceRequest extends FormRequest
             $rules['quantity'] = array_filter($rules['quantity']);
         }
 
+        if ($service->order_image_upload_enabled) {
+            $rules['order_image'] = [
+                $service->order_image_required ? 'required' : 'nullable',
+                'file',
+                'image',
+                'mimes:jpg,jpeg,png,webp',
+                'max:2048',
+            ];
+        }
+
         return $rules;
     }
 

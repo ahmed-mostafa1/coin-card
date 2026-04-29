@@ -14,7 +14,12 @@
 
         <div class="mt-6 grid gap-4 sm:grid-cols-2">
             @php
-                $payload = $agencyRequest->payload ?? [];
+                $payload = $agencyRequest->payload ?: array_filter([
+                    'contact_number' => $agencyRequest->contact_number,
+                    'full_name' => $agencyRequest->full_name,
+                    'region' => $agencyRequest->region,
+                    'starting_amount' => $agencyRequest->starting_amount,
+                ], fn ($value) => filled($value));
                 $fields = \App\Models\AgencyRequestField::orderBy('sort_order')->orderBy('id')->get()->keyBy('name_key');
             @endphp
 

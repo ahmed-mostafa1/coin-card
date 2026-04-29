@@ -7,6 +7,12 @@
     @php
         $accountExtraLinks = array_values(array_filter([
             [
+                'url' => route('account.security'),
+                'label' => app()->getLocale() == 'ar' ? 'الأمان والتحقق الثنائي' : 'Security and 2FA',
+                'icon' => 'fa-solid fa-user-shield',
+                'external' => false,
+            ],
+            [
                 'url' => route('contact-us.show'),
                 'label' => __('messages.contact_page'),
                 'icon' => 'fa-solid fa-envelope',
@@ -129,6 +135,8 @@
                 <a href="{{ route('account.wallet') }}" class="rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-4 text-center text-sm font-semibold text-slate-700 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-700">{{ __('messages.wallet_history') }}</a>
                 <a href="{{ route('account.orders') }}" class="rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-4 text-center text-sm font-semibold text-slate-700 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-700">{{ __('messages.my_orders') }}</a>
                 <a href="{{ route('account.vip') }}" class="rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-4 text-center text-sm font-semibold text-slate-700 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-700">{{ __('messages.vip_system') }}</a>
+                <a href="{{ route('account.verification.show') }}" class="rounded-2xl border border-emerald-100 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-4 text-center text-sm font-semibold text-emerald-700 dark:text-emerald-400 transition hover:bg-emerald-100 dark:hover:bg-emerald-900/50">{{ app()->getLocale() === 'ar' ? 'توثيق الحساب' : 'Account verification' }}</a>
+                <a href="{{ route('account.security') }}" class="rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-4 text-center text-sm font-semibold text-slate-700 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-700">{{ app()->getLocale() === 'ar' ? 'الأمان والتحقق الثنائي' : 'Security and 2FA' }}</a>
                 <a href="{{ route('account.notifications') }}" class="relative rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-4 text-center text-sm font-semibold text-slate-700 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-700">
                     {{ __('messages.notifications') }}
                     @if (! empty($unreadNotificationsCount))
@@ -209,7 +217,12 @@
                         @forelse ($recentDeposits as $deposit)
                             <tr>
                                 <td class="py-3 text-slate-700 dark:text-slate-300">{{ $deposit->paymentMethod->name }}</td>
-                                <td class="py-3 text-slate-700 dark:text-slate-300">{{ number_format($deposit->user_amount, 2) }} USD</td>
+                                <td class="py-3 text-slate-700 dark:text-slate-300">
+                                    {{ number_format($deposit->net_usd_amount ?? $deposit->user_amount, 2) }} USD
+                                    @if ($deposit->currency_code)
+                                        <div class="text-xs text-slate-500 dark:text-slate-400">{{ number_format($deposit->local_amount, 2) }} {{ $deposit->currency_code }}</div>
+                                    @endif
+                                </td>
                                 <td class="py-3">
                                     @if ($deposit->status === 'pending')
                                         <span class="rounded-full bg-amber-100 px-3 py-1 text-xs text-amber-700">{{ __('messages.status_pending') }}</span>

@@ -26,6 +26,7 @@
                 <tr>
                     <th class="py-2">{{ __('messages.name_label') }}</th>
                     <th class="py-2">{{ __('messages.price') }}</th>
+                    <th class="py-2">رسوم الخدمة</th>
                     <th class="py-2">{{ __('messages.status') }}</th>
                     <th class="py-2">{{ __('messages.sort_order') }}</th>
                     <th class="py-2">{{ __('messages.actions') }}</th>
@@ -36,6 +37,9 @@
                     <tr class="transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
                         <td class="py-3 text-slate-700 dark:text-white">{{ $variant->name }}</td>
                         <td class="py-3 text-slate-700 dark:text-white">{{ number_format($variant->price, 2) }} USD</td>
+                        <td class="py-3 text-slate-700 dark:text-white">
+                            {{ $variant->service_fee_type === 'percentage' ? rtrim(rtrim(number_format($variant->service_fee_value, 4, '.', ''), '0'), '.').'%' : number_format($variant->service_fee_value, 2).' USD' }}
+                        </td>
                         <td class="py-3">
                             @if ($variant->is_active)
                                 <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/50 px-3 py-1 text-xs text-emerald-700 dark:text-emerald-400">{{ __('messages.status_active') }}</span>
@@ -57,7 +61,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="py-6 text-center text-slate-500 dark:text-slate-400">{{ __('messages.no_variants_text') }}</td>
+                            <td colspan="6" class="py-6 text-center text-slate-500 dark:text-slate-400">{{ __('messages.no_variants_text') }}</td>
                     </tr>
                 @endforelse
             </tbody>

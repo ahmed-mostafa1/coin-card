@@ -6,10 +6,18 @@
     <x-card :hover="false">
         <x-page-header title="مزودو الـ API" subtitle="إدارة جميع مزودي الخدمات الخارجية">
             <x-slot name="actions">
-                <a href="{{ route('admin.providers.create') }}"
-                   class="inline-flex items-center gap-1 rounded-xl bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700 transition">
-                    + إضافة مزود جديد
-                </a>
+                <div class="flex flex-wrap items-center gap-2">
+                    <form method="POST" action="{{ route('admin.providers.sync-statuses') }}" onsubmit="return confirm('تشغيل مزامنة حالة الخدمات لكل المزودين الآن؟')">
+                        @csrf
+                        <button type="submit" class="inline-flex items-center gap-1 rounded-xl border border-emerald-200 px-4 py-2 text-sm font-medium text-emerald-700 hover:bg-emerald-50 transition">
+                            مزامنة الحالات الآن
+                        </button>
+                    </form>
+                    <a href="{{ route('admin.providers.create') }}"
+                       class="inline-flex items-center gap-1 rounded-xl bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700 transition">
+                        + إضافة مزود جديد
+                    </a>
+                </div>
             </x-slot>
         </x-page-header>
 
@@ -58,10 +66,14 @@
                             </td>
                             <td class="py-3 px-3">
                                 <div class="flex items-center gap-3">
-                                    <a href="{{ route('admin.providers.catalog.index', $provider) }}"
-                                       class="text-sm text-emerald-600 hover:underline">الكتالوج</a>
-                                    <a href="{{ route('admin.providers.edit', $provider) }}"
-                                       class="text-sm text-blue-600 hover:underline">تعديل</a>
+                                     <a href="{{ route('admin.providers.catalog.index', $provider) }}"
+                                        class="text-sm text-emerald-600 hover:underline">الكتالوج</a>
+                                     <form method="POST" action="{{ route('admin.providers.sync-provider-statuses', $provider) }}" onsubmit="return confirm('مزامنة حالة خدمات هذا المزود الآن؟')">
+                                         @csrf
+                                         <button type="submit" class="text-sm text-amber-600 hover:underline">مزامنة الحالة</button>
+                                     </form>
+                                     <a href="{{ route('admin.providers.edit', $provider) }}"
+                                        class="text-sm text-blue-600 hover:underline">تعديل</a>
                                     <form method="POST" action="{{ route('admin.providers.destroy', $provider) }}"
                                           onsubmit="return confirm('هل أنت متأكد من حذف هذا المزود؟')">
                                         @csrf @method('DELETE')

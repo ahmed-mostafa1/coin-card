@@ -8,8 +8,11 @@ use App\Models\OrderEvent;
 use App\Models\Service;
 use App\Models\Wallet;
 use App\Notifications\NewOrderNotification;
+use App\Notifications\OrderStatusChangedNotification;
 use App\Services\DailyCardOrderService;
+use App\Services\LoyaltyService;
 use App\Services\NotificationService;
+use App\Services\ServicePricingService;
 use App\Services\WalletService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
@@ -20,7 +23,7 @@ class ServiceController extends Controller
 {
     public function show(Service $service): View
     {
-        abort_unless($service->is_active && $service->category->is_active, 404);
+        abort_unless($service->is_active && $service->category->is_active && $service->isProviderAvailable(), 404);
         abort_unless(
             in_array($service->source ?? Service::SOURCE_MANUAL, [Service::SOURCE_MANUAL, Service::SOURCE_DAILYCARD], true) || $service->provider_id !== null,
             404
@@ -43,9 +46,11 @@ class ServiceController extends Controller
         WalletService $walletService,
         NotificationService $notificationService,
         DailyCardOrderService $dailyCardOrderService,
+        ServicePricingService $pricingService,
+        LoyaltyService $loyaltyService,
         \App\Services\ApiProviderManager $apiProviderManager
     ): RedirectResponse {
-        abort_unless($service->is_active && $service->category->is_active, 404);
+        abort_unless($service->is_active && $service->category->is_active && $service->isProviderAvailable(), 404);
         abort_unless(
             in_array($service->source ?? Service::SOURCE_MANUAL, [Service::SOURCE_MANUAL, Service::SOURCE_DAILYCARD], true) || $service->provider_id !== null,
             404
@@ -67,6 +72,7 @@ class ServiceController extends Controller
         $isDiscountedInput = $service->isDiscountedInputPricing();
         $variantId = $isDiscountedInput ? null : $request->input('variant_id');
         $quantity = max(1, (int) $request->input('quantity', 1));
+        $uploadedImage = $request->file('order_image');
 
         $order = null;
 
@@ -78,54 +84,45 @@ class ServiceController extends Controller
             $variantId,
             $quantity,
             $request,
+            $uploadedImage,
             $isDiscountedInput,
             $shouldAutoPlace,
+            $pricingService,
+            $loyaltyService,
             &$order
         ) {
             $wallet = Wallet::where('user_id', $user->id)->lockForUpdate()->firstOrCreate(['user_id' => $user->id]);
             $variant = null;
 
-            $vipDiscount = 0.0;
-            $basePrice = 0.0;
-            $price = 0.0;
+            $userDiscount = $isDiscountedInput ? 0.0 : $loyaltyService->discountPercent($user);
+            $quote = [];
 
             if ($isDiscountedInput) {
                 $offerAmount = round((float) $request->input('offer_amount', 0), 2);
-                $serviceDiscountPercent = round((float) $service->admin_discount_percent, 2);
-                $discountFactor = max(0, 1 - ($serviceDiscountPercent / 100));
-
-                $basePrice = $offerAmount;
-                $price = round($offerAmount * $discountFactor, 2);
+                $quote = $pricingService->discountedInput($service, $offerAmount);
 
                 if ($request->hasFile('offer_image')) {
                     $payload['offer_image_path'] = $request->file('offer_image')->store('orders/offer-images', 'public');
                 }
 
                 $payload['offer_amount'] = number_format($offerAmount, 2, '.', '');
-                $payload['service_discount_percent'] = number_format($serviceDiscountPercent, 2, '.', '');
-                $payload['payable_after_discount'] = number_format($price, 2, '.', '');
+                $payload['payable_after_discount'] = $quote['payable_total'];
             } else {
-                $userVipStatus = $user->load('vipStatus.vipTier')->vipStatus;
-                if ($userVipStatus && $userVipStatus->vipTier) {
-                    $vipDiscount = (float) ($userVipStatus->vipTier->discount_percentage ?? 0);
-                }
-
                 if ($service->is_quantity_based) {
-                    $basePrice = (float) $service->price_per_unit * $quantity;
-                    $price = $vipDiscount > 0 ? $basePrice * (1 - $vipDiscount / 100) : $basePrice;
+                    $quote = $pricingService->fixed($service, null, $quantity, $userDiscount);
                 } elseif ($service->variants()->where('is_active', true)->exists()) {
                     $variant = $service->variants()
                         ->where('is_active', true)
                         ->whereKey($variantId)
                         ->firstOrFail();
 
-                    $basePrice = (float) $variant->price;
-                    $price = $vipDiscount > 0 ? $basePrice * (1 - $vipDiscount / 100) : $basePrice;
+                    $quote = $pricingService->fixed($service, $variant, $quantity, $userDiscount);
                 } else {
-                    $basePrice = (float) $service->price;
-                    $price = $vipDiscount > 0 ? $basePrice * (1 - $vipDiscount / 100) : $basePrice;
+                    $quote = $pricingService->fixed($service, null, $quantity, $userDiscount);
                 }
             }
+
+            $price = (float) $quote['payable_total'];
 
             $selectedPrice = $request->input('selected_price');
             if ($selectedPrice !== null && $selectedPrice !== '') {
@@ -158,11 +155,20 @@ class ServiceController extends Controller
                 $payload['quantity'] = $quantity;
             }
 
-            $discountPercentage = $isDiscountedInput
-                ? (float) $service->admin_discount_percent
-                : $vipDiscount;
+            $discountPercentage = (float) $quote['user_discount_percentage'];
+            $discountAmount = (float) $quote['user_discount_amount'];
+            $uploadedImagePath = null;
+            $uploadedImageOriginalName = null;
+            $uploadedImageMime = null;
+            $uploadedImageSize = null;
 
-            $discountAmount = round(max(0, (float) $basePrice - (float) $price), 2);
+            if ($uploadedImage) {
+                $uploadedImagePath = $uploadedImage->store('orders/images/'.$user->id, 'public');
+                $uploadedImageOriginalName = $uploadedImage->getClientOriginalName();
+                $uploadedImageMime = $uploadedImage->getClientMimeType();
+                $uploadedImageSize = $uploadedImage->getSize();
+                $payload['order_image_path'] = $uploadedImagePath;
+            }
 
             $order = Order::create([
                 'user_id' => $user->id,
@@ -170,11 +176,22 @@ class ServiceController extends Controller
                 'variant_id' => $variant?->id,
                 'status' => $shouldAutoPlace ? Order::STATUS_PROCESSING : Order::STATUS_NEW,
                 'price_at_purchase' => $price,
-                'original_price' => $discountAmount > 0 ? round((float) $basePrice, 2) : null,
+                'base_price_at_purchase' => $quote['base_price'],
+                'service_fee_type' => $quote['service_fee_type'],
+                'service_fee_value' => $quote['service_fee_value'],
+                'service_fee_amount' => $quote['service_fee_amount'],
+                'gross_total_at_purchase' => $quote['gross_total'],
+                'user_discount_percentage' => $quote['user_discount_percentage'],
+                'user_discount_amount' => $quote['user_discount_amount'],
+                'original_price' => $discountAmount > 0 ? $quote['gross_total'] : null,
                 'discount_percentage' => $discountPercentage,
                 'discount_amount' => $discountAmount,
                 'amount_held' => $price,
                 'payload' => $payload,
+                'uploaded_image_path' => $uploadedImagePath,
+                'uploaded_image_original_name' => $uploadedImageOriginalName,
+                'uploaded_image_mime' => $uploadedImageMime,
+                'uploaded_image_size' => $uploadedImageSize,
             ]);
 
             OrderEvent::create([
@@ -184,8 +201,8 @@ class ServiceController extends Controller
                 'meta' => [
                     'amount_held' => $price,
                     'variant_name' => $variant?->name,
-                    'vip_discount' => $vipDiscount,
-                    'service_discount' => $isDiscountedInput ? (float) $service->admin_discount_percent : null,
+                    'user_discount' => $discountPercentage,
+                    'service_fee_amount' => $quote['service_fee_amount'],
                     'quantity' => $service->is_quantity_based ? $quantity : null,
                 ],
                 'actor_user_id' => $user->id,
@@ -210,8 +227,13 @@ class ServiceController extends Controller
 
             $order->load(['service', 'user']);
 
-            $user->notify(new \App\Notifications\UserOrderCreatedNotification($order));
+            $user->notify(new OrderStatusChangedNotification($order, null, $order->status));
             $notificationService->notifyAdmins(new NewOrderNotification($order));
+            app(\App\Services\SecurityLogger::class)->log('order_created', $user, request(), [
+                'order_id' => $order->id,
+                'service_id' => $order->service_id,
+                'amount' => $order->amount_held,
+            ], $order);
 
             if ($shouldAutoPlace) {
                 if ($isDailyCard) {
@@ -223,7 +245,9 @@ class ServiceController extends Controller
             }
         });
 
-        return redirect()->route('account.orders.show', $order)
+        $redirectRoute = $isDiscountedInput ? 'account.orders' : 'account.orders.show';
+
+        return redirect()->route($redirectRoute, $isDiscountedInput ? [] : $order)
             ->with('status', 'تم إنشاء الطلب، وسيظل المبلغ معلّقًا حتى تأكيد التنفيذ.');
     }
 }

@@ -5,6 +5,7 @@
 @section('content')
     <div class="w-full rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-8 shadow-sm">
         <h1 class="text-2xl font-semibold text-emerald-700 dark:text-emerald-400">طلب وكالة</h1>
+        <span class="sr-only">Agency</span>
         <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">املأ البيانات التالية وسيتم التواصل معك.</p>
 
         @if (session('status'))

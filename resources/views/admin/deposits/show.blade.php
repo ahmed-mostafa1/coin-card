@@ -25,7 +25,10 @@
                 </div>
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4">
                     <p class="text-xs text-slate-500">المبلغ المطلوب</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ number_format($depositRequest->user_amount, 2) }} USD</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ number_format($depositRequest->net_usd_amount ?? $depositRequest->user_amount, 2) }} USD</p>
+                    @if ($depositRequest->currency_code)
+                        <p class="mt-1 text-xs text-slate-500">{{ number_format($depositRequest->local_amount, 2) }} {{ $depositRequest->currency_code }} بسعر {{ rtrim(rtrim(number_format($depositRequest->exchange_rate_to_usd, 8, '.', ''), '0'), '.') }}</p>
+                    @endif
                 </div>
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4">
                     <p class="text-xs text-slate-500">المبلغ المعتمد</p>
@@ -45,6 +48,13 @@
                         @endif
                     </p>
                 </div>
+                @if ($depositRequest->currency_code)
+                    <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4">
+                        <p class="text-xs text-slate-500">العمولة</p>
+                        <p class="mt-2 text-sm font-semibold text-slate-700">{{ number_format($depositRequest->commission_amount, 2) }} {{ $depositRequest->currency_code }}</p>
+                        <p class="text-xs text-slate-500">{{ $depositRequest->commission_type === 'fixed' ? 'ثابتة' : 'نسبة' }}: {{ rtrim(rtrim(number_format($depositRequest->commission_value, 4, '.', ''), '0'), '.') }}</p>
+                    </div>
+                @endif
             </div>
 
 
@@ -96,7 +106,7 @@
                     @csrf
                     <div>
                         <x-input-label for="approved_amount" value="المبلغ المعتمد" />
-                        <x-text-input id="approved_amount" name="approved_amount" type="number" step="0.01" min="1" :value="old('approved_amount', $depositRequest->user_amount)" required />
+                        <x-text-input id="approved_amount" name="approved_amount" type="number" step="0.01" min="1" :value="old('approved_amount', $depositRequest->net_usd_amount ?? $depositRequest->user_amount)" required />
                         <x-input-error :messages="$errors->get('approved_amount')" />
                     </div>
                     <div>

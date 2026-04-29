@@ -49,4 +49,8 @@ return [
         'enabled'  => (bool) env('DAILYCARD_ENABLED', true),
     ],
 
+    'provider_status_sync' => [
+        'max_pages' => (int) env('PROVIDER_STATUS_SYNC_MAX_PAGES', 100),
+    ],
+
 ];

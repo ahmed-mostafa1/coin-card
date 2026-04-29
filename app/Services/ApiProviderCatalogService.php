@@ -95,6 +95,10 @@ class ApiProviderCatalogService
             throw new \InvalidArgumentException('تعذّر استخراج سعر المنتج. تحقق من حقل field_map_price.');
         }
 
+        $availableRaw = filled($this->provider->field_map_available)
+            ? $this->extract($raw, $this->provider->field_map_available)
+            : true;
+
         return [
             'name'        => (string) $name,
             'price'       => (float) $price,
@@ -107,9 +111,8 @@ class ApiProviderCatalogService
             'type'        => filled($this->provider->field_map_type)
                 ? $this->extract($raw, $this->provider->field_map_type)
                 : null,
-            'available'   => filled($this->provider->field_map_available)
-                ? (bool) $this->extract($raw, $this->provider->field_map_available)
-                : true,
+            'available'   => app(ProviderServiceStatusSyncService::class)->mapStatus($availableRaw) === 'available',
+            'availability_raw' => $availableRaw,
             '_raw'        => $raw,
         ];
     }

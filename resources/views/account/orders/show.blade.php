@@ -40,7 +40,7 @@
                     <div class="rounded-2xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 p-4">
                         <p class="text-xs text-emerald-600 dark:text-emerald-400">{{ app()->getLocale() == 'ar' ? 'المبلغ الموفر' : 'Amount Saved' }}</p>
                         <p class="mt-2 text-sm font-semibold text-emerald-700 dark:text-emerald-300">{{ number_format($order->discount_amount, 2) }} USD</p>
-                        <p class="mt-1 text-xs text-emerald-600 dark:text-emerald-400">🎉 {{ app()->getLocale() == 'ar' ? 'خصم VIP' : 'VIP Discount' }}</p>
+                        <p class="mt-1 text-xs text-emerald-600 dark:text-emerald-400">{{ app()->getLocale() == 'ar' ? 'خصم الحساب' : 'Account Discount' }}</p>
                     </div>
                 @endif
                 <div class="rounded-2xl border border-slate-200 p-4">

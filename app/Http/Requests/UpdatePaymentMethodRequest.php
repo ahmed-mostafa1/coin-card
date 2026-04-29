@@ -33,6 +33,15 @@ class UpdatePaymentMethodRequest extends FormRequest
             'fields.*.type' => ['required_with:fields', 'in:text,textarea'],
             'fields.*.is_required' => ['nullable', 'boolean'],
             'fields.*.sort_order' => ['nullable', 'integer', 'min:0'],
+            'currencies' => ['nullable', 'array'],
+            'currencies.*.enabled' => ['nullable', 'boolean'],
+            'currencies.*.is_enabled' => ['nullable', 'boolean'],
+            'currencies.*.exchange_rate_override' => ['nullable', 'numeric', 'gt:0'],
+            'currencies.*.commission_type' => ['nullable', 'in:percentage,fixed'],
+            'currencies.*.commission_value' => ['nullable', 'numeric', 'min:0'],
+            'currencies.*.min_amount' => ['nullable', 'numeric', 'min:0'],
+            'currencies.*.max_amount' => ['nullable', 'numeric'],
+            'currencies.*.sort_order' => ['nullable', 'integer', 'min:0'],
         ];
     }
 

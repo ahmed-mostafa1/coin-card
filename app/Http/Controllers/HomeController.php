@@ -41,7 +41,7 @@ class HomeController extends Controller
             ->active()
             ->manual()
             ->withCount([
-                'services' => fn ($query) => $query->where('is_active', true),
+                'services' => fn ($query) => $query->where('is_active', true)->providerAvailable(),
             ])
             ->orderBy('sort_order')
             ->orderBy('name')

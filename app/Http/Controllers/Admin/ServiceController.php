@@ -20,8 +20,9 @@ class ServiceController extends Controller
     {
         $query = Service::query()
             ->with('category')
+            ->orderBy('name')
             ->orderBy('sort_order')
-            ->orderBy('name');
+            ->orderBy('id');
 
         if ($request->filled('search')) {
             $search = $request->input('search');
@@ -63,6 +64,8 @@ class ServiceController extends Controller
                     $service->variants()->create([
                         'name' => $variant['name'],
                         'price' => $variant['price'],
+                        'service_fee_type' => $variant['service_fee_type'] ?? Service::FEE_FIXED,
+                        'service_fee_value' => $variant['service_fee_value'] ?? 0,
                         'is_active' => isset($variant['is_active']) ? (bool) $variant['is_active'] : true,
                         'sort_order' => $variant['sort_order'] ?? $index,
                     ]);
@@ -142,11 +145,16 @@ class ServiceController extends Controller
         $data = $request->validated();
         $data['pricing_mode'] = $data['pricing_mode'] ?? Service::PRICING_MODE_FIXED;
         $data['admin_discount_percent'] = $data['admin_discount_percent'] ?? 0;
+        $data['service_fee_type'] = $data['service_fee_type'] ?? Service::FEE_FIXED;
+        $data['service_fee_value'] = $data['service_fee_value'] ?? 0;
         $data['is_active'] = $request->boolean('is_active');
         $data['is_offer_active'] = $request->boolean('is_offer_active');
         $data['is_limited_offer_label_active'] = $request->boolean('is_limited_offer_label_active');
         $data['is_limited_offer_countdown_active'] = $request->boolean('is_limited_offer_countdown_active');
         $data['is_quantity_based'] = $request->boolean('is_quantity_based');
+        $data['is_topup_label_active'] = $request->boolean('is_topup_label_active');
+        $data['order_image_upload_enabled'] = $request->boolean('order_image_upload_enabled');
+        $data['order_image_required'] = $data['order_image_upload_enabled'] && $request->boolean('order_image_required');
         $data['sort_order'] = $data['sort_order'] ?? 0;
         // Do NOT overwrite source — imported services must keep their original source value.
 
@@ -171,6 +179,15 @@ class ServiceController extends Controller
 
         if (array_key_exists('limited_offer_label_en', $data)) {
             $data['limited_offer_label_en'] = trim((string) $data['limited_offer_label_en']) ?: null;
+        }
+
+        if (! $data['is_topup_label_active']) {
+            $data['topup_label_type'] = null;
+        }
+
+        if (! $data['order_image_upload_enabled']) {
+            $data['order_image_required'] = false;
+            $data['order_image_help_text'] = null;
         }
 
         $slug = $data['slug'] ?? null;

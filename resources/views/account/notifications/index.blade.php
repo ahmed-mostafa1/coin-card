@@ -78,6 +78,10 @@
                             }
                         @endphp
                         <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">{{ $description }}</p>
+                        @if (!empty($notification->data['image_url']) || !empty($notification->data['image_path']))
+                            @php $notificationImage = $notification->data['image_url'] ?? asset('storage/'.$notification->data['image_path']); @endphp
+                            <img src="{{ $notificationImage }}" alt="{{ $title }}" class="mt-3 max-h-48 rounded-xl border border-slate-200 object-contain dark:border-slate-700">
+                        @endif
                         <p class="mt-2 text-xs text-slate-400">{{ $notification->created_at->diffForHumans() }}</p>
                     </a>
             @empty

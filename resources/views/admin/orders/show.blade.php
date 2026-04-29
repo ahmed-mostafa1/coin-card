@@ -113,6 +113,16 @@
                 @endif
             </div>
 
+            @if ($order->uploaded_image_path)
+                <div class="mt-6 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 p-4">
+                    <p class="text-xs text-slate-500 dark:text-slate-400">الصورة المرفقة مع الطلب</p>
+                    <a href="{{ asset('storage/' . $order->uploaded_image_path) }}" target="_blank" rel="noopener noreferrer" class="mt-3 inline-block">
+                        <img src="{{ asset('storage/' . $order->uploaded_image_path) }}" alt="الصورة المرفقة" class="h-48 w-auto max-w-full rounded-lg border border-slate-200 object-contain dark:border-slate-700">
+                    </a>
+                    <p class="mt-2 text-xs text-slate-500">{{ $order->uploaded_image_original_name ?? basename($order->uploaded_image_path) }}</p>
+                </div>
+            @endif
+
             @if ($order->admin_note)
                 <div class="mt-6 rounded-2xl border border-emerald-100 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 p-4 text-sm text-emerald-700 dark:text-emerald-300">
                     ملاحظة الإدارة: {{ $order->admin_note }}
@@ -191,8 +201,8 @@
                             @csrf
                             <button type="submit"
                                     onclick="return confirm('تحديث حالة الطلب من DailyCard؟')"
-                                    class="w-full px-4 py-2 text-xs font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition">
-                                🔄 تحديث الحالة من DailyCard
+                                    class="admin-action-button admin-action-button-secondary">
+                                تحديث الحالة من DailyCard
                             </button>
                         </form>
                     @endif

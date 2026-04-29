@@ -92,6 +92,10 @@ class DepositController extends Controller
             }
 
             $depositRequest->user->notify(new DepositStatusChangedNotification($depositRequest));
+            app(\App\Services\SecurityLogger::class)->log('deposit_approved', $depositRequest->user, request(), [
+                'deposit_request_id' => $depositRequest->id,
+                'approved_amount' => $depositRequest->approved_amount,
+            ], $depositRequest, request()->user());
         });
 
         return redirect()->route('admin.deposits.show', $depositRequest)
@@ -122,6 +126,9 @@ class DepositController extends Controller
             }
 
             $depositRequest->user->notify(new DepositStatusChangedNotification($depositRequest));
+            app(\App\Services\SecurityLogger::class)->log('deposit_rejected', $depositRequest->user, request(), [
+                'deposit_request_id' => $depositRequest->id,
+            ], $depositRequest, request()->user());
         });
 
         return redirect()->route('admin.deposits.show', $depositRequest)

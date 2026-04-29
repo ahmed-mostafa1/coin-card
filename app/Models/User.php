@@ -34,6 +34,14 @@ class User extends Authenticatable
         'frozen_at',
         'otp_code',
         'otp_expires_at',
+        'is_verified',
+        'verified_at',
+        'verification_discount_percentage',
+        'two_factor_email_enabled',
+        'two_factor_email_enabled_at',
+        'two_factor_email_code_hash',
+        'two_factor_email_code_expires_at',
+        'two_factor_email_code_attempts',
     ];
 
     /**
@@ -44,6 +52,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'two_factor_email_code_hash',
     ];
 
     /**
@@ -61,6 +70,13 @@ class User extends Authenticatable
             'is_frozen' => 'boolean',
             'frozen_at' => 'datetime',
             'otp_expires_at' => 'datetime',
+            'is_verified' => 'boolean',
+            'verified_at' => 'datetime',
+            'verification_discount_percentage' => 'decimal:2',
+            'two_factor_email_enabled' => 'boolean',
+            'two_factor_email_enabled_at' => 'datetime',
+            'two_factor_email_code_expires_at' => 'datetime',
+            'two_factor_email_code_attempts' => 'integer',
         ];
     }
 
@@ -87,6 +103,36 @@ class User extends Authenticatable
     public function vipStatus(): HasOne
     {
         return $this->hasOne(UserVipStatus::class);
+    }
+
+    public function verificationRequests(): HasMany
+    {
+        return $this->hasMany(VerificationRequest::class);
+    }
+
+    public function loyaltyPointTransactions(): HasMany
+    {
+        return $this->hasMany(LoyaltyPointTransaction::class);
+    }
+
+    public function securityLogs(): HasMany
+    {
+        return $this->hasMany(SecurityLog::class);
+    }
+
+    public function ipHistories(): HasMany
+    {
+        return $this->hasMany(UserIpHistory::class);
+    }
+
+    public function failedLoginAttempts(): HasMany
+    {
+        return $this->hasMany(FailedLoginAttempt::class);
+    }
+
+    public function suspiciousActivityLogs(): HasMany
+    {
+        return $this->hasMany(SuspiciousActivityLog::class);
     }
 
     /**

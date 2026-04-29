@@ -14,7 +14,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('admin.notifications.store') }}" class="mt-6 space-y-6">
+            <form method="POST" action="{{ route('admin.notifications.store') }}" enctype="multipart/form-data" class="mt-6 space-y-6">
                 @csrf
                 
                 <div class="grid gap-6 md:grid-cols-2">
@@ -43,10 +43,34 @@
                     </div>
                 </div>
 
+                <div>
+                    <x-input-label for="image" value="صورة الإشعار (اختياري)" />
+                    <input id="image" name="image" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" class="mt-1 w-full rounded-xl border border-slate-200 px-4 py-2 text-sm">
+                    <x-input-error :messages="$errors->get('image')" />
+                </div>
+
                 <div class="flex items-center gap-4">
                     <x-primary-button>إرسال للجميع</x-primary-button>
+                    <a href="{{ route('admin.notifications.index') }}" class="rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-600">سجل الإشعارات</a>
                 </div>
             </form>
         </div>
+
+        @if(isset($sentNotifications))
+            <div class="rounded-3xl border border-emerald-100 dark:border-emerald-900/30 bg-white dark:bg-slate-800 p-8 shadow-sm">
+                <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">آخر الإشعارات المرسلة</h2>
+                <div class="mt-4 space-y-3">
+                    @foreach($sentNotifications->take(5) as $notification)
+                        <div class="rounded-xl border border-slate-200 p-3 text-sm dark:border-slate-700">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="font-semibold">{{ $notification->title_ar }}</span>
+                                <span class="text-xs text-slate-400">{{ $notification->created_at->format('Y-m-d H:i') }}</span>
+                            </div>
+                            <p class="mt-1 text-xs text-slate-500">{{ $notification->scope }} - {{ $notification->recipient_count }} مستلم</p>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
     </div>
 @endsection

@@ -44,6 +44,7 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
+        app(\App\Services\SecurityLogger::class)->log('registration', $user, $request);
 
         // Send OTP Email — catch transport errors so a broken SMTP config
         // does not crash registration with a 500.
@@ -58,6 +59,6 @@ class RegisteredUserController extends Controller
         // Set session to show OTP popup
         session(['show_otp_verify' => true]);
 
-        return redirect()->route('home');
+        return redirect()->route('dashboard');
     }
 }

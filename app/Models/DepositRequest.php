@@ -23,6 +23,15 @@ class DepositRequest extends Model
         'admin_note',
         'reviewed_by_user_id',
         'reviewed_at',
+        'currency_id',
+        'currency_code',
+        'currency_symbol',
+        'local_amount',
+        'exchange_rate_to_usd',
+        'commission_type',
+        'commission_value',
+        'commission_amount',
+        'net_usd_amount',
     ];
 
     protected $casts = [
@@ -30,6 +39,11 @@ class DepositRequest extends Model
         'approved_amount' => 'decimal:2',
         'reviewed_at' => 'datetime',
         'payload' => 'array',
+        'local_amount' => 'decimal:2',
+        'exchange_rate_to_usd' => 'decimal:8',
+        'commission_value' => 'decimal:4',
+        'commission_amount' => 'decimal:2',
+        'net_usd_amount' => 'decimal:2',
     ];
 
     public function user(): BelongsTo
@@ -40,6 +54,11 @@ class DepositRequest extends Model
     public function paymentMethod(): BelongsTo
     {
         return $this->belongsTo(PaymentMethod::class);
+    }
+
+    public function currency(): BelongsTo
+    {
+        return $this->belongsTo(Currency::class);
     }
 
     public function evidence(): HasOne

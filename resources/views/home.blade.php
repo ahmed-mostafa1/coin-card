@@ -129,13 +129,10 @@
     @endif
 
     @auth
-        @inject('vipService', 'App\Services\VipService')
+        @inject('loyaltyService', 'App\Services\LoyaltyService')
         @php
-            $homeVip = $vipService->getVipSummary(auth()->user());
-            $homeVipTier = $homeVip['current_tier'];
-            $homeVipLabel = $homeVipTier
-                ? (app()->getLocale() === 'ar' ? $homeVipTier->title_ar : ($homeVipTier->title_en ?: $homeVipTier->title_ar))
-                : __('messages.no_level');
+            $homeLoyalty = $loyaltyService->summary(auth()->user());
+            $homeLoyaltyLabel = $homeLoyalty['level_label'];
             $wallet = auth()->user()->wallet;
         @endphp
     @endauth
@@ -208,8 +205,8 @@
                         </div>
 
                         <div class="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-bold text-emerald-700 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-300">
-                            <i class="fa-solid fa-crown text-amber-400"></i>
-                            <span>{{ $homeVipLabel }}</span>
+                            <i class="fa-solid fa-shield-halved text-emerald-500"></i>
+                            <span>{{ $homeLoyaltyLabel }}</span>
                         </div>
                     </div>
 

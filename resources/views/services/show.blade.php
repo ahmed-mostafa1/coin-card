@@ -19,14 +19,14 @@
             'lowPrice' => number_format((float) $variantPrices->min(), 2, '.', ''),
             'highPrice' => number_format((float) $variantPrices->max(), 2, '.', ''),
             'offerCount' => $variantPrices->count(),
-            'availability' => 'https://schema.org/InStock',
+            'availability' => $service->isProviderAvailable() ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
             'url' => route('services.show', $service->slug),
         ]
         : [
             '@type' => 'Offer',
             'priceCurrency' => 'USD',
             'price' => number_format((float) ($service->is_quantity_based ? $service->price_per_unit : ($variantPrices->first() ?? $service->price)), 2, '.', ''),
-            'availability' => 'https://schema.org/InStock',
+            'availability' => $service->isProviderAvailable() ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
             'url' => route('services.show', $service->slug),
         ];
     $productSchema = array_filter([
@@ -79,8 +79,9 @@
     $shareFailedLabel = app()->getLocale() === 'ar' ? 'تعذر نسخ الرابط' : 'Failed to copy link';
 @endphp
 
-@section('title', $serviceTitle)
-@section('meta_description', $serviceMetaDescription)
+@section('title', $service->seo_title ?: $serviceTitle)
+@section('meta_description', $service->seo_meta_description ?: $serviceMetaDescription)
+@section('meta_keywords', $service->seo_keywords ?? '')
 @section('meta_canonical', route('services.show', $service->slug))
 @section('meta_type', 'product')
 @section('meta_image', $serviceImage)
@@ -155,16 +156,8 @@
             : ($service->variants->count() ? $service->variants->min('price') : $service->price);
         $isBaseInsufficient = $availableBalance < $basePrice;
         
-        // VIP Discount calculation
-        $vipDiscount = 0;
-        $currentVipTier = null;
-        if (auth()->check() && ! $isDiscountedInputPricing) {
-            $userVipStatus = auth()->user()->load('vipStatus.vipTier')->vipStatus;
-            if ($userVipStatus && $userVipStatus->vipTier) {
-                $currentVipTier = $userVipStatus->vipTier;
-                $vipDiscount = $currentVipTier->discount_percentage ?? 0;
-            }
-        }
+        $loyaltySummary = auth()->check() ? app(\App\Services\LoyaltyService::class)->summary(auth()->user()) : null;
+        $vipDiscount = (! $isDiscountedInputPricing && $loyaltySummary) ? (float) ($loyaltySummary['discount_percentage'] ?? 0) : 0;
 
         $showLimitedOfferLabel = $service->hasLimitedOfferLabel();
         $showLimitedOfferCountdown = $service->hasLimitedOfferCountdown();
@@ -220,8 +213,13 @@
                 <div class="store-card p-6">
                     <div class="flex flex-col items-center justify-center gap-3 border-b border-slate-100 dark:border-slate-700 pb-4">
                         @if ($service->image_path)
-                            <img src="{{ asset('storage/' . $service->image_path) }}" alt="{{ $service->localized_name }}"
-                                class="h-32 w-32 rounded-xl object-cover">
+                            <div class="relative">
+                                <img src="{{ asset('storage/' . $service->image_path) }}" alt="{{ $service->localized_name }}"
+                                    class="h-32 w-32 rounded-xl object-cover">
+                                @if ($service->topup_label_text)
+                                    <span class="absolute -end-2 -top-2 rounded-full bg-emerald-600 px-2.5 py-1 text-[11px] font-bold text-white shadow">{{ $service->topup_label_text }}</span>
+                                @endif
+                            </div>
                         @endif
                         <div class="space-y-1 text-center">
                             <h1 class="text-xl font-bold text-slate-900 dark:text-white">{{ $service->localized_name }}</h1>
@@ -305,7 +303,11 @@
                                     @foreach ($service->variants->sortBy('sort_order') as $index => $variant)
                                         @php
                                             $originalPrice = $variant->price;
-                                            $discountedPrice = $vipDiscount > 0 ? $originalPrice * (1 - $vipDiscount / 100) : $originalPrice;
+                                            $feeAmount = ($variant->service_fee_type ?? 'fixed') === 'percentage'
+                                                ? $originalPrice * ((float) $variant->service_fee_value / 100)
+                                                : (float) $variant->service_fee_value;
+                                            $grossPrice = $originalPrice + $feeAmount;
+                                            $discountedPrice = $vipDiscount > 0 ? $grossPrice * (1 - $vipDiscount / 100) : $grossPrice;
                                             // Auto-select first variant if no old value
                                             $isChecked = old('variant_id') ? old('variant_id') == $variant->id : $index === 0;
                                         @endphp
@@ -315,6 +317,8 @@
                                                 <input type="radio" name="variant_id" value="{{ $variant->id }}"
                                                     data-price="{{ $discountedPrice }}"
                                                     data-original-price="{{ $originalPrice }}"
+                                                    data-fee-amount="{{ $feeAmount }}"
+                                                    data-gross-price="{{ $grossPrice }}"
                                                     data-variant-name="{{ $variant->localized_name }}"
                                                     data-discount="{{ $vipDiscount }}"
                                                     class="text-emerald-600 focus:ring-emerald-500"
@@ -323,10 +327,10 @@
                                             </span>
                                             <span class="flex items-center gap-2">
                                                 @if ($vipDiscount > 0)
-                                                    <span class="text-xs text-slate-500 line-through">${{ number_format($originalPrice, 2) }}</span>
+                                                    <span class="text-xs text-slate-500 line-through">${{ number_format($grossPrice, 2) }}</span>
                                                     <span class="font-semibold text-emerald-700">${{ number_format($discountedPrice, 2) }}</span>
                                                 @else
-                                                    <span class="font-semibold text-emerald-700">${{ number_format($originalPrice, 2) }}</span>
+                                                    <span class="font-semibold text-emerald-700">${{ number_format($grossPrice, 2) }}</span>
                                                 @endif
                                             </span>
                                         </label>
@@ -374,10 +378,10 @@
                         @if (! $isDiscountedInputPricing && $vipDiscount > 0)
                             <div class="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 px-4 py-3">
                                 <p class="text-sm font-semibold text-emerald-900 dark:text-emerald-300">
-                                    🎉 {{ __('messages.vip_discount_active') ?? (app()->getLocale() == 'ar' ? 'خصم VIP فعّال' : 'VIP Discount Active') }}: {{ number_format($vipDiscount, 0) }}%
+                                    {{ app()->getLocale() == 'ar' ? 'خصم الحساب فعّال' : 'Account discount active' }}: {{ number_format($vipDiscount, 0) }}%
                                 </p>
                                 <p class="text-xs text-emerald-800 dark:text-emerald-200 mt-1">
-                                    {{ __('messages.vip_discount_desc') ?? (app()->getLocale() == 'ar' ? 'تستمتع بخصم تلقائي على جميع الخدمات بفضل مستوى VIP الخاص بك' : 'You enjoy automatic discount on all services thanks to your VIP level') }}
+                                    {{ app()->getLocale() == 'ar' ? 'يتم احتساب خصم التوثيق أو الولاء تلقائياً.' : 'Verification or loyalty discount is applied automatically.' }}
                                 </p>
                             </div>
                         @endif
@@ -385,7 +389,10 @@
                         @if ($isDiscountedInputPricing)
                             @php
                                 $oldOfferAmount = old('offer_amount', 0);
-                                $initialDiscountedPrice = max(0, round(((float) $oldOfferAmount) * (1 - ($serviceDiscountPercent / 100)), 2));
+                                $initialOfferFee = (($service->service_fee_type ?? 'fixed') === 'percentage')
+                                    ? ((float) $oldOfferAmount) * ((float) $service->service_fee_value / 100)
+                                    : (float) $service->service_fee_value;
+                                $initialDiscountedPrice = max(0, round(((float) $oldOfferAmount) + $initialOfferFee - (((float) $oldOfferAmount) * ($serviceDiscountPercent / 100)), 2));
                             @endphp
                             <div class="space-y-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-3 text-sm text-slate-700 dark:text-slate-200">
                                 <div class="space-y-1">
@@ -401,6 +408,10 @@
                                 </div>
 
                                 <p class="text-sm">
+                                    السعر الأساسي: <span class="font-semibold">{{ number_format((float) $oldOfferAmount, 2) }} USD</span><br>
+                                    رسوم الخدمة: <span class="font-semibold">{{ number_format($initialOfferFee, 2) }} USD</span><br>
+                                    Total = Price + Service Fee:
+                                    <span class="font-semibold">{{ number_format(((float) $oldOfferAmount) + $initialOfferFee, 2) }} USD</span><br>
                                     المبلغ المدفوع:
                                     <span id="current-price" class="font-semibold text-emerald-700">{{ number_format($initialDiscountedPrice, 2) }}</span>
                                     <span id="price-currency">USD</span>
@@ -417,32 +428,61 @@
                                             // Get the first variant (which is auto-selected)
                                             $firstVariant = $service->variants->sortBy('sort_order')->first();
                                             $originalPrice = $firstVariant->price;
-                                            $displayPrice = $vipDiscount > 0 ? $originalPrice * (1 - $vipDiscount / 100) : $originalPrice;
+                                            $initialFee = (($firstVariant->service_fee_type ?? 'fixed') === 'percentage')
+                                                ? $originalPrice * ((float) $firstVariant->service_fee_value / 100)
+                                                : (float) $firstVariant->service_fee_value;
+                                            $initialGross = $originalPrice + $initialFee;
+                                            $displayPrice = $vipDiscount > 0 ? $initialGross * (1 - $vipDiscount / 100) : $initialGross;
                                         @endphp
+                                        <div class="mb-2 space-y-1">
+                                            <div class="flex items-center justify-between gap-3"><span>السعر الأساسي</span><span id="price-base">${{ number_format($originalPrice, 2) }}</span></div>
+                                            <div class="flex items-center justify-between gap-3"><span>رسوم الخدمة</span><span id="price-fee">${{ number_format($initialFee, 2) }}</span></div>
+                                            <div class="flex items-center justify-between gap-3 font-semibold"><span>Total = Price + Service Fee</span><span id="price-gross">${{ number_format($initialGross, 2) }}</span></div>
+                                        </div>
                                         @if ($vipDiscount > 0)
-                                            <span id="original-price" class="text-xs text-slate-500 line-through">${{ number_format($originalPrice, 2) }}</span>
+                                            <span id="original-price" class="text-xs text-slate-500 line-through">${{ number_format($initialGross, 2) }}</span>
                                         @endif
                                         <span id="current-price" class="font-semibold text-emerald-700">${{ number_format($displayPrice, 2) }}</span>
                                     @elseif ($service->is_quantity_based)
                                         @php
-                                            $displayPrice = $vipDiscount > 0 ? $service->price_per_unit * (1 - $vipDiscount / 100) : $service->price_per_unit;
+                                            $initialBase = (float) $service->price_per_unit;
+                                            $initialFee = (($service->service_fee_type ?? 'fixed') === 'percentage')
+                                                ? $initialBase * ((float) $service->service_fee_value / 100)
+                                                : (float) $service->service_fee_value;
+                                            $initialGross = $initialBase + $initialFee;
+                                            $displayPrice = $vipDiscount > 0 ? $initialGross * (1 - $vipDiscount / 100) : $initialGross;
                                         @endphp
+                                        <div class="mb-2 space-y-1">
+                                            <div class="flex items-center justify-between gap-3"><span>السعر الأساسي</span><span id="price-base">${{ number_format($initialBase, 2) }}</span></div>
+                                            <div class="flex items-center justify-between gap-3"><span>رسوم الخدمة</span><span id="price-fee">${{ number_format($initialFee, 2) }}</span></div>
+                                            <div class="flex items-center justify-between gap-3 font-semibold"><span>Total = Price + Service Fee</span><span id="price-gross">${{ number_format($initialGross, 2) }}</span></div>
+                                        </div>
                                         @if ($vipDiscount > 0)
-                                            <span class="text-xs text-slate-500 line-through">${{ number_format($service->price_per_unit, 2) }}</span>
+                                            <span id="original-price" class="text-xs text-slate-500 line-through">${{ number_format($initialGross, 2) }}</span>
                                         @endif
                                         <span id="current-price" class="font-semibold text-emerald-700">${{ number_format($displayPrice, 2) }}</span>
                                     @else
                                         @php
-                                            $displayPrice = $vipDiscount > 0 ? $service->price * (1 - $vipDiscount / 100) : $service->price;
+                                            $initialBase = (float) $service->price;
+                                            $initialFee = (($service->service_fee_type ?? 'fixed') === 'percentage')
+                                                ? $initialBase * ((float) $service->service_fee_value / 100)
+                                                : (float) $service->service_fee_value;
+                                            $initialGross = $initialBase + $initialFee;
+                                            $displayPrice = $vipDiscount > 0 ? $initialGross * (1 - $vipDiscount / 100) : $initialGross;
                                         @endphp
+                                        <div class="mb-2 space-y-1">
+                                            <div class="flex items-center justify-between gap-3"><span>السعر الأساسي</span><span id="price-base">${{ number_format($initialBase, 2) }}</span></div>
+                                            <div class="flex items-center justify-between gap-3"><span>رسوم الخدمة</span><span id="price-fee">${{ number_format($initialFee, 2) }}</span></div>
+                                            <div class="flex items-center justify-between gap-3 font-semibold"><span>Total = Price + Service Fee</span><span id="price-gross">${{ number_format($initialGross, 2) }}</span></div>
+                                        </div>
                                         @if ($vipDiscount > 0)
-                                            <span class="text-xs text-slate-500 line-through">${{ number_format($service->price, 2) }}</span>
+                                            <span id="original-price" class="text-xs text-slate-500 line-through">${{ number_format($initialGross, 2) }}</span>
                                         @endif
                                         <span id="current-price" class="font-semibold text-emerald-700">${{ number_format($displayPrice, 2) }}</span>
                                     @endif
                                     <span id="price-currency">USD</span>
                                 </p>
-                                <input type="hidden" name="selected_price" id="selected-price-input" value="@if ($service->variants->count()){{ $displayPrice }}@elseif ($service->is_quantity_based){{ $displayPrice }}@else{{ $vipDiscount > 0 ? $service->price * (1 - $vipDiscount / 100) : $service->price }}@endif">
+                                <input type="hidden" name="selected_price" id="selected-price-input" value="{{ $displayPrice }}">
                                 <input type="hidden" name="vip_discount" value="{{ $vipDiscount }}">
                                 <p id="insufficient-message"
                                     class="mt-2 text-xs text-rose-600 {{ $isBaseInsufficient ? '' : 'hidden' }}">
@@ -477,6 +517,20 @@
                                 <p class="text-sm text-slate-500">{{ __('messages.no_required_fields') }}</p>
                             @endforelse
 
+                        @if ($service->order_image_upload_enabled)
+                            <div class="space-y-1 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700 dark:bg-slate-700/50">
+                                <label for="order_image" class="block text-sm font-semibold text-slate-800 dark:text-slate-200">
+                                    صورة مرفقة مع الطلب {{ $service->order_image_required ? '*' : '(اختياري)' }}
+                                </label>
+                                @if ($service->order_image_help_text)
+                                    <p class="text-xs text-slate-500 dark:text-slate-400">{{ $service->order_image_help_text }}</p>
+                                @endif
+                                <input id="order_image" name="order_image" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" class="store-input" {{ $service->order_image_required ? 'required' : '' }}>
+                                <p class="text-xs text-slate-500">JPG, PNG, WEBP - حتى 2MB</p>
+                                <x-input-error :messages="$errors->get('order_image')" />
+                            </div>
+                        @endif
+
                         @php
                             $termsLink = '<a href="'.route('terms-of-use').'" class="font-semibold text-emerald-700 hover:underline dark:text-emerald-400">'.e(__('messages.terms_of_use')).'</a>';
                         @endphp
@@ -509,6 +563,12 @@
                             </a>
                         @endauth
                     </form>
+
+                    @if ($service->localized_seo_content)
+                        <article class="prose prose-slate mt-8 max-w-none rounded-2xl border border-slate-200 bg-white p-5 text-sm leading-7 text-slate-700 dark:prose-invert dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
+                            {!! $service->localized_seo_content !!}
+                        </article>
+                    @endif
                 </div>
             </div>
         </div>
@@ -597,6 +657,8 @@
                 'isRtl' => app()->getLocale() === 'ar',
                 'serviceName' => $service->localized_name,
                 'servicePrice' => (float) $service->price,
+                'serviceFeeType' => $service->service_fee_type ?? 'fixed',
+                'serviceFeeValue' => (float) ($service->service_fee_value ?? 0),
                 'selectPackageMessage' => $selectPackageMessage,
                 'confirmationLabels' => [
                     'title' => __('messages.purchase_confirmation_title'),
@@ -641,8 +703,13 @@
                 const isRtl = Boolean(config.isRtl);
                 const serviceName = config.serviceName || '';
                 const servicePrice = parseFloat(config.servicePrice || 0);
+                const serviceFeeType = config.serviceFeeType || 'fixed';
+                const serviceFeeValue = parseFloat(config.serviceFeeValue || 0);
                 const selectPackageMessage = config.selectPackageMessage || '';
                 const confirmationLabels = config.confirmationLabels || {};
+                const basePriceElement = document.getElementById('price-base');
+                const feeElement = document.getElementById('price-fee');
+                const grossElement = document.getElementById('price-gross');
 
                 const escapeHtml = (value) => String(value)
                     .replace(/&/g, '&amp;')
@@ -689,13 +756,16 @@
                         }
 
                         const normalizedOfferAmount = Math.max(0, offerAmount);
-                        return Math.max(0, normalizedOfferAmount * (1 - serviceDiscountPercent / 100));
+                        const feeAmount = serviceFeeType === 'percentage' ? normalizedOfferAmount * (serviceFeeValue / 100) : serviceFeeValue;
+                        return Math.max(0, normalizedOfferAmount + feeAmount - (normalizedOfferAmount * (serviceDiscountPercent / 100)));
                     }
 
                     if (isQuantityBased && quantityInput) {
                         const quantity = parseInt(quantityInput.value) || 1;
                         const pricePerUnit = parseFloat(quantityInput.dataset.pricePerUnit);
-                        let totalPrice = quantity * pricePerUnit;
+                        const basePrice = quantity * pricePerUnit;
+                        const feeAmount = serviceFeeType === 'percentage' ? basePrice * (serviceFeeValue / 100) : serviceFeeValue;
+                        let totalPrice = basePrice + feeAmount;
                         if (vipDiscount > 0) {
                             totalPrice = totalPrice * (1 - vipDiscount / 100);
                         }
@@ -707,7 +777,8 @@
                         return parseFloat(checked.dataset.price);
                     }
 
-                    let price = hasVariants ? null : servicePrice;
+                    const feeAmount = serviceFeeType === 'percentage' ? servicePrice * (serviceFeeValue / 100) : serviceFeeValue;
+                    let price = hasVariants ? null : servicePrice + feeAmount;
                     if (price !== null && vipDiscount > 0) {
                         price = price * (1 - vipDiscount / 100);
                     }
@@ -725,14 +796,16 @@
                     }
 
                     const checked = document.querySelector('input[name="variant_id"]:checked');
-                    if (checked && checked.dataset.originalPrice) {
-                        return parseFloat(checked.dataset.originalPrice);
+                    if (checked && checked.dataset.grossPrice) {
+                        return parseFloat(checked.dataset.grossPrice);
                     }
 
                     if (isQuantityBased && quantityInput) {
                         const quantity = parseInt(quantityInput.value) || 1;
                         const pricePerUnit = parseFloat(quantityInput.dataset.pricePerUnit);
-                        return quantity * pricePerUnit;
+                        const basePrice = quantity * pricePerUnit;
+                        const feeAmount = serviceFeeType === 'percentage' ? basePrice * (serviceFeeValue / 100) : serviceFeeValue;
+                        return basePrice + feeAmount;
                     }
 
                     return null;
@@ -741,6 +814,7 @@
                 const updateState = () => {
                     const price = getSelectedPrice();
                     const originalPrice = getOriginalPrice();
+                    const checked = document.querySelector('input[name="variant_id"]:checked');
                     const countdownExpired = countdownElement
                         ? (countdownElement.dataset.endAt ? new Date(countdownElement.dataset.endAt).getTime() <= Date.now() : false)
                         : false;
@@ -757,6 +831,20 @@
                                     priceInput.value = isDiscountedInputPricing
                                         ? normalizedPrice.toFixed(2)
                                         : normalizedPrice.toFixed(12); // Send high precision to backend
+                                }
+
+                                if (!isDiscountedInputPricing) {
+                                    let baseForBreakdown = hasVariants && checked ? parseFloat(checked.dataset.originalPrice || 0) : servicePrice;
+                                    if (isQuantityBased && quantityInput) {
+                                        baseForBreakdown = (parseInt(quantityInput.value) || 1) * parseFloat(quantityInput.dataset.pricePerUnit || 0);
+                                    }
+                                    const feeForBreakdown = hasVariants && checked
+                                        ? parseFloat(checked.dataset.feeAmount || 0)
+                                        : (serviceFeeType === 'percentage' ? baseForBreakdown * (serviceFeeValue / 100) : serviceFeeValue);
+                                    const grossForBreakdown = baseForBreakdown + feeForBreakdown;
+                                    if (basePriceElement) basePriceElement.textContent = '$' + formatPrice(baseForBreakdown);
+                                    if (feeElement) feeElement.textContent = '$' + formatPrice(feeForBreakdown);
+                                    if (grossElement) grossElement.textContent = '$' + formatPrice(grossForBreakdown);
                                 }
                                 
                                 // Update original price if VIP discount is active
@@ -837,9 +925,9 @@
                         ].filter((item) => item && item.value !== null && item.value !== '');
 
                         const detailsHtml = details.map((item) => `
-                            <div class="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm dark:border-slate-700 dark:bg-slate-800/70">
-                                <span class="text-slate-500 dark:text-slate-300">${escapeHtml(item.label)}</span>
-                                <span class="font-semibold text-slate-900 dark:text-white">${escapeHtml(item.value)}</span>
+                            <div class="purchase-confirmation-detail">
+                                <span class="purchase-confirmation-detail-label">${escapeHtml(item.label)}</span>
+                                <span class="purchase-confirmation-detail-value">${escapeHtml(item.value)}</span>
                             </div>
                         `).join('');
 
@@ -848,8 +936,8 @@
                             title: confirmationLabels.title,
                             html: `
                                 <div dir="${isRtl ? 'rtl' : 'ltr'}" class="space-y-4 text-start">
-                                    <p class="text-sm text-slate-600 dark:text-slate-300">${escapeHtml(confirmationLabels.text)}</p>
-                                    <div class="space-y-3">${detailsHtml}</div>
+                                    <p class="purchase-confirmation-text">${escapeHtml(confirmationLabels.text)}</p>
+                                    <div class="purchase-confirmation-details">${detailsHtml}</div>
                                 </div>
                             `,
                             showCancelButton: true,
@@ -859,12 +947,12 @@
                             focusCancel: true,
                             buttonsStyling: false,
                             customClass: {
-                                popup: 'rounded-3xl bg-white p-6 text-start shadow-2xl dark:bg-slate-900',
-                                title: 'text-xl font-bold text-slate-900 dark:text-white',
+                                popup: 'purchase-confirmation-popup rounded-3xl p-6 text-start shadow-2xl',
+                                title: 'purchase-confirmation-title text-xl font-bold',
                                 htmlContainer: 'mt-3',
                                 actions: 'mt-6 flex gap-3',
-                                confirmButton: 'inline-flex items-center justify-center rounded-lg bg-[#f2a900] px-5 py-3 text-sm font-semibold text-slate-900 transition hover:brightness-105',
-                                cancelButton: 'inline-flex items-center justify-center rounded-lg border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800',
+                                confirmButton: 'purchase-confirmation-confirm inline-flex items-center justify-center rounded-lg px-5 py-3 text-sm font-semibold transition hover:brightness-105',
+                                cancelButton: 'purchase-confirmation-cancel inline-flex items-center justify-center rounded-lg px-5 py-3 text-sm font-semibold transition',
                             },
                         }).then((result) => {
                             if (!result.isConfirmed) {

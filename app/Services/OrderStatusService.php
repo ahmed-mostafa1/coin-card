@@ -15,7 +15,7 @@ class OrderStatusService
 {
     public function __construct(
         private readonly WalletService $walletService,
-        private readonly VipService $vipService,
+        private readonly LoyaltyService $loyaltyService,
         private readonly ApiProviderManager $providerManager
     ) {
     }
@@ -148,7 +148,7 @@ class OrderStatusService
             }
         });
 
-        DB::afterCommit(function () use ($order, $statusChanged, $oldStatus, $newStatus, $shouldUpdateVip): void {
+        DB::afterCommit(function () use ($order, $statusChanged, $oldStatus, $newStatus, $shouldUpdateVip, $actor): void {
             if (! $statusChanged) {
                 return;
             }
@@ -156,6 +156,11 @@ class OrderStatusService
             $order->refresh();
             $order->load(['service', 'user']);
             $order->user->notify(new OrderStatusChangedNotification($order, $oldStatus, $newStatus));
+            app(SecurityLogger::class)->log('order_status_changed', $order->user, request(), [
+                'order_id' => $order->id,
+                'old_status' => $oldStatus,
+                'new_status' => $newStatus,
+            ], $order, $actor);
 
             // Auto-place order on provider when moving to processing
             if ($newStatus === Order::STATUS_PROCESSING && $order->service) {
@@ -164,7 +169,7 @@ class OrderStatusService
             }
 
             if ($shouldUpdateVip && $newStatus === Order::STATUS_DONE) {
-                $this->vipService->updateUserVipStatus($order->user);
+                $this->loyaltyService->awardForOrder($order);
             }
         });
 

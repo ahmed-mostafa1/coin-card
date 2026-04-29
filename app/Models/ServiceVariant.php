@@ -12,12 +12,15 @@ class ServiceVariant extends Model
         'name',
         'name_en',
         'price',
+        'service_fee_type',
+        'service_fee_value',
         'is_active',
         'sort_order',
     ];
 
     protected $casts = [
         'price' => 'decimal:2',
+        'service_fee_value' => 'decimal:4',
         'is_active' => 'boolean',
     ];
 

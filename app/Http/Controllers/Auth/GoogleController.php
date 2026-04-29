@@ -18,7 +18,7 @@ class GoogleController extends Controller
         return Socialite::driver('google')->stateless()->redirect();
     }
 
-    public function callback(): RedirectResponse
+    public function callback(\App\Services\EmailTwoFactorService $twoFactorService): RedirectResponse
     {
         $googleUser = Socialite::driver('google')->stateless()->user();
 
@@ -55,7 +55,17 @@ class GoogleController extends Controller
                 ->with('status', 'تم حظر حسابك. يرجى التواصل مع الإدارة.');
         }
 
+        if ($user->two_factor_email_enabled) {
+            session()->put(\App\Services\EmailTwoFactorService::SESSION_USER_ID, $user->id);
+            session()->put(\App\Services\EmailTwoFactorService::SESSION_REMEMBER, true);
+            $twoFactorService->sendCode($user);
+
+            return redirect()->route('two-factor.email.challenge')
+                ->with('status', 'تم إرسال رمز التحقق إلى بريدك الإلكتروني.');
+        }
+
         Auth::login($user, true);
+        app(\App\Services\SecurityLogger::class)->log('login_google', $user, request());
 
         return redirect()->route('home');
     }

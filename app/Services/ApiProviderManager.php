@@ -29,7 +29,7 @@ class ApiProviderManager
     /**
      * Get an ApiProviderCatalogService for the given provider.
      */
-    public function forProvider(ApiProvider $provider): ApiProviderCatalogService
+    public function forProvider(ApiProvider $provider)
     {
         $client = new ApiProviderClient($provider);
         return new ApiProviderCatalogService($provider, $client);

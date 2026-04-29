@@ -32,9 +32,23 @@
             </div>
 
             <div>
-                <x-input-label for="price" :value="__('messages.price')" />
+                <x-input-label for="price" value="السعر الأساسي" />
                 <x-text-input id="price" name="price" type="number" step="0.01" min="0.01" :value="old('price', $variant->price)" required />
                 <x-input-error :messages="$errors->get('price')" />
+            </div>
+
+            <div class="grid gap-4 md:grid-cols-2">
+                <div>
+                    <x-input-label for="service_fee_type" value="نوع رسوم الخدمة" />
+                    <x-select id="service_fee_type" name="service_fee_type">
+                        <option value="fixed" @selected(old('service_fee_type', $variant->service_fee_type ?? 'fixed') === 'fixed')>مبلغ ثابت</option>
+                        <option value="percentage" @selected(old('service_fee_type', $variant->service_fee_type) === 'percentage')>نسبة %</option>
+                    </x-select>
+                </div>
+                <div>
+                    <x-input-label for="service_fee_value" value="قيمة رسوم الخدمة" />
+                    <x-text-input id="service_fee_value" name="service_fee_value" type="number" step="0.0001" min="0" :value="old('service_fee_value', $variant->service_fee_value ?? 0)" />
+                </div>
             </div>
 
             <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">

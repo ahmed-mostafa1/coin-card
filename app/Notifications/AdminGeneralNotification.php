@@ -17,16 +17,18 @@ class AdminGeneralNotification extends Notification
     public string $titleEn;
     public string $contentAr;
     public string $contentEn;
+    public ?string $imagePath;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(string $titleAr, string $titleEn, string $contentAr, string $contentEn)
+    public function __construct(string $titleAr, string $titleEn, string $contentAr, string $contentEn, ?string $imagePath = null)
     {
         $this->titleAr = $titleAr;
         $this->titleEn = $titleEn;
         $this->contentAr = $contentAr;
         $this->contentEn = $contentEn;
+        $this->imagePath = $imagePath;
     }
 
     /**
@@ -71,6 +73,8 @@ class AdminGeneralNotification extends Notification
             'title_en' => $this->titleEn,
             'content_ar' => $this->contentAr,
             'content_en' => $this->contentEn,
+            'image_path' => $this->imagePath,
+            'image_url' => $this->imagePath ? asset('storage/'.$this->imagePath) : null,
             'type' => 'admin_message',
             'icon' => 'fa-solid fa-bullhorn', // Icon for frontend
             'link' => null,

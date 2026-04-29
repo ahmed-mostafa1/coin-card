@@ -46,7 +46,7 @@
                 </div>
             @endif
 
-            @if($paymentMethod->show_account_number)
+            @if($paymentMethod->account_number)
                 <div class="mt-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4">
                     <div class="flex items-center justify-between gap-4">
                         <div>
@@ -68,9 +68,41 @@
         <div class="rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm">
             <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">{{ __('messages.submit_deposit_request') }}</h2>
 
+            @php
+                $currencyConfigs = $paymentMethod->currencyConfigs->values();
+                $defaultConfig = $currencyConfigs->first();
+                $currencyPreviewConfig = $currencyConfigs->map(fn ($config) => [
+                    'id' => $config->currency_id,
+                    'code' => $config->currency->code,
+                    'symbol' => $config->currency->symbol,
+                    'rate' => (float) $config->effectiveExchangeRate(),
+                    'commissionType' => $config->commission_type,
+                    'commissionValue' => (float) $config->commission_value,
+                    'minAmount' => $config->min_amount !== null ? (float) $config->min_amount : null,
+                    'maxAmount' => $config->max_amount !== null ? (float) $config->max_amount : null,
+                ])->values();
+            @endphp
+
+            @if ($currencyConfigs->isEmpty())
+                <div class="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800 dark:border-amber-800 dark:bg-amber-900/20 dark:text-amber-200">
+                    لا توجد عملات مفعلة لهذه الطريقة حالياً.
+                </div>
+            @else
             <form method="POST" action="{{ route('deposit.store', $paymentMethod->slug) }}" enctype="multipart/form-data"
                 class="mt-6 space-y-4">
                 @csrf
+
+                <div>
+                    <x-input-label for="currency_id" value="العملة" />
+                    <x-select id="currency_id" name="currency_id" required>
+                        @foreach ($currencyConfigs as $config)
+                            <option value="{{ $config->currency_id }}" @selected((int) old('currency_id', $defaultConfig?->currency_id) === $config->currency_id)>
+                                {{ $config->currency->code }} {{ $config->currency->symbol ? '('.$config->currency->symbol.')' : '' }}
+                            </option>
+                        @endforeach
+                    </x-select>
+                    <x-input-error :messages="$errors->get('currency_id')" />
+                </div>
 
                 <div>
                     <x-input-label for="amount" :value="__('messages.transfer_amount')" />
@@ -78,6 +110,25 @@
                         min="{{ config('coin-card.deposit_min_amount') }}"
                         max="{{ config('coin-card.deposit_max_amount') }}" :value="old('amount')" required />
                     <x-input-error :messages="$errors->get('amount')" />
+                </div>
+
+                <div class="rounded-2xl border border-emerald-100 bg-emerald-50 p-4 text-sm text-slate-700 dark:border-emerald-900/40 dark:bg-emerald-900/20 dark:text-slate-200" data-deposit-preview>
+                    <div class="flex items-center justify-between gap-4">
+                        <span>المبلغ الأصلي</span>
+                        <span class="font-semibold" data-preview-local>0.00</span>
+                    </div>
+                    <div class="mt-2 flex items-center justify-between gap-4">
+                        <span>سعر التحويل إلى USD</span>
+                        <span class="font-semibold" data-preview-rate>1</span>
+                    </div>
+                    <div class="mt-2 flex items-center justify-between gap-4">
+                        <span>العمولة</span>
+                        <span class="font-semibold" data-preview-commission>0.00</span>
+                    </div>
+                    <div class="mt-3 border-t border-emerald-200 pt-3 flex items-center justify-between gap-4 text-emerald-800 dark:border-emerald-800 dark:text-emerald-200">
+                        <span class="font-bold">الرصيد الصافي الذي سيضاف</span>
+                        <span class="font-bold" data-preview-net>0.00 USD</span>
+                    </div>
                 </div>
 
                 @foreach ($paymentMethod->fields->sortBy('sort_order') as $field)
@@ -109,8 +160,10 @@
 
                 <x-primary-button class="w-full">{{ __('messages.confirm_deposit') }}</x-primary-button>
             </form>
+            @endif
         </div>
     </div>
+    <script id="deposit-currency-config" type="application/json">@json($currencyPreviewConfig)</script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const button = document.querySelector('[data-copy-button]');
@@ -150,6 +203,47 @@
                     showFeedback();
                 }
             });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const configElement = document.getElementById('deposit-currency-config');
+            const amountInput = document.getElementById('amount');
+            const currencySelect = document.getElementById('currency_id');
+            if (!configElement || !amountInput || !currencySelect) return;
+
+            const configs = JSON.parse(configElement.textContent || '[]');
+            const byId = new Map(configs.map((item) => [String(item.id), item]));
+            const localEl = document.querySelector('[data-preview-local]');
+            const rateEl = document.querySelector('[data-preview-rate]');
+            const commissionEl = document.querySelector('[data-preview-commission]');
+            const netEl = document.querySelector('[data-preview-net]');
+
+            const format = (value, digits = 2) => Number(value || 0).toFixed(digits);
+            const update = () => {
+                const config = byId.get(String(currencySelect.value));
+                if (!config) return;
+                const amount = Math.max(0, parseFloat(amountInput.value || '0'));
+                const commission = config.commissionType === 'fixed'
+                    ? parseFloat(config.commissionValue || 0)
+                    : amount * (parseFloat(config.commissionValue || 0) / 100);
+                const boundedCommission = Math.min(amount, Math.max(0, commission));
+                const net = Math.max(0, amount - boundedCommission) * parseFloat(config.rate || 0);
+                const currency = `${config.code}${config.symbol ? ' ' + config.symbol : ''}`;
+
+                if (localEl) localEl.textContent = `${format(amount)} ${currency}`;
+                if (rateEl) rateEl.textContent = `1 ${config.code} = ${format(config.rate, 8)} USD`;
+                if (commissionEl) commissionEl.textContent = `${format(boundedCommission)} ${currency}`;
+                if (netEl) netEl.textContent = `${format(net)} USD`;
+
+                if (config.minAmount !== null) amountInput.min = config.minAmount;
+                if (config.maxAmount !== null) amountInput.max = config.maxAmount;
+            };
+
+            amountInput.addEventListener('input', update);
+            currencySelect.addEventListener('change', update);
+            update();
         });
     </script>
 

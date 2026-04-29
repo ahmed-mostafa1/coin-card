@@ -102,15 +102,11 @@
     @endphp
 
     @auth
-        @inject('vipService', 'App\Services\VipService')
+        @inject('loyaltyService', 'App\Services\LoyaltyService')
         @php
-            $menuVip = $vipService->getVipSummary($currentUser);
-            $menuTier = $menuVip['current_tier'];
-            $menuNextTier = $menuVip['next_tier'];
+            $menuVip = $loyaltyService->summary($currentUser);
             $menuProgress = $menuVip['progress_percent'];
-            $menuTierLabel = $menuTier
-                ? ($isAr ? $menuTier->title_ar : ($menuTier->title_en ?: $menuTier->title_ar))
-                : ($isAr ? 'بدون مستوى' : 'No Rank');
+            $menuTierLabel = $menuVip['level_label'];
             $profileAvatar = filled($currentUser->avatar ?? null) ? $currentUser->avatar : null;
             $profileInitial = mb_substr(trim($currentUser->name ?? 'U'), 0, 1);
             $navUnreadCountValue = min((int) ($navUnreadCount ?? 0), 99);
@@ -301,7 +297,7 @@
                                         </span>
                                         <span class="hidden min-w-0 md:block">
                                             <span class="block max-w-28 truncate text-sm font-bold text-slate-900 dark:text-white">
-                                                {{ $currentUser->name }}
+                                                {{ $currentUser->name }} <x-user-badge :user="$currentUser" class="h-4 w-4" />
                                             </span>
                                             <span class="block truncate text-[11px] font-medium text-slate-500 dark:text-slate-400">
                                                 {{ $menuTierLabel }}
@@ -329,7 +325,7 @@
                                                 @endif
                                             </span>
                                             <div class="min-w-0 flex-1">
-                                                <p class="truncate text-base font-bold text-slate-950 dark:text-white">{{ $currentUser->name }}</p>
+                                                <p class="truncate text-base font-bold text-slate-950 dark:text-white">{{ $currentUser->name }} <x-user-badge :user="$currentUser" /></p>
                                                 <p class="mt-1 truncate text-xs text-slate-500 dark:text-slate-400">{{ $currentUser->email }}</p>
                                                 <div class="mt-3 flex flex-wrap items-center gap-2">
                                                     <span class="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300">

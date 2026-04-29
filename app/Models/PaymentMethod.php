@@ -63,4 +63,9 @@ class PaymentMethod extends Model
     {
         return $this->hasMany(PaymentMethodButton::class);
     }
+
+    public function currencyConfigs(): HasMany
+    {
+        return $this->hasMany(PaymentMethodCurrency::class);
+    }
 }

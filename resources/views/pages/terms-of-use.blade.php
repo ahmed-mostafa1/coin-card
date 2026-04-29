@@ -2,9 +2,11 @@
 
 @php
     $termsTitle = app()->getLocale() === 'ar' ? 'الشروط والأحكام' : 'Terms and Conditions';
+    $storedTermsAr = \App\Models\SiteSetting::get('terms_ar', $sharedTermsAr ?? '');
+    $storedTermsEn = \App\Models\SiteSetting::get('terms_en', $sharedTermsEn ?? '');
     $termsContent = app()->getLocale() === 'en'
-        ? ($sharedTermsEn ?: $sharedTermsAr)
-        : ($sharedTermsAr ?: $sharedTermsEn);
+        ? ($storedTermsEn ?: $storedTermsAr)
+        : ($storedTermsAr ?: $storedTermsEn);
     $termsDescriptionSource = $termsContent ?: (app()->getLocale() === 'ar'
         ? 'اطلع على الشروط والأحكام ومسؤوليات العميل قبل تنفيذ الطلبات.'
         : 'Review the terms and conditions and customer responsibilities before placing orders.');

@@ -27,7 +27,14 @@
 
         <div class="mt-6 space-y-4">
             @forelse ($requests as $request)
-                @php $payload = $request->payload ?? []; @endphp
+                @php
+                    $payload = $request->payload ?: array_filter([
+                        'contact_number' => $request->contact_number,
+                        'full_name' => $request->full_name,
+                        'region' => $request->region,
+                        'starting_amount' => $request->starting_amount,
+                    ], fn ($value) => filled($value));
+                @endphp
 
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/40 p-5 transition hover:shadow-md">
                     {{-- Header row --}}

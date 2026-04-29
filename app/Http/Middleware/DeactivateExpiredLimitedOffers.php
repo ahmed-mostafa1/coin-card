@@ -16,6 +16,8 @@ class DeactivateExpiredLimitedOffers
 
     public function handle(Request $request, Closure $next): Response
     {
+        $response = $next($request);
+
         try {
             $this->limitedTimeOfferService->deactivateExpiredServices();
         } catch (QueryException $exception) {
@@ -26,6 +28,6 @@ class DeactivateExpiredLimitedOffers
             }
         }
 
-        return $next($request);
+        return $response;
     }
 }

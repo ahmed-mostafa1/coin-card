@@ -120,10 +120,25 @@
                 </div>
 
                 <div>
-                    <x-input-label for="price" :value="__('messages.price')" />
+                    <x-input-label for="price" value="السعر الأساسي" />
                     <x-text-input id="price" name="price" type="number" step="0.01" min="0" :value="old('price', $service->price)" />
                     <x-input-error :messages="$errors->get('price')" />
-                    <p class="mt-1 text-xs text-slate-500">السعر الافتراضي (يتم تجاهله إذا كانت الخدمة بالكمية أو لديها باقات)</p>
+                    <p class="mt-1 text-xs text-slate-500">السعر الأساسي بدون ربح أو رسوم خدمة.</p>
+                </div>
+
+                <div class="grid gap-4 md:grid-cols-2">
+                    <div>
+                        <x-input-label for="service_fee_type" value="نوع رسوم الخدمة" />
+                        <x-select id="service_fee_type" name="service_fee_type">
+                            <option value="fixed" @selected(old('service_fee_type', $service->service_fee_type ?? 'fixed') === 'fixed')>مبلغ ثابت</option>
+                            <option value="percentage" @selected(old('service_fee_type', $service->service_fee_type) === 'percentage')>نسبة %</option>
+                        </x-select>
+                    </div>
+                    <div>
+                        <x-input-label for="service_fee_value" value="قيمة رسوم الخدمة" />
+                        <x-text-input id="service_fee_value" name="service_fee_value" type="number" step="0.0001" min="0" :value="old('service_fee_value', $service->service_fee_value ?? 0)" />
+                        <x-input-error :messages="$errors->get('service_fee_value')" />
+                    </div>
                 </div>
 
                 <div>
@@ -138,6 +153,37 @@
                 <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
                     <input id="is_active" name="is_active" type="checkbox" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" {{ $service->is_active ? 'checked' : '' }}>
                     <label for="is_active">{{ __('messages.activate_service') }}</label>
+                </div>
+
+                <div class="rounded-2xl border border-slate-200 p-4 dark:border-slate-700 space-y-4">
+                    <label class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
+                        <input name="order_image_upload_enabled" type="checkbox" value="1" class="rounded border-slate-300 text-emerald-600" @checked(old('order_image_upload_enabled', $service->order_image_upload_enabled))>
+                        إظهار حقل رفع صورة في طلب هذه الخدمة
+                    </label>
+                    <label class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
+                        <input name="order_image_required" type="checkbox" value="1" class="rounded border-slate-300 text-emerald-600" @checked(old('order_image_required', $service->order_image_required))>
+                        جعل الصورة مطلوبة
+                    </label>
+                    <div>
+                        <x-input-label for="order_image_help_text" value="تعليمات رفع الصورة (اختياري)" />
+                        <textarea id="order_image_help_text" name="order_image_help_text" rows="2" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white">{{ old('order_image_help_text', $service->order_image_help_text) }}</textarea>
+                        <x-input-error :messages="$errors->get('order_image_help_text')" />
+                    </div>
+                </div>
+
+                <div class="rounded-2xl border border-slate-200 p-4 dark:border-slate-700">
+                    <label class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
+                        <input id="is_topup_label_active" name="is_topup_label_active" type="checkbox" value="1" class="rounded border-slate-300 text-emerald-600" @checked(old('is_topup_label_active', $service->is_topup_label_active))>
+                        إظهار شارة نوع الشحن على بطاقة الخدمة
+                    </label>
+                    <div class="mt-3">
+                        <x-input-label for="topup_label_type" value="نوع الشحن" />
+                        <x-select id="topup_label_type" name="topup_label_type">
+                            <option value="">بدون</option>
+                            <option value="automatic" @selected(old('topup_label_type', $service->topup_label_type) === 'automatic')>شحن تلقائي</option>
+                            <option value="manual" @selected(old('topup_label_type', $service->topup_label_type) === 'manual')>شحن يدوي</option>
+                        </x-select>
+                    </div>
                 </div>
 
                 <div class="mt-4 border-t border-slate-100 dark:border-slate-700 pt-4">
@@ -204,6 +250,30 @@
                     <x-text-input id="sort_order" name="sort_order" type="number" min="0" :value="old('sort_order', $service->sort_order)" />
                 </div>
 
+                <div class="rounded-2xl border border-slate-200 p-4 dark:border-slate-700 space-y-4">
+                    <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">محتوى SEO للخدمة</h2>
+                    <div>
+                        <x-input-label for="seo_title" value="عنوان SEO" />
+                        <x-text-input id="seo_title" name="seo_title" type="text" :value="old('seo_title', $service->seo_title)" />
+                    </div>
+                    <div>
+                        <x-input-label for="seo_meta_description" value="وصف SEO" />
+                        <textarea id="seo_meta_description" name="seo_meta_description" rows="2" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white">{{ old('seo_meta_description', $service->seo_meta_description) }}</textarea>
+                    </div>
+                    <div>
+                        <x-input-label for="seo_keywords" value="كلمات مفتاحية" />
+                        <x-text-input id="seo_keywords" name="seo_keywords" type="text" :value="old('seo_keywords', $service->seo_keywords)" />
+                    </div>
+                    <div>
+                        <x-input-label for="seo_content" value="مقال/محتوى عربي" />
+                        <textarea id="seo_content" name="seo_content" rows="8" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white">{{ old('seo_content', $service->seo_content) }}</textarea>
+                    </div>
+                    <div>
+                        <x-input-label for="seo_content_en" value="SEO Content English" />
+                        <textarea id="seo_content_en" name="seo_content_en" rows="8" dir="ltr" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white">{{ old('seo_content_en', $service->seo_content_en) }}</textarea>
+                    </div>
+                </div>
+
                 <div class="flex gap-3">
                     <x-primary-button>{{ __('messages.update') }}</x-primary-button>
                 </div>
@@ -211,6 +281,22 @@
         </div>
 
         <div class="space-y-6">
+            @if ($service->provider_id)
+                <div class="rounded-3xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm">
+                    <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">حالة المزود</h2>
+                    <div class="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-300">
+                        <p>الحالة: <span class="font-semibold">{{ $service->provider_status ?? ($service->provider_is_available ? 'available' : 'unavailable') }}</span></p>
+                        <p>آخر مزامنة: {{ $service->provider_status_synced_at?->format('Y-m-d H:i') ?? $service->provider_last_synced_at?->format('Y-m-d H:i') ?? '-' }}</p>
+                        @if ($service->provider_status_message)
+                            <p class="text-amber-700">{{ $service->provider_status_message }}</p>
+                        @endif
+                        @if ($service->provider_status_sync_error)
+                            <p class="text-rose-700">{{ $service->provider_status_sync_error }}</p>
+                        @endif
+                    </div>
+                </div>
+            @endif
+
             <div class="rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm transition-colors duration-200">
                 <div class="flex items-center justify-between">
                     <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">{{ __('messages.variants') }}</h2>

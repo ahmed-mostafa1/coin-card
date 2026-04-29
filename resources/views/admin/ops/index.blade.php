@@ -8,7 +8,7 @@
         <x-card :hover="false">
             <x-page-header title="لوحة العمليات" subtitle="إدارة سريعة للطلبات وطلبات الشحن." />
 
-            <div class="mt-6 grid gap-4 grid-cols-2 md:grid-cols-4">
+            <div class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4">
                     <p class="text-xs text-slate-500 dark:text-slate-400">طلبات الشحن</p>
                     <p class="mt-2 text-lg font-semibold text-emerald-700 dark:text-emerald-400">{{ $pendingDepositsCount }}</p>
@@ -34,30 +34,32 @@
             </div>
         @endif
 
-        <div class="flex flex-wrap gap-3 text-sm">
+        <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4">
+            <a href="{{ route('admin.ops.index', ['tab' => 'deposits']) }}"
+                class="admin-tab-button {{ $tab === 'deposits' ? 'admin-action-button-primary' : 'admin-action-button-secondary' }}">طلبات الشحن</a>
             <a href="{{ route('admin.ops.index', ['tab' => 'orders_new']) }}"
-                class="rounded-full border px-4 py-2 transition {{ $tab === 'orders_new' ? 'border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400' : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-emerald-200 dark:hover:border-emerald-700' }}">طلبات جديدة</a>
+                class="admin-tab-button {{ $tab === 'orders_new' ? 'admin-action-button-primary' : 'admin-action-button-secondary' }}">طلبات جديدة</a>
             <a href="{{ route('admin.ops.index', ['tab' => 'orders_processing']) }}"
-                class="rounded-full border px-4 py-2 transition {{ $tab === 'orders_processing' ? 'border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400' : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-emerald-200 dark:hover:border-emerald-700' }}">طلبات تحت التنفيذ</a>
+                class="admin-tab-button {{ $tab === 'orders_processing' ? 'admin-action-button-primary' : 'admin-action-button-secondary' }}">طلبات تحت التنفيذ</a>
             <a href="{{ route('admin.ops.index', ['tab' => 'orders_done']) }}"
-                class="rounded-full border px-4 py-2 transition {{ $tab === 'orders_done' ? 'border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400' : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-emerald-200 dark:hover:border-emerald-700' }}">طلبات منتهية</a>
+                class="admin-tab-button {{ $tab === 'orders_done' ? 'admin-action-button-primary' : 'admin-action-button-secondary' }}">طلبات منتهية</a>
         </div>
 
         @if ($tab === 'deposits')
-            <x-card :hover="false" class="p-8">
+            <x-card :hover="false" class="p-4 sm:p-6 lg:p-8">
                 <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                     <h2 class="text-lg font-semibold text-slate-900 dark:text-white">طلبات الشحن</h2>
-                    <form method="GET" action="{{ route('admin.ops.index') }}" class="flex flex-col sm:flex-row sm:flex-wrap lg:flex-nowrap items-stretch sm:items-center gap-2 text-sm w-full lg:w-auto">
+                    <form method="GET" action="{{ route('admin.ops.index') }}" class="grid w-full grid-cols-1 gap-2 text-sm sm:grid-cols-2 lg:w-auto lg:grid-cols-[minmax(10rem,1fr)_minmax(9rem,1fr)_auto_auto_auto] lg:items-center">
                         <input type="hidden" name="tab" value="deposits" />
-                        <x-text-input name="deposit_q" value="{{ $depositSearch }}" placeholder=".." class="lg:w-auto" />
-                        <x-select name="deposit_status" class="lg:w-auto">
+                        <x-text-input name="deposit_q" value="{{ $depositSearch }}" placeholder=".." class="min-h-11 lg:w-auto" />
+                        <x-select name="deposit_status" class="min-h-11 lg:w-auto">
                             <option value="pending" @selected($depositStatus === 'pending')>قيد المراجعة</option>
                             <option value="approved" @selected($depositStatus === 'approved')>مقبول</option>
                             <option value="rejected" @selected($depositStatus === 'rejected')>مرفوض</option>
                         </x-select>
-                        <x-text-input type="date" name="deposit_from" value="{{ $depositFrom }}" class="lg:w-auto" />
-                        <x-text-input type="date" name="deposit_to" value="{{ $depositTo }}" class="lg:w-auto" />
-                        <x-button type="submit" class="lg:w-auto">تطبيق</x-button>
+                        <x-text-input type="date" name="deposit_from" value="{{ $depositFrom }}" class="min-h-11 lg:w-auto" />
+                        <x-text-input type="date" name="deposit_to" value="{{ $depositTo }}" class="min-h-11 lg:w-auto" />
+                        <x-button type="submit" class="min-h-11 sm:col-span-2 lg:col-span-1 lg:w-auto">تطبيق</x-button>
                     </form>
                 </div>
 
@@ -94,7 +96,7 @@
                                 </td>
                                 <td class="py-3 text-slate-500 dark:text-slate-400" data-label="التاريخ">{{ $deposit->created_at->format('Y-m-d H:i') }}</td>
                                 <td class="py-3" data-label="عرض">
-                                    <a href="{{ route('admin.deposits.show', $deposit) }}" class="text-emerald-700 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">عرض</a>
+                                    <a href="{{ route('admin.deposits.show', $deposit) }}" class="admin-inline-link">عرض</a>
                                 </td>
                             </tr>
                         @empty
@@ -108,15 +110,15 @@
                 <div class="mt-6">{{ $deposits->links() }}</div>
             </x-card>
         @else
-            <x-card :hover="false" class="p-8">
+            <x-card :hover="false" class="p-4 sm:p-6 lg:p-8">
                 <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                     <h2 class="text-lg font-semibold text-slate-900 dark:text-white">طلبات الخدمات</h2>
-                    <form method="GET" action="{{ route('admin.ops.index') }}" class="flex flex-col sm:flex-row sm:flex-wrap lg:flex-nowrap items-stretch sm:items-center gap-2 text-sm w-full lg:w-auto">
+                    <form method="GET" action="{{ route('admin.ops.index') }}" class="grid w-full grid-cols-1 gap-2 text-sm sm:grid-cols-2 lg:w-auto lg:grid-cols-[minmax(10rem,1fr)_auto_auto_auto] lg:items-center">
                         <input type="hidden" name="tab" value="{{ $tab }}" />
-                        <x-text-input name="order_q" value="{{ $orderSearch }}" placeholder=".." class="lg:w-auto" />
-                        <x-text-input type="date" name="order_from" value="{{ $orderFrom }}" class="lg:w-auto" />
-                        <x-text-input type="date" name="order_to" value="{{ $orderTo }}" class="lg:w-auto" />
-                        <x-button type="submit" class="lg:w-auto">تطبيق</x-button>
+                        <x-text-input name="order_q" value="{{ $orderSearch }}" placeholder=".." class="min-h-11 lg:w-auto" />
+                        <x-text-input type="date" name="order_from" value="{{ $orderFrom }}" class="min-h-11 lg:w-auto" />
+                        <x-text-input type="date" name="order_to" value="{{ $orderTo }}" class="min-h-11 lg:w-auto" />
+                        <x-button type="submit" class="min-h-11 sm:col-span-2 lg:col-span-1 lg:w-auto">تطبيق</x-button>
                     </form>
                 </div>
 
@@ -157,30 +159,30 @@
                                 </td>
                                 <td class="py-3 text-slate-500 dark:text-slate-400" data-label="التاريخ">{{ $order->created_at->format('Y-m-d H:i') }}</td>
                                 <td class="py-3" data-label="الإجراء">
-                                    <div class="flex flex-wrap gap-2 text-xs">
-                                        <a href="{{ route('admin.orders.show', $order) }}" class="text-emerald-700 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">عرض</a>
+                                    <div class="admin-inline-actions">
+                                        <a href="{{ route('admin.orders.show', $order) }}" class="admin-inline-link">عرض</a>
                                         @if ($order->status === 'new')
                                             <form method="POST" action="{{ route('admin.ops.orders.start-processing', $order) }}" onsubmit="return confirm('هل أنت متأكد من بدء تنفيذ الطلب؟')">
                                                 @csrf
                                                 <input type="hidden" name="status" value="processing" />
-                                                <button type="submit" class="text-blue-700 hover:text-blue-900">بدء التنفيذ</button>
+                                                <button type="submit" class="admin-inline-link">بدء التنفيذ</button>
                                             </form>
                                         @elseif ($order->status === 'processing')
                                             <form method="POST" action="{{ route('admin.ops.orders.mark-done', $order) }}" onsubmit="return confirm('هل أنت متأكد من اعتماد التنفيذ؟')">
                                                 @csrf
                                                 <input type="hidden" name="status" value="done" />
-                                                <button type="submit" class="text-emerald-700 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">تم التنفيذ</button>
+                                                <button type="submit" class="admin-inline-link">تم التنفيذ</button>
                                             </form>
                                             <form method="POST" action="{{ route('admin.ops.orders.reject', $order) }}" onsubmit="return confirm('هل أنت متأكد من رفض الطلب؟')">
                                                 @csrf
                                                 <input type="hidden" name="status" value="rejected" />
-                                                <button type="submit" class="text-rose-700 dark:text-rose-400 hover:text-rose-900 dark:hover:text-rose-300">رفض</button>
+                                                <button type="submit" class="admin-inline-link-danger">رفض</button>
                                             </form>
                                             
                                             @if ($order->service && $order->service->source === \App\Models\Service::SOURCE_DAILYCARD)
                                                 <form method="POST" action="{{ route('admin.orders.sync-provider', $order) }}" title="تحديث الحالة من المزود">
                                                     @csrf
-                                                    <button type="submit" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">مزامنة</button>
+                                                    <button type="submit" class="admin-inline-link">مزامنة</button>
                                                 </form>
                                             @endif
                                         @endif

@@ -8,7 +8,7 @@
         <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-8 shadow-sm">
             <div class="flex flex-wrap items-center justify-between gap-4">
                 <div>
-                    <h1 class="text-2xl font-semibold text-emerald-700 dark:text-emerald-400">{{ $user->name }}</h1>
+                    <h1 class="text-2xl font-semibold text-emerald-700 dark:text-emerald-400">{{ $user->name }} <x-user-badge :user="$user" class="h-6 w-6" /></h1>
                     <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">{{ $user->email }}</p>
                 </div>
                 <div class="text-sm text-slate-600 dark:text-slate-300">
@@ -48,6 +48,7 @@
             </div>
 
             <div class="mt-6 flex flex-wrap gap-3 text-sm">
+                <a href="{{ route('admin.users.security', $user) }}" class="rounded-full border border-emerald-200 dark:border-emerald-700 px-4 py-2 font-semibold text-emerald-700 dark:text-emerald-300">سجلات الأمان</a>
                 <form method="POST" action="{{ route('admin.users.ban', $user) }}">
                     @csrf
                     <button type="submit" class="rounded-full border border-rose-200 dark:border-rose-700 px-4 py-2 font-semibold text-rose-600 dark:text-rose-300">{{ $user->is_banned ? 'إلغاء الحظر' : 'حظر المستخدم' }}</button>
@@ -82,20 +83,40 @@
                     </div>
                     <div class="mt-6 border-t border-slate-100 dark:border-slate-700 pt-4 text-sm">
                         <div class="flex items-center justify-between">
-                            <span class="text-slate-500 dark:text-slate-300">مستوى VIP</span>
-                            <span class="font-semibold text-emerald-700 dark:text-emerald-400">{{ $vipSummary['current_tier']?->name ?? 'بدون مستوى' }}</span>
+                            <span class="text-slate-500 dark:text-slate-300">مستوى الولاء</span>
+                            <span class="font-semibold text-emerald-700 dark:text-emerald-400">{{ $loyaltySummary['level_label'] }}</span>
                         </div>
                         <div class="mt-2 flex items-center justify-between">
-                            <span class="text-slate-500 dark:text-slate-300">إجمالي المشتريات</span>
-                            <span class="font-semibold text-slate-700 dark:text-slate-200">{{ number_format($vipSummary['spent'] ?? 0, 2) }} USD</span>
+                            <span class="text-slate-500 dark:text-slate-300">نقاط الولاء</span>
+                            <span class="font-semibold text-slate-700 dark:text-slate-200">{{ number_format($loyaltySummary['points']) }}</span>
+                        </div>
+                        <div class="mt-2 flex items-center justify-between">
+                            <span class="text-slate-500 dark:text-slate-300">خصم الحساب</span>
+                            <span class="font-semibold text-slate-700 dark:text-slate-200">{{ number_format($loyaltySummary['discount_percentage'], 2) }}%</span>
                         </div>
                     </div>
+                </div>
+
+                <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-6 shadow-sm">
+                    <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">التوثيق والخصم</h2>
+                    <form method="POST" action="{{ route('admin.users.verification-discount', $user) }}" class="mt-4 space-y-4">
+                        @csrf
+                        <label class="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
+                            <input type="checkbox" name="is_verified" value="1" class="rounded border-slate-300 text-emerald-600" @checked($user->is_verified)>
+                            مستخدم موثق
+                        </label>
+                        <div>
+                            <x-input-label for="verification_discount_percentage" value="نسبة الخصم (%)" />
+                            <x-text-input id="verification_discount_percentage" name="verification_discount_percentage" type="number" min="0" max="100" step="0.01" :value="old('verification_discount_percentage', $user->verification_discount_percentage ?? 0)" />
+                        </div>
+                        <x-primary-button class="w-full">حفظ التوثيق والخصم</x-primary-button>
+                    </form>
                 </div>
 
                 <!-- Send Notification Card -->
                 <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-6 shadow-sm">
                     <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">إرسال إشعار</h2>
-                    <form method="POST" action="{{ route('admin.users.send-notification', $user) }}" class="mt-4 space-y-4">
+                    <form method="POST" action="{{ route('admin.users.send-notification', $user) }}" enctype="multipart/form-data" class="mt-4 space-y-4">
                         @csrf
                         <div>
                             <x-input-label for="notif_title_ar" value="العنوان (عربي)" />
@@ -113,7 +134,31 @@
                             <x-input-label for="notif_content_en" value="المحتوى (إنجليزي)" />
                             <textarea id="notif_content_en" name="content_en" rows="2" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white" required>{{ old('content_en') }}</textarea>
                         </div>
+                        <div>
+                            <x-input-label for="notif_image" value="صورة الإشعار (اختياري)" />
+                            <input id="notif_image" name="image" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" class="w-full rounded-xl border border-slate-200 px-4 py-2 text-sm">
+                        </div>
                         <x-primary-button class="w-full">إرسال إشعار</x-primary-button>
+                    </form>
+                </div>
+
+                <div class="rounded-3xl border border-rose-100 dark:border-rose-800 bg-white dark:bg-slate-800 p-6 shadow-sm">
+                    <h2 class="text-lg font-semibold text-rose-700 dark:text-rose-400">تغيير كلمة مرور المستخدم</h2>
+                    <form method="POST" action="{{ route('admin.users.password', $user) }}" class="mt-4 space-y-4">
+                        @csrf
+                        <div>
+                            <x-input-label for="admin_password" value="كلمة المرور الجديدة" />
+                            <x-text-input id="admin_password" name="password" type="password" required />
+                        </div>
+                        <div>
+                            <x-input-label for="admin_password_confirmation" value="تأكيد كلمة المرور" />
+                            <x-text-input id="admin_password_confirmation" name="password_confirmation" type="password" required />
+                        </div>
+                        <div>
+                            <x-input-label for="password_reason" value="سبب التغيير (اختياري)" />
+                            <textarea id="password_reason" name="reason" rows="2" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white"></textarea>
+                        </div>
+                        <button type="submit" class="w-full rounded-lg bg-rose-600 px-4 py-2 text-sm font-medium text-white hover:bg-rose-700">تغيير كلمة المرور</button>
                     </form>
                 </div>
             </div>

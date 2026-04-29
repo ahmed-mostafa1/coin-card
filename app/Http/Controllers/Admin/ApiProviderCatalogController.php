@@ -317,7 +317,7 @@ class ApiProviderCatalogController extends Controller
      * @param  array<string, mixed>  $baseFilters
      * @return array{ok:bool, products:array, count:int, has_next:bool, error_message:?string, was_truncated:bool, current_page:int, total_pages:int, has_previous:bool, search_is_local:bool}
      */
-    private function browseAllPages(ApiProviderCatalogService $catalogService, array $baseFilters = []): array
+    private function browseAllPages($catalogService, array $baseFilters = []): array
     {
         $products = [];
         $seenProducts = [];
@@ -408,7 +408,7 @@ class ApiProviderCatalogController extends Controller
      * @param  array<string, mixed>  $filters
      * @return array{ok:bool, products:array, count:int, has_next:bool, error_message:?string, was_truncated:bool, current_page:int, total_pages:int, has_previous:bool, search_is_local:bool}
      */
-    private function browseSinglePage(ApiProvider $provider, ApiProviderCatalogService $catalogService, array $filters): array
+    private function browseSinglePage(ApiProvider $provider, $catalogService, array $filters): array
     {
         $currentPage = max(1, (int) ($filters['page'] ?? 1));
         $result = $catalogService->browse($filters);
@@ -484,7 +484,7 @@ class ApiProviderCatalogController extends Controller
         return [
             'name' => (string) ($raw['name'] ?? ''),
             'price' => (float) ($raw['price'] ?? 0),
-            'external_id' => isset($raw['id']) ? (string) $raw['id'] : null,
+            'external_id' => $raw['id'] ?? null,
             'description' => isset($raw['description']) ? (string) $raw['description'] : null,
             'type' => isset($raw['product_type']) ? (string) $raw['product_type'] : null,
             'available' => (bool) ($raw['available'] ?? true),
@@ -523,8 +523,8 @@ class ApiProviderCatalogController extends Controller
     {
         $filters = [
             'page' => max(1, (int) $request->integer('page', 1)),
-            'page_size' => $this->isDailyCard($provider) && $mode === 'all'
-                ? self::DAILYCARD_REMOTE_PAGE_SIZE
+            'page_size' => $mode === 'all'
+                ? 5000
                 : max(1, (int) ($provider->catalog_page_size ?: 50)),
         ];
 

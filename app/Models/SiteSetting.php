@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Schema;
 
 class SiteSetting extends Model
 {
@@ -54,7 +55,15 @@ class SiteSetting extends Model
 
     public static function get(string $key, $default = null)
     {
-        return static::query()->where('key', $key)->value('value') ?? $default;
+        try {
+            if (! Schema::hasTable((new static)->getTable())) {
+                return $default;
+            }
+
+            return static::query()->where('key', $key)->value('value') ?? $default;
+        } catch (\Throwable) {
+            return $default;
+        }
     }
 
     public static function set(string $key, $value): void

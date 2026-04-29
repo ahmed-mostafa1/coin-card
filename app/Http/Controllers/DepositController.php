@@ -7,6 +7,7 @@ use App\Models\DepositEvidence;
 use App\Models\DepositRequest;
 use App\Models\PaymentMethod;
 use App\Notifications\NewDepositRequestNotification;
+use App\Services\DepositQuoteService;
 use App\Services\NotificationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
@@ -29,7 +30,15 @@ class DepositController extends Controller
     {
         abort_unless($paymentMethod->is_active, 404);
 
-        $paymentMethod->loadMissing(['fields', 'buttons']);
+        $paymentMethod->loadMissing([
+            'fields',
+            'buttons',
+            'currencyConfigs' => fn ($query) => $query
+                ->with('currency')
+                ->where('is_enabled', true)
+                ->whereHas('currency', fn ($currencyQuery) => $currencyQuery->where('is_enabled', true))
+                ->orderBy('sort_order'),
+        ]);
 
         return view('deposits.show', compact('paymentMethod'));
     }
@@ -37,6 +46,7 @@ class DepositController extends Controller
     public function store(
         StoreDepositRequest $request,
         PaymentMethod $paymentMethod,
+        DepositQuoteService $depositQuoteService,
         NotificationService $notificationService
     ): RedirectResponse
     {
@@ -44,6 +54,8 @@ class DepositController extends Controller
 
         $user = $request->user();
         $paymentMethod->loadMissing('fields');
+        $currencyConfig = $depositQuoteService->enabledConfigFor($paymentMethod, $request->input('currency_id'));
+        $quote = $depositQuoteService->quote($currencyConfig, $request->input('amount'));
 
         $file = $request->file('proof');
         $fileHash = hash_file('sha256', $file->getRealPath());
@@ -55,13 +67,14 @@ class DepositController extends Controller
             $payload[$field->name_key] = $request->input('fields.'.$field->name_key);
         }
 
-        DB::transaction(function () use ($request, $paymentMethod, $user, $file, $fileHash, $payload, &$deposit) {
+        DB::transaction(function () use ($request, $paymentMethod, $user, $file, $fileHash, $payload, $quote, &$deposit) {
             $deposit = DepositRequest::create([
                 'user_id' => $user->id,
                 'payment_method_id' => $paymentMethod->id,
-                'user_amount' => (string) $request->input('amount'),
+                'user_amount' => $quote['net_usd_amount'],
                 'status' => DepositRequest::STATUS_PENDING,
                 'payload' => $payload,
+                ...$quote,
             ]);
 
             $path = $file->store('deposit-evidences/'.$user->id, 'local');
@@ -83,6 +96,10 @@ class DepositController extends Controller
             $deposit->load('user');
             $deposit->user->notify(new \App\Notifications\UserDepositRequestCreatedNotification($deposit));
             $notificationService->notifyAdmins(new NewDepositRequestNotification($deposit));
+            app(\App\Services\SecurityLogger::class)->log('deposit_created', $deposit->user, request(), [
+                'deposit_request_id' => $deposit->id,
+                'amount' => $deposit->user_amount,
+            ], $deposit);
         });
 
         return redirect()

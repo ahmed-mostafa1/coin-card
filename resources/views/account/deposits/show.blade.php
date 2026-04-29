@@ -21,7 +21,10 @@
                 </div>
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4">
                     <p class="text-xs text-slate-500">{{ __('messages.user_amount_label') }}</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ number_format($depositRequest->user_amount, 2) }} USD</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ number_format($depositRequest->net_usd_amount ?? $depositRequest->user_amount, 2) }} USD</p>
+                    @if ($depositRequest->currency_code)
+                        <p class="mt-1 text-xs text-slate-500">{{ number_format($depositRequest->local_amount, 2) }} {{ $depositRequest->currency_code }} - عمولة {{ number_format($depositRequest->commission_amount, 2) }} {{ $depositRequest->currency_code }}</p>
+                    @endif
                 </div>
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4">
                     <p class="text-xs text-slate-500">{{ __('messages.approved_amount_label') }}</p>

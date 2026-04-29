@@ -15,6 +15,10 @@ class Service extends Model
     public const SYNC_RULE_MANUAL = 'manual';
     public const PRICING_MODE_FIXED = 'fixed';
     public const PRICING_MODE_DISCOUNTED_INPUT = 'discounted_input';
+    public const FEE_FIXED = 'fixed';
+    public const FEE_PERCENTAGE = 'percentage';
+    public const TOPUP_AUTOMATIC = 'automatic';
+    public const TOPUP_MANUAL = 'manual';
 
     protected $fillable = [
         'provider_id',
@@ -29,6 +33,8 @@ class Service extends Model
         'additional_rules',
         'additional_rules_en',
         'price',
+        'service_fee_type',
+        'service_fee_value',
         'pricing_mode',
         'admin_discount_percent',
         'is_quantity_based',
@@ -50,6 +56,12 @@ class Service extends Model
         'provider_price',
         'provider_unit_price',
         'provider_is_available',
+        'provider_status',
+        'provider_status_raw',
+        'provider_status_synced_at',
+        'provider_status_message',
+        'provider_status_sync_error',
+        'provider_availability_managed_by_provider',
         'provider_last_synced_at',
         'sync_rule_mode',
         'supports_purchase_password',
@@ -57,10 +69,21 @@ class Service extends Model
         'last_seen_at',
         'min_quantity',
         'max_quantity',
+        'seo_title',
+        'seo_meta_description',
+        'seo_keywords',
+        'seo_content',
+        'seo_content_en',
+        'is_topup_label_active',
+        'topup_label_type',
+        'order_image_upload_enabled',
+        'order_image_required',
+        'order_image_help_text',
     ];
 
     protected $casts = [
         'price' => 'decimal:12',
+        'service_fee_value' => 'decimal:4',
         'admin_discount_percent' => 'decimal:2',
         'price_per_unit' => 'decimal:12',
         'is_active' => 'boolean',
@@ -75,12 +98,17 @@ class Service extends Model
         'provider_price' => 'decimal:4',
         'provider_unit_price' => 'decimal:4',
         'provider_is_available' => 'boolean',
+        'provider_status_synced_at' => 'datetime',
+        'provider_availability_managed_by_provider' => 'boolean',
         'provider_last_synced_at' => 'datetime',
         'supports_purchase_password' => 'boolean',
         'requires_purchase_password' => 'boolean',
         'last_seen_at' => 'datetime',
         'min_quantity' => 'integer',
         'max_quantity' => 'integer',
+        'is_topup_label_active' => 'boolean',
+        'order_image_upload_enabled' => 'boolean',
+        'order_image_required' => 'boolean',
     ];
 
     /**
@@ -103,6 +131,28 @@ class Service extends Model
         return $locale === 'en' && $this->description_en 
             ? $this->description_en 
             : $this->description;
+    }
+
+    public function getLocalizedSeoContentAttribute(): ?string
+    {
+        $locale = app()->getLocale();
+
+        return $locale === 'en' && filled($this->seo_content_en)
+            ? $this->seo_content_en
+            : $this->seo_content;
+    }
+
+    public function getTopupLabelTextAttribute(): ?string
+    {
+        if (! $this->is_topup_label_active || ! in_array($this->topup_label_type, [self::TOPUP_AUTOMATIC, self::TOPUP_MANUAL], true)) {
+            return null;
+        }
+
+        if ($this->topup_label_type === self::TOPUP_AUTOMATIC) {
+            return app()->getLocale() === 'en' ? 'Automatic top-up' : 'شحن تلقائي';
+        }
+
+        return app()->getLocale() === 'en' ? 'Manual top-up' : 'شحن يدوي';
     }
 
     /**
@@ -188,6 +238,47 @@ class Service extends Model
             $q->where('source', self::SOURCE_MANUAL)
                 ->orWhereNull('source');
         });
+    }
+
+    public function scopeProviderAvailable($query)
+    {
+        return $query->where(function ($q) {
+            $q->whereNull('provider_id')
+                ->orWhere(function ($providerQuery) {
+                    $providerQuery->where(function ($availabilityQuery) {
+                        $availabilityQuery->whereNull('provider_is_available')
+                            ->orWhere('provider_is_available', true);
+                    })->where(function ($statusQuery) {
+                        $statusQuery->whereNull('provider_status')
+                            ->orWhereNotIn('provider_status', [
+                                'unavailable',
+                                'disabled',
+                                'stopped',
+                                'removed',
+                                'unknown',
+                            ]);
+                    });
+                });
+        });
+    }
+
+    public function isProviderAvailable(): bool
+    {
+        if ($this->provider_id === null) {
+            return true;
+        }
+
+        if ($this->provider_is_available === false) {
+            return false;
+        }
+
+        return ! in_array((string) $this->provider_status, [
+            'unavailable',
+            'disabled',
+            'stopped',
+            'removed',
+            'unknown',
+        ], true);
     }
 
     public function isDiscountedInputPricing(): bool

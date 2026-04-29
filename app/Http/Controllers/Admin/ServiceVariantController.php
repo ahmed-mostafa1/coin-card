@@ -32,6 +32,8 @@ class ServiceVariantController extends Controller
         $this->ensureVariantsSupported($service);
 
         $data = $request->validated();
+        $data['service_fee_type'] = $data['service_fee_type'] ?? Service::FEE_FIXED;
+        $data['service_fee_value'] = $data['service_fee_value'] ?? 0;
         $data['is_active'] = $request->boolean('is_active');
         $data['sort_order'] = $data['sort_order'] ?? 0;
 
@@ -61,6 +63,8 @@ class ServiceVariantController extends Controller
         }
 
         $data = $request->validated();
+        $data['service_fee_type'] = $data['service_fee_type'] ?? Service::FEE_FIXED;
+        $data['service_fee_value'] = $data['service_fee_value'] ?? 0;
         $data['is_active'] = $request->boolean('is_active');
         $data['sort_order'] = $data['sort_order'] ?? 0;
 

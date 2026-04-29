@@ -101,6 +101,7 @@ class AccountController extends Controller
 
             // Update password
             $user->password = Hash::make($validated['password']);
+            app(\App\Services\SecurityLogger::class)->log('password_changed', $user, request());
         }
 
         $user->save();

@@ -153,6 +153,108 @@
         background: rgba(0, 0, 0, 0.7) !important;
     }
 
+    .swal2-popup.purchase-confirmation-popup {
+        background-color: #ffffff !important;
+        color: #0f172a !important;
+        direction: inherit;
+    }
+
+    .swal2-popup.purchase-confirmation-popup .purchase-confirmation-title {
+        color: #0f172a !important;
+    }
+
+    .swal2-popup.purchase-confirmation-popup .purchase-confirmation-text {
+        color: #475569 !important;
+        font-size: 0.875rem;
+        line-height: 1.75;
+        margin: 0;
+    }
+
+    .swal2-popup.purchase-confirmation-popup .purchase-confirmation-details {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .swal2-popup.purchase-confirmation-popup .purchase-confirmation-detail {
+        align-items: center;
+        background-color: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 1rem;
+        display: flex;
+        gap: 1rem;
+        justify-content: space-between;
+        padding: 0.75rem 1rem;
+        text-align: start;
+    }
+
+    .swal2-popup.purchase-confirmation-popup .purchase-confirmation-detail-label {
+        color: #64748b !important;
+        font-size: 0.875rem;
+    }
+
+    .swal2-popup.purchase-confirmation-popup .purchase-confirmation-detail-value {
+        color: #0f172a !important;
+        font-size: 0.875rem;
+        font-weight: 700;
+    }
+
+    .swal2-popup.purchase-confirmation-popup .purchase-confirmation-confirm {
+        background-color: #f2a900 !important;
+        color: #0f172a !important;
+    }
+
+    .swal2-popup.purchase-confirmation-popup .purchase-confirmation-cancel {
+        background-color: #ffffff !important;
+        border: 1px solid #cbd5e1 !important;
+        color: #334155 !important;
+    }
+
+    .swal2-popup.purchase-confirmation-popup .purchase-confirmation-cancel:hover {
+        background-color: #f8fafc !important;
+    }
+
+    .dark .swal2-popup.purchase-confirmation-popup {
+        background-color: #0f172a !important;
+        color: #e2e8f0 !important;
+    }
+
+    .dark .swal2-popup.purchase-confirmation-popup .purchase-confirmation-title {
+        color: #f8fafc !important;
+    }
+
+    .dark .swal2-popup.purchase-confirmation-popup .purchase-confirmation-text {
+        color: #cbd5e1 !important;
+    }
+
+    .dark .swal2-popup.purchase-confirmation-popup .purchase-confirmation-detail {
+        background-color: rgba(30, 41, 59, 0.85);
+        border-color: #334155;
+    }
+
+    .dark .swal2-popup.purchase-confirmation-popup .purchase-confirmation-detail-label {
+        color: #cbd5e1 !important;
+    }
+
+    .dark .swal2-popup.purchase-confirmation-popup .purchase-confirmation-detail-value {
+        color: #ffffff !important;
+    }
+
+    .dark .swal2-popup.purchase-confirmation-popup .purchase-confirmation-confirm {
+        background-color: #f2a900 !important;
+        color: #0f172a !important;
+    }
+
+    .dark .swal2-popup.purchase-confirmation-popup .purchase-confirmation-cancel {
+        background-color: #1e293b !important;
+        border-color: #475569 !important;
+        color: #e2e8f0 !important;
+    }
+
+    .dark .swal2-popup.purchase-confirmation-popup .purchase-confirmation-cancel:hover {
+        background-color: #334155 !important;
+    }
+
     table tr:hover,
     table tr:hover>th,
     table tr:hover>td {
@@ -269,6 +371,78 @@
 
     .dark .cc-nav-tab-active {
         @apply bg-emerald-950/30 text-emerald-300;
+    }
+
+    .admin-dashboard-shell {
+        @apply space-y-5 rounded-[1.5rem] border border-emerald-100 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800 sm:rounded-[1.75rem] sm:p-6 lg:p-8;
+    }
+
+    .admin-dashboard-hero {
+        @apply flex flex-col gap-4 rounded-[1.35rem] border border-slate-200 bg-slate-50/80 p-4 dark:border-slate-700 dark:bg-slate-900/45 sm:p-5 lg:flex-row lg:items-center lg:justify-between;
+    }
+
+    .admin-dashboard-eyebrow {
+        @apply inline-flex w-fit items-center rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-black text-emerald-700 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-300;
+    }
+
+    .admin-dashboard-primary-link {
+        @apply inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-4 py-3 text-sm font-black text-white shadow-sm transition hover:bg-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 active:scale-[0.99] motion-reduce:transform-none lg:w-auto;
+    }
+
+    .admin-dashboard-grid {
+        @apply grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 lg:gap-4;
+    }
+
+    .admin-dashboard-card {
+        @apply rounded-[1.35rem] border border-slate-200 bg-white p-4 shadow-sm transition hover:border-emerald-200 hover:shadow-md dark:border-slate-700 dark:bg-slate-900/45 dark:hover:border-emerald-800 sm:p-5;
+    }
+
+    .admin-dashboard-card-icon {
+        @apply inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-sm text-emerald-700 dark:bg-emerald-950/35 dark:text-emerald-300;
+    }
+
+    .admin-dashboard-link {
+        @apply flex min-h-12 w-full items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-3.5 py-3 text-sm font-bold text-slate-700 transition hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 active:scale-[0.99] dark:border-slate-700 dark:bg-slate-800/85 dark:text-slate-200 dark:hover:border-emerald-800 dark:hover:bg-emerald-950/25 dark:hover:text-emerald-200 motion-reduce:transform-none;
+    }
+
+    .admin-dashboard-link-icon {
+        @apply inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-white text-xs text-slate-500 shadow-sm dark:bg-slate-900 dark:text-slate-300;
+    }
+
+    .admin-action-bar {
+        @apply flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center;
+    }
+
+    .admin-action-button {
+        @apply inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 active:scale-[0.99] motion-reduce:transform-none sm:w-auto;
+    }
+
+    .admin-action-button-primary {
+        @apply bg-emerald-600 text-white hover:bg-emerald-700;
+    }
+
+    .admin-action-button-secondary {
+        @apply border border-slate-200 bg-white text-slate-700 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:border-emerald-800 dark:hover:bg-emerald-950/25 dark:hover:text-emerald-300;
+    }
+
+    .admin-action-button-danger {
+        @apply bg-rose-600 text-white hover:bg-rose-700;
+    }
+
+    .admin-tab-button {
+        @apply inline-flex min-h-11 w-full items-center justify-center rounded-xl px-4 py-2.5 text-sm font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 active:scale-[0.99] motion-reduce:transform-none;
+    }
+
+    .admin-inline-actions {
+        @apply flex flex-col gap-2 text-sm sm:flex-row sm:flex-wrap sm:items-center;
+    }
+
+    .admin-inline-link {
+        @apply inline-flex min-h-10 items-center justify-center rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-slate-700 transition hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:border-emerald-800 dark:hover:bg-emerald-950/25 dark:hover:text-emerald-300;
+    }
+
+    .admin-inline-link-danger {
+        @apply inline-flex min-h-10 items-center justify-center rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-sm font-bold text-rose-700 transition hover:bg-rose-100 dark:border-rose-900/60 dark:bg-rose-950/25 dark:text-rose-300 dark:hover:bg-rose-950/40;
     }
 
     .store-shell {
