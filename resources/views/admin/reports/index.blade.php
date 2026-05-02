@@ -8,8 +8,8 @@
         <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-8 shadow-sm">
             <div class="flex flex-wrap items-center justify-between gap-4">
                 <div>
-                    <h1 class="text-2xl font-semibold text-emerald-700 dark:text-emerald-400">تقارير الإدارة</h1>
-                    <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">ملخص النشاط خلال الفترة المحددة.</p>
+                    <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">تقارير الإدارة</h1>
+                    <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-300">ملخص النشاط خلال الفترة المحددة.</p>
                 </div>
                 <form method="GET" action="{{ route('admin.reports.index') }}" class="flex flex-wrap items-center gap-3 text-sm">
                     <div class="flex items-center gap-2">
@@ -25,17 +25,17 @@
             </div>
             <div class="mt-4 flex flex-wrap gap-2 text-xs">
                 <a href="{{ route('admin.reports.index', ['preset' => 'today']) }}"
-                    class="rounded-full border px-3 py-1 transition {{ $preset === 'today' ? 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400' : 'border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-emerald-200 dark:hover:border-emerald-700' }}">اليوم</a>
+                    class="rounded-full border px-3 py-1 transition {{ $preset === 'today' ? 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-900 dark:text-emerald-400' : 'border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-emerald-200 dark:hover:border-emerald-700' }}">اليوم</a>
                 <a href="{{ route('admin.reports.index', ['preset' => '7']) }}"
-                    class="rounded-full border px-3 py-1 transition {{ $preset === '7' ? 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400' : 'border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-emerald-200 dark:hover:border-emerald-700' }}">آخر 7 أيام</a>
+                    class="rounded-full border px-3 py-1 transition {{ $preset === '7' ? 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-900 dark:text-emerald-400' : 'border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-emerald-200 dark:hover:border-emerald-700' }}">آخر 7 أيام</a>
                 <a href="{{ route('admin.reports.index', ['preset' => '30']) }}"
-                    class="rounded-full border px-3 py-1 transition {{ $preset === '30' ? 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400' : 'border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-emerald-200 dark:hover:border-emerald-700' }}">آخر 30 يوم</a>
+                    class="rounded-full border px-3 py-1 transition {{ $preset === '30' ? 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-900 dark:text-emerald-400' : 'border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-emerald-200 dark:hover:border-emerald-700' }}">آخر 30 يوم</a>
             </div>
         </div>
 
         <div class="grid gap-6 lg:grid-cols-3">
             <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-6 shadow-sm">
-                <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">طلبات الشحن</h2>
+                <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">طلبات الشحن</h2>
                 <div class="mt-4 space-y-3 text-sm">
                     <div class="flex items-center justify-between">
                         <span class="text-slate-500 dark:text-slate-400">إجمالي الطلبات</span>
@@ -61,7 +61,7 @@
             </div>
 
             <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-6 shadow-sm">
-                <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">الطلبات</h2>
+                <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">الطلبات</h2>
                 <div class="mt-4 space-y-3 text-sm">
                     <div class="flex items-center justify-between">
                         <span class="text-slate-500 dark:text-slate-400">إجمالي الطلبات</span>
@@ -91,7 +91,7 @@
             </div>
 
             <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-6 shadow-sm">
-                <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">لقطة المحفظة</h2>
+                <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">لقطة المحفظة</h2>
                 <div class="mt-4 space-y-3 text-sm">
                     <div class="flex items-center justify-between">
                         <span class="text-slate-500 dark:text-slate-400">الرصيد المتاح</span>
@@ -107,7 +107,7 @@
 
         <div class="grid gap-6 lg:grid-cols-2">
             <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-6 shadow-sm">
-                <h3 class="text-base font-semibold text-emerald-700 dark:text-emerald-400">أكثر الخدمات طلبًا</h3>
+                <h3 class="text-base font-semibold text-emerald-900 dark:text-emerald-400">أكثر الخدمات طلبًا</h3>
                 <div class="mt-4 space-y-3 text-sm">
                     @forelse ($topServices as $service)
                         <div class="flex items-center justify-between">
@@ -121,7 +121,7 @@
             </div>
 
             <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-6 shadow-sm">
-                <h3 class="text-base font-semibold text-emerald-700 dark:text-emerald-400">أعلى المستخدمين حسب التحصيل</h3>
+                <h3 class="text-base font-semibold text-emerald-900 dark:text-emerald-400">أعلى المستخدمين حسب التحصيل</h3>
                 <div class="mt-4 space-y-3 text-sm">
                     @forelse ($topUsers as $user)
                         <div class="flex items-center justify-between">

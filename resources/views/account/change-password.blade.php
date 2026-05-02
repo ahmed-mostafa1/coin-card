@@ -8,7 +8,7 @@
             <x-page-header title="تعديل الملف الشخصي" subtitle="تحديث الاسم وكلمة المرور الخاصة بك." />
 
             @if (session('status'))
-                <div class="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+                <div class="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
                     {{ session('status') }}
                 </div>
             @endif
@@ -64,7 +64,7 @@
                 <div class="flex gap-3">
                     <x-primary-button class="flex-1">حفظ التغييرات</x-primary-button>
                     <a href="{{ route('account') }}"
-                        class="flex-1 rounded-xl border border-slate-200 px-4 py-2 text-center text-sm font-semibold text-slate-700 transition hover:border-emerald-200">
+                        class="flex-1 rounded-xl border border-slate-200 px-4 py-2 text-center text-sm font-semibold text-slate-900 transition hover:border-emerald-200">
                         إلغاء
                     </a>
                 </div>

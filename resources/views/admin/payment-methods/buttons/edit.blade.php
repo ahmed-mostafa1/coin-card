@@ -5,8 +5,8 @@
 @section('content')
     <div class="w-full rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm transition-colors duration-200">
         <div class="flex items-center justify-between">
-            <h1 class="text-2xl font-semibold text-emerald-700 dark:text-emerald-400">{{ __('messages.edit_button') }}</h1>
-            <a href="{{ route('admin.payment-methods.edit', $paymentMethod) }}" class="text-sm text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300">{{ __('messages.back_to_payment_method') }}</a>
+            <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">{{ __('messages.edit_button') }}</h1>
+            <a href="{{ route('admin.payment-methods.edit', $paymentMethod) }}" class="text-sm text-emerald-900 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300">{{ __('messages.back_to_payment_method') }}</a>
         </div>
 
         @if ($errors->any())
@@ -67,7 +67,7 @@
             <div class="flex gap-3 pt-2">
                 <x-primary-button>{{ __('messages.update') }}</x-primary-button>
                 <a href="{{ route('admin.payment-methods.edit', $paymentMethod) }}"
-                    class="rounded-full border border-slate-200 dark:border-slate-600 px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                    class="rounded-full border border-slate-200 dark:border-slate-600 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
                     {{ __('messages.cancel') }}
                 </a>
             </div>

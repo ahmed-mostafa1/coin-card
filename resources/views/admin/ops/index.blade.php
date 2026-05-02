@@ -10,26 +10,26 @@
 
             <div class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4">
-                    <p class="text-xs text-slate-500 dark:text-slate-400">طلبات الشحن</p>
-                    <p class="mt-2 text-lg font-semibold text-emerald-700 dark:text-emerald-400">{{ $pendingDepositsCount }}</p>
+                    <p class="text-xs text-slate-9000 dark:text-slate-50">طلبات الشحن</p>
+                    <p class="mt-2 text-lg font-semibold text-emerald-900 dark:text-emerald-400">{{ $pendingDepositsCount }}</p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4">
-                    <p class="text-xs text-slate-500 dark:text-slate-400">طلبات جديدة</p>
-                    <p class="mt-2 text-lg font-semibold text-emerald-700 dark:text-emerald-400">{{ $newOrdersCount }}</p>
+                    <p class="text-xs text-slate-9000 dark:text-slate-50">طلبات جديدة</p>
+                    <p class="mt-2 text-lg font-semibold text-emerald-900 dark:text-emerald-400">{{ $newOrdersCount }}</p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4">
-                    <p class="text-xs text-slate-500 dark:text-slate-400">طلبات تحت التنفيذ</p>
-                    <p class="mt-2 text-lg font-semibold text-emerald-700 dark:text-emerald-400">{{ $processingOrdersCount }}</p>
+                    <p class="text-xs text-slate-9000 dark:text-slate-50">طلبات تحت التنفيذ</p>
+                    <p class="mt-2 text-lg font-semibold text-emerald-900 dark:text-emerald-400">{{ $processingOrdersCount }}</p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4">
-                    <p class="text-xs text-slate-500 dark:text-slate-400">طلبات منتهية</p>
-                    <p class="mt-2 text-lg font-semibold text-emerald-700 dark:text-emerald-400">{{ $doneOrdersCount }}</p>
+                    <p class="text-xs text-slate-9000 dark:text-slate-50">طلبات منتهية</p>
+                    <p class="mt-2 text-lg font-semibold text-emerald-900 dark:text-emerald-400">{{ $doneOrdersCount }}</p>
                 </div>
             </div>
         </x-card>
 
         @if (session('status'))
-            <div class="rounded-xl border border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400">
+            <div class="rounded-xl border border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-400">
                 {{ session('status') }}
             </div>
         @endif
@@ -64,7 +64,7 @@
                 </div>
 
                 <x-table class="mt-6">
-                    <thead class="bg-slate-50 dark:bg-slate-700/50 text-xs text-slate-500 dark:text-slate-400">
+                    <thead class="bg-slate-50 dark:bg-slate-700/50 text-xs text-slate-9000 dark:text-slate-50">
                         <tr>
                             <th class="py-2">رقم الطلب</th>
                             <th class="py-2">المستخدم</th>
@@ -81,7 +81,7 @@
                                 <td class="py-3 text-slate-500 dark:text-slate-400" data-label="رقم الطلب">#{{ $deposit->id }}</td>
                                 <td class="py-3 text-slate-700 dark:text-slate-300" data-label="المستخدم">
                                     {{ $deposit->user?->name ?? 'مستخدم محذوف' }}
-                                    <div class="text-xs text-slate-500 dark:text-slate-400">{{ $deposit->user?->email }}</div>
+                                    <div class="text-xs text-slate-9000 dark:text-slate-50">{{ $deposit->user?->email }}</div>
                                 </td>
                                 <td class="py-3 text-slate-700 dark:text-slate-300" data-label="الطريقة">{{ $deposit->paymentMethod?->name ?? 'طريقة محذوفة' }}</td>
                                 <td class="py-3 text-slate-700 dark:text-slate-300" data-label="المبلغ">{{ number_format($deposit->user_amount, 2) }} USD</td>
@@ -123,7 +123,7 @@
                 </div>
 
                 <x-table class="mt-6">
-                    <thead class="bg-slate-50 dark:bg-slate-700/50 text-xs text-slate-500 dark:text-slate-400">
+                    <thead class="bg-slate-50 dark:bg-slate-700/50 text-xs text-slate-9000 dark:text-slate-50">
                         <tr>
                             <th class="py-2">رقم الطلب</th>
                             <th class="py-2">المستخدم</th>
@@ -141,7 +141,7 @@
                                 <td class="py-3 text-slate-500 dark:text-slate-400" data-label="رقم الطلب">#{{ $order->id }}</td>
                                 <td class="py-3 text-slate-700 dark:text-slate-300" data-label="المستخدم">
                                     {{ $order->user?->name ?? 'مستخدم محذوف' }}
-                                    <div class="text-xs text-slate-500 dark:text-slate-400">{{ $order->user?->email }}</div>
+                                    <div class="text-xs text-slate-9000 dark:text-slate-50">{{ $order->user?->email }}</div>
                                 </td>
                                 <td class="py-3 text-slate-700 dark:text-slate-300" data-label="الخدمة">{{ $order->service?->name ?? 'خدمة محذوفة' }}</td>
                                 <td class="py-3 text-slate-700 dark:text-slate-300" data-label="الباقة">{{ $order->variant?->name ?? '-' }}</td>

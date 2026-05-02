@@ -12,7 +12,7 @@
         </x-page-header>
 
         @if (session('status'))
-            <div class="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm dark:bg-emerald-800 text-emerald-700">
+            <div class="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm dark:bg-emerald-800 text-emerald-50">
                 {{ session('status') }}
             </div>
         @endif
@@ -31,14 +31,14 @@
                 <tbody class="divide-y divide-slate-100">
                     @forelse ($deposits as $deposit)
                         <tr class="transition hover:bg-slate-50">
-                            <td class="py-3 text-slate-700">{{ $deposit->paymentMethod?->name ?? 'طريقة محذوفة' }}</td>
-                            <td class="py-3 text-slate-700">
+                            <td class="py-3 text-slate-700 dark:text-slate-50">{{ $deposit->paymentMethod?->name ?? 'طريقة محذوفة' }}</td>
+                            <td class="py-3 text-slate-700 dark:text-slate-50">
                                 {{ number_format($deposit->net_usd_amount ?? $deposit->user_amount, 2) }} USD
                                 @if ($deposit->currency_code)
-                                    <div class="text-xs text-slate-500">{{ number_format($deposit->local_amount, 2) }} {{ $deposit->currency_code }}</div>
+                                    <div class="text-xs text-slate-700 dark:text-slate-50">{{ number_format($deposit->local_amount, 2) }} {{ $deposit->currency_code }}</div>
                                 @endif
                             </td>
-                            <td class="py-3 text-slate-700">
+                            <td class="py-3 text-slate-700 dark:text-slate-50">
                                 @if ($deposit->approved_amount)
                                     {{ number_format($deposit->approved_amount, 2) }} USD
                                 @else
@@ -56,7 +56,7 @@
                             </td>
                             <td class="py-3 text-slate-500">{{ $deposit->created_at->format('Y-m-d') }}</td>
                             <td class="py-3">
-                                <a href="{{ route('account.deposits.show', $deposit) }}" class="text-emerald-700 hover:text-emerald-900">عرض</a>
+                                <a href="{{ route('account.deposits.show', $deposit) }}" class="text-emerald-900 hover:text-emerald-900 dark:text-emerald-50">عرض</a>
                             </td>
                         </tr>
                         @if ($deposit->status === 'rejected' && $deposit->admin_note)

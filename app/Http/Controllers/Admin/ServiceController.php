@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\ServiceRequest;
 use App\Models\Category;
 use App\Models\Service;
 use App\Services\SquareImageOptimizer;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -138,6 +139,28 @@ class ServiceController extends Controller
 
         return redirect()->route('admin.services.edit', $service)
             ->with('status', 'تم تحديث الخدمة بنجاح.');
+    }
+
+    public function uploadDescriptionImage(Request $request): JsonResponse
+    {
+        $request->validate([
+            'image' => ['required', 'file', 'image', 'mimes:jpg,jpeg,png,webp,gif', 'max:4096'],
+        ]);
+
+        $file = $request->file('image');
+        $path = 'services/descriptions/'.Str::uuid().'.'.$file->extension();
+        $contents = file_get_contents($file->getRealPath());
+
+        abort_if($contents === false, 422, 'Unable to read uploaded image.');
+
+        Storage::build([
+            'driver' => 'local',
+            'root' => storage_path('app/public'),
+        ])->put($path, $contents);
+
+        return response()->json([
+            'url' => asset('storage/'.$path),
+        ]);
     }
 
     private function prepareData(ServiceRequest $request, ?Service $service = null): array

@@ -6,14 +6,14 @@
     <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-8 shadow-sm">
         <div class="flex items-center justify-between">
             <div>
-                <h1 class="text-2xl font-semibold text-emerald-700 dark:text-emerald-400">إدارة حقول صفحة طلب الوكالة</h1>
-                <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">تحكم في الحقول التي تظهر في نموذج طلب الوكالة</p>
+                <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">إدارة حقول صفحة طلب الوكالة</h1>
+                <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-400">تحكم في الحقول التي تظهر في نموذج طلب الوكالة</p>
             </div>
             <a href="{{ route('admin.agency-request-fields.create') }}" class="rounded-full bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700">إضافة حقل جديد</a>
         </div>
 
         @if (session('status'))
-            <div class="mt-6 rounded-lg border border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-300">
+            <div class="mt-6 rounded-lg border border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-300">
                 {{ session('status') }}
             </div>
         @endif
@@ -33,27 +33,27 @@
                 <tbody class="divide-y divide-slate-200 dark:divide-slate-700 bg-white dark:bg-slate-800">
                     @forelse ($fields as $field)
                         <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30">
-                            <td class="px-4 py-3 text-sm text-slate-700 dark:text-slate-200">{{ $field->sort_order }}</td>
-                            <td class="px-4 py-3 text-sm text-slate-700 dark:text-slate-200">
+                            <td class="px-4 py-3 text-sm text-slate-700 dark:text-slate-50">{{ $field->sort_order }}</td>
+                            <td class="px-4 py-3 text-sm text-slate-700 dark:text-slate-50">
                                 <div>{{ $field->label }}</div>
                                 @if ($field->label_en)
-                                    <div class="text-xs text-slate-500 dark:text-slate-400">{{ $field->label_en }}</div>
+                                    <div class="text-xs text-slate-9000 dark:text-slate-50">{{ $field->label_en }}</div>
                                 @endif
                             </td>
                             <td class="px-4 py-3 text-sm font-mono text-slate-600 dark:text-slate-300">{{ $field->name_key }}</td>
-                            <td class="px-4 py-3 text-sm text-slate-700 dark:text-slate-200">
+                            <td class="px-4 py-3 text-sm text-slate-700 dark:text-slate-50">
                                 <span class="rounded-full bg-slate-100 dark:bg-slate-700 px-2 py-1 text-xs">{{ $field->type }}</span>
                             </td>
-                            <td class="px-4 py-3 text-sm text-slate-700 dark:text-slate-200">
+                            <td class="px-4 py-3 text-sm text-slate-700 dark:text-slate-50">
                                 @if ($field->is_required)
-                                    <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/30 px-2 py-1 text-xs text-emerald-700 dark:text-emerald-300">نعم</span>
+                                    <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/30 px-2 py-1 text-xs text-emerald-900 dark:text-emerald-300">نعم</span>
                                 @else
                                     <span class="rounded-full bg-slate-100 dark:bg-slate-700 px-2 py-1 text-xs text-slate-600 dark:text-slate-300">لا</span>
                                 @endif
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 <div class="flex gap-3">
-                                    <a href="{{ route('admin.agency-request-fields.edit', $field) }}" class="text-emerald-700 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">تعديل</a>
+                                    <a href="{{ route('admin.agency-request-fields.edit', $field) }}" class="text-emerald-900 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">تعديل</a>
                                     <form method="POST" action="{{ route('admin.agency-request-fields.destroy', $field) }}" onsubmit="return confirm('هل أنت متأكد من حذف هذا الحقل؟')">
                                         @csrf
                                         @method('DELETE')
@@ -65,7 +65,7 @@
                     @empty
                         <tr>
                             <td colspan="6" class="px-4 py-8 text-center text-sm text-slate-500 dark:text-slate-400">
-                                لا توجد حقول. <a href="{{ route('admin.agency-request-fields.create') }}" class="text-emerald-700 dark:text-emerald-400 hover:underline">أضف حقل جديد</a>
+                                لا توجد حقول. <a href="{{ route('admin.agency-request-fields.create') }}" class="text-emerald-900 dark:text-emerald-400 hover:underline">أضف حقل جديد</a>
                             </td>
                         </tr>
                     @endforelse
@@ -74,7 +74,7 @@
         </div>
 
         <div class="mt-6">
-            <a href="{{ route('admin.index') }}" class="text-sm text-emerald-700 dark:text-emerald-400 hover:underline">← عودة للوحة الأدمن</a>
+            <a href="{{ route('admin.index') }}" class="text-sm text-emerald-900 dark:text-emerald-400 hover:underline">← عودة للوحة الأدمن</a>
         </div>
     </div>
 @endsection

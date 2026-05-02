@@ -5,8 +5,8 @@
 
 @section('content')
     <div class="rounded-3xl border border-emerald-100 bg-white dark:bg-slate-800 p-8 shadow-sm">
-        <h1 class="text-2xl font-semibold text-emerald-700 dark:text-emerald-400 text-center">{{ __('messages.deposit_title') }}</h1>
-        <p class="mt-2 text-sm text-slate-600 dark:text-slate-300 text-center">{{ __('messages.deposit_desc') }}</p>
+        <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400 text-center">{{ __('messages.deposit_title') }}</h1>
+        <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-300 text-center">{{ __('messages.deposit_desc') }}</p>
 
         <div class="mt-6 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
             @forelse ($methods as $method)
@@ -34,7 +34,7 @@
                     </div>
                     
                     {{-- Method Name --}}
-                    <h2 class="text-center text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-emerald-700 sm:text-sm">
+                    <h2 class="text-center text-xs font-bold text-slate-800 dark:text-slate-50 group-hover:text-emerald-900 sm:text-sm">
                         {{ $method->localized_name }}
                     </h2>
                 </a>

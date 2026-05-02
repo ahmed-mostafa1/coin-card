@@ -6,7 +6,7 @@
     <div class="grid gap-4 lg:grid-cols-3">
         <x-card class="p-4 sm:p-6 lg:col-span-2" :hover="false">
             @if (session('status'))
-                <div class="mb-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">
+                <div class="mb-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900 dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">
                     {{ session('status') }}
                 </div>
             @endif
@@ -18,49 +18,46 @@
                     @endif
                     <div class="min-w-0">
                         <h1 class="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white">{{ __('messages.order_id_title', ['id' => $order->id]) }}</h1>
-                        <p class="mt-1 text-sm font-semibold text-slate-700 dark:text-slate-200 truncate">{{ $order->service->name }}</p>
+                        <p class="mt-1 text-sm font-semibold text-slate-900 dark:text-slate-50 truncate">{{ $order->service->name }}</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
-                    <button type="button" class="inline-flex items-center gap-2 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-1.5 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200" data-share-order data-share-title="{{ __('messages.order_id_title', ['id' => $order->id]) }}" data-share-url="{{ route('account.orders.show', $order) }}">
-                        <i class="fa-solid fa-share-nodes"></i>
-                        <span>مشاركة</span>
-                    </button>
-                    <a href="{{ route('account.orders') }}" class="text-xs sm:text-sm text-emerald-700 hover:text-emerald-900">{{ __('messages.back_to_orders') }}</a>
+                    
+                    <a href="{{ route('account.orders') }}" class="text-xs sm:text-sm text-emerald-50 hover:text-emerald-50">{{ __('messages.back_to_orders') }}</a>
                 </div>
             </div>
 
             <div class="mt-4 grid gap-3 sm:grid-cols-2">
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 p-3.5">
-                    <p class="text-xs text-slate-500">{{ __('messages.price_label') }}</p>
+                    <p class="text-xs text-slate-700 dark:text-slate-50">{{ __('messages.price_label') }}</p>
                     @if ($order->discount_percentage > 0)
                         <div class="mt-2 space-y-1">
                             <p class="text-xs text-slate-400 line-through">{{ number_format($order->original_price, 2) }} USD</p>
                             <div class="flex items-center gap-2">
-                                <p class="text-sm font-semibold text-emerald-700">{{ number_format($order->price_at_purchase, 2) }} USD</p>
-                                <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/30 px-2 py-0.5 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
+                                <p class="text-sm font-semibold text-emerald-900">{{ number_format($order->price_at_purchase, 2) }} USD</p>
+                                <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/30 px-2 py-0.5 text-xs font-semibold text-emerald-900 dark:text-emerald-400">
                                     -{{ number_format($order->discount_percentage, 0) }}%
                                 </span>
                             </div>
                         </div>
                     @else
-                        <p class="mt-2 text-sm font-semibold text-slate-700">{{ number_format($order->price_at_purchase, 2) }} USD</p>
+                        <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ number_format($order->price_at_purchase, 2) }} USD</p>
                     @endif
                 </div>
                 @if ($order->discount_percentage > 0)
                     <div class="rounded-2xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 p-4">
                         <p class="text-xs text-emerald-600 dark:text-emerald-400">{{ app()->getLocale() == 'ar' ? 'المبلغ الموفر' : 'Amount Saved' }}</p>
-                        <p class="mt-2 text-sm font-semibold text-emerald-700 dark:text-emerald-300">{{ number_format($order->discount_amount, 2) }} USD</p>
+                        <p class="mt-2 text-sm font-semibold text-emerald-900 dark:text-emerald-300">{{ number_format($order->discount_amount, 2) }} USD</p>
                         <p class="mt-1 text-xs text-emerald-600 dark:text-emerald-400">{{ app()->getLocale() == 'ar' ? 'خصم الحساب' : 'Account Discount' }}</p>
                     </div>
                 @endif
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 p-3.5">
-                    <p class="text-xs text-slate-500">{{ __('messages.held_amount') }}</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ number_format($order->amount_held, 2) }} USD</p>
+                    <p class="text-xs text-slate-700 dark:text-slate-50">{{ __('messages.held_amount') }}</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ number_format($order->amount_held, 2) }} USD</p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 p-3.5">
-                    <p class="text-xs text-slate-500">{{ __('messages.status') }}</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-700">
+                    <p class="text-xs text-slate-700 dark:text-slate-50">{{ __('messages.status') }}</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50">
                         @if ($order->status === 'new')
                             <x-badge type="new">{{ __('messages.status_new') }}</x-badge>
                         @elseif ($order->status === 'processing')
@@ -75,25 +72,25 @@
                     </p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 p-3.5">
-                    <p class="text-xs text-slate-500">{{ __('messages.package') }}</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ $order->variant?->name ?? __('messages.base_price_label') }}</p>
+                    <p class="text-xs text-slate-700 dark:text-slate-50">{{ __('messages.package') }}</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $order->variant?->name ?? __('messages.base_price_label') }}</p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 p-3.5">
-                    <p class="text-xs text-slate-500">{{ __('messages.date') }}</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ $order->created_at->format('Y-m-d H:i') }}</p>
+                    <p class="text-xs text-slate-700 dark:text-slate-50">{{ __('messages.date') }}</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $order->created_at->format('Y-m-d H:i') }}</p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 p-3.5">
-                    <p class="text-xs text-slate-500">{{ __('messages.settled_at_label') }}</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ $order->settled_at?->format('Y-m-d H:i') ?? '-' }}</p>
+                    <p class="text-xs text-slate-700 dark:text-slate-50">{{ __('messages.settled_at_label') }}</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $order->settled_at?->format('Y-m-d H:i') ?? '-' }}</p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 p-3.5">
-                    <p class="text-xs text-slate-500">{{ __('messages.released_at_label') }}</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ $order->released_at?->format('Y-m-d H:i') ?? '-' }}</p>
+                    <p class="text-xs text-slate-700 dark:text-slate-50">{{ __('messages.released_at_label') }}</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $order->released_at?->format('Y-m-d H:i') ?? '-' }}</p>
                 </div>
             </div>
 
             <div class="mt-4 rounded-2xl border border-slate-200 dark:border-slate-700 p-4">
-                <p class="text-xs text-slate-500">{{ __('messages.order_data_label') }}</p>
+                <p class="text-xs text-slate-700 dark:text-slate-50">{{ __('messages.order_data_label') }}</p>
                 @if (count($order->payload))
                     <div class="mt-3 grid gap-3 sm:grid-cols-2">
                         @foreach ($order->payload as $key => $value)
@@ -124,19 +121,19 @@
                                     $imageUrl = asset('storage/' . ltrim($displayValue, '/'));
                                 }
                             @endphp
-                            <div class="rounded-xl border border-slate-200 bg-slate-50/70 p-3">
-                                <p class="text-xs text-slate-500">{{ $fieldLabels[$key] ?? \Illuminate\Support\Str::headline((string) $key) }}</p>
+                            <div class="rounded-xl border border-slate-200 bg-slate-50/70 p-3 dark:border-slate-700 dark:bg-slate-800/50">
+                                <p class="text-xs text-slate-700 dark:text-slate-50">{{ $fieldLabels[$key] ?? \Illuminate\Support\Str::headline((string) $key) }}</p>
 
                                 @if ($imageUrl)
                                     <a href="{{ $imageUrl }}" target="_blank" rel="noopener noreferrer" class="mt-2 inline-block">
                                         <img src="{{ $imageUrl }}" alt="{{ $fieldLabels[$key] ?? (string) $key }}" class="h-40 w-auto max-w-full rounded-lg border border-slate-200 bg-white object-contain">
                                     </a>
                                 @elseif ($isUrl)
-                                    <a href="{{ $displayValue }}" target="_blank" rel="noopener noreferrer" class="mt-2 block break-all text-sm font-semibold text-emerald-700 hover:underline">
+                                    <a href="{{ $displayValue }}" target="_blank" rel="noopener noreferrer" class="mt-2 block break-all text-sm font-semibold text-emerald-900 hover:underline">
                                         {{ $displayValue }}
                                     </a>
                                 @else
-                                    <p class="mt-2 break-words text-sm font-semibold text-slate-700">
+                                    <p class="mt-2 break-words text-sm font-semibold text-slate-900 dark:text-slate-50">
                                         {{ $displayValue !== '' ? $displayValue : '-' }}
                                     </p>
                                 @endif
@@ -149,14 +146,14 @@
             </div>
 
             @if ($order->admin_note)
-                <div class="mt-6 rounded-2xl border border-emerald-100 bg-emerald-50 p-4 text-sm text-emerald-700">
+                <div class="mt-6 rounded-2xl border border-emerald-100 bg-emerald-50 p-4 text-sm text-emerald-900">
                     {{ __('messages.admin_note_label', ['note' => $order->admin_note]) }}
                 </div>
             @endif
         </x-card>
 
         <x-card class="p-8" :hover="false">
-            <h2 class="text-lg font-semibold text-emerald-700">{{ __('messages.order_history_title') }}</h2>
+            <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-100">{{ __('messages.order_history_title') }}</h2>
             @php
                 $statusLabels = [
                     'new' => __('messages.status_new'),
@@ -176,12 +173,12 @@
                     @endphp
                     <div class="rounded-2xl border border-slate-200 p-4">
                         <div class="flex items-center justify-between gap-2">
-                            <p class="text-sm font-semibold text-slate-700">{{ $event->message ?? __('messages.update_label') }}</p>
+                            <p class="text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $event->message ?? __('messages.update_label') }}</p>
                             <span class="text-xs text-slate-400">{{ $event->created_at->format('Y-m-d H:i') }}</span>
                         </div>
-                        <p class="mt-2 text-xs text-slate-500">{{ __('messages.actor_label', ['actor' => $actorLabel]) }}</p>
+                        <p class="mt-2 text-xs text-slate-700 dark:text-slate-50">{{ __('messages.actor_label', ['actor' => $actorLabel]) }}</p>
                         @if ($event->old_status || $event->new_status)
-                            <p class="mt-1 text-xs text-slate-500">
+                            <p class="mt-1 text-xs text-slate-900 dark:text-slate-50">
                                 {{ __('messages.status_change_label', [
                                     'old' => $statusLabels[$event->old_status] ?? '-',
                                     'new' => $statusLabels[$event->new_status] ?? '-'

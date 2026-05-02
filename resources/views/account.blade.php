@@ -94,12 +94,12 @@
             </x-card>
             <x-card :hover="false" class="p-8">
                 <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">روابط إضافية</h2>
-                <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">الروابط الثانوية نُقلت هنا للحفاظ على شريط علوي أخف وأوضح.</p>
+                <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-400">الروابط الثانوية نُقلت هنا للحفاظ على شريط علوي أخف وأوضح.</p>
                 <div class="mt-6 grid gap-3">
                     @foreach ($accountExtraLinks as $link)
                         <a href="{{ $link['url'] }}"
                            @if($link['external']) target="_blank" rel="noreferrer noopener" @endif
-                           class="flex items-center justify-between rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-4 text-sm font-semibold text-slate-700 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-700">
+                           class="flex items-center justify-between rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-4 text-sm font-semibold text-slate-900 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-700">
                             <span class="flex items-center gap-3">
                                 <i class="{{ $link['icon'] }} {{ $link['external'] ? 'text-green-500' : 'text-emerald-600 dark:text-emerald-400' }}"></i>
                                 <span>{{ $link['label'] }}</span>
@@ -131,18 +131,18 @@
             <p class="mt-3 text-sm text-slate-600 dark:text-slate-400">{{ __('messages.account_dashboard_desc') }}</p>
             <div class="mt-6 grid gap-4 sm:grid-cols-5">
                 <a href="{{ route('deposit.index') }}" class="rounded-2xl border border-emerald-100 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-4 text-center text-sm font-semibold text-emerald-700 dark:text-emerald-400 transition hover:bg-emerald-100 dark:hover:bg-emerald-900/50">{{ __('messages.top_up') }}</a>
-                <a href="{{ route('account.deposits') }}" class="rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-4 text-center text-sm font-semibold text-slate-700 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-700">{{ __('messages.deposit_requests') }}</a>
-                <a href="{{ route('account.wallet') }}" class="rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-4 text-center text-sm font-semibold text-slate-700 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-700">{{ __('messages.wallet_history') }}</a>
-                <a href="{{ route('account.orders') }}" class="rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-4 text-center text-sm font-semibold text-slate-700 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-700">{{ __('messages.my_orders') }}</a>
+                <a href="{{ route('account.deposits') }}" class="rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-4 text-center text-sm font-semibold text-slate-900 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-700">{{ __('messages.deposit_requests') }}</a>
+                <a href="{{ route('account.wallet') }}" class="rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-4 text-center text-sm font-semibold text-slate-900 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-700">{{ __('messages.wallet_history') }}</a>
+                <a href="{{ route('account.orders') }}" class="rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-4 text-center text-sm font-semibold text-slate-900 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-700">{{ __('messages.my_orders') }}</a>
                 <a href="{{ route('account.verification.show') }}" class="rounded-2xl border border-emerald-100 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-4 text-center text-sm font-semibold text-emerald-700 dark:text-emerald-400 transition hover:bg-emerald-100 dark:hover:bg-emerald-900/50">{{ app()->getLocale() === 'ar' ? 'توثيق الحساب' : 'Account verification' }}</a>
-                <a href="{{ route('account.security') }}" class="rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-4 text-center text-sm font-semibold text-slate-700 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-700">{{ app()->getLocale() === 'ar' ? 'الأمان والتحقق الثنائي' : 'Security and 2FA' }}</a>
-                <a href="{{ route('account.notifications') }}" class="relative rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-4 text-center text-sm font-semibold text-slate-700 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-700">
+                <a href="{{ route('account.security') }}" class="rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-4 text-center text-sm font-semibold text-slate-900 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-700">{{ app()->getLocale() === 'ar' ? 'الأمان والتحقق الثنائي' : 'Security and 2FA' }}</a>
+                <a href="{{ route('account.notifications') }}" class="relative rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-4 text-center text-sm font-semibold text-slate-900 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-700">
                     {{ __('messages.notifications') }}
                     @if (! empty($unreadNotificationsCount))
                         <span class="absolute left-2 top-2 rounded-full bg-rose-500 px-2 text-xs text-white">{{ $unreadNotificationsCount }}</span>
                     @endif
                 </a>
-                <a href="{{ route('account.password.change') }}" class="rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-4 text-center text-sm font-semibold text-slate-700 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-700">{{ __('messages.change_password') }}</a>
+                <a href="{{ route('account.password.change') }}" class="rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-4 text-center text-sm font-semibold text-slate-900 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-700">{{ __('messages.change_password') }}</a>
             </div>
         </x-card>
         <div class="rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-600 to-emerald-700 p-8 text-white shadow-sm cc-hover-glow">
@@ -219,7 +219,7 @@
                                 <td class="py-3 text-slate-700 dark:text-slate-300">
                                     {{ number_format($deposit->net_usd_amount ?? $deposit->user_amount, 2) }} USD
                                     @if ($deposit->currency_code)
-                                        <div class="text-xs text-slate-500 dark:text-slate-400">{{ number_format($deposit->local_amount, 2) }} {{ $deposit->currency_code }}</div>
+                                        <div class="text-xs text-slate-9000 dark:text-slate-50">{{ number_format($deposit->local_amount, 2) }} {{ $deposit->currency_code }}</div>
                                     @endif
                                 </td>
                                 <td class="py-3">
@@ -254,7 +254,7 @@
             @foreach ($accountExtraLinks as $link)
                 <a href="{{ $link['url'] }}"
                    @if($link['external']) target="_blank" rel="noreferrer noopener" @endif
-                   class="flex items-center justify-between rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-4 text-sm font-semibold text-slate-700 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-700">
+                   class="flex items-center justify-between rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-4 text-sm font-semibold text-slate-900 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-700">
                     <span class="flex items-center gap-3">
                         <i class="{{ $link['icon'] }} {{ $link['external'] ? 'text-green-500' : 'text-emerald-600 dark:text-emerald-400' }}"></i>
                         <span>{{ $link['label'] }}</span>

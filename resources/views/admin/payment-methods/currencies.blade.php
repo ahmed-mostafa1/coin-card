@@ -7,10 +7,10 @@
 <div class="rounded-3xl border border-emerald-100 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800">
     <div class="flex flex-wrap items-center justify-between gap-3">
         <div>
-            <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">عملات طريقة الدفع</h2>
+            <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">عملات طريقة الدفع</h2>
             <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">فعّل العملات المدعومة واضبط العمولة والحدود لكل عملة.</p>
         </div>
-        <a href="{{ route('admin.currencies.index') }}" class="text-sm font-semibold text-emerald-700 dark:text-emerald-400">إدارة العملات</a>
+        <a href="{{ route('admin.currencies.index') }}" class="text-sm font-semibold text-emerald-900 dark:text-emerald-400">إدارة العملات</a>
     </div>
 
     <div class="mt-4 space-y-4">
@@ -23,11 +23,11 @@
             @endphp
             <div class="rounded-2xl border border-slate-200 p-4 dark:border-slate-700">
                 <div class="flex flex-wrap items-center justify-between gap-3">
-                    <label class="flex items-center gap-3 text-sm font-semibold text-slate-700 dark:text-slate-200">
+                    <label class="flex items-center gap-3 text-sm font-semibold text-slate-900 dark:text-slate-50">
                         <input type="checkbox" name="currencies[{{ $currency->id }}][enabled]" value="1" class="rounded border-slate-300 text-emerald-600" @checked($enabled)>
                         {{ $currency->name }} ({{ $currency->code }})
                     </label>
-                    <label class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+                    <label class="flex items-center gap-2 text-xs text-slate-9000 dark:text-slate-50">
                         <input type="checkbox" name="currencies[{{ $currency->id }}][is_enabled]" value="1" class="rounded border-slate-300 text-emerald-600" @checked($isEnabled)>
                         مفعلة للمستخدم
                     </label>

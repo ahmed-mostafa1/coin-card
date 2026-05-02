@@ -8,8 +8,8 @@
         <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-8 shadow-sm">
             <div class="flex flex-wrap items-center justify-between gap-4">
                 <div>
-                    <h1 class="text-2xl font-semibold text-emerald-700 dark:text-emerald-400">{{ $user->name }} <x-user-badge :user="$user" class="h-6 w-6" /></h1>
-                    <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">{{ $user->email }}</p>
+                    <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">{{ $user->name }} <x-user-badge :user="$user" class="h-6 w-6" /></h1>
+                    <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-300">{{ $user->email }}</p>
                 </div>
                 <div class="text-sm text-slate-600 dark:text-slate-300">
                     <p>تاريخ الإنشاء: {{ $user->created_at->format('Y-m-d') }}</p>
@@ -19,7 +19,7 @@
 
 
             @if (session('status'))
-                <div class="mt-6 rounded-lg border border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-300">
+                <div class="mt-6 rounded-lg border border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-300">
                     {{ session('status') }}
                 </div>
             @endif
@@ -48,7 +48,7 @@
             </div>
 
             <div class="mt-6 flex flex-wrap gap-3 text-sm">
-                <a href="{{ route('admin.users.security', $user) }}" class="rounded-full border border-emerald-200 dark:border-emerald-700 px-4 py-2 font-semibold text-emerald-700 dark:text-emerald-300">سجلات الأمان</a>
+                <a href="{{ route('admin.users.security', $user) }}" class="rounded-full border border-emerald-200 dark:border-emerald-700 px-4 py-2 font-semibold text-emerald-900 dark:text-emerald-300">سجلات الأمان</a>
                 <form method="POST" action="{{ route('admin.users.ban', $user) }}">
                     @csrf
                     <button type="submit" class="rounded-full border border-rose-200 dark:border-rose-700 px-4 py-2 font-semibold text-rose-600 dark:text-rose-300">{{ $user->is_banned ? 'إلغاء الحظر' : 'حظر المستخدم' }}</button>
@@ -70,7 +70,7 @@
             <div class="space-y-6">
                 <!-- Wallet Card -->
                 <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-6 shadow-sm">
-                    <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">المحفظة</h2>
+                    <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">المحفظة</h2>
                     <div class="mt-4 space-y-3 text-sm">
                         <div class="flex items-center justify-between">
                             <span class="text-slate-500">الرصيد المتاح</span>
@@ -84,21 +84,21 @@
                     <div class="mt-6 border-t border-slate-100 dark:border-slate-700 pt-4 text-sm">
                         <div class="flex items-center justify-between">
                             <span class="text-slate-500 dark:text-slate-300">مستوى الولاء</span>
-                            <span class="font-semibold text-emerald-700 dark:text-emerald-400">{{ $loyaltySummary['level_label'] }}</span>
+                            <span class="font-semibold text-emerald-900 dark:text-emerald-400">{{ $loyaltySummary['level_label'] }}</span>
                         </div>
                         <div class="mt-2 flex items-center justify-between">
                             <span class="text-slate-500 dark:text-slate-300">نقاط الولاء</span>
-                            <span class="font-semibold text-slate-700 dark:text-slate-200">{{ number_format($loyaltySummary['points']) }}</span>
+                            <span class="font-semibold text-slate-700 dark:text-slate-50">{{ number_format($loyaltySummary['points']) }}</span>
                         </div>
                         <div class="mt-2 flex items-center justify-between">
                             <span class="text-slate-500 dark:text-slate-300">خصم الحساب</span>
-                            <span class="font-semibold text-slate-700 dark:text-slate-200">{{ number_format($loyaltySummary['discount_percentage'], 2) }}%</span>
+                            <span class="font-semibold text-slate-700 dark:text-slate-50">{{ number_format($loyaltySummary['discount_percentage'], 2) }}%</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-6 shadow-sm">
-                    <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">التوثيق والخصم</h2>
+                    <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">التوثيق والخصم</h2>
                     <form method="POST" action="{{ route('admin.users.verification-discount', $user) }}" class="mt-4 space-y-4">
                         @csrf
                         <label class="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
@@ -115,7 +115,7 @@
 
                 <!-- Send Notification Card -->
                 <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-6 shadow-sm">
-                    <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">إرسال إشعار</h2>
+                    <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">إرسال إشعار</h2>
                     <form method="POST" action="{{ route('admin.users.send-notification', $user) }}" enctype="multipart/form-data" class="mt-4 space-y-4">
                         @csrf
                         <div>
@@ -169,7 +169,7 @@
                 <div class="grid gap-6 lg:grid-cols-2 items-start">
                     <!-- Add/Deduct Balance Card -->
                     <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-6 shadow-sm">
-                        <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">إضافة/خصم رصيد</h2>
+                        <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">إضافة/خصم رصيد</h2>
                         
                         <div class="mt-4 border-b border-slate-100 dark:border-slate-700 pb-4">
                             <h3 class="text-sm font-bold text-emerald-600 dark:text-emerald-400 mb-2">إضافة رصيد</h3>
@@ -206,7 +206,7 @@
 
                     <!-- Send Email Card -->
                     <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-6 shadow-sm">
-                        <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">إرسال بريد إلكتروني</h2>
+                        <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">إرسال بريد إلكتروني</h2>
                         <form method="POST" action="{{ route('admin.users.send-email', $user) }}" class="mt-4 space-y-4">
                             @csrf
                             <div>
@@ -227,9 +227,9 @@
         <div class="space-y-6">
             <!-- Transactions Table -->
             <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-6 shadow-sm">
-                <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">آخر حركات الرصيد</h2>
+                <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">آخر حركات الرصيد</h2>
                 <x-table class="mt-4">
-                    <thead class="border-b border-slate-200 dark:border-slate-700 text-xs text-slate-500 dark:text-slate-300">
+                    <thead class="border-b border-slate-200 dark:border-slate-700 text-xs text-slate-50 dark:text-slate-300">
                         <tr>
                             <th class="py-2">النوع</th>
                             <th class="py-2">المبلغ</th>
@@ -240,7 +240,7 @@
                     <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
                         @forelse ($transactions as $transaction)
                             <tr>
-                                <td class="py-3 text-slate-700 dark:text-slate-200">
+                                <td class="py-3 text-slate-700 dark:text-slate-50">
                                     @if ($transaction->type === 'deposit')
                                         شحن
                                     @elseif ($transaction->type === 'hold')
@@ -253,7 +253,7 @@
                                         {{ $transaction->type }}
                                     @endif
                                 </td>
-                                <td class="py-3 text-slate-700 dark:text-slate-200">{{ number_format($transaction->amount, 2) }} USD</td>
+                                <td class="py-3 text-slate-700 dark:text-slate-50">{{ number_format($transaction->amount, 2) }} USD</td>
                                 <td class="py-3 text-slate-500 dark:text-slate-400">
                                     {{ $transaction->reference_type }} #{{ $transaction->reference_id ?? '-' }}
                                 </td>
@@ -270,9 +270,9 @@
 
             <!-- Deposits Table -->
             <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-6 shadow-sm">
-                <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">آخر طلبات الشحن</h2>
+                <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">آخر طلبات الشحن</h2>
                 <x-table class="mt-4">
-                    <thead class="border-b border-slate-200 dark:border-slate-700 text-xs text-slate-500 dark:text-slate-300">
+                    <thead class="border-b border-slate-200 dark:border-slate-700 text-xs text-slate-50 dark:text-slate-300">
                         <tr>
                             <th class="py-2">الحالة</th>
                             <th class="py-2">الطريقة</th>
@@ -290,20 +290,20 @@
                                     @if ($deposit->status === 'pending')
                                         <span class="rounded-full bg-amber-100 dark:bg-amber-900/40 px-3 py-1 text-xs text-amber-700 dark:text-amber-300">قيد المراجعة</span>
                                     @elseif ($deposit->status === 'approved')
-                                        <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/40 px-3 py-1 text-xs text-emerald-700 dark:text-emerald-300">معتمد</span>
+                                        <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/40 px-3 py-1 text-xs text-emerald-900 dark:text-emerald-300">معتمد</span>
                                     @else
                                         <span class="rounded-full bg-rose-100 dark:bg-rose-900/40 px-3 py-1 text-xs text-rose-700 dark:text-rose-300">مرفوض</span>
                                     @endif
                                 </td>
-                                <td class="py-3 text-slate-700 dark:text-slate-200">{{ $deposit->paymentMethod->name }}</td>
-                                <td class="py-3 text-slate-700 dark:text-slate-200">{{ number_format($deposit->user_amount, 2) }} USD</td>
-                                <td class="py-3 text-slate-700 dark:text-slate-200">
+                                <td class="py-3 text-slate-700 dark:text-slate-50">{{ $deposit->paymentMethod->name }}</td>
+                                <td class="py-3 text-slate-700 dark:text-slate-50">{{ number_format($deposit->user_amount, 2) }} USD</td>
+                                <td class="py-3 text-slate-700 dark:text-slate-50">
                                     {{ $deposit->approved_amount ? number_format($deposit->approved_amount, 2) : '-' }} USD
                                 </td>
                                 <td class="py-3 text-slate-500 dark:text-slate-400">{{ $deposit->reviewed_at?->format('Y-m-d H:i') ?? '-' }}</td>
                                 <td class="py-3 text-slate-500 dark:text-slate-400">{{ $deposit->created_at->format('Y-m-d') }}</td>
                                 <td class="py-3">
-                                    <a href="{{ route('admin.deposits.show', $deposit) }}" class="text-emerald-700 hover:text-emerald-900">عرض</a>
+                                    <a href="{{ route('admin.deposits.show', $deposit) }}" class="text-emerald-900 hover:text-emerald-900 dark:text-emerald-50">عرض</a>
                                 </td>
                             </tr>
                         @empty
@@ -317,9 +317,9 @@
 
             <!-- Orders Table -->
             <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-6 shadow-sm">
-                <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">آخر الطلبات</h2>
+                <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">آخر الطلبات</h2>
                 <x-table class="mt-4">
-                    <thead class="border-b border-slate-200 dark:border-slate-700 text-xs text-slate-500 dark:text-slate-300">
+                    <thead class="border-b border-slate-200 dark:border-slate-700 text-xs text-slate-50 dark:text-slate-300">
                         <tr>
                             <th class="py-2">الحالة</th>
                             <th class="py-2">الخدمة</th>
@@ -339,18 +339,18 @@
                                     @elseif ($order->status === 'processing')
                                         <span class="rounded-full bg-blue-100 dark:bg-blue-900/40 px-3 py-1 text-xs text-blue-700 dark:text-blue-300">قيد التنفيذ</span>
                                     @elseif ($order->status === 'done')
-                                        <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/40 px-3 py-1 text-xs text-emerald-700 dark:text-emerald-300">تم التنفيذ</span>
+                                        <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/40 px-3 py-1 text-xs text-emerald-900 dark:text-emerald-300">تم التنفيذ</span>
                                     @else
                                         <span class="rounded-full bg-rose-100 dark:bg-rose-900/40 px-3 py-1 text-xs text-rose-700 dark:text-rose-300">مرفوض</span>
                                     @endif
                                 </td>
-                                <td class="py-3 text-slate-700 dark:text-slate-200">{{ $order->service->name }}</td>
-                                <td class="py-3 text-slate-700 dark:text-slate-200">{{ $order->variant?->name ?? 'السعر الأساسي' }}</td>
-                                <td class="py-3 text-slate-700 dark:text-slate-200">{{ number_format($order->amount_held, 2) }} USD</td>
+                                <td class="py-3 text-slate-700 dark:text-slate-50">{{ $order->service->name }}</td>
+                                <td class="py-3 text-slate-700 dark:text-slate-50">{{ $order->variant?->name ?? 'السعر الأساسي' }}</td>
+                                <td class="py-3 text-slate-700 dark:text-slate-50">{{ number_format($order->amount_held, 2) }} USD</td>
                                 <td class="py-3 text-slate-500 dark:text-slate-400">{{ $order->settled_at?->format('Y-m-d H:i') ?? $order->released_at?->format('Y-m-d H:i') ?? '-' }}</td>
                                 <td class="py-3 text-slate-500 dark:text-slate-400">{{ $order->created_at->format('Y-m-d') }}</td>
                                 <td class="py-3">
-                                    <a href="{{ route('admin.orders.show', $order) }}" class="text-emerald-700 hover:text-emerald-900">عرض</a>
+                                    <a href="{{ route('admin.orders.show', $order) }}" class="text-emerald-900 hover:text-emerald-900 dark:text-emerald-50">عرض</a>
                                 </td>
                             </tr>
                         @empty

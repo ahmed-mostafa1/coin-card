@@ -7,8 +7,8 @@
     <div class="rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm transition-colors duration-200 sm:p-6 lg:p-8">
         <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div>
-                <h1 class="text-2xl font-semibold text-emerald-700 dark:text-emerald-400">{{ __('messages.services_page_title') }}</h1>
-                <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">{{ __('messages.services_page_desc') }}</p>
+                <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">{{ __('messages.services_page_title') }}</h1>
+                <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-300">{{ __('messages.services_page_desc') }}</p>
             </div>
             <div class="admin-action-bar lg:w-auto">
                 <form action="{{ route('admin.services.index') }}" method="GET" class="flex w-full flex-col gap-2 sm:flex-row sm:items-center lg:w-auto">
@@ -38,7 +38,7 @@
         </div>
 
         @if (session('status'))
-            <div class="mt-6 rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400">
+            <div class="mt-6 rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-400">
                 {{ session('status') }}
             </div>
         @endif
@@ -74,11 +74,11 @@
                                 </span>
                             @endif
                         </td>
-                        <td class="py-3 text-xs text-slate-500 dark:text-slate-400" data-label="حالة المزود">
+                        <td class="py-3 text-xs text-slate-9000 dark:text-slate-50" data-label="حالة المزود">
                             @if ($service->provider_id)
                                 <div class="space-y-1">
-                                    <span class="rounded-full px-2 py-1 {{ $service->isProviderAvailable() ? 'bg-emerald-50 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300' : 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-300' }}">{{ $service->provider_status ?? ($service->provider_is_available ? 'available' : 'unavailable') }}</span>
-                                    <div class="text-slate-500 dark:text-slate-400">{{ $service->provider_status_synced_at?->format('Y-m-d H:i') ?? '-' }}</div>
+                                    <span class="rounded-full px-2 py-1 {{ $service->isProviderAvailable() ? 'bg-emerald-50 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-50' : 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-300' }}">{{ $service->provider_status ?? ($service->provider_is_available ? 'available' : 'unavailable') }}</span>
+                                    <div class="text-slate-900 dark:text-slate-50">{{ $service->provider_status_synced_at?->format('Y-m-d H:i') ?? '-' }}</div>
                                 </div>
                             @else
                                 -
@@ -86,7 +86,7 @@
                         </td>
                         <td class="py-3" data-label="{{ __('messages.status') }}">
                             @if ($service->is_active)
-                                <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/50 px-3 py-1 text-xs text-emerald-700 dark:text-emerald-400">{{ __('messages.status_active') }}</span>
+                                <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/50 px-3 py-1 text-xs text-emerald-900 dark:text-emerald-400">{{ __('messages.status_active') }}</span>
                             @else
                                 <span class="rounded-full bg-rose-100 dark:bg-rose-900/50 px-3 py-1 text-xs text-rose-700 dark:text-rose-400">{{ __('messages.status_inactive') }}</span>
                             @endif

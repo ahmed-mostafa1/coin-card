@@ -8,33 +8,33 @@
         <div class="rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm lg:col-span-2">
             <div class="flex items-center justify-between gap-4">
                 <div>
-                    <h1 class="text-2xl font-semibold text-emerald-700">{{ __('messages.deposit_request_title', ['id' => $depositRequest->id]) }}</h1>
-                    <p class="mt-2 text-sm text-slate-600">{{ __('messages.created_at_label', ['date' => $depositRequest->created_at->format('Y-m-d H:i')]) }}</p>
+                    <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-100">{{ __('messages.deposit_request_title', ['id' => $depositRequest->id]) }}</h1>
+                    <p class="mt-2 text-sm text-slate-900 dark:text-slate-50">{{ __('messages.created_at_label', ['date' => $depositRequest->created_at->format('Y-m-d H:i')]) }}</p>
                 </div>
-                <a href="{{ route('account.deposits') }}" class="text-sm text-emerald-700 hover:text-emerald-900">{{ __('messages.back_to_deposits') }}</a>
+                <a href="{{ route('account.deposits') }}" class="text-sm text-emerald-900 hover:text-emerald-900 dark:text-emerald-100">{{ __('messages.back_to_deposits') }}</a>
             </div>
 
             <div class="mt-6 grid gap-4 sm:grid-cols-2">
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4">
-                    <p class="text-xs text-slate-500">{{ __('messages.payment_method_label') }}</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ $depositRequest->paymentMethod?->name ?? 'طريقة محذوفة' }}</p>
+                    <p class="text-xs text-slate-700 dark:text-slate-50">{{ __('messages.payment_method_label') }}</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50 dark:text-slate-50">{{ $depositRequest->paymentMethod?->name ?? 'طريقة محذوفة' }}</p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4">
-                    <p class="text-xs text-slate-500">{{ __('messages.user_amount_label') }}</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ number_format($depositRequest->net_usd_amount ?? $depositRequest->user_amount, 2) }} USD</p>
+                    <p class="text-xs text-slate-700 dark:text-slate-50">{{ __('messages.user_amount_label') }}</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ number_format($depositRequest->net_usd_amount ?? $depositRequest->user_amount, 2) }} USD</p>
                     @if ($depositRequest->currency_code)
-                        <p class="mt-1 text-xs text-slate-500">{{ number_format($depositRequest->local_amount, 2) }} {{ $depositRequest->currency_code }} - عمولة {{ number_format($depositRequest->commission_amount, 2) }} {{ $depositRequest->currency_code }}</p>
+                        <p class="mt-1 text-xs text-slate-900 dark:text-slate-50">{{ number_format($depositRequest->local_amount, 2) }} {{ $depositRequest->currency_code }} - عمولة {{ number_format($depositRequest->commission_amount, 2) }} {{ $depositRequest->currency_code }}</p>
                     @endif
                 </div>
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4">
-                    <p class="text-xs text-slate-500">{{ __('messages.approved_amount_label') }}</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-700">
+                    <p class="text-xs text-slate-700 dark:text-slate-50">{{ __('messages.approved_amount_label') }}</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50">
                         {{ $depositRequest->approved_amount ? number_format($depositRequest->approved_amount, 2) : '-' }} USD
                     </p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4">
-                    <p class="text-xs text-slate-500">{{ __('messages.status') }}</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-700">
+                    <p class="text-xs text-slate-700 dark:text-slate-50">{{ __('messages.status') }}</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50">
                         @if ($depositRequest->status === 'pending')
                             {{ __('messages.status_pending') }}
                         @elseif ($depositRequest->status === 'approved')
@@ -49,12 +49,12 @@
 
             @if ($depositRequest->paymentMethod && $depositRequest->paymentMethod->fields->isNotEmpty())
                 <div class="mt-6 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4">
-                    <p class="text-xs text-slate-500">{{ __('messages.additional_details_label') }}</p>
+                    <p class="text-xs text-slate-700 dark:text-slate-50">{{ __('messages.additional_details_label') }}</p>
                     <div class="mt-3 space-y-2 text-sm text-slate-700">
                         @foreach ($depositRequest->paymentMethod->fields->sortBy('sort_order') as $field)
                             <div class="flex items-center justify-between gap-4">
-                                <p class="text-xs text-slate-500">{{ $field->label }}</p>
-                                <p class="text-sm font-semibold text-slate-700">{{ ($depositRequest->payload ?? [])[$field->name_key] ?? '-' }}</p>
+                                <p class="text-xs text-slate-700 dark:text-slate-50">{{ $field->label }}</p>
+                                <p class="text-sm font-semibold text-slate-900 dark:text-slate-50">{{ ($depositRequest->payload ?? [])[$field->name_key] ?? '-' }}</p>
                             </div>
                         @endforeach
                     </div>
@@ -69,7 +69,7 @@
         </div>
 
         <div class="rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm">
-            <h2 class="text-lg font-semibold text-emerald-700">{{ __('messages.admin_notes_title') }}</h2>
+            <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-100">{{ __('messages.admin_notes_title') }}</h2>
             <p class="mt-3 text-sm text-slate-600">{{ __('messages.admin_notes_desc') }}</p>
         </div>
     </div>

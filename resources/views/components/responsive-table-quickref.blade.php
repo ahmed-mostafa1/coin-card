@@ -46,7 +46,7 @@
 -->
 <td class="py-3 text-slate-700 dark:text-slate-300" data-label="User">
     {{ $user->name }}
-    <div class="text-xs text-slate-500 dark:text-slate-400">{{ $user->email }}</div>
+    <div class="text-xs text-slate-9000 dark:text-slate-50">{{ $user->email }}</div>
 </td>
 
 <!--
@@ -60,7 +60,7 @@
 🔗 Single action:
 -->
 <td class="py-3" data-label="Actions">
-    <a href="#" class="text-emerald-700 dark:text-emerald-400">View</a>
+    <a href="#" class="text-emerald-900 dark:text-emerald-400">View</a>
 </td>
 
 <!--
@@ -68,7 +68,7 @@
 -->
 <td class="py-3" data-label="Actions">
     <div class="flex flex-wrap gap-2 text-xs">
-        <a href="#" class="text-emerald-700 dark:text-emerald-400">View</a>
+        <a href="#" class="text-emerald-900 dark:text-emerald-400">View</a>
         <a href="#" class="text-blue-700 dark:text-blue-400">Edit</a>
         <form method="POST" action="#" class="inline">
             @csrf
@@ -87,7 +87,7 @@
 <x-table class="mt-6">
 
 <!-- Table header -->
-<thead class="bg-slate-50 dark:bg-slate-700/50 text-xs text-slate-500 dark:text-slate-400">
+<thead class="bg-slate-50 dark:bg-slate-700/50 text-xs text-slate-9000 dark:text-slate-50">
     <tr>
         <th class="py-2">Column Name</th>
     </tr>

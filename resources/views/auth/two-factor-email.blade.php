@@ -25,7 +25,7 @@
 
         <form method="POST" action="{{ route('two-factor.email.resend') }}" class="text-center">
             @csrf
-            <button type="submit" class="text-sm font-semibold text-emerald-600 hover:text-emerald-700">إرسال رمز جديد</button>
+            <button type="submit" class="text-sm font-semibold text-emerald-600 hover:text-emerald-900">إرسال رمز جديد</button>
         </form>
     </div>
 @endsection

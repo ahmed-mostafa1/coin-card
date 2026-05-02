@@ -10,13 +10,13 @@
                 <h1 class="text-2xl font-semibold text-emerald-800 dark:text-emerald-400">إدارة الصفحات</h1>
                 <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">تحكم بمحتوى صفحات من نحن وسياسة الخصوصية وشروط الاستخدام.</p>
             </div>
-            <a href="{{ route('dashboard') }}" class="rounded-full bg-slate-200 dark:bg-slate-700 px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 transition hover:bg-slate-300 dark:hover:bg-slate-600">
+            <a href="{{ route('dashboard') }}" class="rounded-full bg-slate-200 dark:bg-slate-700 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-slate-50 transition hover:bg-slate-300 dark:hover:bg-slate-600">
                 <i class="fa-solid fa-arrow-right ml-2 rtl:ml-0 rtl:mr-2"></i> {{ __('messages.dashboard') ?? 'لوحة التحكم' }}
             </a>
         </div>
 
         @if (session('status'))
-            <div class="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400">
+            <div class="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-400">
                 {{ session('status') }}
             </div>
         @endif
@@ -35,12 +35,12 @@
                 <div x-show="tab === 'about'" class="space-y-6">
                     <div>
                         <x-input-label for="about_ar" value="من نحن (عربي)" />
-                        <textarea id="about_ar" name="about_ar" rows="15" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 focus:border-emerald-500 focus:ring-emerald-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200">{{ old('about_ar', $aboutAr ?? '') }}</textarea>
+                        <textarea id="about_ar" name="about_ar" rows="15" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 focus:border-emerald-500 focus:ring-emerald-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-50">{{ old('about_ar', $aboutAr ?? '') }}</textarea>
                         <x-input-error :messages="$errors->get('about_ar')" />
                     </div>
                     <div>
                         <x-input-label for="about_en" value="من نحن (إنجليزي)" />
-                        <textarea id="about_en" name="about_en" rows="15" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 focus:border-emerald-500 focus:ring-emerald-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200" dir="ltr">{{ old('about_en', $aboutEn ?? '') }}</textarea>
+                        <textarea id="about_en" name="about_en" rows="15" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 focus:border-emerald-500 focus:ring-emerald-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-50" dir="ltr">{{ old('about_en', $aboutEn ?? '') }}</textarea>
                         <x-input-error :messages="$errors->get('about_en')" />
                     </div>
                 </div>
@@ -48,12 +48,12 @@
                 <div x-show="tab === 'privacy'" class="space-y-6" style="display: none;">
                     <div>
                         <x-input-label for="privacy_ar" value="سياسة الخصوصية (عربي)" />
-                        <textarea id="privacy_ar" name="privacy_ar" rows="15" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 focus:border-emerald-500 focus:ring-emerald-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200">{{ old('privacy_ar', $privacyAr ?? '') }}</textarea>
+                        <textarea id="privacy_ar" name="privacy_ar" rows="15" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 focus:border-emerald-500 focus:ring-emerald-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-50">{{ old('privacy_ar', $privacyAr ?? '') }}</textarea>
                         <x-input-error :messages="$errors->get('privacy_ar')" />
                     </div>
                     <div>
                         <x-input-label for="privacy_en" value="سياسة الخصوصية (إنجليزي)" />
-                        <textarea id="privacy_en" name="privacy_en" rows="15" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 focus:border-emerald-500 focus:ring-emerald-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200" dir="ltr">{{ old('privacy_en', $privacyEn ?? '') }}</textarea>
+                        <textarea id="privacy_en" name="privacy_en" rows="15" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 focus:border-emerald-500 focus:ring-emerald-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-50" dir="ltr">{{ old('privacy_en', $privacyEn ?? '') }}</textarea>
                         <x-input-error :messages="$errors->get('privacy_en')" />
                     </div>
                 </div>
@@ -61,12 +61,12 @@
                 <div x-show="tab === 'terms'" class="space-y-6" style="display: none;">
                     <div>
                         <x-input-label for="terms_ar" value="شروط الاستخدام (عربي)" />
-                        <textarea id="terms_ar" name="terms_ar" rows="15" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 focus:border-emerald-500 focus:ring-emerald-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200">{{ old('terms_ar', $termsAr ?? '') }}</textarea>
+                        <textarea id="terms_ar" name="terms_ar" rows="15" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 focus:border-emerald-500 focus:ring-emerald-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-50">{{ old('terms_ar', $termsAr ?? '') }}</textarea>
                         <x-input-error :messages="$errors->get('terms_ar')" />
                     </div>
                     <div>
                         <x-input-label for="terms_en" value="شروط الاستخدام (إنجليزي)" />
-                        <textarea id="terms_en" name="terms_en" rows="15" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 focus:border-emerald-500 focus:ring-emerald-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200" dir="ltr">{{ old('terms_en', $termsEn ?? '') }}</textarea>
+                        <textarea id="terms_en" name="terms_en" rows="15" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 focus:border-emerald-500 focus:ring-emerald-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-50" dir="ltr">{{ old('terms_en', $termsEn ?? '') }}</textarea>
                         <x-input-error :messages="$errors->get('terms_en')" />
                     </div>
                 </div>

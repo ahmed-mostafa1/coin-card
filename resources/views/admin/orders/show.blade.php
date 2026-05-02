@@ -7,29 +7,29 @@
         <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-8 shadow-sm lg:col-span-2">
             <div class="flex items-center justify-between gap-4">
                 <div>
-                    <h1 class="text-2xl font-semibold text-emerald-700 dark:text-emerald-400">طلب #{{ $order->id }}</h1>
-                    <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">{{ $order->service?->name ?? 'خدمة محذوفة' }}</p>
+                    <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">طلب #{{ $order->id }}</h1>
+                    <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-300">{{ $order->service?->name ?? 'خدمة محذوفة' }}</p>
                 </div>
-                <a href="{{ route('admin.orders.index') }}" class="text-sm text-emerald-700 dark:text-emerald-400">عودة للقائمة</a>
+                <a href="{{ route('admin.orders.index') }}" class="text-sm text-emerald-900 dark:text-emerald-400">عودة للقائمة</a>
             </div>
 
             <div class="mt-6 grid gap-4 sm:grid-cols-2">
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 p-4">
-                    <p class="text-xs text-slate-500 dark:text-slate-400">المستخدم</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-700 dark:text-slate-200">{{ $order->user?->name ?? 'مستخدم محذوف' }}</p>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">{{ $order->user?->email }}</p>
+                    <p class="text-xs text-slate-9000 dark:text-slate-50">المستخدم</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50 dark:text-slate-50">{{ $order->user?->name ?? 'مستخدم محذوف' }}</p>
+                    <p class="text-xs text-slate-9000 dark:text-slate-50">{{ $order->user?->email }}</p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 p-4">
-                    <p class="text-xs text-slate-500 dark:text-slate-400">السعر</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-700 dark:text-slate-200">{{ number_format($order->price_at_purchase, 2) }} USD</p>
+                    <p class="text-xs text-slate-9000 dark:text-slate-50">السعر</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50 dark:text-slate-50">{{ number_format($order->price_at_purchase, 2) }} USD</p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 p-4">
-                    <p class="text-xs text-slate-500 dark:text-slate-400">المبلغ المعلّق</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-700 dark:text-slate-200">{{ number_format($order->amount_held, 2) }} USD</p>
+                    <p class="text-xs text-slate-9000 dark:text-slate-50">المبلغ المعلّق</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50 dark:text-slate-50">{{ number_format($order->amount_held, 2) }} USD</p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 p-4">
-                    <p class="text-xs text-slate-500 dark:text-slate-400">الحالة</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
+                    <p class="text-xs text-slate-9000 dark:text-slate-50">الحالة</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50 dark:text-slate-50">
                         @if ($order->status === 'new')
                             جديد
                         @elseif ($order->status === 'processing')
@@ -44,21 +44,21 @@
                     </p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 p-4">
-                    <p class="text-xs text-slate-500 dark:text-slate-400">الباقة</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-700 dark:text-slate-200">{{ $order->variant?->name ?? 'السعر الأساسي' }}</p>
+                    <p class="text-xs text-slate-9000 dark:text-slate-50">الباقة</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50 dark:text-slate-50">{{ $order->variant?->name ?? 'السعر الأساسي' }}</p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 p-4">
-                    <p class="text-xs text-slate-500 dark:text-slate-400">تأكيد الخصم</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-700 dark:text-slate-200">{{ $order->settled_at?->format('Y-m-d H:i') ?? '-' }}</p>
+                    <p class="text-xs text-slate-9000 dark:text-slate-50">تأكيد الخصم</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50 dark:text-slate-50">{{ $order->settled_at?->format('Y-m-d H:i') ?? '-' }}</p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 p-4">
-                    <p class="text-xs text-slate-500 dark:text-slate-400">إرجاع الرصيد</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-700 dark:text-slate-200">{{ $order->released_at?->format('Y-m-d H:i') ?? '-' }}</p>
+                    <p class="text-xs text-slate-9000 dark:text-slate-50">إرجاع الرصيد</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50 dark:text-slate-50">{{ $order->released_at?->format('Y-m-d H:i') ?? '-' }}</p>
                 </div>
             </div>
 
             <div class="mt-6 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 p-4">
-                <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('messages.order_data_label') }}</p>
+                <p class="text-xs text-slate-9000 dark:text-slate-50">{{ __('messages.order_data_label') }}</p>
                 @if (count($order->payload))
                     <div class="mt-3 grid gap-3 sm:grid-cols-2">
                         @foreach ($order->payload as $key => $value)
@@ -90,18 +90,18 @@
                                 }
                             @endphp
                             <div class="rounded-xl border border-slate-200 dark:border-slate-700 bg-white/70 dark:bg-slate-900/50 p-3">
-                                <p class="text-xs text-slate-500 dark:text-slate-400">{{ $fieldLabels[$key] ?? \Illuminate\Support\Str::headline((string) $key) }}</p>
+                                <p class="text-xs text-slate-9000 dark:text-slate-50">{{ $fieldLabels[$key] ?? \Illuminate\Support\Str::headline((string) $key) }}</p>
 
                                 @if ($imageUrl)
                                     <a href="{{ $imageUrl }}" target="_blank" rel="noopener noreferrer" class="mt-2 inline-block">
                                         <img src="{{ $imageUrl }}" alt="{{ $fieldLabels[$key] ?? (string) $key }}" class="h-40 w-auto max-w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 object-contain">
                                     </a>
                                 @elseif ($isUrl)
-                                    <a href="{{ $displayValue }}" target="_blank" rel="noopener noreferrer" class="mt-2 block break-all text-sm font-semibold text-emerald-700 dark:text-emerald-400 hover:underline">
+                                    <a href="{{ $displayValue }}" target="_blank" rel="noopener noreferrer" class="mt-2 block break-all text-sm font-semibold text-emerald-900 dark:text-emerald-400 hover:underline">
                                         {{ $displayValue }}
                                     </a>
                                 @else
-                                    <p class="mt-2 break-words text-sm font-semibold text-slate-700 dark:text-slate-200">
+                                    <p class="mt-2 break-words text-sm font-semibold text-slate-900 dark:text-slate-50">
                                         {{ $displayValue !== '' ? $displayValue : '-' }}
                                     </p>
                                 @endif
@@ -115,26 +115,26 @@
 
             @if ($order->uploaded_image_path)
                 <div class="mt-6 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 p-4">
-                    <p class="text-xs text-slate-500 dark:text-slate-400">الصورة المرفقة مع الطلب</p>
+                    <p class="text-xs text-slate-9000 dark:text-slate-50">الصورة المرفقة مع الطلب</p>
                     <a href="{{ asset('storage/' . $order->uploaded_image_path) }}" target="_blank" rel="noopener noreferrer" class="mt-3 inline-block">
                         <img src="{{ asset('storage/' . $order->uploaded_image_path) }}" alt="الصورة المرفقة" class="h-48 w-auto max-w-full rounded-lg border border-slate-200 object-contain dark:border-slate-700">
                     </a>
-                    <p class="mt-2 text-xs text-slate-500">{{ $order->uploaded_image_original_name ?? basename($order->uploaded_image_path) }}</p>
+                    <p class="mt-2 text-xs text-slate-700 dark:text-slate-50">{{ $order->uploaded_image_original_name ?? basename($order->uploaded_image_path) }}</p>
                 </div>
             @endif
 
             @if ($order->admin_note)
-                <div class="mt-6 rounded-2xl border border-emerald-100 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 p-4 text-sm text-emerald-700 dark:text-emerald-300">
+                <div class="mt-6 rounded-2xl border border-emerald-100 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 p-4 text-sm text-emerald-900 dark:text-emerald-300">
                     ملاحظة الإدارة: {{ $order->admin_note }}
                 </div>
             @endif
         </div>
 
         <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-8 shadow-sm">
-            <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">تحديث الحالة</h2>
+            <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">تحديث الحالة</h2>
 
             @if (session('status'))
-                <div class="mt-4 rounded-lg border border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-300">
+                <div class="mt-4 rounded-lg border border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-300">
                     {{ session('status') }}
                 </div>
             @endif
@@ -178,7 +178,7 @@
                             @php
                                 $execStatus = $order->provider_execution_status ?? null;
                                 $execColor = match($execStatus) {
-                                    'success', 'completed' => 'text-emerald-700 bg-emerald-100',
+                                    'success', 'completed' => 'text-emerald-900 bg-emerald-100',
                                     'failed', 'error'      => 'text-red-700 bg-red-100',
                                     'processing'           => 'text-amber-700 bg-amber-100',
                                     default                => 'text-gray-600 bg-gray-100',
@@ -191,7 +191,7 @@
                         @if($order->provider_replay)
                             <div class="pt-2 border-t border-blue-100 dark:border-blue-800">
                                 <p class="text-[11px] text-gray-500 mb-1">نتيجة التنفيذ</p>
-                                <p class="text-xs text-slate-700 dark:text-slate-200 font-medium break-words">{{ $order->provider_replay }}</p>
+                                <p class="text-xs text-slate-700 dark:text-slate-50 font-medium break-words">{{ $order->provider_replay }}</p>
                             </div>
                         @endif
                     </div>
@@ -210,7 +210,7 @@
             @endif
 
             <div class="mt-8 border-t border-slate-200 dark:border-slate-700 pt-6">
-                <h3 class="text-base font-semibold text-emerald-700 dark:text-emerald-400">سجل الطلب</h3>
+                <h3 class="text-base font-semibold text-emerald-900 dark:text-emerald-400">سجل الطلب</h3>
                 @php
                     $statusLabels = [
                         'new' => 'جديد',
@@ -224,12 +224,12 @@
                     @forelse ($order->events as $event)
                         <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 p-4">
                             <div class="flex items-center justify-between gap-2">
-                                <p class="text-sm font-semibold text-slate-700 dark:text-slate-200">{{ $event->message ?? 'تحديث جديد' }}</p>
+                                <p class="text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $event->message ?? 'تحديث جديد' }}</p>
                                 <span class="text-xs text-slate-400">{{ $event->created_at->format('Y-m-d H:i') }}</span>
                             </div>
-                            <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">الجهة: {{ $event->actor?->name ?? 'النظام' }}</p>
+                            <p class="mt-2 text-xs text-slate-9000 dark:text-slate-50">الجهة: {{ $event->actor?->name ?? 'النظام' }}</p>
                             @if ($event->old_status || $event->new_status)
-                                <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                                <p class="mt-1 text-xs text-slate-900 dark:text-slate-400">
                                     الحالة: {{ $statusLabels[$event->old_status] ?? '-' }} → {{ $statusLabels[$event->new_status] ?? '-' }}
                                 </p>
                             @endif

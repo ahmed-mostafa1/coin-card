@@ -50,7 +50,7 @@
                         </div>
                     @else
                         <p class="text-amber-600">⚠️ User has no VIP status assigned</p>
-                        <p class="text-xs text-slate-500 mt-2">VIP status is assigned based on lifetime deposits/spending</p>
+                        <p class="text-xs text-slate-50 mt-2">VIP status is assigned based on lifetime deposits/spending</p>
                     @endif
                 </div>
 
@@ -63,12 +63,12 @@
                             <p><span class="font-semibold">Tier Name (EN):</span> {{ $vipTier->title_en }}</p>
                             <p><span class="font-semibold">Tier Name (AR):</span> {{ $vipTier->title_ar }}</p>
                             <p><span class="font-semibold">Rank:</span> {{ $vipTier->rank }}</p>
-                            <p><span class="font-semibold text-emerald-700">Discount Percentage:</span> <span class="text-lg font-bold text-emerald-700">{{ $vipTier->discount_percentage }}%</span></p>
+                            <p><span class="font-semibold text-emerald-900">Discount Percentage:</span> <span class="text-lg font-bold text-emerald-900">{{ $vipTier->discount_percentage }}%</span></p>
                             <p><span class="font-semibold">Required Deposits:</span> ${{ number_format($vipTier->deposits_required, 2) }}</p>
                         </div>
                     @else
                         <p class="text-rose-600">❌ No VIP tier found</p>
-                        <p class="text-xs text-slate-500 mt-2">User needs VIP status to have a tier</p>
+                        <p class="text-xs text-slate-50 mt-2">User needs VIP status to have a tier</p>
                     @endif
                 </div>
 
@@ -76,7 +76,7 @@
                 <div class="rounded-lg border border-emerald-200 bg-emerald-50 p-4">
                     <h2 class="text-lg font-semibold text-emerald-900 mb-3">4. Discount Calculation</h2>
                     <div class="space-y-2 text-sm">
-                        <p><span class="font-semibold">VIP Discount:</span> <span class="text-2xl font-bold text-emerald-700">{{ $vipDiscount }}%</span></p>
+                        <p><span class="font-semibold">VIP Discount:</span> <span class="text-2xl font-bold text-emerald-900">{{ $vipDiscount }}%</span></p>
                         
                         @if ($vipDiscount > 0)
                             <div class="mt-4 p-3 bg-white rounded border border-emerald-200">
@@ -88,7 +88,7 @@
                                 @endphp
                                 <p>Original Price: <span class="line-through">${{ number_format($testPrice, 2) }}</span></p>
                                 <p>Discount: {{ $vipDiscount }}%</p>
-                                <p class="text-emerald-700 font-bold">Final Price: ${{ number_format($discountedPrice, 2) }}</p>
+                                <p class="text-emerald-900 font-bold">Final Price: ${{ number_format($discountedPrice, 2) }}</p>
                                 <p class="text-emerald-600">You Save: ${{ number_format($saved, 2) }}</p>
                             </div>
                         @else
@@ -119,7 +119,7 @@
                                         <tr class="{{ $vipTier && $vipTier->id == $tier->id ? 'bg-emerald-50' : '' }}">
                                             <td class="px-3 py-2">{{ $tier->rank }}</td>
                                             <td class="px-3 py-2">{{ $tier->title_en }}</td>
-                                            <td class="px-3 py-2 font-semibold text-emerald-700">{{ $tier->discount_percentage }}%</td>
+                                            <td class="px-3 py-2 font-semibold text-emerald-900">{{ $tier->discount_percentage }}%</td>
                                             <td class="px-3 py-2">${{ number_format($tier->deposits_required, 2) }}</td>
                                         </tr>
                                     @endforeach

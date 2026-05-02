@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import 'quill/dist/quill.snow.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -270,7 +271,7 @@
     }
 
     .cc-nav-link {
-        @apply rounded-full border border-emerald-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:-translate-y-0.5 hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 motion-reduce:transform-none;
+        @apply rounded-full border border-emerald-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:-translate-y-0.5 hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 motion-reduce:transform-none;
     }
 
     .dark .cc-nav-link {
@@ -286,7 +287,7 @@
     }
 
     .cc-pill {
-        @apply rounded-full border border-emerald-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 motion-reduce:transition-none;
+        @apply rounded-full border border-emerald-200 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 motion-reduce:transition-none;
     }
 
     .dark .cc-pill {
@@ -322,7 +323,7 @@
     }
 
     .cc-nav-cta-secondary {
-        @apply border border-slate-200 bg-white text-slate-700 hover:border-emerald-200 hover:text-emerald-700;
+        @apply border border-slate-200 bg-white text-slate-700 hover:border-emerald-200 hover:text-emerald-900;
     }
 
     .dark .cc-nav-cta-secondary {
@@ -354,11 +355,54 @@
     }
 
     .cc-nav-tab-active {
-        @apply bg-emerald-50 text-emerald-700 shadow-sm;
+        @apply bg-emerald-50 text-emerald-900 shadow-sm;
     }
 
     .dark .cc-nav-tab-active {
         @apply bg-emerald-950/30 text-emerald-300;
+    }
+
+    .cc-rich-editor {
+        @apply overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-500/20 dark:border-slate-600 dark:bg-slate-700;
+    }
+
+    .cc-rich-editor .ql-toolbar.ql-snow {
+        @apply border-0 border-b border-slate-200 bg-slate-50 px-3 py-2 dark:border-slate-600 dark:bg-slate-800;
+    }
+
+    .cc-rich-editor .ql-container.ql-snow {
+        @apply border-0 bg-white text-sm text-slate-700 dark:bg-slate-700 dark:text-white;
+        font-family: inherit;
+    }
+
+    .cc-rich-editor .ql-editor {
+        @apply min-h-40 px-4 py-3 leading-7;
+        font-family: inherit;
+    }
+
+    .cc-rich-editor .ql-editor.ql-blank::before {
+        @apply text-slate-400 not-italic dark:text-slate-300;
+    }
+
+    .cc-rich-editor .ql-snow .ql-stroke {
+        @apply stroke-slate-600 dark:stroke-slate-200;
+    }
+
+    .cc-rich-editor .ql-snow .ql-fill {
+        @apply fill-slate-600 dark:fill-slate-200;
+    }
+
+    .cc-rich-editor .ql-snow .ql-picker,
+    .cc-rich-editor .ql-snow .ql-picker-label {
+        @apply text-slate-700 dark:text-slate-100;
+    }
+
+    .cc-rich-editor .ql-snow .ql-picker-options {
+        @apply rounded-xl border border-slate-200 bg-white shadow-lg dark:border-slate-600 dark:bg-slate-800;
+    }
+
+    .cc-rich-editor .ql-snow a {
+        @apply text-emerald-700 dark:text-emerald-300;
     }
 
     .admin-dashboard-shell {
@@ -370,7 +414,7 @@
     }
 
     .admin-dashboard-eyebrow {
-        @apply inline-flex w-fit items-center rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-black text-emerald-700 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-300;
+        @apply inline-flex w-fit items-center rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-black text-emerald-900 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-300;
     }
 
     .admin-dashboard-primary-link {
@@ -386,15 +430,15 @@
     }
 
     .admin-dashboard-card-icon {
-        @apply inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-sm text-emerald-700 dark:bg-emerald-950/35 dark:text-emerald-300;
+        @apply inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-sm text-emerald-900 dark:bg-emerald-950/35 dark:text-emerald-300;
     }
 
     .admin-dashboard-link {
-        @apply flex min-h-12 w-full items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-3.5 py-3 text-sm font-bold text-slate-700 transition hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 active:scale-[0.99] dark:border-slate-700 dark:bg-slate-800/85 dark:text-slate-200 dark:hover:border-emerald-800 dark:hover:bg-emerald-950/25 dark:hover:text-emerald-200 motion-reduce:transform-none;
+        @apply flex min-h-12 w-full items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-3.5 py-3 text-sm font-bold text-slate-700 transition hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 active:scale-[0.99] dark:border-slate-700 dark:bg-slate-800/85 dark:text-slate-50 dark:hover:border-emerald-800 dark:hover:bg-emerald-950/25 dark:hover:text-emerald-200 motion-reduce:transform-none;
     }
 
     .admin-dashboard-link-icon {
-        @apply inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-white text-xs text-slate-500 shadow-sm dark:bg-slate-900 dark:text-slate-300;
+        @apply inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-xs text-emerald-900 shadow-sm dark:bg-slate-900 dark:text-slate-300;
     }
 
     .admin-action-bar {
@@ -410,7 +454,7 @@
     }
 
     .admin-action-button-secondary {
-        @apply border border-slate-200 bg-white text-slate-700 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:border-emerald-800 dark:hover:bg-emerald-950/25 dark:hover:text-emerald-300;
+        @apply border border-slate-200 bg-white text-slate-700 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50 dark:hover:border-emerald-800 dark:hover:bg-emerald-950/25 dark:hover:text-emerald-300;
     }
 
     .admin-action-button-danger {
@@ -426,7 +470,7 @@
     }
 
     .admin-inline-link {
-        @apply inline-flex min-h-10 items-center justify-center rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-slate-700 transition hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:border-emerald-800 dark:hover:bg-emerald-950/25 dark:hover:text-emerald-300;
+        @apply inline-flex min-h-10 items-center justify-center rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-slate-700 transition hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50 dark:hover:border-emerald-800 dark:hover:bg-emerald-950/25 dark:hover:text-emerald-300;
     }
 
     .admin-inline-link-danger {
@@ -680,7 +724,7 @@
     }
 
     .home-btn--secondary {
-        @apply border border-slate-200 bg-white/90 text-slate-800 shadow-sm hover:border-emerald-200 hover:text-emerald-700;
+        @apply border border-slate-200 bg-white/90 text-slate-800 shadow-sm hover:border-emerald-200 hover:text-emerald-900;
     }
 
     .dark .home-btn--secondary {
@@ -824,6 +868,109 @@
         @apply text-white;
     }
 
+    .home-account-card {
+        @apply relative overflow-hidden rounded-2xl border p-6 text-white shadow-xl;
+        border-color: rgba(96, 165, 250, 0.18);
+        background:
+            radial-gradient(circle at 8% 0%, rgba(124, 58, 237, 0.26), transparent 32%),
+            radial-gradient(circle at 86% 10%, rgba(37, 99, 235, 0.22), transparent 28%),
+            linear-gradient(135deg, #020617 0%, #081226 56%, #0f172a 100%);
+        box-shadow: 0 22px 55px rgba(2, 6, 23, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .dark .home-account-card {
+        border-color: rgba(96, 165, 250, 0.2);
+        background:
+            radial-gradient(circle at 8% 0%, rgba(124, 58, 237, 0.24), transparent 32%),
+            radial-gradient(circle at 86% 10%, rgba(37, 99, 235, 0.2), transparent 28%),
+            linear-gradient(135deg, #020617 0%, #081226 56%, #0f172a 100%);
+    }
+
+    .home-account-card__topline {
+        @apply relative flex min-h-8 items-start;
+    }
+
+    .home-account-card__summary-badge {
+        @apply border-white/10 bg-white/10 text-white shadow-none backdrop-blur;
+    }
+
+    .home-account-card__vip-badge {
+        @apply absolute left-1/2 top-0 inline-flex -translate-x-1/2 items-center justify-center gap-1.5 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-[11px] font-extrabold text-white shadow-sm;
+    }
+
+    .home-account-card__vip-badge i {
+        @apply text-emerald-300;
+    }
+
+    .home-account-card__heading {
+        @apply mt-4 text-start sm:mt-2;
+    }
+
+    .home-account-card__heading h2 {
+        @apply text-2xl font-black leading-tight text-white;
+    }
+
+    .home-account-card__heading p {
+        @apply mt-2 text-xs font-semibold leading-6 text-slate-300 sm:text-sm;
+    }
+
+    .home-account-card__tiles {
+        @apply mt-5 grid gap-3 sm:grid-cols-3;
+    }
+
+    .home-account-card .home-balance-tile {
+        @apply flex min-h-24 items-center justify-between gap-3 rounded-2xl border px-4 py-4;
+        border-color: rgba(148, 163, 184, 0.24);
+        background: rgba(30, 41, 59, 0.82);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 10px 24px rgba(2, 6, 23, 0.18);
+    }
+
+    .home-account-card .home-balance-tile__content {
+        @apply min-w-0;
+    }
+
+    .home-account-card .home-balance-tile__label {
+        @apply text-[11px] font-semibold text-slate-300;
+    }
+
+    .home-account-card .home-balance-tile__value {
+        @apply mt-2 text-lg font-black text-white;
+    }
+
+    .home-balance-tile__icon {
+        @apply inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-slate-700/80 text-slate-100;
+    }
+
+    .home-balance-tile__icon--success {
+        @apply bg-emerald-500/15 text-emerald-300;
+    }
+
+    .home-account-card__actions {
+        @apply mt-5 grid gap-3 sm:grid-cols-2;
+    }
+
+    .home-account-card__actions .home-btn {
+        @apply w-full justify-center rounded-xl text-white shadow-lg;
+    }
+
+    .home-btn--account {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        box-shadow: 0 14px 26px rgba(37, 99, 235, 0.28);
+    }
+
+    .home-btn--account:hover {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+    }
+
+    .home-btn--deposit {
+        background: linear-gradient(135deg, #7c3aed, #a855f7);
+        box-shadow: 0 14px 26px rgba(124, 58, 237, 0.28);
+    }
+
+    .home-btn--deposit:hover {
+        background: linear-gradient(135deg, #8b5cf6, #c026d3);
+    }
+
     .home-alert-card--danger {
         @apply border-red-200 bg-red-50/80;
     }
@@ -853,7 +1000,7 @@
     }
 
     .home-feature-card__icon {
-        @apply inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-100 text-lg text-emerald-700;
+        @apply inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-100 text-lg text-emerald-900;
     }
 
     .dark .home-feature-card__icon {
@@ -952,6 +1099,14 @@
 
         .home-section-badge {
             @apply px-2.5 py-1 text-[11px];
+        }
+
+        .home-account-card__topline {
+            @apply min-h-0 flex-col gap-2;
+        }
+
+        .home-account-card__vip-badge {
+            @apply static translate-x-0 self-center;
         }
 
         .home-balance-tile {

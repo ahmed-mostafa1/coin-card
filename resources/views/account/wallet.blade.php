@@ -8,12 +8,12 @@
         <x-page-header :title="__('messages.wallet_history_title')" :subtitle="__('messages.wallet_history_desc')">
             <x-slot name="actions">
                 <a href="{{ route('deposit.index') }}"
-                    class="inline-flex items-center justify-center rounded-xl border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-700 dark:text-white transition cc-press">{{ __('messages.top_up') }}</a>
+                    class="inline-flex items-center justify-center rounded-xl border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-900 dark:text-white transition cc-press">{{ __('messages.top_up') }}</a>
             </x-slot>
         </x-page-header>
 
         <x-table class="mt-6">
-            <thead class="bg-slate-50 dark:bg-slate-700/50 text-xs text-slate-500 dark:text-slate-400">
+            <thead class="bg-slate-50 dark:bg-slate-700/50 text-xs text-slate-9000 dark:text-slate-50">
                 <tr>
                     <th class="py-2">{{ __('messages.type') }}</th>
                     <th class="py-2">{{ __('messages.amount') }}</th>
@@ -41,7 +41,7 @@
                             $displayAmount = -$amount;
                         }
 
-                        $amountClass = $displayAmount >= 0 ? 'text-emerald-700' : 'text-rose-700';
+                        $amountClass = $displayAmount >= 0 ? 'text-emerald-900' : 'text-rose-700';
                     @endphp
                     <tr class="transition hover:bg-slate-50 dark:hover:bg-transparent">
                         <td class="py-3 text-slate-900 dark:text-slate-300" data-label="{{ __('messages.type') }}">

@@ -9,7 +9,7 @@
                 <div class="flex flex-wrap items-center gap-2">
                     <form method="POST" action="{{ route('admin.providers.sync-statuses') }}" onsubmit="return confirm('تشغيل مزامنة حالة الخدمات لكل المزودين الآن؟')">
                         @csrf
-                        <button type="submit" class="inline-flex items-center gap-1 rounded-xl border border-emerald-200 px-4 py-2 text-sm font-medium text-emerald-700 hover:bg-emerald-50 transition">
+                        <button type="submit" class="inline-flex items-center gap-1 rounded-xl border border-emerald-200 px-4 py-2 text-sm font-medium text-emerald-900 hover:bg-emerald-50 transition">
                             مزامنة الحالات الآن
                         </button>
                     </form>
@@ -22,7 +22,7 @@
         </x-page-header>
 
         @if(session('success'))
-            <div class="mt-4 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400">
+            <div class="mt-4 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-400">
                 {{ session('success') }}
             </div>
         @endif

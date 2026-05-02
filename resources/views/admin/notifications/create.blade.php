@@ -5,11 +5,11 @@
 @section('content')
     <div class="space-y-6">
         <div class="rounded-3xl border border-emerald-100 dark:border-emerald-900/30 bg-white dark:bg-slate-800 p-8 shadow-sm">
-            <h1 class="text-2xl font-semibold text-emerald-700 dark:text-emerald-400">إرسال إشعار لجميع المستخدمين</h1>
-            <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">سيتم إرسال هذا الإشعار عبر البريد الإلكتروني ويظهر في الموقع لجميع المستخدمين.</p>
+            <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">إرسال إشعار لجميع المستخدمين</h1>
+            <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-400">سيتم إرسال هذا الإشعار عبر البريد الإلكتروني ويظهر في الموقع لجميع المستخدمين.</p>
 
             @if (session('status'))
-                <div class="mt-6 rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400">
+                <div class="mt-6 rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-400">
                     {{ session('status') }}
                 </div>
             @endif
@@ -58,7 +58,7 @@
 
         @if(isset($sentNotifications))
             <div class="rounded-3xl border border-emerald-100 dark:border-emerald-900/30 bg-white dark:bg-slate-800 p-8 shadow-sm">
-                <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">آخر الإشعارات المرسلة</h2>
+                <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">آخر الإشعارات المرسلة</h2>
                 <div class="mt-4 space-y-3">
                     @foreach($sentNotifications->take(5) as $notification)
                         <div class="rounded-xl border border-slate-200 p-3 text-sm dark:border-slate-700">
@@ -66,7 +66,7 @@
                                 <span class="font-semibold">{{ $notification->title_ar }}</span>
                                 <span class="text-xs text-slate-400">{{ $notification->created_at->format('Y-m-d H:i') }}</span>
                             </div>
-                            <p class="mt-1 text-xs text-slate-500">{{ $notification->scope }} - {{ $notification->recipient_count }} مستلم</p>
+                            <p class="mt-1 text-xs text-slate-900 dark:text-slate-50">{{ $notification->scope }} - {{ $notification->recipient_count }} مستلم</p>
                         </div>
                     @endforeach
                 </div>

@@ -303,7 +303,7 @@
                     <h2 class="text-base font-semibold text-slate-700 dark:text-white mb-2">اختبار الاتصال</h2>
                     <p class="text-sm text-slate-500 dark:text-slate-400 mb-3">سيتم استدعاء نقطة الكتالوج بالإعدادات المحفوظة حالياً وعرض أول 3 منتجات.</p>
                     <button type="button" id="test-btn"
-                            class="rounded-xl border border-emerald-300 dark:border-emerald-700 px-4 py-2 text-sm font-medium text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 transition"
+                            class="rounded-xl border border-emerald-300 dark:border-emerald-700 px-4 py-2 text-sm font-medium text-emerald-900 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 transition"
                             data-url="{{ route('admin.providers.test', $provider) }}">
                         اختبار الاتصال الآن
                     </button>

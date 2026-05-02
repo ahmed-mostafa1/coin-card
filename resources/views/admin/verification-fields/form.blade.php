@@ -16,4 +16,4 @@
     <label class="flex items-center gap-2 text-sm text-slate-600"><input type="checkbox" name="is_required" value="1" class="rounded border-slate-300 text-emerald-600" @checked(old('is_required', $field?->is_required ?? true))> مطلوب</label>
     <label class="flex items-center gap-2 text-sm text-slate-600"><input type="checkbox" name="is_enabled" value="1" class="rounded border-slate-300 text-emerald-600" @checked(old('is_enabled', $field?->is_enabled ?? true))> مفعل</label>
 </div>
-<div class="flex gap-3"><x-primary-button>{{ __('messages.save') }}</x-primary-button><a href="{{ route('admin.verification-fields.index') }}" class="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700">{{ __('messages.cancel') }}</a></div>
+<div class="flex gap-3"><x-primary-button>{{ __('messages.save') }}</x-primary-button><a href="{{ route('admin.verification-fields.index') }}" class="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ __('messages.cancel') }}</a></div>

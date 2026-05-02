@@ -7,8 +7,8 @@
     <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-8 shadow-sm">
         <div class="flex flex-wrap items-center justify-between gap-4">
             <div>
-                <h1 class="text-2xl font-semibold text-emerald-700 dark:text-emerald-400">{{ __('messages.notifications') }}</h1>
-                <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">{{ __('messages.notifications_desc') }}</p>
+                <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">{{ __('messages.notifications') }}</h1>
+                <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-300">{{ __('messages.notifications_desc') }}</p>
             </div>
             <div class="flex items-center gap-3">
                 @if(auth()->user()->hasRole('admin'))
@@ -18,7 +18,7 @@
                 @endif
                 <form method="POST" action="{{ route('account.notifications.mark-all-read') }}">
                     @csrf
-                    <button type="submit" class="rounded-full border border-emerald-200 dark:border-emerald-700 px-4 py-2 text-sm font-semibold text-emerald-700 dark:text-emerald-400 transition hover:bg-emerald-50 dark:hover:bg-emerald-900/30">
+                    <button type="submit" class="rounded-full border border-emerald-200 dark:border-emerald-700 px-4 py-2 text-sm font-semibold text-emerald-900 dark:text-emerald-400 transition hover:bg-emerald-50 dark:hover:bg-emerald-900/30">
                         {{ __('messages.mark_all_read') }}
                     </button>
                 </form>
@@ -26,18 +26,18 @@
         </div>
 
         @if (session('status'))
-            <div class="mt-4 rounded-lg border border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400">
+            <div class="mt-4 rounded-lg border border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-400">
                 {{ session('status') }}
             </div>
         @endif
 
         <div class="mt-6 flex items-center gap-3 text-sm">
             <a href="{{ route('account.notifications', ['filter' => 'all']) }}"
-                class="rounded-full border px-4 py-2 transition {{ $filter === 'all' ? 'border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400' : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-emerald-200 dark:hover:border-emerald-700' }}">
+                class="rounded-full border px-4 py-2 transition {{ $filter === 'all' ? 'border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-900 dark:text-emerald-400' : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-emerald-200 dark:hover:border-emerald-700' }}">
                 {{ __('messages.all') }}
             </a>
             <a href="{{ route('account.notifications', ['filter' => 'unread']) }}"
-                class="rounded-full border px-4 py-2 transition {{ $filter === 'unread' ? 'border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400' : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-emerald-200 dark:hover:border-emerald-700' }}">
+                class="rounded-full border px-4 py-2 transition {{ $filter === 'unread' ? 'border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-900 dark:text-emerald-400' : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-emerald-200 dark:hover:border-emerald-700' }}">
                 {{ __('messages.unread') }}
             </a>
         </div>
@@ -60,9 +60,9 @@
                                 $title = __($title, $titleParams);
                             }
                         @endphp
-                        <p class="text-sm font-semibold text-slate-700 dark:text-white">{{ $title }}</p>
+                        <p class="text-sm font-semibold text-slate-900 dark:text-white">{{ $title }}</p>
                         @if ($notification->read_at === null)
-                            <span class="mt-1 inline-flex rounded-full bg-emerald-100 dark:bg-emerald-900/50 px-2 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-400">{{ __('messages.new') }}</span>
+                            <span class="mt-1 inline-flex rounded-full bg-emerald-100 dark:bg-emerald-900/50 px-2 py-1 text-xs font-semibold text-emerald-900 dark:text-emerald-400">{{ __('messages.new') }}</span>
                         @endif
                     </div>
                         @php
@@ -77,7 +77,7 @@
                                 $description = __($description, $descriptionParams);
                             }
                         @endphp
-                        <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">{{ $description }}</p>
+                        <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-300">{{ $description }}</p>
                         @if (!empty($notification->data['image_url']) || !empty($notification->data['image_path']))
                             @php $notificationImage = $notification->data['image_url'] ?? asset('storage/'.$notification->data['image_path']); @endphp
                             <img src="{{ $notificationImage }}" alt="{{ $title }}" class="mt-3 max-h-48 rounded-xl border border-slate-200 object-contain dark:border-slate-700">

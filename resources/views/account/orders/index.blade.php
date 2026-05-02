@@ -8,7 +8,7 @@
         <x-page-header :title="__('messages.my_orders_title')" :subtitle="__('messages.my_orders_desc')" />
 
         @if (session('status'))
-            <div class="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm dark:bg-emerald-800 text-emerald-700">
+            <div class="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm dark:bg-emerald-800 text-emerald-50">
                 {{ session('status') }}
             </div>
         @endif
@@ -28,14 +28,14 @@
             <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
                 @forelse ($orders as $order)
                     <tr class="transition">
-                        <td class="py-3 text-slate-700 dark:text-slate-200">{{ $order->service->name }}</td>
-                        <td class="py-3 text-slate-700 dark:text-slate-200">{{ $order->variant?->name ?? '-' }}</td>
-                        <td class="py-3 text-slate-700 dark:text-slate-200">
+                        <td class="py-3 text-slate-700 dark:text-slate-50" data-label="{{ __('messages.service') }}">{{ $order->service->name }}</td>
+                        <td class="py-3 text-slate-700 dark:text-slate-50" data-label="{{ __('messages.package') }}">{{ $order->variant?->name ?? '-' }}</td>
+                        <td class="py-3 text-slate-700 dark:text-slate-50" data-label="{{ __('messages.price_label') }}">
                             @if ($order->discount_percentage > 0)
                                 <div class="flex items-center gap-2">
                                     <span class="text-xs text-slate-400 line-through">{{ number_format($order->original_price, 2) }}</span>
-                                    <span class="font-semibold text-emerald-700 dark:text-emerald-400">{{ number_format($order->price_at_purchase, 2) }}</span>
-                                    <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/30 px-1.5 py-0.5 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
+                                    <span class="font-semibold text-emerald-900 dark:text-emerald-400">{{ number_format($order->price_at_purchase, 2) }}</span>
+                                    <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/30 px-1.5 py-0.5 text-xs font-semibold text-emerald-900 dark:text-emerald-400">
                                         -{{ number_format($order->discount_percentage, 0) }}%
                                     </span>
                                 </div>
@@ -43,8 +43,8 @@
                                 {{ number_format($order->price_at_purchase, 2) }} USD
                             @endif
                         </td>
-                        <td class="py-3 text-slate-700 dark:text-slate-200">{{ number_format($order->amount_held, 2) }} USD</td>
-                        <td class="py-3">
+                        <td class="py-3 text-slate-700 dark:text-slate-50" data-label="{{ __('messages.held_amount') }}">{{ number_format($order->amount_held, 2) }} USD</td>
+                        <td class="py-3" data-label="{{ __('messages.status') }}">
                             @if ($order->status === 'new')
                                 <x-badge type="new">{{ __('messages.status_new') }}</x-badge>
                             @elseif ($order->status === 'processing')
@@ -57,10 +57,10 @@
                                 <x-badge>{{ __('messages.status_cancelled') }}</x-badge>
                             @endif
                         </td>
-                        <td class="py-3 text-slate-500 dark:text-slate-400">{{ $order->created_at->format('Y-m-d') }}</td>
-                        <td class="py-3">
+                        <td class="py-3 text-slate-500 dark:text-slate-400" data-label="{{ __('messages.date') }}">{{ $order->created_at->format('Y-m-d') }}</td>
+                        <td class="py-3" data-label="{{ __('messages.details_link') }}">
                             <a href="{{ route('account.orders.show', $order) }}"
-                                class="text-emerald-700 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">{{ __('messages.view_link') }}</a>
+                                class="text-emerald-900 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">{{ __('messages.view_link') }}</a>
                         </td>
                     </tr>
                 @empty

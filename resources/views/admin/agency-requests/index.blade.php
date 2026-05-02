@@ -8,7 +8,7 @@
 
         <div class="flex flex-wrap items-center justify-between gap-4">
             <div>
-                <h1 class="text-2xl font-semibold text-emerald-700 dark:text-emerald-400">طلبات الوكالة</h1>
+                <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">طلبات الوكالة</h1>
                 <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
                     {{ $requests->total() }} طلب وارد
                 </p>
@@ -16,7 +16,7 @@
         </div>
 
         @if (session('status'))
-            <div class="mt-4 rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400">
+            <div class="mt-4 rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-400">
                 {{ session('status') }}
             </div>
         @endif
@@ -39,7 +39,7 @@
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/40 p-5 transition hover:shadow-md">
                     {{-- Header row --}}
                     <div class="flex items-center justify-between gap-4 mb-4">
-                        <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 dark:bg-emerald-900/40 px-3 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-300">
+                        <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 dark:bg-emerald-900/40 px-3 py-1 text-xs font-semibold text-emerald-900 dark:text-emerald-300">
                             #{{ $request->id }}
                         </span>
                         <span class="text-xs text-slate-400 dark:text-slate-500">{{ $request->created_at->format('Y-m-d H:i') }}</span>
@@ -52,7 +52,7 @@
                                 <p class="text-[11px] font-medium uppercase tracking-wide text-slate-400 dark:text-slate-500">
                                     {{ $fieldDefs[$key]->localized_label ?? $key }}
                                 </p>
-                                <p class="mt-0.5 text-sm font-semibold text-slate-700 dark:text-white break-words">
+                                <p class="mt-0.5 text-sm font-semibold text-slate-900 dark:text-white break-words">
                                     {{ $value }}
                                 </p>
                             </div>
@@ -62,7 +62,7 @@
                     {{-- Footer action --}}
                     <div class="mt-4 flex justify-start">
                         <a href="{{ route('admin.agency-requests.show', $request) }}"
-                           class="inline-flex items-center gap-1.5 rounded-full border border-emerald-300 dark:border-emerald-700 px-4 py-1.5 text-xs font-semibold text-emerald-700 dark:text-emerald-300 transition hover:bg-emerald-50 dark:hover:bg-emerald-900/30">
+                           class="inline-flex items-center gap-1.5 rounded-full border border-emerald-300 dark:border-emerald-700 px-4 py-1.5 text-xs font-semibold text-emerald-900 dark:text-emerald-300 transition hover:bg-emerald-50 dark:hover:bg-emerald-900/30">
                             عرض التفاصيل &larr;
                         </a>
                     </div>

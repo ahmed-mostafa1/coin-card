@@ -183,65 +183,61 @@
             </div>
         </section>
 
-        @if(filled((app()->getLocale() === 'en' && !empty($sharedTickerTextEn)) ? $sharedTickerTextEn : $sharedTickerText))
-            <section class="home-ticker">
-                <div class="home-ticker__label">
-                    <i class="fa-solid fa-bullhorn"></i>
-                    <span>{{ app()->getLocale() === 'ar' ? 'تنبيه' : 'Notice' }}</span>
-                </div>
-                <div class="home-ticker__viewport min-w-0 flex-1 overflow-hidden">
-                    <div class="store-ticker-track" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
-                        {{ (app()->getLocale() === 'en' && !empty($sharedTickerTextEn)) ? $sharedTickerTextEn : $sharedTickerText }}
-                    </div>
-                </div>
-            </section>
-        @endif
+        <x-store.ticker />
         </div>
 
         @auth
             <section class="grid gap-4 lg:grid-cols-[1.45fr_.95fr]">
-                <div class="home-account-card">
-                    <div class="flex flex-wrap items-start justify-between gap-4">
-                        <div class="space-y-3">
-                            <span class="home-section-badge">
-                                <i class="fa-solid fa-user-shield"></i>
-                                {{ app()->getLocale() === 'ar' ? 'تفاصيل حسابك' : 'Your Account Snapshot' }}
-                            </span>
-                            <div>
-                                <h2 class="text-xl font-black text-slate-900 dark:text-white">{{ auth()->user()->name }}</h2>
-                                <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">{{ app()->getLocale() === 'ar' ? 'عرض سريع لمعلومات الحساب والرصيد والطلبات.' : 'Quick snapshot of your account, balance, and orders.' }}</p>
-                            </div>
-                        </div>
+                <div class="home-account-card {{ auth()->user()->email_verified_at ? 'lg:col-span-2' : '' }}">
+                    <div class="home-account-card__topline">
+                        <span class="home-section-badge home-account-card__summary-badge">
+                            <i class="fa-solid fa-user-shield"></i>
+                            {{ app()->getLocale() === 'ar' ? 'ملخص حسابك' : 'Account Summary' }}
+                        </span>
 
-                        <div class="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-bold text-emerald-700 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-300">
-                            <i class="fa-solid fa-shield-halved text-emerald-500"></i>
+                        <div class="home-account-card__vip-badge">
+                            <i class="fa-solid fa-shield-halved"></i>
                             <span>{{ $homeLoyaltyLabel }}</span>
                         </div>
                     </div>
 
-                    <div class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                    <div class="home-account-card__heading">
+                        <h2>{{ auth()->user()->name }}</h2>
+                        <p>{{ app()->getLocale() === 'ar' ? 'كل ما تحتاجه موجود هنا: الرصيد، حالة التفعيل، والمستوى الحالي.' : 'Your balance, activation status, and current level are all here.' }}</p>
+                    </div>
+
+                    <div class="home-account-card__tiles">
                         <div class="home-balance-tile">
-                            <span class="home-balance-tile__label">{{ __('messages.available_balance') }}</span>
-                            <strong class="home-balance-tile__value" dir="ltr">$ {{ number_format(auth()->user()->available_balance, 2) }}</strong>
+                            <div class="home-balance-tile__content">
+                                <span class="home-balance-tile__label">{{ __('messages.available_balance') }}</span>
+                                <strong class="home-balance-tile__value" dir="ltr">$ {{ number_format(auth()->user()->available_balance, 2) }}</strong>
+                            </div>
+                            <span class="home-balance-tile__icon"><i class="fa-solid fa-wallet"></i></span>
                         </div>
                         <div class="home-balance-tile">
-                            <span class="home-balance-tile__label">{{ __('messages.held_balance') }}</span>
-                            <strong class="home-balance-tile__value" dir="ltr">$ {{ number_format($wallet?->held_balance ?? 0, 2) }}</strong>
+                            <div class="home-balance-tile__content">
+                                <span class="home-balance-tile__label">{{ __('messages.held_balance') }}</span>
+                                <strong class="home-balance-tile__value" dir="ltr">$ {{ number_format($wallet?->held_balance ?? 0, 2) }}</strong>
+                            </div>
+                            <span class="home-balance-tile__icon"><i class="fa-solid fa-clock"></i></span>
                         </div>
-                        <div class="home-balance-tile col-span-2 sm:col-span-1">
-                            <span class="home-balance-tile__label">{{ app()->getLocale() === 'ar' ? 'إجمالي الطلبات' : 'Orders Count' }}</span>
-                            <strong class="home-balance-tile__value" dir="ltr">{{ $ordersCount }}</strong>
+                        <div class="home-balance-tile">
+                            <div class="home-balance-tile__content">
+                                <span class="home-balance-tile__label">{{ app()->getLocale() === 'ar' ? 'حالة الرصيد' : 'Account Status' }}</span>
+                                <strong class="home-balance-tile__value">{{ auth()->user()->email_verified_at ? (app()->getLocale() === 'ar' ? 'مفعل' : 'Active') : (app()->getLocale() === 'ar' ? 'غير مفعل' : 'Inactive') }}</strong>
+                            </div>
+                            <span class="home-balance-tile__icon home-balance-tile__icon--success"><i class="fa-solid {{ auth()->user()->email_verified_at ? 'fa-check' : 'fa-triangle-exclamation' }}"></i></span>
                         </div>
                     </div>
 
-                    <div class="mt-5 grid grid-cols-2 gap-3 sm:flex sm:flex-wrap">
-                        <a href="{{ route('account') }}" class="home-btn home-btn--secondary w-full sm:w-auto">
-                            <i class="fa-solid fa-id-card"></i>
+                    <div class="home-account-card__actions">
+                        <a href="{{ route('account') }}" class="home-btn home-btn--account">
                             <span>{{ __('messages.my_account') }}</span>
+                            <i class="fa-solid fa-id-card"></i>
                         </a>
-                        <a href="{{ route('deposit.index') }}" class="home-btn home-btn--ghost w-full sm:w-auto">
-                            <i class="fa-solid fa-plus"></i>
+                        <a href="{{ route('deposit.index') }}" class="home-btn home-btn--deposit">
                             <span>{{ __('messages.top_up_balance') }}</span>
+                            <i class="fa-solid fa-square-plus"></i>
                         </a>
                     </div>
                 </div>

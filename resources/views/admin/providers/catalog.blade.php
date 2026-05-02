@@ -34,7 +34,7 @@
         </x-page-header>
 
         @if(session('success'))
-            <div class="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">
+            <div class="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900 dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">
                 {{ session('success') }}
             </div>
         @endif
@@ -109,7 +109,7 @@
         @endif
 
         @if($mode === 'all' && ! $wasTruncated)
-            <div class="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">
+            <div class="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900 dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">
                 تم عرض الكتالوج كاملاً في صفحة واحدة.
                 @if($isDailyCard)
                     تم استخدام طلب موسّع مناسب لـ DailyCard.

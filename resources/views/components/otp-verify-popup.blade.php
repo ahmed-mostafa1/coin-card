@@ -58,7 +58,7 @@ class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-
     <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl dark:bg-slate-800" @click.outside="open = false">
         <div class="text-center">
             <h2 class="text-xl font-bold text-slate-900 dark:text-white">{{ __('messages.account_activation') }}</h2>
-            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
+            <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-300">
                 {{ __('messages.otp_sent_email_instruction') }}
             </p>
         </div>

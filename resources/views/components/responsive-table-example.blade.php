@@ -17,7 +17,7 @@
 --}}
 
 <x-responsive-table>
-    <thead class="bg-slate-50 dark:bg-slate-700/50 text-xs text-slate-500 dark:text-slate-400">
+    <thead class="bg-slate-50 dark:bg-slate-700/50 text-xs text-slate-9000 dark:text-slate-50">
         <tr>
             <th class="py-2">Order ID</th>
             <th class="py-2">Customer</th>
@@ -31,7 +31,7 @@
             <td class="py-3 text-slate-500 dark:text-slate-400" data-label="Order ID">#12345</td>
             <td class="py-3 text-slate-700 dark:text-slate-300" data-label="Customer">
                 Ahmed Mostafa
-                <div class="text-xs text-slate-500 dark:text-slate-400">ahmed@example.com</div>
+                <div class="text-xs text-slate-9000 dark:text-slate-50">ahmed@example.com</div>
             </td>
             <td class="py-3 text-slate-700 dark:text-slate-300" data-label="Amount">$150.00</td>
             <td class="py-3" data-label="Status">
@@ -39,7 +39,7 @@
             </td>
             <td class="py-3" data-label="Actions">
                 <div class="flex flex-wrap gap-2 text-xs">
-                    <a href="#" class="text-emerald-700 dark:text-emerald-400 hover:text-emerald-900">View</a>
+                    <a href="#" class="text-emerald-900 dark:text-emerald-400 hover:text-emerald-900">View</a>
                     <a href="#" class="text-blue-700 dark:text-blue-400 hover:text-blue-900">Edit</a>
                 </div>
             </td>
@@ -53,7 +53,7 @@
 --}}
 
 <x-responsive-table>
-    <thead class="bg-slate-50 dark:bg-slate-700/50 text-xs text-slate-500 dark:text-slate-400">
+    <thead class="bg-slate-50 dark:bg-slate-700/50 text-xs text-slate-9000 dark:text-slate-50">
         <tr>
             <th class="py-2">رقم الطلب</th>
             <th class="py-2">المستخدم</th>
@@ -69,7 +69,7 @@
             <td class="py-3 text-slate-500 dark:text-slate-400" data-label="رقم الطلب">#123</td>
             <td class="py-3 text-slate-700 dark:text-slate-300" data-label="المستخدم">
                 أحمد مصطفى
-                <div class="text-xs text-slate-500 dark:text-slate-400">ahmed@example.com</div>
+                <div class="text-xs text-slate-9000 dark:text-slate-50">ahmed@example.com</div>
             </td>
             <td class="py-3 text-slate-700 dark:text-slate-300" data-label="النوع">USD</td>
             <td class="py-3 text-slate-700 dark:text-slate-300" data-label="المبلغ">150.00 USD</td>
@@ -78,7 +78,7 @@
             </td>
             <td class="py-3 text-slate-500 dark:text-slate-400" data-label="التاريخ">2026-01-30 19:45</td>
             <td class="py-3" data-label="عرض">
-                <a href="#" class="text-emerald-700 dark:text-emerald-400 hover:text-emerald-900">عرض</a>
+                <a href="#" class="text-emerald-900 dark:text-emerald-400 hover:text-emerald-900">عرض</a>
             </td>
         </tr>
     </tbody>

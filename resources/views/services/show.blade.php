@@ -159,6 +159,31 @@
             text-decoration: underline;
             word-break: break-word;
         }
+
+        .service-richtext ul,
+        .service-richtext ol {
+            margin: 0.75rem 1.25rem;
+            padding: 0 1rem;
+        }
+
+        .service-richtext ul {
+            list-style: disc;
+        }
+
+        .service-richtext ol {
+            list-style: decimal;
+        }
+
+        .service-richtext blockquote {
+            margin: 0.75rem 0;
+            border-inline-start: 4px solid #10b981;
+            padding-inline-start: 1rem;
+            color: #475569;
+        }
+
+        .dark .service-richtext blockquote {
+            color: #cbd5e1;
+        }
     </style>
 
     @php
@@ -182,9 +207,7 @@
     @endphp
 
     <div class="store-shell space-y-6">
-        <div class="w-full">
-            <x-store.notice :text="$sharedTickerText" />
-        </div>
+        <x-store.ticker />
 
         <div class="flex w-full flex-col gap-4">
             @if ($service->is_offer_active)
@@ -215,7 +238,7 @@
             @endif
             <div class="order-2 w-full space-y-4">
                 @if (session('status'))
-                    <div class="rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400">
+                    <div class="rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-400">
                         {{ session('status') }}
                     </div>
                 @endif
@@ -243,7 +266,7 @@
                             <p class="text-sm text-slate-600 dark:text-slate-300">{{ $service->category->localized_name }}</p>
                             <div class="pt-2">
                                 <button type="button"
-                                        class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-emerald-200 hover:text-emerald-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:border-emerald-700 dark:hover:text-emerald-300"
+                                        class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:border-emerald-200 hover:text-emerald-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50 dark:hover:border-emerald-700 dark:hover:text-emerald-300"
                                         data-share-service
                                         data-share-title="{{ $service->localized_name }}"
                                         data-share-url="{{ route('services.show', $service->slug) }}"
@@ -303,9 +326,9 @@
                                 </div>
                             @endif
                             @auth
-                                <p class="text-xs text-slate-500 dark:text-slate-400">
+                                <p class="text-xs text-slate-9000 dark:text-slate-50">
                                     {{ __('messages.available_balance_text') }}:
-                                    <span class="font-semibold text-emerald-700">{{ number_format($availableBalance, 2) }}
+                                    <span class="font-semibold text-emerald-900">{{ number_format($availableBalance, 2) }}
                                         USD</span>
                                 </p>
                             @endauth
@@ -332,7 +355,7 @@
                                             $isChecked = old('variant_id') ? old('variant_id') == $variant->id : $index === 0;
                                         @endphp
                                         <label
-                                            class="flex items-center justify-between rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 transition hover:border-emerald-200 dark:hover:border-emerald-500">
+                                            class="flex items-center justify-between rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-3 text-sm text-slate-700 dark:text-slate-50 transition hover:border-emerald-200 dark:hover:border-emerald-500">
                                             <span class="flex items-center gap-2">
                                                 <input type="radio" name="variant_id" value="{{ $variant->id }}"
                                                     data-price="{{ $discountedPrice }}"
@@ -347,10 +370,10 @@
                                             </span>
                                             <span class="flex items-center gap-2">
                                                 @if ($vipDiscount > 0)
-                                                    <span class="text-xs text-slate-500 line-through">${{ number_format($grossPrice, 2) }}</span>
-                                                    <span class="font-semibold text-emerald-700">${{ number_format($discountedPrice, 2) }}</span>
+                                                    <span class="text-xs text-slate-50 line-through">${{ number_format($grossPrice, 2) }}</span>
+                                                    <span class="font-semibold text-emerald-900">${{ number_format($discountedPrice, 2) }}</span>
                                                 @else
-                                                    <span class="font-semibold text-emerald-700">${{ number_format($grossPrice, 2) }}</span>
+                                                    <span class="font-semibold text-emerald-900">${{ number_format($grossPrice, 2) }}</span>
                                                 @endif
                                             </span>
                                         </label>
@@ -369,11 +392,11 @@
                                         @if($service->max_quantity) max="{{ $service->max_quantity }}" @endif
                                         value="{{ $service->min_quantity ?? 1 }}" 
                                         data-price-per-unit="{{ $service->price_per_unit }}"
-                                        class="w-32 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-2 text-sm text-slate-700 dark:text-slate-200"
+                                        class="w-32 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-2 text-sm text-slate-700 dark:text-slate-50"
                                         lang="en" dir="ltr"
                                         required>
                                     @if($service->min_quantity > 1 || $service->max_quantity)
-                                        <p class="text-xs text-slate-500 mt-1">
+                                        <p class="text-xs text-slate-50 mt-1">
                                             @if($service->max_quantity)
                                                 {!! __('messages.quantity_limits', ['min' => '<span class="latin-digits" lang="en" dir="ltr">'.e($service->min_quantity ?? 1).'</span>', 'max' => '<span class="latin-digits" lang="en" dir="ltr">'.e($service->max_quantity).'</span>']) !!}
                                             @else
@@ -411,15 +434,15 @@
                                     : (float) $service->service_fee_value;
                                 $initialDiscountedPrice = max(0, round(((float) $oldOfferAmount) + $initialOfferFee - (((float) $oldOfferAmount) * ($serviceDiscountPercent / 100)), 2));
                             @endphp
-                            <div class="space-y-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-3 text-sm text-slate-700 dark:text-slate-200">
+                            <div class="space-y-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-3 text-sm text-slate-700 dark:text-slate-50">
                                 <div class="space-y-1">
-                                    <label for="offer_image" class="block text-sm font-semibold text-slate-800">صورة العرض</label>
+                                    <label for="offer_image" class="block text-sm font-semibold text-slate-900 dark:text-slate-50">صورة العرض</label>
                                     <input id="offer_image" name="offer_image" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" class="store-input" required>
                                     <x-input-error :messages="$errors->get('offer_image')" />
                                 </div>
 
                                 <div class="space-y-1">
-                                    <label for="offer_amount" class="block text-sm font-semibold text-slate-800">قيمة العرض</label>
+                                    <label for="offer_amount" class="block text-sm font-semibold text-slate-900 dark:text-slate-50">قيمة العرض</label>
                                     <input id="offer_amount" name="offer_amount" type="number" step="0.01" min="0" value="{{ old('offer_amount', 0) }}" class="store-input" required>
                                     <x-input-error :messages="$errors->get('offer_amount')" />
                                 </div>
@@ -428,17 +451,17 @@
                                     <div class="flex items-center justify-between gap-3"><span>السعر الأساسي</span><span class="font-semibold">{{ number_format((float) $oldOfferAmount, 2) }} USD</span></div>
                                     <div class="flex items-center justify-between gap-3"><span>رسوم الخدمة</span><span class="font-semibold">{{ number_format($initialOfferFee, 2) }} USD</span></div>
                                     <div class="flex items-center justify-between gap-3"><span>الإجمالي قبل الخصم</span><span class="font-semibold">{{ number_format(((float) $oldOfferAmount) + $initialOfferFee, 2) }} USD</span></div>
-                                    <div class="flex items-center justify-between gap-3 border-t border-slate-200 pt-2 text-base font-bold text-emerald-700 dark:border-slate-600">
+                                    <div class="flex items-center justify-between gap-3 border-t border-slate-200 pt-2 text-base font-bold text-emerald-900 dark:border-slate-600">
                                         <span>القيمة النهائية للطلب</span>
                                         <span><span id="current-price">{{ number_format($initialDiscountedPrice, 2) }}</span> <span id="price-currency">USD</span></span>
                                     </div>
                                 </div>
                                 <input type="hidden" name="selected_price" id="selected-price-input" value="{{ number_format($initialDiscountedPrice, 2, '.', '') }}">
                                 <p id="insufficient-message" class="mt-2 text-xs text-rose-600 hidden">{{ __('messages.insufficient_balance_msg') }}</p>
-                                <p class="mt-1 text-xs text-slate-500">{{ __('messages.held_amount_notice') }}</p>
+                                <p class="mt-1 text-xs text-slate-900 dark:text-slate-50">{{ __('messages.held_amount_notice') }}</p>
                             </div>
                         @else
-                            <div class="rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-3 text-sm text-slate-700 dark:text-slate-200">
+                            <div class="rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-3 text-sm text-slate-700 dark:text-slate-50">
                                 <p>القيمة النهائية للطلب:
                                     @if ($service->variants->count())
                                         @php
@@ -457,9 +480,9 @@
                                             <div class="flex items-center justify-between gap-3 font-semibold"><span>الإجمالي قبل الخصم</span><span id="price-gross">${{ number_format($initialGross, 2) }}</span></div>
                                         </div>
                                         @if ($vipDiscount > 0)
-                                            <span id="original-price" class="text-xs text-slate-500 line-through">${{ number_format($initialGross, 2) }}</span>
+                                            <span id="original-price" class="text-xs text-slate-50 line-through">${{ number_format($initialGross, 2) }}</span>
                                         @endif
-                                        <span id="current-price" class="font-semibold text-emerald-700">${{ number_format($displayPrice, 2) }}</span>
+                                        <span id="current-price" class="font-semibold text-emerald-900">${{ number_format($displayPrice, 2) }}</span>
                                     @elseif ($service->is_quantity_based)
                                         @php
                                             $initialBase = (float) $service->price_per_unit;
@@ -475,9 +498,9 @@
                                             <div class="flex items-center justify-between gap-3 font-semibold"><span>الإجمالي قبل الخصم</span><span id="price-gross">${{ number_format($initialGross, 2) }}</span></div>
                                         </div>
                                         @if ($vipDiscount > 0)
-                                            <span id="original-price" class="text-xs text-slate-500 line-through">${{ number_format($initialGross, 2) }}</span>
+                                            <span id="original-price" class="text-xs text-slate-50 line-through">${{ number_format($initialGross, 2) }}</span>
                                         @endif
-                                        <span id="current-price" class="font-semibold text-emerald-700">${{ number_format($displayPrice, 2) }}</span>
+                                        <span id="current-price" class="font-semibold text-emerald-900">${{ number_format($displayPrice, 2) }}</span>
                                     @else
                                         @php
                                             $initialBase = (float) $service->price;
@@ -493,25 +516,24 @@
                                             <div class="flex items-center justify-between gap-3 font-semibold"><span>الإجمالي قبل الخصم</span><span id="price-gross">${{ number_format($initialGross, 2) }}</span></div>
                                         </div>
                                         @if ($vipDiscount > 0)
-                                            <span id="original-price" class="text-xs text-slate-500 line-through">${{ number_format($initialGross, 2) }}</span>
+                                            <span id="original-price" class="text-xs text-slate-50 line-through">${{ number_format($initialGross, 2) }}</span>
                                         @endif
-                                        <span id="current-price" class="font-semibold text-emerald-700">${{ number_format($displayPrice, 2) }}</span>
+                                        <span id="current-price" class="font-semibold text-emerald-900">${{ number_format($displayPrice, 2) }}</span>
                                     @endif
-                                    <span id="price-currency">USD</span>
                                 </p>
                                 <input type="hidden" name="selected_price" id="selected-price-input" value="{{ $displayPrice }}">
                                 <input type="hidden" name="vip_discount" value="{{ $vipDiscount }}">
                                 <p id="insufficient-message"
                                     class="mt-2 text-xs text-rose-600 {{ $isBaseInsufficient ? '' : 'hidden' }}">
                                     {{ __('messages.insufficient_balance_msg') }}</p>
-                                <p class="mt-1 text-xs text-slate-500">{{ __('messages.held_amount_notice') }}</p>
+                                <p class="mt-1 text-xs text-slate-900 dark:text-slate-50">{{ __('messages.held_amount_notice') }}</p>
                             </div>
                         @endif
 
                             @forelse ($service->formFields->sortBy('sort_order') as $field)
                                 <div class="space-y-1">
                                     <label for="field_{{ $field->name_key }}"
-                                        class="block text-sm font-semibold text-slate-800">{{ $field->localized_label }}</label>
+                                        class="block text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $field->localized_label }}</label>
                                     @if ($field->type === 'text')
                                         <input id="field_{{ $field->name_key }}"
                                             name="fields[{{ $field->name_key }}]"
@@ -526,7 +548,7 @@
                                             {{ $field->is_required ? 'required' : '' }}>{{ old('fields.' . $field->name_key) }}</textarea>
                                     @endif
                                     @if ($field->localized_additional_rules)
-                                        <p class="mt-2 text-xs text-slate-500">{{ $field->localized_additional_rules }}</p>
+                                        <p class="mt-2 text-xs text-slate-700 dark:text-slate-50">{{ $field->localized_additional_rules }}</p>
                                     @endif
                                     <x-input-error :messages="$errors->get('fields.' . $field->name_key)" />
                                 </div>
@@ -536,24 +558,24 @@
 
                         @if ($service->order_image_upload_enabled)
                             <div class="space-y-1 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700 dark:bg-slate-700/50">
-                                <label for="order_image" class="block text-sm font-semibold text-slate-800 dark:text-slate-200">
+                                <label for="order_image" class="block text-sm font-semibold text-slate-900 dark:text-slate-50">
                                     صورة مرفقة مع الطلب {{ $service->order_image_required ? '*' : '(اختياري)' }}
                                 </label>
                                 @if ($service->order_image_help_text)
-                                    <p class="text-xs text-slate-500 dark:text-slate-400">{{ $service->order_image_help_text }}</p>
+                                    <p class="text-xs text-slate-9000 dark:text-slate-50">{{ $service->order_image_help_text }}</p>
                                 @endif
                                 <input id="order_image" name="order_image" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" class="store-input" {{ $service->order_image_required ? 'required' : '' }}>
-                                <p class="text-xs text-slate-500">JPG, PNG, WEBP - حتى 2MB</p>
+                                <p class="text-xs text-slate-700 dark:text-slate-50">JPG, PNG, WEBP - حتى 2MB</p>
                                 <x-input-error :messages="$errors->get('order_image')" />
                             </div>
                         @endif
 
                         @php
-                            $termsLink = '<a href="'.route('terms-of-use').'" class="font-semibold text-emerald-700 hover:underline dark:text-emerald-400">'.e(__('messages.terms_of_use')).'</a>';
+                            $termsLink = '<a href="'.route('terms-of-use').'" class="font-semibold text-emerald-900 hover:underline dark:text-emerald-400">'.e(__('messages.terms_of_use')).'</a>';
                         @endphp
 
                         <div class="rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-3">
-                            <label for="accept-terms-checkbox" class="flex items-start gap-3 text-sm text-slate-700 dark:text-slate-200">
+                            <label for="accept-terms-checkbox" class="flex items-start gap-3 text-sm text-slate-700 dark:text-slate-50">
                                 <input
                                     id="accept-terms-checkbox"
                                     name="accept_terms"
@@ -582,7 +604,7 @@
                     </form>
 
                     @if (!empty($serviceArticleHtml))
-                        <article class="service-richtext prose prose-slate mt-8 max-w-none rounded-2xl border border-slate-200 bg-white p-5 text-sm leading-7 text-slate-700 dark:prose-invert dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
+                        <article class="service-richtext prose prose-slate mt-8 max-w-none rounded-2xl border border-slate-200 bg-white p-5 text-sm leading-7 text-slate-700 dark:prose-invert dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50">
                             {!! $serviceArticleHtml !!}
                         </article>
                     @endif

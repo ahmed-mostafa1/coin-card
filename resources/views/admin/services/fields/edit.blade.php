@@ -6,12 +6,12 @@
     <div class="grid gap-6 lg:grid-cols-3">
         <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-8 shadow-sm lg:col-span-2">
             <div class="flex items-center justify-between">
-                <h1 class="text-2xl font-semibold text-emerald-700 dark:text-emerald-400">{{ __('messages.edit_field') }}</h1>
-                <a href="{{ route('admin.services.edit', $service) }}" class="text-sm text-emerald-700 dark:text-emerald-400">{{ __('messages.back_to_service') }}</a>
+                <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">{{ __('messages.edit_field') }}</h1>
+                <a href="{{ route('admin.services.edit', $service) }}" class="text-sm text-emerald-900 dark:text-emerald-400">{{ __('messages.back_to_service') }}</a>
             </div>
 
             @if (session('status'))
-            <div class="mt-6 rounded-lg border border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-300">
+            <div class="mt-6 rounded-lg border border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-300">
                     {{ session('status') }}
                 </div>
             @endif

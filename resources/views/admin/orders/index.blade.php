@@ -30,7 +30,7 @@
         </form>
 
         @if (session('status'))
-            <div class="mt-6 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400">
+            <div class="mt-6 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-400">
                 {{ session('status') }}
             </div>
         @endif
@@ -49,7 +49,7 @@
                 <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
                     @forelse ($orders as $order)
                         <tr class="transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
-                            <td class="py-3 text-slate-700 dark:text-white" data-label="المستخدم">{{ $order->user?->name ?? 'مستخدم محذوف' }} <x-user-badge :user="$order->user" /><div class="text-xs text-slate-500 dark:text-slate-400">{{ $order->user?->email }}</div></td>
+                            <td class="py-3 text-slate-700 dark:text-white" data-label="المستخدم">{{ $order->user?->name ?? 'مستخدم محذوف' }} <x-user-badge :user="$order->user" /><div class="text-xs text-slate-9000 dark:text-slate-50">{{ $order->user?->email }}</div></td>
                             <td class="py-3 text-slate-700 dark:text-white" data-label="الخدمة">{{ $order->service?->name ?? 'خدمة محذوفة' }}</td>
                             <td class="py-3 text-slate-700 dark:text-white" data-label="السعر">{{ number_format($order->price_at_purchase, 2) }} USD</td>
                             <td class="py-3" data-label="الحالة">

@@ -6,10 +6,10 @@
     <div class="rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm">
         <div class="flex items-center justify-between gap-4">
             <div>
-                <h1 class="text-2xl font-semibold text-emerald-700">طلب وكالة #{{ $agencyRequest->id }}</h1>
-                <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">تم الإرسال في {{ $agencyRequest->created_at->format('Y-m-d H:i') }}</p>
+                <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-100">طلب وكالة #{{ $agencyRequest->id }}</h1>
+                <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-400">تم الإرسال في {{ $agencyRequest->created_at->format('Y-m-d H:i') }}</p>
             </div>
-            <a href="{{ route('admin.agency-requests.index') }}" class="text-sm text-emerald-700 dark:text-emerald-300 hover:text-emerald-900">عودة للقائمة</a>
+            <a href="{{ route('admin.agency-requests.index') }}" class="text-sm text-emerald-900 dark:text-emerald-300 hover:text-emerald-900">عودة للقائمة</a>
         </div>
 
         <div class="mt-6 grid gap-4 sm:grid-cols-2">
@@ -25,8 +25,8 @@
 
             @forelse ($payload as $key => $value)
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 p-4">
-                    <p class="text-xs text-slate-500 dark:text-slate-400">{{ $fields[$key]->localized_label ?? $key }}</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-700 dark:text-slate-200">{{ $value }}</p>
+                    <p class="text-xs text-slate-9000 dark:text-slate-50">{{ $fields[$key]->localized_label ?? $key }}</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50 dark:text-slate-50">{{ $value }}</p>
                 </div>
             @empty
                 <p class="col-span-2 text-sm text-slate-500 dark:text-slate-400">لا توجد بيانات.</p>

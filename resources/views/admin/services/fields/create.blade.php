@@ -5,8 +5,8 @@
 @section('content')
     <div class="w-full rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-8 shadow-sm">
         <div class="flex items-center justify-between">
-            <h1 class="text-2xl font-semibold text-emerald-700 dark:text-emerald-400">{{ __('messages.add_field_for_service') }}</h1>
-            <a href="{{ route('admin.services.edit', $service) }}" class="text-sm text-emerald-700 dark:text-emerald-400">{{ __('messages.back_to_service') }}</a>
+            <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">{{ __('messages.add_field_for_service') }}</h1>
+            <a href="{{ route('admin.services.edit', $service) }}" class="text-sm text-emerald-900 dark:text-emerald-400">{{ __('messages.back_to_service') }}</a>
         </div>
 
         <form method="POST" action="{{ route('admin.services.fields.store', $service) }}" class="mt-6 space-y-4">

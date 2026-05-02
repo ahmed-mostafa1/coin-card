@@ -8,7 +8,7 @@
         <x-page-header title="توثيق الحساب" subtitle="أرسل البيانات المطلوبة لمراجعة التوثيق من الإدارة." />
 
         @if (session('status'))
-            <div class="mt-6 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-300">{{ session('status') }}</div>
+            <div class="mt-6 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-300">{{ session('status') }}</div>
         @endif
 
         <div class="mt-6 rounded-2xl border border-slate-200 p-4 dark:border-slate-700">
@@ -52,10 +52,10 @@
                                 <canvas class="hidden" data-camera-canvas></canvas>
                                 <img class="mt-3 hidden max-h-64 rounded-xl border border-slate-200 object-contain" data-camera-preview alt="camera preview">
                                 <div class="mt-3 flex flex-wrap gap-2">
-                                    <button type="button" class="rounded-full border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-700" data-camera-start>فتح الكاميرا</button>
+                                    <button type="button" class="rounded-full border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-900" data-camera-start>فتح الكاميرا</button>
                                     <button type="button" class="rounded-full bg-emerald-600 px-4 py-2 text-sm font-semibold text-white" data-camera-capture>التقاط الصورة</button>
                                 </div>
-                                <p class="mt-2 text-xs text-slate-500">هذا الحقل يتطلب التقاط صورة مباشرة ولا يقبل رفع صورة من المعرض.</p>
+                                <p class="mt-2 text-xs text-slate-700 dark:text-slate-50">هذا الحقل يتطلب التقاط صورة مباشرة ولا يقبل رفع صورة من المعرض.</p>
                             </div>
                         @else
                             <x-text-input :id="$field->name_key" name="fields[{{ $field->name_key }}]" :type="$field->type === 'date' ? 'date' : ($field->type === 'number' ? 'number' : 'text')" :value="old('fields.'.$field->name_key)" :placeholder="$field->localized_placeholder" :required="$field->is_required" />

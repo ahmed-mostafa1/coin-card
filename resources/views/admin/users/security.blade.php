@@ -33,7 +33,7 @@
         </x-card>
 
         <x-card :hover="false" class="p-6">
-            <h2 class="text-lg font-semibold text-emerald-700">السجلات</h2>
+            <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-100">السجلات</h2>
             <x-table class="mt-4">
                 <thead><tr><th>التاريخ</th><th>الإجراء</th><th>IP</th><th>البلد</th><th>الجهاز</th><th>المتصفح</th><th>مرجع</th></tr></thead>
                 <tbody>
@@ -57,7 +57,7 @@
 
         <div class="grid gap-6 lg:grid-cols-3">
             <x-card :hover="false" class="p-6">
-                <h2 class="text-lg font-semibold text-emerald-700">سجل IP</h2>
+                <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-100">سجل IP</h2>
                 <div class="mt-4 space-y-2 text-sm">
                     @forelse ($ipHistories as $ip)
                         <div class="rounded-xl border border-slate-200 p-3">{{ $ip->ip_address }} - {{ $ip->country_code ?? '-' }} - {{ $ip->seen_count }} مرة</div>
@@ -67,7 +67,7 @@
                 </div>
             </x-card>
             <x-card :hover="false" class="p-6">
-                <h2 class="text-lg font-semibold text-emerald-700">محاولات الدخول الفاشلة</h2>
+                <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-100">محاولات الدخول الفاشلة</h2>
                 <div class="mt-4 space-y-2 text-sm">
                     @forelse ($failedAttempts as $attempt)
                         <div class="rounded-xl border border-slate-200 p-3">{{ $attempt->created_at->format('Y-m-d H:i') }} - {{ $attempt->ip_address ?? '-' }} - {{ $attempt->reason }}</div>

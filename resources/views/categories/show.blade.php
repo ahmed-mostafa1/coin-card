@@ -71,6 +71,7 @@
 
 @section('content')
     <div class="store-shell space-y-4">
+        <x-store.ticker />
 
         {{-- Compact category header (replaces full hero slider) --}}
         <div class="flex items-center gap-3 px-3 pt-1">
@@ -90,7 +91,7 @@
             <div class="min-w-0">
                 <h1 class="text-base font-bold text-slate-800 dark:text-slate-100 leading-tight truncate">{{ $category->localized_name }}</h1>
                 {{-- Breadcrumb --}}
-                <div class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                <div class="flex items-center gap-1 text-xs text-slate-9000 dark:text-slate-50 mt-0.5">
                     <a href="{{ route('home') }}" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition">{{ __('messages.home') }}</a>
                     @if($category->parent)
                         <i class="fa-solid fa-chevron-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} text-[9px]"></i>

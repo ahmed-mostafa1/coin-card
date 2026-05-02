@@ -10,13 +10,13 @@
                 <h1 class="text-2xl font-semibold text-emerald-800 dark:text-emerald-400">إعدادات الموقع</h1>
                 <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">تحكم في الإعدادات العامة، الشعار، وروابط التواصل الاجتماعي.</p>
             </div>
-            <a href="{{ route('dashboard') }}" class="rounded-full bg-slate-200 dark:bg-slate-700 px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 transition hover:bg-slate-300 dark:hover:bg-slate-600">
+            <a href="{{ route('dashboard') }}" class="rounded-full bg-slate-200 dark:bg-slate-700 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-slate-50 transition hover:bg-slate-300 dark:hover:bg-slate-600">
                 <i class="fa-solid fa-arrow-right ml-2 rtl:ml-0 rtl:mr-2"></i> {{ __('messages.dashboard') ?? 'لوحة التحكم' }}
             </a>
         </div>
 
         @if (session('status'))
-            <div class="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400">
+            <div class="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-400">
                 {{ session('status') }}
             </div>
         @endif
@@ -35,13 +35,13 @@
         <form action="{{ route('admin.site-settings.update-general') }}" method="POST">
             @csrf
             <div class="rounded-3xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm">
-                <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-6 pb-2 border-b border-slate-100 dark:border-slate-700">الإعدادات العامة</h2>
+                <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-50 mb-6 pb-2 border-b border-slate-100 dark:border-slate-700">الإعدادات العامة</h2>
                 
                 <div class="space-y-4">
                     <div>
                         <x-input-label for="ticker_text" value="نص الشريط المتحرك (عربي)" />
                         <textarea id="ticker_text" name="ticker_text" rows="2" 
-                            class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500" 
+                            class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-50 focus:border-emerald-500 focus:ring-emerald-500" 
                             required>{{ old('ticker_text', $tickerText) }}</textarea>
                         <x-input-error :messages="$errors->get('ticker_text')" />
                     </div>
@@ -49,7 +49,7 @@
                     <div>
                         <x-input-label for="ticker_text_en" value="نص الشريط المتحرك (إنجليزي)" />
                         <textarea id="ticker_text_en" name="ticker_text_en" rows="2" 
-                            class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500" 
+                            class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-50 focus:border-emerald-500 focus:ring-emerald-500" 
                             dir="ltr">{{ old('ticker_text_en', $tickerTextEn) }}</textarea>
                         <x-input-error :messages="$errors->get('ticker_text_en')" />
                     </div>
@@ -57,7 +57,7 @@
                     <div>
                         <x-input-label for="store_description" value="نص الوصف (عربي)" />
                         <textarea id="store_description" name="store_description" rows="4" 
-                            class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500" 
+                            class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-50 focus:border-emerald-500 focus:ring-emerald-500" 
                             required>{{ old('store_description', $storeDescription) }}</textarea>
                         <x-input-error :messages="$errors->get('store_description')" />
                     </div>
@@ -65,12 +65,12 @@
                     <div>
                         <x-input-label for="store_description_en" value="نص الوصف (إنجليزي)" />
                         <textarea id="store_description_en" name="store_description_en" rows="4" 
-                            class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500" 
+                            class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-50 focus:border-emerald-500 focus:ring-emerald-500" 
                             dir="ltr">{{ old('store_description_en', $storeDescriptionEn ?? '') }}</textarea>
                         <x-input-error :messages="$errors->get('store_description_en')" />
                     </div>
                     <div class="border-t border-slate-100 pt-5 dark:border-slate-700">
-                        <h3 class="text-lg font-semibold text-slate-800 dark:text-slate-200">نصوص الهيرو في الصفحة الرئيسية</h3>
+                        <h3 class="text-lg font-semibold text-slate-800 dark:text-slate-50">نصوص الهيرو في الصفحة الرئيسية</h3>
                         <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">هذه الحقول تتحكم في العنوان والوصف الرئيسي أعلى الصفحة الرئيسية.</p>
                     </div>
 
@@ -88,31 +88,31 @@
                         <div>
                             <x-input-label for="home_hero_text_ar" value="وصف الهيرو (عربي)" />
                             <textarea id="home_hero_text_ar" name="home_hero_text_ar" rows="3"
-                                class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500">{{ old('home_hero_text_ar', $homeHeroTextAr) }}</textarea>
+                                class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-50 focus:border-emerald-500 focus:ring-emerald-500">{{ old('home_hero_text_ar', $homeHeroTextAr) }}</textarea>
                             <x-input-error :messages="$errors->get('home_hero_text_ar')" />
                         </div>
                         <div>
                             <x-input-label for="home_hero_text_en" value="Hero Description (English)" />
                             <textarea id="home_hero_text_en" name="home_hero_text_en" rows="3" dir="ltr"
-                                class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500">{{ old('home_hero_text_en', $homeHeroTextEn) }}</textarea>
+                                class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-50 focus:border-emerald-500 focus:ring-emerald-500">{{ old('home_hero_text_en', $homeHeroTextEn) }}</textarea>
                             <x-input-error :messages="$errors->get('home_hero_text_en')" />
                         </div>
                     </div>
 
                     <div class="border-t border-slate-100 pt-5 dark:border-slate-700">
-                        <h3 class="text-lg font-semibold text-slate-800 dark:text-slate-200">بطاقات مزايا الصفحة الرئيسية</h3>
+                        <h3 class="text-lg font-semibold text-slate-800 dark:text-slate-50">بطاقات مزايا الصفحة الرئيسية</h3>
                         <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">يمكنك تعديل العنوان والوصف لكل بطاقة كما ستظهر في الصفحة الرئيسية.</p>
                     </div>
 
                     @foreach($homeFeatureSettings as $feature)
                         <div class="rounded-2xl border border-slate-200 p-4 dark:border-slate-700">
                             <div class="mb-4 flex items-center gap-3">
-                                <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300">
+                                <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-300">
                                     <i class="{{ $feature['icon'] }}"></i>
                                 </span>
                                 <div>
-                                    <h4 class="font-semibold text-slate-800 dark:text-slate-200">البطاقة {{ $feature['index'] }}</h4>
-                                    <p class="text-xs text-slate-500 dark:text-slate-400">الأيقونة ثابتة، والنصوص قابلة للتعديل.</p>
+                                    <h4 class="font-semibold text-slate-800 dark:text-slate-50">البطاقة {{ $feature['index'] }}</h4>
+                                    <p class="text-xs text-slate-9000 dark:text-slate-50">الأيقونة ثابتة، والنصوص قابلة للتعديل.</p>
                                 </div>
                             </div>
 
@@ -130,13 +130,13 @@
                                 <div>
                                     <x-input-label for="home_feature_{{ $feature['index'] }}_description_ar" value="الوصف (عربي)" />
                                     <textarea id="home_feature_{{ $feature['index'] }}_description_ar" name="home_feature_{{ $feature['index'] }}_description_ar" rows="3"
-                                        class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500">{{ old('home_feature_'.$feature['index'].'_description_ar', $feature['description_ar']) }}</textarea>
+                                        class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-50 focus:border-emerald-500 focus:ring-emerald-500">{{ old('home_feature_'.$feature['index'].'_description_ar', $feature['description_ar']) }}</textarea>
                                     <x-input-error :messages="$errors->get('home_feature_'.$feature['index'].'_description_ar')" />
                                 </div>
                                 <div>
                                     <x-input-label for="home_feature_{{ $feature['index'] }}_description_en" value="Description (English)" />
                                     <textarea id="home_feature_{{ $feature['index'] }}_description_en" name="home_feature_{{ $feature['index'] }}_description_en" rows="3" dir="ltr"
-                                        class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500">{{ old('home_feature_'.$feature['index'].'_description_en', $feature['description_en']) }}</textarea>
+                                        class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-50 focus:border-emerald-500 focus:ring-emerald-500">{{ old('home_feature_'.$feature['index'].'_description_en', $feature['description_en']) }}</textarea>
                                     <x-input-error :messages="$errors->get('home_feature_'.$feature['index'].'_description_en')" />
                                 </div>
                             </div>
@@ -154,7 +154,7 @@
         <form action="{{ route('admin.site-settings.update-logo') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="rounded-3xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm" x-data="{ type: '{{ old('logo_type', $logoType) }}' }">
-                <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-6 pb-2 border-b border-slate-100 dark:border-slate-700">إعدادات الشعار</h2>
+                <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-50 mb-6 pb-2 border-b border-slate-100 dark:border-slate-700">إعدادات الشعار</h2>
                 
                 <div class="space-y-4">
                      <div>
@@ -174,7 +174,7 @@
                     <div>
                         <x-input-label for="logo_text" value="نص الشعار" />
                         <x-text-input id="logo_text" name="logo_text" type="text" :value="old('logo_text', $logoText)" class="w-full" />
-                        <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">يظهر هذا النص بجانب الشعار في الهيدر سواء كان الشعار نصًا أو صورة.</p>
+                        <p class="mt-1 text-xs text-slate-900 dark:text-slate-400">يظهر هذا النص بجانب الشعار في الهيدر سواء كان الشعار نصًا أو صورة.</p>
                         <x-input-error :messages="$errors->get('logo_text')" />
                     </div>
 
@@ -186,8 +186,8 @@
                                     <img src="{{ asset('storage/' . $logoImage) }}" alt="Current Logo" class="h-full w-full object-contain">
                                 </div>
                             @endif
-                            <input type="file" id="logo_image" name="logo_image" accept="image/*" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 dark:file:bg-emerald-900/50 dark:file:text-emerald-400">
-                            <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">المقاس المفضل: 200×60 بكسل</p>
+                            <input type="file" id="logo_image" name="logo_image" accept="image/*" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-900 hover:file:bg-emerald-100 dark:file:bg-emerald-900/50 dark:file:text-emerald-400">
+                            <p class="mt-1 text-xs text-slate-900 dark:text-slate-400">المقاس المفضل: 200×60 بكسل</p>
                         </div>
                         <x-input-error :messages="$errors->get('logo_image')" />
                     </div>
@@ -203,7 +203,7 @@
         <form action="{{ route('admin.site-settings.update-social') }}" method="POST">
             @csrf
             <div class="rounded-3xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm">
-                <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-6 pb-2 border-b border-slate-100 dark:border-slate-700">وسائل التواصل الاجتماعي</h2>
+                <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-50 mb-6 pb-2 border-b border-slate-100 dark:border-slate-700">وسائل التواصل الاجتماعي</h2>
                 
                 <div class="grid gap-6 md:grid-cols-2">
                     @foreach ([
@@ -216,12 +216,12 @@
                         <div class="rounded-2xl border border-slate-200 p-4 dark:border-slate-700">
                             <div class="flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-3">
-                                    <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-200">
+                                    <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-50">
                                         <i class="fa-brands {{ $social['icon'] }}"></i>
                                     </span>
                                     <div>
-                                        <h3 class="font-semibold text-slate-800 dark:text-slate-200">{{ $social['label'] }}</h3>
-                                        <p class="text-xs text-slate-500 dark:text-slate-400">رابط + تفعيل للظهور في الفوتر.</p>
+                                        <h3 class="font-semibold text-slate-800 dark:text-slate-50">{{ $social['label'] }}</h3>
+                                        <p class="text-xs text-slate-9000 dark:text-slate-50">رابط + تفعيل للظهور في الفوتر.</p>
                                     </div>
                                 </div>
                                 <label class="inline-flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300">
@@ -262,10 +262,10 @@
         <form action="{{ route('admin.site-settings.update-seo') }}" method="POST">
             @csrf
             <div class="rounded-3xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm">
-                <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-1 pb-2 border-b border-slate-100 dark:border-slate-700">
+                <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-50 mb-1 pb-2 border-b border-slate-100 dark:border-slate-700">
                     <i class="fa-solid fa-magnifying-glass-chart ml-2 text-emerald-600"></i> SEO والإعلانات
                 </h2>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mb-6">تُحفظ في قاعدة البيانات – لن تُفقد عند تحديث الكود.</p>
+                <p class="text-xs text-slate-9000 dark:text-slate-50 mb-6">تُحفظ في قاعدة البيانات – لن تُفقد عند تحديث الكود.</p>
 
                 <div class="space-y-6">
 
@@ -285,7 +285,7 @@
                             <div class="flex items-center gap-2 mb-1">
                                 <div class="w-5 h-5 rounded-full bg-emerald-600 flex items-center justify-center text-white text-[9px] font-bold">S</div>
                                 <div class="text-xs">
-                                    <div class="text-slate-800 dark:text-slate-200 font-medium" id="serp_site_name">{{ $seoTitle ?: $logoText }}</div>
+                                    <div class="text-slate-800 dark:text-slate-50 font-medium" id="serp_site_name">{{ $seoTitle ?: $logoText }}</div>
                                     <div class="text-slate-500 dark:text-slate-400 text-[11px]" dir="ltr">{{ rtrim(config('app.url'), '/') }} › ...</div>
                                 </div>
                             </div>
@@ -310,7 +310,7 @@
                                 <span id="seo_title_count">{{ mb_strlen($seoTitle) }}</span>/60
                             </span>
                         </div>
-                        <p class="mb-2 text-xs text-slate-500 dark:text-slate-400">
+                        <p class="mb-2 text-xs text-slate-9000 dark:text-slate-50">
                             يظهر في تبويب المتصفح وعنوان نتيجة البحث. المثالي: أقل من 60 حرفاً.
                             إذا تُرك فارغاً سيُستخدم اسم الموقع تلقائياً.
                         </p>
@@ -331,12 +331,12 @@
                                 <span id="meta_desc_count">{{ mb_strlen($metaDescription) }}</span>/160
                             </span>
                         </div>
-                        <p class="mb-2 text-xs text-slate-500 dark:text-slate-400">
+                        <p class="mb-2 text-xs text-slate-9000 dark:text-slate-50">
                             الجملة الصغيرة التي تظهر أسفل العنوان في جوجل. الأفضل: 120–160 حرفاً.
                             إذا تُرك فارغاً سيُستخدم وصف المتجر تلقائياً.
                         </p>
                         <textarea id="meta_description" name="meta_description" rows="3" maxlength="500"
-                            class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500"
+                            class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-50 focus:border-emerald-500 focus:ring-emerald-500"
                             dir="auto">{{ old('meta_description', $metaDescription) }}</textarea>
                         <div id="meta_desc_bar" class="mt-1 h-1 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
                             <div id="meta_desc_fill" class="h-full rounded-full transition-all duration-200" style="width:0%"></div>
@@ -347,7 +347,7 @@
                     {{-- ── Meta Keywords ─────────────────────────────────────────── --}}
                     <div>
                         <x-input-label for="meta_keywords" value="الكلمات المفتاحية (Keywords)" />
-                        <p class="mb-2 text-xs text-slate-500 dark:text-slate-400">افصل بين الكلمات بفاصلة – مثال: بطاقات العاب، شحن رصيد، خدمات رقمية</p>
+                        <p class="mb-2 text-xs text-slate-9000 dark:text-slate-50">افصل بين الكلمات بفاصلة – مثال: بطاقات العاب، شحن رصيد، خدمات رقمية</p>
                         <x-text-input id="meta_keywords" name="meta_keywords" type="text"
                             :value="old('meta_keywords', $metaKeywords)" class="w-full" dir="auto"
                             placeholder="بطاقات العاب، شحن رصيد، ..." />
@@ -362,7 +362,7 @@
                         <div class="grid gap-4 md:grid-cols-2">
                             <div>
                                 <x-input-label for="fb_pixel_id" value="Facebook / Meta Pixel ID" />
-                                <p class="mb-1 text-xs text-slate-500 dark:text-slate-400">أرقام فقط – مثال: 1234567890123456</p>
+                                <p class="mb-1 text-xs text-slate-9000 dark:text-slate-50">أرقام فقط – مثال: 1234567890123456</p>
                                 <div class="relative">
                                     <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                                         <i class="fa-brands fa-meta text-blue-600 text-sm"></i>
@@ -375,7 +375,7 @@
                             </div>
                             <div>
                                 <x-input-label for="ga_id" value="Google Analytics ID" />
-                                <p class="mb-1 text-xs text-slate-500 dark:text-slate-400">مثال: G-XXXXXXXXXX</p>
+                                <p class="mb-1 text-xs text-slate-9000 dark:text-slate-50">مثال: G-XXXXXXXXXX</p>
                                 <div class="relative">
                                     <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                                         <i class="fa-brands fa-google text-orange-500 text-sm"></i>
@@ -398,17 +398,17 @@
                         <div class="p-4 space-y-4 bg-white dark:bg-slate-800">
                             <div>
                                 <x-input-label for="head_scripts" value="كود مخصص داخل <head>" />
-                                <p class="mb-1 text-xs text-slate-500 dark:text-slate-400">مناسب لـ TikTok Pixel أو Google Tag Manager.</p>
+                                <p class="mb-1 text-xs text-slate-9000 dark:text-slate-50">مناسب لـ TikTok Pixel أو Google Tag Manager.</p>
                                 <textarea id="head_scripts" name="head_scripts" rows="5"
-                                    class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 px-4 py-3 text-sm font-mono text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500"
+                                    class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 px-4 py-3 text-sm font-mono text-slate-700 dark:text-slate-50 focus:border-emerald-500 focus:ring-emerald-500"
                                     dir="ltr" placeholder="<!-- أدخل الكود هنا -->">{{ old('head_scripts', $headScripts) }}</textarea>
                                 <x-input-error :messages="$errors->get('head_scripts')" />
                             </div>
                             <div>
                                 <x-input-label for="body_scripts" value="كود مخصص قبل </body>" />
-                                <p class="mb-1 text-xs text-slate-500 dark:text-slate-400">مناسب لأدوات الدردشة المباشرة.</p>
+                                <p class="mb-1 text-xs text-slate-9000 dark:text-slate-50">مناسب لأدوات الدردشة المباشرة.</p>
                                 <textarea id="body_scripts" name="body_scripts" rows="5"
-                                    class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 px-4 py-3 text-sm font-mono text-slate-700 dark:text-slate-200 focus:border-emerald-500 focus:ring-emerald-500"
+                                    class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 px-4 py-3 text-sm font-mono text-slate-700 dark:text-slate-50 focus:border-emerald-500 focus:ring-emerald-500"
                                     dir="ltr" placeholder="<!-- أدخل الكود هنا -->">{{ old('body_scripts', $bodyScripts) }}</textarea>
                                 <x-input-error :messages="$errors->get('body_scripts')" />
                             </div>

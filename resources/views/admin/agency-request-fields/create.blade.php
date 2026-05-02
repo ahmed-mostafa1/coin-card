@@ -6,7 +6,7 @@
 @section('content')
     <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-8 shadow-sm">
         <div class="mb-6 flex items-center justify-between">
-            <h1 class="text-2xl font-semibold text-emerald-700 dark:text-emerald-400">{{ __('messages.add_field') }}</h1>
+            <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">{{ __('messages.add_field') }}</h1>
             <a href="{{ route('admin.agency-request-fields.index') }}" class="text-sm text-slate-500 hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-400">
                 <i class="fa-solid fa-arrow-right ml-1"></i>
                 {{ __('messages.back_to_list') }}

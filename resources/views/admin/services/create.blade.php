@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="w-full rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm transition-colors duration-200">
-        <h1 class="text-2xl font-semibold text-emerald-700 dark:text-emerald-400">{{ __('messages.add_service') }}</h1>
+        <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">{{ __('messages.add_service') }}</h1>
 
         <form method="POST" action="{{ route('admin.services.store') }}" enctype="multipart/form-data" class="mt-6 space-y-4">
             @csrf
@@ -43,14 +43,13 @@
 
             <div>
                 <x-input-label for="description" :value="__('messages.description_ar')" />
-                <textarea id="description" name="description" rows="4" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">{{ old('description') }}</textarea>
-                <p class="mt-1 text-xs text-slate-500">يدعم HTML آمن مثل الروابط والصور والقوائم. سيتم تنظيف المحتوى تلقائياً قبل العرض.</p>
+                <x-admin.rich-text-editor id="description" name="description" :value="old('description')" dir="rtl" />
                 <x-input-error :messages="$errors->get('description')" />
             </div>
 
             <div>
                 <x-input-label for="description_en" :value="__('messages.description_en')" />
-                <textarea id="description_en" name="description_en" rows="4" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">{{ old('description_en') }}</textarea>
+                <x-admin.rich-text-editor id="description_en" name="description_en" :value="old('description_en')" dir="ltr" />
                 <x-input-error :messages="$errors->get('description_en')" />
             </div>
 
@@ -79,7 +78,7 @@
                 <x-input-label for="admin_discount_percent" value="نسبة الخصم (%)" />
                 <x-text-input id="admin_discount_percent" name="admin_discount_percent" type="number" step="0.01" min="-100" max="100" :value="old('admin_discount_percent', 0)" />
                 <x-input-error :messages="$errors->get('admin_discount_percent')" />
-                <p class="mt-1 text-xs text-slate-500">تُطبّق هذه النسبة على قيمة العرض التي يدخلها المستخدم. القيمة السالبة تعني زيادة على السعر (Overprice).</p>
+                <p class="mt-1 text-xs text-slate-900 dark:text-slate-50">تُطبّق هذه النسبة على قيمة العرض التي يدخلها المستخدم. القيمة السالبة تعني زيادة على السعر (Overprice).</p>
             </div>
 
             <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4 space-y-4">
@@ -92,7 +91,7 @@
                         <x-input-label for="price_per_unit" value="السعر لكل قطعة" />
                         <x-text-input id="price_per_unit" name="price_per_unit" type="number" step="any" min="0.000000001" lang="en" dir="ltr" :value="old('price_per_unit')" />
                         <x-input-error :messages="$errors->get('price_per_unit')" />
-                        <p class="mt-1 text-xs text-slate-500">سيتم حساب السعر الإجمالي تلقائياً بناءً على الكمية</p>
+                        <p class="mt-1 text-xs text-slate-900 dark:text-slate-50">سيتم حساب السعر الإجمالي تلقائياً بناءً على الكمية</p>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
@@ -104,7 +103,7 @@
                             <x-input-label for="max_quantity" :value="__('messages.max_quantity')" />
                             <x-text-input id="max_quantity" name="max_quantity" type="number" min="1" lang="en" dir="ltr" :value="old('max_quantity')" />
                             <x-input-error :messages="$errors->get('max_quantity')" />
-                            <p class="mt-1 text-xs text-slate-500">{{ __('messages.any_quantity') }}</p>
+                            <p class="mt-1 text-xs text-slate-900 dark:text-slate-50">{{ __('messages.any_quantity') }}</p>
                         </div>
                     </div>
                 </div>
@@ -114,7 +113,7 @@
                 <x-input-label for="price" value="السعر الأساسي" />
                 <x-text-input id="price" name="price" type="number" step="0.01" min="0" :value="old('price')" />
                 <x-input-error :messages="$errors->get('price')" />
-                <p class="mt-1 text-xs text-slate-500">السعر الأساسي بدون رسوم الخدمة.</p>
+                <p class="mt-1 text-xs text-slate-900 dark:text-slate-50">السعر الأساسي بدون رسوم الخدمة.</p>
             </div>
 
             <div class="grid gap-4 md:grid-cols-2">
@@ -133,9 +132,9 @@
 
             <div>
                 <x-input-label for="image" :value="__('messages.image_optional')" />
-                <input id="image" name="image" type="file" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-600 dark:text-slate-300 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-800 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-700 dark:file:text-emerald-300">
+                <input id="image" name="image" type="file" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-600 dark:text-slate-300 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-800 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-900 dark:file:text-emerald-300">
                 <x-input-error :messages="$errors->get('image')" />
-                        <p class="mt-1 text-xs text-slate-500">{{ __('messages.recommended_size') }}: 500x500 px</p>
+                        <p class="mt-1 text-xs text-slate-900 dark:text-slate-50">{{ __('messages.recommended_size') }}: 500x500 px</p>
             </div>
 
             <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
@@ -175,14 +174,14 @@
             </div>
 
             <div class="mt-4 border-t border-slate-100 dark:border-slate-700 pt-4">
-                 <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400 mb-4">{{ __('messages.offer_settings') ?? (app()->getLocale() == 'ar' ? 'إعدادات العرض' : 'Offer Settings') }}</h2>
+                 <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400 mb-4">{{ __('messages.offer_settings') ?? (app()->getLocale() == 'ar' ? 'إعدادات العرض' : 'Offer Settings') }}</h2>
                  
                  <div class="space-y-4">
                     <div>
                         <x-input-label for="offer_image" :value="__('messages.offer_image') ?? (app()->getLocale() == 'ar' ? 'صورة العرض' : 'Offer Image')" />
-                        <input id="offer_image" name="offer_image" type="file" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-600 dark:text-slate-300 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-800 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-700 dark:file:text-emerald-300">
+                        <input id="offer_image" name="offer_image" type="file" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-600 dark:text-slate-300 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-800 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-900 dark:file:text-emerald-300">
                         <x-input-error :messages="$errors->get('offer_image')" />
-                                <p class="mt-1 text-xs text-slate-500">{{ __('messages.recommended_size') }}: 500x500 px</p>
+                                <p class="mt-1 text-xs text-slate-900 dark:text-slate-50">{{ __('messages.recommended_size') }}: 500x500 px</p>
                     </div>
 
                     <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
@@ -221,7 +220,7 @@
                         <x-input-label for="limited_offer_ends_at" :value="__('messages.limited_offer_ends_at')" />
                         <input id="limited_offer_ends_at" name="limited_offer_ends_at" type="datetime-local" value="{{ old('limited_offer_ends_at') }}" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-rose-500 focus:ring-rose-500">
                         <x-input-error :messages="$errors->get('limited_offer_ends_at')" />
-                        <p class="mt-1 text-xs text-slate-500">{{ __('messages.limited_offer_auto_deactivate_hint') }}</p>
+                        <p class="mt-1 text-xs text-slate-900 dark:text-slate-50">{{ __('messages.limited_offer_auto_deactivate_hint') }}</p>
                     </div>
                 </div>
             </div>
@@ -232,7 +231,7 @@
             </div>
 
             <div class="rounded-2xl border border-slate-200 p-4 dark:border-slate-700 space-y-4">
-                <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">محتوى SEO للخدمة</h2>
+                <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">محتوى SEO للخدمة</h2>
                 <div>
                     <x-input-label for="seo_title" value="عنوان SEO" />
                     <x-text-input id="seo_title" name="seo_title" type="text" :value="old('seo_title')" />
@@ -262,8 +261,8 @@
 
             <div id="variants-section" class="rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm transition-colors duration-200">
                 <div class="flex items-center justify-between">
-                    <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">{{ __('messages.variants') }}</h2>
-                    <button type="button" class="text-sm font-semibold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300" data-variant-add>{{ __('messages.add_variant') }}</button>
+                    <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">{{ __('messages.variants') }}</h2>
+                    <button type="button" class="text-sm font-semibold text-emerald-900 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300" data-variant-add>{{ __('messages.add_variant') }}</button>
                 </div>
                 <p id="variants-disabled-hint" class="mt-2 hidden text-xs text-amber-700">الباقات غير متاحة لهذا النوع من التسعير.</p>
                 <div class="mt-4 space-y-4" data-variants-container>
@@ -299,8 +298,8 @@
 
             <div class="rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm transition-colors duration-200">
                 <div class="flex items-center justify-between">
-                    <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">{{ __('messages.form_fields') }}</h2>
-                    <button type="button" class="text-sm font-semibold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300" data-field-add>{{ __('messages.add_field') }}</button>
+                    <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">{{ __('messages.form_fields') }}</h2>
+                    <button type="button" class="text-sm font-semibold text-emerald-900 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300" data-field-add>{{ __('messages.add_field') }}</button>
                 </div>
                 <div class="mt-4 space-y-4" data-fields-container>
                     @foreach ($fields as $index => $field)
@@ -382,15 +381,15 @@
                         <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4" data-variant-row>
                             <div class="grid gap-4 lg:grid-cols-4">
                                 <div class="lg:col-span-2">
-                                    <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ __('messages.variant_name') }}</label>
+                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-300">{{ __('messages.variant_name') }}</label>
                                     <input name="variants[${index}][name]" type="text" required class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
                                 <div>
-                                    <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ __('messages.price') }}</label>
+                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-300">{{ __('messages.price') }}</label>
                                     <input name="variants[${index}][price]" type="number" step="0.01" min="0.01" required class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
                                 <div>
-                                    <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ __('messages.sort_order') }}</label>
+                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-300">{{ __('messages.sort_order') }}</label>
                                     <input name="variants[${index}][sort_order]" type="number" min="0" value="${index}" class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
                             </div>
@@ -408,36 +407,36 @@
                         <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4" data-field-row>
                             <div class="grid gap-4 lg:grid-cols-4">
                                 <div class="lg:col-span-2">
-                                    <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ __('messages.field_label') }} (عربي)</label>
+                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-300">{{ __('messages.field_label') }} (عربي)</label>
                                     <input name="fields[${index}][label]" type="text" required class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
                                 <div class="lg:col-span-2">
-                                    <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ __('messages.field_label') }} (English)</label>
+                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-300">{{ __('messages.field_label') }} (English)</label>
                                     <input name="fields[${index}][label_en]" type="text" class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
                             </div>
                             <div class="mt-3 grid gap-4 lg:grid-cols-3">
                                 <div>
-                                    <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ __('messages.field_key') }}</label>
+                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-300">{{ __('messages.field_key') }}</label>
                                     <input name="fields[${index}][name_key]" type="text" required class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
                                 <div>
-                                    <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Placeholder (عربي)</label>
+                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-300">Placeholder (عربي)</label>
                                     <input name="fields[${index}][placeholder]" type="text" class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
                                 <div>
-                                    <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Placeholder (English)</label>
+                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-300">Placeholder (English)</label>
                                     <input name="fields[${index}][placeholder_en]" type="text" class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
                             </div>
                             <div class="mt-3 grid gap-3 lg:grid-cols-4">
                                 <div>
-                                    <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ __('messages.sort_order') }}</label>
+                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-300">{{ __('messages.sort_order') }}</label>
                                     <input name="fields[${index}][sort_order]" type="number" min="0" value="${index}" class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
                             <div class="mt-3 grid gap-3 lg:grid-cols-3">
                                 <div>
-                                    <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ __('messages.field_type') }}</label>
+                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-300">{{ __('messages.field_type') }}</label>
                                     <select name="fields[${index}][type]" class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500" required>
                                         <option value="text">{{ __('messages.field_type_text') }}</option>
                                         <option value="textarea">{{ __('messages.field_type_textarea') }}</option>
@@ -579,7 +578,7 @@
 
             <div class="flex gap-3">
                 <x-primary-button>{{ __('messages.save') }}</x-primary-button>
-                <a href="{{ route('admin.services.index') }}" class="rounded-full border border-slate-200 dark:border-slate-600 px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-500">{{ __('messages.cancel') }}</a>
+                <a href="{{ route('admin.services.index') }}" class="rounded-full border border-slate-200 dark:border-slate-600 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-500">{{ __('messages.cancel') }}</a>
             </div>
         </form>
     </div>

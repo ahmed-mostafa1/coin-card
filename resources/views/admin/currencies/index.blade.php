@@ -11,7 +11,7 @@
         </div>
 
         @if (session('status'))
-            <div class="mt-6 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-300">{{ session('status') }}</div>
+            <div class="mt-6 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-300">{{ session('status') }}</div>
         @endif
 
         <x-table class="mt-6">
@@ -39,7 +39,7 @@
                                 <x-badge type="rejected">معطلة</x-badge>
                             @endif
                         </td>
-                        <td class="py-3"><a href="{{ route('admin.currencies.edit', $currency) }}" class="inline-flex rounded-lg border border-emerald-200 dark:border-emerald-700 px-2.5 py-1 text-xs font-semibold text-emerald-700 hover:text-emerald-900 dark:text-emerald-300">تعديل</a></td>
+                        <td class="py-3"><a href="{{ route('admin.currencies.edit', $currency) }}" class="inline-flex rounded-lg border border-emerald-200 dark:border-emerald-700 px-2.5 py-1 text-xs font-semibold text-emerald-900 hover:text-emerald-900 dark:text-emerald-300">تعديل</a></td>
                     </tr>
                 @empty
                     <tr><td colspan="6" class="py-6 text-center text-slate-500">لا توجد عملات.</td></tr>

@@ -295,11 +295,30 @@ class ServiceController extends Controller
 
     private function sanitizeRichHtml(string $html): string
     {
-        $clean = strip_tags($html, '<p><br><strong><b><em><i><u><ul><ol><li><blockquote><h2><h3><h4><a><img>');
+        $clean = strip_tags($html, '<p><br><strong><b><em><i><u><s><span><ul><ol><li><blockquote><h1><h2><h3><h4><a><img>');
         $clean = preg_replace('/\son\w+="[^"]*"/iu', '', $clean) ?? $clean;
         $clean = preg_replace("/\son\w+='[^']*'/iu", '', $clean) ?? $clean;
-        $clean = preg_replace('/\sstyle="[^"]*"/iu', '', $clean) ?? $clean;
-        $clean = preg_replace("/\sstyle='[^']*'/iu", '', $clean) ?? $clean;
+        $clean = preg_replace_callback('/\sstyle=(["\'])(.*?)\1/iu', function (array $matches): string {
+            $allowed = [];
+
+            foreach (explode(';', $matches[2]) as $declaration) {
+                [$property, $value] = array_pad(explode(':', $declaration, 2), 2, null);
+                $property = strtolower(trim((string) $property));
+                $value = trim((string) $value);
+
+                if (! in_array($property, ['color', 'background-color'], true)) {
+                    continue;
+                }
+
+                if (! preg_match('/^(#[0-9a-f]{3,8}|rgba?\([0-9\s.,%]+\)|[a-z]+)$/iu', $value)) {
+                    continue;
+                }
+
+                $allowed[] = $property.': '.$value;
+            }
+
+            return $allowed === [] ? '' : ' style="'.implode('; ', $allowed).';"';
+        }, $clean) ?? $clean;
         $clean = preg_replace('/href=(["\'])\s*javascript:[^"\']*\1/iu', 'href="#"', $clean) ?? $clean;
         $clean = preg_replace('/src=(["\'])\s*javascript:[^"\']*\1/iu', '', $clean) ?? $clean;
 

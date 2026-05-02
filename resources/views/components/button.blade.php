@@ -10,7 +10,7 @@
         'primary' => 'bg-emerald-600 text-white hover:brightness-105 focus:ring-emerald-500',
         'secondary' => 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 focus:ring-emerald-500',
         'danger' => 'bg-rose-600 text-white hover:brightness-105 focus:ring-rose-500',
-        'ghost' => 'text-emerald-700 hover:bg-emerald-50 focus:ring-emerald-500',
+        'ghost' => 'text-emerald-900 hover:bg-emerald-50 focus:ring-emerald-500',
     ];
 
     $classes = $base.' '.($variants[$variant] ?? $variants['primary']);

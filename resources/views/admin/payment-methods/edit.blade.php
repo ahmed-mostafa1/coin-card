@@ -5,8 +5,8 @@
 
 @section('content')
     <div class="w-full rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm transition-colors duration-200">
-        <h1 class="text-2xl font-semibold text-emerald-700 dark:text-emerald-400">{{ __('messages.edit_payment_method') }}</h1>
-        <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">{{ __('messages.update_payment_method_details') }}</p>
+        <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">{{ __('messages.edit_payment_method') }}</h1>
+        <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-400">{{ __('messages.update_payment_method_details') }}</p>
 
         <form method="POST" action="{{ route('admin.payment-methods.update', $paymentMethod) }}" enctype="multipart/form-data" class="mt-6 space-y-4">
             @csrf
@@ -44,8 +44,8 @@
 
             <div>
                 <x-input-label for="icon" :value="__('messages.icon_optional')" />
-                <input id="icon" name="icon" type="file" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-600 dark:text-slate-300 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-800 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-700 dark:file:text-emerald-300">
-                <p class="mt-1 text-xs text-slate-500">{{ __('messages.recommended_size') }}: 200x200 px</p>
+                <input id="icon" name="icon" type="file" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-600 dark:text-slate-300 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-800 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-900 dark:file:text-emerald-300">
+                <p class="mt-1 text-xs text-slate-900 dark:text-slate-50">{{ __('messages.recommended_size') }}: 200x200 px</p>
                 <x-input-error :messages="$errors->get('icon')" />
                 @if ($paymentMethod->icon_path)
                 @endif
@@ -99,8 +99,8 @@
 
             <div class="rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm transition-colors duration-200">
                 <div class="flex items-center justify-between">
-                    <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">{{ __('messages.additional_fields') }}</h2>
-                    <button type="button" class="text-sm font-semibold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300" data-field-add>{{ __('messages.add_field') }}</button>
+                    <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">{{ __('messages.additional_fields') }}</h2>
+                    <button type="button" class="text-sm font-semibold text-emerald-900 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300" data-field-add>{{ __('messages.add_field') }}</button>
                 </div>
                 <div class="mt-4 space-y-4" data-fields-container>
                     @foreach ($fields as $index => $field)
@@ -181,24 +181,24 @@
                         <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4" data-field-row>
                             <div class="grid gap-4 lg:grid-cols-4">
                                 <div class="lg:col-span-2">
-                                    <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ __('messages.field_label') }}</label>
+                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-300">{{ __('messages.field_label') }}</label>
                                     <input name="fields[${index}][label]" type="text" required data-field-label-input class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                                     
-                                    <label class="mt-2 block text-sm font-semibold text-slate-700 dark:text-slate-300">{{ __('messages.field_label') }} (EN)</label>
+                                    <label class="mt-2 block text-sm font-semibold text-slate-900 dark:text-slate-300">{{ __('messages.field_label') }} (EN)</label>
                                     <input name="fields[${index}][label_en]" type="text" class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
                                 <div>
-                                    <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ __('messages.field_key') }}</label>
+                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-300">{{ __('messages.field_key') }}</label>
                                     <input name="fields[${index}][name_key]" type="text" required data-field-key-input class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
                                 <div>
-                                    <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ __('messages.sort_order') }}</label>
+                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-300">{{ __('messages.sort_order') }}</label>
                                     <input name="fields[${index}][sort_order]" type="number" min="0" value="${index}" class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
                             </div>
                             <div class="mt-3 grid gap-3 lg:grid-cols-3">
                                 <div>
-                                    <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ __('messages.field_type') }}</label>
+                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-300">{{ __('messages.field_type') }}</label>
                                     <select name="fields[${index}][type]" class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500" required>
                                         <option value="text">{{ __('messages.field_type_text') }}</option>
                                         <option value="textarea">{{ __('messages.field_type_textarea') }}</option>
@@ -231,7 +231,7 @@
 
             <div class="flex gap-3">
                 <x-primary-button>{{ __('messages.update') }}</x-primary-button>
-                <a href="{{ route('admin.payment-methods.index') }}" class="rounded-full border border-slate-200 dark:border-slate-600 px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-500">{{ __('messages.cancel') }}</a>
+                <a href="{{ route('admin.payment-methods.index') }}" class="rounded-full border border-slate-200 dark:border-slate-600 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-500">{{ __('messages.cancel') }}</a>
             </div>
         </form>
     </div>
@@ -239,8 +239,8 @@
     {{-- Payment Method Buttons --}}
     <div class="mt-6 w-full rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm transition-colors duration-200">
         <div class="flex items-center justify-between">
-            <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">{{ __('messages.payment_method_buttons') }}</h2>
-            <a href="{{ route('admin.payment-methods.buttons.create', $paymentMethod) }}" class="text-sm text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300">+ {{ __('messages.add_button') }}</a>
+            <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">{{ __('messages.payment_method_buttons') }}</h2>
+            <a href="{{ route('admin.payment-methods.buttons.create', $paymentMethod) }}" class="text-sm text-emerald-900 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300">+ {{ __('messages.add_button') }}</a>
         </div>
         <div class="mt-4 space-y-3">
             @forelse ($paymentMethod->buttons->sortBy('sort_order') as $button)
@@ -250,14 +250,14 @@
                             <span class="inline-block h-5 w-5 flex-shrink-0 rounded"
                                 style="background-color: {{ $button->bg_color }}"></span>
                             <div class="min-w-0">
-                                <p class="truncate text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $button->label_ar }}</p>
+                                <p class="truncate text-sm font-semibold text-slate-900 dark:text-slate-300">{{ $button->label_ar }}</p>
                                 @if ($button->label_en)
-                                    <p class="truncate text-xs text-slate-500 dark:text-slate-400">{{ $button->label_en }}</p>
+                                    <p class="truncate text-xs text-slate-9000 dark:text-slate-50">{{ $button->label_en }}</p>
                                 @endif
                             </div>
                         </div>
                         <a href="{{ route('admin.payment-methods.buttons.edit', [$paymentMethod, $button]) }}"
-                            class="flex-shrink-0 text-xs text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300">
+                            class="flex-shrink-0 text-xs text-emerald-900 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300">
                             {{ __('messages.edit') }}
                         </a>
                     </div>

@@ -5,8 +5,8 @@
 @section('content')
     <div class="w-full rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm dark:border-slate-700 dark:bg-slate-800">
         <div class="flex items-center justify-between">
-            <h1 class="text-2xl font-semibold text-emerald-700 dark:text-emerald-400">{{ __('messages.add_variant_for_service', ['service' => $service->name]) }}</h1>
-            <a href="{{ route('admin.services.variants.index', $service) }}" class="text-sm text-emerald-700 dark:text-emerald-400">{{ __('messages.back_to_variants') }}</a>
+            <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">{{ __('messages.add_variant_for_service', ['service' => $service->name]) }}</h1>
+            <a href="{{ route('admin.services.variants.index', $service) }}" class="text-sm text-emerald-900 dark:text-emerald-400">{{ __('messages.back_to_variants') }}</a>
         </div>
 
         <form method="POST" action="{{ route('admin.services.variants.store', $service) }}" class="mt-6 space-y-4">
@@ -56,7 +56,7 @@
 
             <div class="flex gap-3">
                 <x-primary-button>{{ __('messages.save') }}</x-primary-button>
-                <a href="{{ route('admin.services.variants.index', $service) }}" class="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 dark:border-slate-600 dark:text-slate-200">{{ __('messages.cancel') }}</a>
+                <a href="{{ route('admin.services.variants.index', $service) }}" class="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-900 dark:border-slate-600 dark:text-slate-50">{{ __('messages.cancel') }}</a>
             </div>
         </form>
     </div>

@@ -17,7 +17,7 @@
                         <div>
                             <h2 class="font-semibold text-slate-800 dark:text-white">{{ $notification->title_ar }}</h2>
                             <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">{{ $notification->content_ar }}</p>
-                            <p class="mt-2 text-xs text-slate-500">{{ $notification->scope }} - {{ $notification->recipient_count }} مستلم - بواسطة {{ $notification->admin?->name ?? '-' }}</p>
+                            <p class="mt-2 text-xs text-slate-700 dark:text-slate-50">{{ $notification->scope }} - {{ $notification->recipient_count }} مستلم - بواسطة {{ $notification->admin?->name ?? '-' }}</p>
                         </div>
                         <span class="text-xs text-slate-400">{{ $notification->created_at->format('Y-m-d H:i') }}</span>
                     </div>

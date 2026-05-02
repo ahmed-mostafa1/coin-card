@@ -67,7 +67,7 @@
                 @if($hasLogoImage)
                     <img src="{{ asset('storage/' . $sharedLogoImage) }}" alt="Logo" width="160" height="48" loading="eager" decoding="async" class="h-12 object-contain">
                 @else
-                    <span class="text-2xl font-bold text-emerald-700 dark:text-emerald-400 transition hover:text-emerald-800 dark:hover:text-emerald-300">{{ $sharedLogoText }}</span>
+                    <span class="text-2xl font-bold text-emerald-900 dark:text-emerald-400 transition hover:text-emerald-800 dark:hover:text-emerald-300">{{ $sharedLogoText }}</span>
                 @endif
             </a>
             

@@ -7,8 +7,8 @@
     <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-8 shadow-sm">
         <div class="flex flex-wrap items-center justify-between gap-4">
             <div>
-                <h1 class="text-2xl font-semibold text-emerald-700 dark:text-emerald-400">التصنيفات</h1>
-                <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">إدارة التصنيفات الرئيسية والفرعية.</p>
+                <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">التصنيفات</h1>
+                <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-300">إدارة التصنيفات الرئيسية والفرعية.</p>
             </div>
             <div class="flex flex-wrap items-center gap-4">
                 <form action="{{ route('admin.categories.index') }}" method="GET" class="flex items-center gap-2">
@@ -40,7 +40,7 @@
         </div>
 
         @if (session('status'))
-            <div class="mt-6 rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400">
+            <div class="mt-6 rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-400">
                 {{ session('status') }}
             </div>
         @endif
@@ -74,14 +74,14 @@
                         </td>
                         <td class="py-3">
                             @if ($category->is_active)
-                                <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/50 px-3 py-1 text-xs text-emerald-700 dark:text-emerald-400">مفعل</span>
+                                <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/50 px-3 py-1 text-xs text-emerald-900 dark:text-emerald-400">مفعل</span>
                             @else
                                 <span class="rounded-full bg-rose-100 dark:bg-rose-900/50 px-3 py-1 text-xs text-rose-700 dark:text-rose-400">متوقف</span>
                             @endif
                         </td>
                         <td class="py-3 text-slate-500 dark:text-slate-400">{{ $category->sort_order }}</td>
                         <td class="py-3 flex items-center gap-3">
-                            <a href="{{ route('admin.categories.edit', $category) }}" class="text-emerald-700 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">تعديل</a>
+                            <a href="{{ route('admin.categories.edit', $category) }}" class="text-emerald-900 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">تعديل</a>
                             
                             <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="delete-form">
                                 @csrf

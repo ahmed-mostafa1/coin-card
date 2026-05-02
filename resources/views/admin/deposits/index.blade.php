@@ -19,7 +19,7 @@
         </form>
 
         @if (session('status'))
-            <div class="mt-6 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400">
+            <div class="mt-6 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-400">
                 {{ session('status') }}
             </div>
         @endif
@@ -38,12 +38,12 @@
                 <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
                     @forelse ($deposits as $deposit)
                         <tr class="transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
-                            <td class="py-3 text-slate-700 dark:text-white">{{ $deposit->user?->name ?? 'مستخدم محذوف' }} <x-user-badge :user="$deposit->user" /><div class="text-xs text-slate-500 dark:text-slate-400">{{ $deposit->user?->email }}</div></td>
+                            <td class="py-3 text-slate-700 dark:text-white">{{ $deposit->user?->name ?? 'مستخدم محذوف' }} <x-user-badge :user="$deposit->user" /><div class="text-xs text-slate-9000 dark:text-slate-50">{{ $deposit->user?->email }}</div></td>
                             <td class="py-3 text-slate-700 dark:text-white">{{ $deposit->paymentMethod?->name ?? 'طريقة محذوفة' }}</td>
                             <td class="py-3 text-slate-700 dark:text-white">
                                 {{ number_format($deposit->net_usd_amount ?? $deposit->user_amount, 2) }} USD
                                 @if ($deposit->currency_code)
-                                    <div class="text-xs text-slate-500 dark:text-slate-400">{{ number_format($deposit->local_amount, 2) }} {{ $deposit->currency_code }}</div>
+                                    <div class="text-xs text-slate-9000 dark:text-slate-50">{{ number_format($deposit->local_amount, 2) }} {{ $deposit->currency_code }}</div>
                                 @endif
                             </td>
                             <td class="py-3">
@@ -57,7 +57,7 @@
                             </td>
                             <td class="py-3 text-slate-500 dark:text-slate-400">{{ $deposit->created_at->format('Y-m-d') }}</td>
                             <td class="py-3">
-                                <a href="{{ route('admin.deposits.show', $deposit) }}" class="text-emerald-700 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">عرض</a>
+                                <a href="{{ route('admin.deposits.show', $deposit) }}" class="text-emerald-900 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">عرض</a>
                             </td>
                         </tr>
                     @empty

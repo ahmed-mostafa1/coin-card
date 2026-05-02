@@ -6,7 +6,7 @@
     <div class="space-y-6">
         <div>
             <h1 class="text-2xl font-bold text-slate-900">{{ __('messages.forgot_password_title') }}</h1>
-            <p class="mt-2 text-sm text-slate-600">{{ __('messages.forgot_password_desc') }}</p>
+            <p class="mt-2 text-sm text-slate-900 dark:text-slate-50">{{ __('messages.forgot_password_desc') }}</p>
         </div>
 
         <div>

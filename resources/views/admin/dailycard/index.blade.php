@@ -83,7 +83,7 @@
                     <span class="font-semibold text-gray-800 text-sm">{{ $product['name'] }}</span>
                     <span class="text-xs text-gray-400">#{{ $product['id'] }}</span>
                     @if($isImported)
-                        <span class="inline-flex items-center gap-1 text-[11px] bg-emerald-100 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full font-medium">
+                        <span class="inline-flex items-center gap-1 text-[11px] bg-emerald-100 text-emerald-900 border border-emerald-200 px-2 py-0.5 rounded-full font-medium">
                             ✓ مستورد
                         </span>
                     @endif
@@ -93,7 +93,7 @@
                 </div>
                 <div class="flex items-center gap-4 mt-1 text-xs text-gray-500">
                     <span>النوع: <strong>{{ $type }}</strong></span>
-                    <span>السعر: <strong class="text-emerald-700">{{ $price }}</strong></span>
+                    <span>السعر: <strong class="text-emerald-900">{{ $price }}</strong></span>
                     @if($minQty !== null || $maxQty !== null)
                         <span>الكمية: {{ $minQty ?? '—' }} &ndash; {{ $maxQty ?? '∞' }}</span>
                     @endif
