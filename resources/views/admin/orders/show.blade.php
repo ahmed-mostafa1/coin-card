@@ -13,48 +13,54 @@
                 <a href="{{ route('admin.orders.index') }}" class="text-sm text-emerald-900 dark:text-emerald-400">عودة للقائمة</a>
             </div>
 
-            <div class="mt-6 grid gap-4 sm:grid-cols-2">
-                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 p-4">
-                    <p class="text-xs text-slate-9000 dark:text-slate-50">المستخدم</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50 dark:text-slate-50">{{ $order->user?->name ?? 'مستخدم محذوف' }}</p>
-                    <p class="text-xs text-slate-9000 dark:text-slate-50">{{ $order->user?->email }}</p>
-                </div>
-                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 p-4">
-                    <p class="text-xs text-slate-9000 dark:text-slate-50">السعر</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50 dark:text-slate-50">{{ number_format($order->price_at_purchase, 2) }} USD</p>
-                </div>
-                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 p-4">
-                    <p class="text-xs text-slate-9000 dark:text-slate-50">المبلغ المعلّق</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50 dark:text-slate-50">{{ number_format($order->amount_held, 2) }} USD</p>
-                </div>
-                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 p-4">
-                    <p class="text-xs text-slate-9000 dark:text-slate-50">الحالة</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50 dark:text-slate-50">
-                        @if ($order->status === 'new')
-                            جديد
-                        @elseif ($order->status === 'processing')
-                            قيد التنفيذ
-                        @elseif ($order->status === 'done')
-                            تم التنفيذ
-                        @elseif ($order->status === 'rejected')
-                            مرفوض
-                        @else
-                            ملغي
-                        @endif
-                    </p>
-                </div>
-                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 p-4">
-                    <p class="text-xs text-slate-9000 dark:text-slate-50">الباقة</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50 dark:text-slate-50">{{ $order->variant?->name ?? 'السعر الأساسي' }}</p>
-                </div>
-                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 p-4">
-                    <p class="text-xs text-slate-9000 dark:text-slate-50">تأكيد الخصم</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50 dark:text-slate-50">{{ $order->settled_at?->format('Y-m-d H:i') ?? '-' }}</p>
-                </div>
-                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 p-4">
-                    <p class="text-xs text-slate-9000 dark:text-slate-50">إرجاع الرصيد</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50 dark:text-slate-50">{{ $order->released_at?->format('Y-m-d H:i') ?? '-' }}</p>
-                </div>
+            <div class="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white/60 dark:border-slate-700 dark:bg-slate-900/40">
+                <table class="w-full table-fixed text-right text-sm">
+                    <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                        <tr>
+                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">المستخدم</th>
+                            <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">
+                                <span class="block break-words">{{ $order->user?->name ?? 'مستخدم محذوف' }}</span>
+                                <span class="mt-1 block break-all text-xs font-medium text-slate-500 dark:text-slate-300">{{ $order->user?->email }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">السعر</th>
+                            <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ number_format($order->price_at_purchase, 2) }} USD</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">المبلغ المعلّق</th>
+                            <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ number_format($order->amount_held, 2) }} USD</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">الحالة</th>
+                            <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">
+                                @if ($order->status === 'new')
+                                    جديد
+                                @elseif ($order->status === 'processing')
+                                    قيد التنفيذ
+                                @elseif ($order->status === 'done')
+                                    تم التنفيذ
+                                @elseif ($order->status === 'rejected')
+                                    مرفوض
+                                @else
+                                    ملغي
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">الباقة</th>
+                            <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $order->variant?->name ?? 'السعر الأساسي' }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">تأكيد الخصم</th>
+                            <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $order->settled_at?->format('Y-m-d H:i') ?? '-' }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">إرجاع الرصيد</th>
+                            <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $order->released_at?->format('Y-m-d H:i') ?? '-' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
             <div class="mt-6 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 p-4">

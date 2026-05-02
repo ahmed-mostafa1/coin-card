@@ -27,66 +27,72 @@
                 </div>
             </div>
 
-            <div class="mt-4 grid gap-3 sm:grid-cols-2">
-                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 p-3.5">
-                    <p class="text-xs text-slate-700 dark:text-slate-50">{{ __('messages.price_label') }}</p>
-                    @if ($order->discount_percentage > 0)
-                        <div class="mt-2 space-y-1">
-                            <p class="text-xs text-slate-400 line-through">{{ number_format($order->original_price, 2) }} USD</p>
-                            <div class="flex items-center gap-2">
-                                <p class="text-sm font-semibold text-emerald-900">{{ number_format($order->price_at_purchase, 2) }} USD</p>
-                                <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/30 px-2 py-0.5 text-xs font-semibold text-emerald-900 dark:text-emerald-400">
-                                    -{{ number_format($order->discount_percentage, 0) }}%
-                                </span>
-                            </div>
-                        </div>
-                    @else
-                        <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ number_format($order->price_at_purchase, 2) }} USD</p>
-                    @endif
-                </div>
-                @if ($order->discount_percentage > 0)
-                    <div class="rounded-2xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 p-4">
-                        <p class="text-xs text-emerald-600 dark:text-emerald-400">{{ app()->getLocale() == 'ar' ? 'المبلغ الموفر' : 'Amount Saved' }}</p>
-                        <p class="mt-2 text-sm font-semibold text-emerald-900 dark:text-emerald-300">{{ number_format($order->discount_amount, 2) }} USD</p>
-                        <p class="mt-1 text-xs text-emerald-600 dark:text-emerald-400">{{ app()->getLocale() == 'ar' ? 'خصم الحساب' : 'Account Discount' }}</p>
-                    </div>
-                @endif
-                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 p-3.5">
-                    <p class="text-xs text-slate-700 dark:text-slate-50">{{ __('messages.held_amount') }}</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ number_format($order->amount_held, 2) }} USD</p>
-                </div>
-                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 p-3.5">
-                    <p class="text-xs text-slate-700 dark:text-slate-50">{{ __('messages.status') }}</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50">
-                        @if ($order->status === 'new')
-                            <x-badge type="new">{{ __('messages.status_new') }}</x-badge>
-                        @elseif ($order->status === 'processing')
-                            <x-badge type="processing">{{ __('messages.status_processing') }}</x-badge>
-                        @elseif ($order->status === 'done')
-                            <x-badge type="done">{{ __('messages.status_done') }}</x-badge>
-                        @elseif ($order->status === 'rejected')
-                            <x-badge type="rejected">{{ __('messages.status_rejected') }}</x-badge>
-                        @else
-                            <x-badge>{{ __('messages.status_cancelled') }}</x-badge>
+            <div class="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800/80">
+                <table class="w-full table-fixed text-right text-sm">
+                    <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                        <tr>
+                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">{{ __('messages.price_label') }}</th>
+                            <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">
+                                @if ($order->discount_percentage > 0)
+                                    <span class="block text-xs font-medium text-slate-400 line-through">{{ number_format($order->original_price, 2) }} USD</span>
+                                    <span class="mt-1 flex flex-wrap items-center gap-2">
+                                        <span class="text-emerald-900 dark:text-emerald-300">{{ number_format($order->price_at_purchase, 2) }} USD</span>
+                                        <span class="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-900 dark:bg-emerald-900/30 dark:text-emerald-400">
+                                            -{{ number_format($order->discount_percentage, 0) }}%
+                                        </span>
+                                    </span>
+                                @else
+                                    {{ number_format($order->price_at_purchase, 2) }} USD
+                                @endif
+                            </td>
+                        </tr>
+                        @if ($order->discount_percentage > 0)
+                            <tr>
+                                <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-emerald-700 dark:text-emerald-400">{{ app()->getLocale() == 'ar' ? 'المبلغ الموفر' : 'Amount Saved' }}</th>
+                                <td class="px-4 py-3 text-sm font-semibold text-emerald-900 dark:text-emerald-300">
+                                    {{ number_format($order->discount_amount, 2) }} USD
+                                    <span class="mt-1 block text-xs font-medium text-emerald-700 dark:text-emerald-400">{{ app()->getLocale() == 'ar' ? 'خصم الحساب' : 'Account Discount' }}</span>
+                                </td>
+                            </tr>
                         @endif
-                    </p>
-                </div>
-                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 p-3.5">
-                    <p class="text-xs text-slate-700 dark:text-slate-50">{{ __('messages.package') }}</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $order->variant?->name ?? __('messages.base_price_label') }}</p>
-                </div>
-                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 p-3.5">
-                    <p class="text-xs text-slate-700 dark:text-slate-50">{{ __('messages.date') }}</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $order->created_at->format('Y-m-d H:i') }}</p>
-                </div>
-                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 p-3.5">
-                    <p class="text-xs text-slate-700 dark:text-slate-50">{{ __('messages.settled_at_label') }}</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $order->settled_at?->format('Y-m-d H:i') ?? '-' }}</p>
-                </div>
-                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 p-3.5">
-                    <p class="text-xs text-slate-700 dark:text-slate-50">{{ __('messages.released_at_label') }}</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $order->released_at?->format('Y-m-d H:i') ?? '-' }}</p>
-                </div>
+                        <tr>
+                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">{{ __('messages.held_amount') }}</th>
+                            <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ number_format($order->amount_held, 2) }} USD</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">{{ __('messages.status') }}</th>
+                            <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">
+                                @if ($order->status === 'new')
+                                    <x-badge type="new">{{ __('messages.status_new') }}</x-badge>
+                                @elseif ($order->status === 'processing')
+                                    <x-badge type="processing">{{ __('messages.status_processing') }}</x-badge>
+                                @elseif ($order->status === 'done')
+                                    <x-badge type="done">{{ __('messages.status_done') }}</x-badge>
+                                @elseif ($order->status === 'rejected')
+                                    <x-badge type="rejected">{{ __('messages.status_rejected') }}</x-badge>
+                                @else
+                                    <x-badge>{{ __('messages.status_cancelled') }}</x-badge>
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">{{ __('messages.package') }}</th>
+                            <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $order->variant?->name ?? __('messages.base_price_label') }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">{{ __('messages.date') }}</th>
+                            <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $order->created_at->format('Y-m-d H:i') }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">{{ __('messages.settled_at_label') }}</th>
+                            <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $order->settled_at?->format('Y-m-d H:i') ?? '-' }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">{{ __('messages.released_at_label') }}</th>
+                            <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $order->released_at?->format('Y-m-d H:i') ?? '-' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
             <div class="mt-4 rounded-2xl border border-slate-200 dark:border-slate-700 p-4">
