@@ -869,21 +869,23 @@
     }
 
     .home-account-card {
-        @apply relative overflow-hidden rounded-2xl border p-6 text-white shadow-xl;
-        border-color: rgba(96, 165, 250, 0.18);
+        @apply relative overflow-hidden rounded-2xl border p-6 text-slate-950 shadow-xl;
+        border-color: rgba(37, 99, 235, 0.16);
         background:
-            radial-gradient(circle at 8% 0%, rgba(124, 58, 237, 0.26), transparent 32%),
-            radial-gradient(circle at 86% 10%, rgba(37, 99, 235, 0.22), transparent 28%),
-            linear-gradient(135deg, #020617 0%, #081226 56%, #0f172a 100%);
-        box-shadow: 0 22px 55px rgba(2, 6, 23, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            radial-gradient(circle at 8% 0%, rgba(124, 58, 237, 0.14), transparent 32%),
+            radial-gradient(circle at 86% 10%, rgba(37, 99, 235, 0.12), transparent 28%),
+            linear-gradient(135deg, #ffffff 0%, #eef6ff 56%, #f8fafc 100%);
+        box-shadow: 0 22px 55px rgba(15, 23, 42, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.9);
     }
 
     .dark .home-account-card {
+        @apply text-white;
         border-color: rgba(96, 165, 250, 0.2);
         background:
             radial-gradient(circle at 8% 0%, rgba(124, 58, 237, 0.24), transparent 32%),
             radial-gradient(circle at 86% 10%, rgba(37, 99, 235, 0.2), transparent 28%),
             linear-gradient(135deg, #020617 0%, #081226 56%, #0f172a 100%);
+        box-shadow: 0 22px 55px rgba(2, 6, 23, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.06);
     }
 
     .home-account-card__topline {
@@ -891,14 +893,26 @@
     }
 
     .home-account-card__summary-badge {
-        @apply border-white/10 bg-white/10 text-white shadow-none backdrop-blur;
+        @apply border-blue-200/80 bg-white/70 text-slate-700 shadow-none backdrop-blur;
+    }
+
+    .dark .home-account-card__summary-badge {
+        @apply border-white/10 bg-white/10 text-white;
     }
 
     .home-account-card__vip-badge {
-        @apply absolute left-1/2 top-0 inline-flex -translate-x-1/2 items-center justify-center gap-1.5 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-[11px] font-extrabold text-white shadow-sm;
+        @apply absolute left-1/2 top-0 inline-flex -translate-x-1/2 items-center justify-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50/90 px-3 py-1 text-[11px] font-extrabold text-emerald-800 shadow-sm;
+    }
+
+    .dark .home-account-card__vip-badge {
+        @apply border-emerald-400/20 bg-emerald-400/10 text-white;
     }
 
     .home-account-card__vip-badge i {
+        @apply text-emerald-600;
+    }
+
+    .dark .home-account-card__vip-badge i {
         @apply text-emerald-300;
     }
 
@@ -907,11 +921,19 @@
     }
 
     .home-account-card__heading h2 {
-        @apply text-2xl font-black leading-tight text-white;
+        @apply text-2xl font-black leading-tight text-slate-950;
+    }
+
+    .dark .home-account-card__heading h2 {
+        @apply text-white;
     }
 
     .home-account-card__heading p {
-        @apply mt-2 text-xs font-semibold leading-6 text-slate-300 sm:text-sm;
+        @apply mt-2 text-xs font-semibold leading-6 text-slate-600 sm:text-sm;
+    }
+
+    .dark .home-account-card__heading p {
+        @apply text-slate-300;
     }
 
     .home-account-card__tiles {
@@ -920,6 +942,12 @@
 
     .home-account-card .home-balance-tile {
         @apply flex min-h-24 items-center justify-between gap-3 rounded-2xl border px-4 py-4;
+        border-color: rgba(148, 163, 184, 0.32);
+        background: rgba(255, 255, 255, 0.76);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 10px 24px rgba(15, 23, 42, 0.08);
+    }
+
+    .dark .home-account-card .home-balance-tile {
         border-color: rgba(148, 163, 184, 0.24);
         background: rgba(30, 41, 59, 0.82);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 10px 24px rgba(2, 6, 23, 0.18);
@@ -930,18 +958,34 @@
     }
 
     .home-account-card .home-balance-tile__label {
-        @apply text-[11px] font-semibold text-slate-300;
+        @apply text-[11px] font-semibold text-slate-500;
+    }
+
+    .dark .home-account-card .home-balance-tile__label {
+        @apply text-slate-300;
     }
 
     .home-account-card .home-balance-tile__value {
-        @apply mt-2 text-lg font-black text-white;
+        @apply mt-2 text-lg font-black text-slate-950;
+    }
+
+    .dark .home-account-card .home-balance-tile__value {
+        @apply text-white;
     }
 
     .home-balance-tile__icon {
-        @apply inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-slate-700/80 text-slate-100;
+        @apply inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-slate-600;
+    }
+
+    .dark .home-balance-tile__icon {
+        @apply bg-slate-700/80 text-slate-100;
     }
 
     .home-balance-tile__icon--success {
+        @apply bg-emerald-50 text-emerald-600;
+    }
+
+    .dark .home-balance-tile__icon--success {
         @apply bg-emerald-500/15 text-emerald-300;
     }
 
