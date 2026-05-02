@@ -4,7 +4,7 @@
 @section('mainWidth', 'w-[85%] mx-auto')
 
 @section('content')
-    <div class="w-full rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm">
+    <div class="w-full rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm dark:border-slate-700 dark:bg-slate-800 transition-colors duration-200">
         <div class="flex items-center justify-between mb-4">
             <div>
                 <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-100">الشريط المتحرك</h1>
@@ -27,7 +27,7 @@
 
             <div>
                 <x-input-label for="ticker_text" value="نص الشريط المتحرك" />
-                <textarea id="ticker_text" name="ticker_text" rows="3" class="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-3 text-sm text-slate-700 focus:border-emerald-500 focus:ring-emerald-500" required>{{ old('ticker_text', $tickerText) }}</textarea>
+                <textarea id="ticker_text" name="ticker_text" rows="3" class="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-3 text-sm text-slate-700 focus:border-emerald-500 focus:ring-emerald-500 dark:bg-slate-700 dark:text-emerald-50" required>{{ old('ticker_text', $tickerText) }}</textarea>
                 <x-input-error :messages="$errors->get('ticker_text')" />
             </div>
 
