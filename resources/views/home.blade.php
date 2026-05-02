@@ -141,6 +141,7 @@
             $homeLoyalty = $loyaltyService->summary(auth()->user());
             $homeLoyaltyLabel = $homeLoyalty['level_label'];
             $wallet = auth()->user()->wallet;
+            $ordersCount = auth()->user()->orders()->count();
         @endphp
     @endauth
 
@@ -204,13 +205,11 @@
                         <div class="space-y-3">
                             <span class="home-section-badge">
                                 <i class="fa-solid fa-user-shield"></i>
-                                {{ app()->getLocale() === 'ar' ? 'ملخص حسابك' : 'Your Account Snapshot' }}
+                                {{ app()->getLocale() === 'ar' ? 'تفاصيل حسابك' : 'Your Account Snapshot' }}
                             </span>
                             <div>
                                 <h2 class="text-xl font-black text-slate-900 dark:text-white">{{ auth()->user()->name }}</h2>
-                                <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">
-                                    {{ app()->getLocale() === 'ar' ? 'كل ما تحتاجه للبدء موجود هنا: الرصيد، حالة التفعيل، والمستوى الحالي.' : 'Balance, verification status, and your current rank in one place.' }}
-                                </p>
+                                <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">{{ app()->getLocale() === 'ar' ? 'عرض سريع لمعلومات الحساب والرصيد والطلبات.' : 'Quick snapshot of your account, balance, and orders.' }}</p>
                             </div>
                         </div>
 
@@ -230,10 +229,8 @@
                             <strong class="home-balance-tile__value" dir="ltr">$ {{ number_format($wallet?->held_balance ?? 0, 2) }}</strong>
                         </div>
                         <div class="home-balance-tile col-span-2 sm:col-span-1">
-                            <span class="home-balance-tile__label">{{ app()->getLocale() === 'ar' ? 'حالة البريد' : 'Email Status' }}</span>
-                            <strong class="home-balance-tile__value text-base">
-                                {{ auth()->user()->email_verified_at ? (app()->getLocale() === 'ar' ? 'مفعل' : 'Verified') : (app()->getLocale() === 'ar' ? 'بحاجة إلى تفعيل' : 'Needs verification') }}
-                            </strong>
+                            <span class="home-balance-tile__label">{{ app()->getLocale() === 'ar' ? 'إجمالي الطلبات' : 'Orders Count' }}</span>
+                            <strong class="home-balance-tile__value" dir="ltr">{{ $ordersCount }}</strong>
                         </div>
                     </div>
 
@@ -265,25 +262,6 @@
                             <i class="fa-solid fa-shield-halved"></i>
                             <span>{{ __('messages.verify') }}</span>
                         </button>
-                    </div>
-                @else
-                    <div class="home-alert-card home-alert-card--success">
-                        <div class="flex items-start gap-3">
-                            <span class="home-alert-card__icon">
-                                <i class="fa-solid fa-circle-check"></i>
-                            </span>
-                            <div class="min-w-0 flex-1">
-                                <p class="text-base font-black text-emerald-700 dark:text-emerald-300">{{ app()->getLocale() === 'ar' ? 'الحساب جاهز للشراء' : 'Account is ready' }}</p>
-                                <p class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
-                                    {{ app()->getLocale() === 'ar' ? 'يمكنك متابعة الأقسام المتاحة وشراء الخدمات مباشرة من رصيدك الحالي.' : 'You can browse categories and purchase directly using your wallet balance.' }}
-                                </p>
-                            </div>
-                        </div>
-
-                        <a href="#home-categories" class="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-4 py-3 text-sm font-bold text-white transition hover:bg-emerald-700">
-                            <i class="fa-solid fa-arrow-down"></i>
-                            <span>{{ app()->getLocale() === 'ar' ? 'انتقل إلى الخدمات' : 'Go to services' }}</span>
-                        </a>
                     </div>
                 @endif
             </section>

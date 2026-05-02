@@ -134,7 +134,6 @@
                 <a href="{{ route('account.deposits') }}" class="rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-4 text-center text-sm font-semibold text-slate-700 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-700">{{ __('messages.deposit_requests') }}</a>
                 <a href="{{ route('account.wallet') }}" class="rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-4 text-center text-sm font-semibold text-slate-700 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-700">{{ __('messages.wallet_history') }}</a>
                 <a href="{{ route('account.orders') }}" class="rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-4 text-center text-sm font-semibold text-slate-700 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-700">{{ __('messages.my_orders') }}</a>
-                <a href="{{ route('account.vip') }}" class="rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-4 text-center text-sm font-semibold text-slate-700 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-700">{{ __('messages.vip_system') }}</a>
                 <a href="{{ route('account.verification.show') }}" class="rounded-2xl border border-emerald-100 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-4 text-center text-sm font-semibold text-emerald-700 dark:text-emerald-400 transition hover:bg-emerald-100 dark:hover:bg-emerald-900/50">{{ app()->getLocale() === 'ar' ? 'توثيق الحساب' : 'Account verification' }}</a>
                 <a href="{{ route('account.security') }}" class="rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-4 text-center text-sm font-semibold text-slate-700 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-700">{{ app()->getLocale() === 'ar' ? 'الأمان والتحقق الثنائي' : 'Security and 2FA' }}</a>
                 <a href="{{ route('account.notifications') }}" class="relative rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-4 text-center text-sm font-semibold text-slate-700 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-700">
@@ -174,21 +173,21 @@
                     <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
                         @forelse ($recentOrders as $order)
                             <tr>
-                                <td class="py-3 text-slate-700 dark:text-slate-300">{{ $order->service->name }}</td>
-                                <td class="py-3 text-slate-700 dark:text-slate-300">{{ $order->variant?->name ?? '-' }}</td>
-                                <td class="py-3 text-slate-700 dark:text-slate-300">{{ number_format($order->amount_held, 2) }} USD</td>
-                                <td class="py-3">
+                                <td class="py-3 text-slate-700 dark:text-slate-300" data-label="{{ __('messages.service') }}">{{ $order->service->name }}</td>
+                                <td class="py-3 text-slate-700 dark:text-slate-300" data-label="{{ __('messages.package') }}">{{ $order->variant?->name ?? '-' }}</td>
+                                <td class="py-3 text-slate-700 dark:text-slate-300" data-label="{{ __('messages.held_amount') }}">{{ number_format($order->amount_held, 2) }} USD</td>
+                                <td class="py-3" data-label="{{ __('messages.status') }}">
                                     @if ($order->status === 'new')
-                                        <span class="rounded-full bg-amber-100 px-3 py-1 text-xs text-amber-700">{{ __('messages.status_new') }}</span>
+                                        <span class="rounded-full bg-amber-100 dark:bg-amber-900/30 px-3 py-1 text-xs text-amber-700 dark:text-amber-300">{{ __('messages.status_new') }}</span>
                                     @elseif ($order->status === 'processing')
-                                        <span class="rounded-full bg-blue-100 px-3 py-1 text-xs text-blue-700">{{ __('messages.status_processing') }}</span>
+                                        <span class="rounded-full bg-blue-100 dark:bg-blue-900/30 px-3 py-1 text-xs text-blue-700 dark:text-blue-300">{{ __('messages.status_processing') }}</span>
                                     @elseif ($order->status === 'done')
-                                        <span class="rounded-full bg-emerald-100 px-3 py-1 text-xs text-emerald-700">{{ __('messages.status_done') }}</span>
+                                        <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/30 px-3 py-1 text-xs text-emerald-700 dark:text-emerald-300">{{ __('messages.status_done') }}</span>
                                     @else
-                                        <span class="rounded-full bg-rose-100 px-3 py-1 text-xs text-rose-700">{{ __('messages.status_rejected') }}</span>
+                                        <span class="rounded-full bg-rose-100 dark:bg-rose-900/30 px-3 py-1 text-xs text-rose-700 dark:text-rose-300">{{ __('messages.status_rejected') }}</span>
                                     @endif
                                 </td>
-                                <td class="py-3 text-slate-500 dark:text-slate-400">{{ $order->created_at->format('Y-m-d') }}</td>
+                                <td class="py-3 text-slate-500 dark:text-slate-400" data-label="{{ __('messages.date') }}">{{ $order->created_at->format('Y-m-d') }}</td>
                             </tr>
                         @empty
                             <tr>

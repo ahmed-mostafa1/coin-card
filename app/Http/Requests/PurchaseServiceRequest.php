@@ -36,6 +36,7 @@ class PurchaseServiceRequest extends FormRequest
 
         $rules['selected_price'] = ['nullable', 'numeric', 'min:0'];
         $rules['accept_terms'] = ['accepted'];
+        $rules['idempotency_token'] = ['required', 'string', 'max:64'];
 
         if ($isDiscountedInput) {
             $rules['offer_image'] = ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'];

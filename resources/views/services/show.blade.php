@@ -145,6 +145,20 @@
                 font-size: clamp(0.42rem, 2vw, 0.54rem);
             }
         }
+
+        .service-richtext img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0.75rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .service-richtext a {
+            color: #047857;
+            text-decoration: underline;
+            word-break: break-word;
+        }
     </style>
 
     @php
@@ -271,8 +285,10 @@
                                     @endif
                                 </div>
                             @endif
-                            @if ($service->localized_description)
-                                <p class="mt-2 text-sm text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line">{{ $service->localized_description }}</p>
+                            @if (!empty($serviceDescriptionHtml))
+                                <div class="service-richtext mt-2 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+                                    {!! $serviceDescriptionHtml !!}
+                                </div>
                             @endif
 
                             @if ($service->buttons->isNotEmpty())
@@ -298,6 +314,7 @@
 
                     <form id="purchase-form" method="POST" action="{{ route('services.purchase', $service->slug) }}" enctype="multipart/form-data" class="mt-4 space-y-4">
                         @csrf
+                        <input type="hidden" name="idempotency_token" value="{{ old('idempotency_token', $purchaseIdempotencyToken) }}">
 
                         @if (! $isDiscountedInputPricing && $service->variants->count())
                             <div class="space-y-2">
@@ -355,9 +372,6 @@
                                         class="w-32 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-2 text-sm text-slate-700 dark:text-slate-200"
                                         lang="en" dir="ltr"
                                         required>
-                                    <span class="text-sm text-slate-600 dark:text-slate-400">
-                                        × $<span class="latin-digits" lang="en" dir="ltr">{{ rtrim(rtrim(number_format($service->price_per_unit, 12, '.', ''), '0'), '.') }}</span> {{ __('messages.per_unit') ?? (app()->getLocale() == 'ar' ? 'للوحدة' : 'per unit') }}
-                                    </span>
                                     @if($service->min_quantity > 1 || $service->max_quantity)
                                         <p class="text-xs text-slate-500 mt-1">
                                             @if($service->max_quantity)
@@ -410,22 +424,22 @@
                                     <x-input-error :messages="$errors->get('offer_amount')" />
                                 </div>
 
-                                <p class="text-sm">
-                                    السعر الأساسي: <span class="font-semibold">{{ number_format((float) $oldOfferAmount, 2) }} USD</span><br>
-                                    رسوم الخدمة: <span class="font-semibold">{{ number_format($initialOfferFee, 2) }} USD</span><br>
-                                    Total = Price + Service Fee:
-                                    <span class="font-semibold">{{ number_format(((float) $oldOfferAmount) + $initialOfferFee, 2) }} USD</span><br>
-                                    المبلغ المدفوع:
-                                    <span id="current-price" class="font-semibold text-emerald-700">{{ number_format($initialDiscountedPrice, 2) }}</span>
-                                    <span id="price-currency">USD</span>
-                                </p>
+                                <div class="space-y-2">
+                                    <div class="flex items-center justify-between gap-3"><span>السعر الأساسي</span><span class="font-semibold">{{ number_format((float) $oldOfferAmount, 2) }} USD</span></div>
+                                    <div class="flex items-center justify-between gap-3"><span>رسوم الخدمة</span><span class="font-semibold">{{ number_format($initialOfferFee, 2) }} USD</span></div>
+                                    <div class="flex items-center justify-between gap-3"><span>الإجمالي قبل الخصم</span><span class="font-semibold">{{ number_format(((float) $oldOfferAmount) + $initialOfferFee, 2) }} USD</span></div>
+                                    <div class="flex items-center justify-between gap-3 border-t border-slate-200 pt-2 text-base font-bold text-emerald-700 dark:border-slate-600">
+                                        <span>القيمة النهائية للطلب</span>
+                                        <span><span id="current-price">{{ number_format($initialDiscountedPrice, 2) }}</span> <span id="price-currency">USD</span></span>
+                                    </div>
+                                </div>
                                 <input type="hidden" name="selected_price" id="selected-price-input" value="{{ number_format($initialDiscountedPrice, 2, '.', '') }}">
                                 <p id="insufficient-message" class="mt-2 text-xs text-rose-600 hidden">{{ __('messages.insufficient_balance_msg') }}</p>
                                 <p class="mt-1 text-xs text-slate-500">{{ __('messages.held_amount_notice') }}</p>
                             </div>
                         @else
                             <div class="rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-3 text-sm text-slate-700 dark:text-slate-200">
-                                <p >{{ __('messages.current_price') }}:
+                                <p>القيمة النهائية للطلب:
                                     @if ($service->variants->count())
                                         @php
                                             // Get the first variant (which is auto-selected)
@@ -440,7 +454,7 @@
                                         <div class="mb-2 space-y-1">
                                             <div class="flex items-center justify-between gap-3"><span>السعر الأساسي</span><span id="price-base">${{ number_format($originalPrice, 2) }}</span></div>
                                             <div class="flex items-center justify-between gap-3"><span>رسوم الخدمة</span><span id="price-fee">${{ number_format($initialFee, 2) }}</span></div>
-                                            <div class="flex items-center justify-between gap-3 font-semibold"><span>Total = Price + Service Fee</span><span id="price-gross">${{ number_format($initialGross, 2) }}</span></div>
+                                            <div class="flex items-center justify-between gap-3 font-semibold"><span>الإجمالي قبل الخصم</span><span id="price-gross">${{ number_format($initialGross, 2) }}</span></div>
                                         </div>
                                         @if ($vipDiscount > 0)
                                             <span id="original-price" class="text-xs text-slate-500 line-through">${{ number_format($initialGross, 2) }}</span>
@@ -458,7 +472,7 @@
                                         <div class="mb-2 space-y-1">
                                             <div class="flex items-center justify-between gap-3"><span>السعر الأساسي</span><span id="price-base">${{ number_format($initialBase, 2) }}</span></div>
                                             <div class="flex items-center justify-between gap-3"><span>رسوم الخدمة</span><span id="price-fee">${{ number_format($initialFee, 2) }}</span></div>
-                                            <div class="flex items-center justify-between gap-3 font-semibold"><span>Total = Price + Service Fee</span><span id="price-gross">${{ number_format($initialGross, 2) }}</span></div>
+                                            <div class="flex items-center justify-between gap-3 font-semibold"><span>الإجمالي قبل الخصم</span><span id="price-gross">${{ number_format($initialGross, 2) }}</span></div>
                                         </div>
                                         @if ($vipDiscount > 0)
                                             <span id="original-price" class="text-xs text-slate-500 line-through">${{ number_format($initialGross, 2) }}</span>
@@ -476,7 +490,7 @@
                                         <div class="mb-2 space-y-1">
                                             <div class="flex items-center justify-between gap-3"><span>السعر الأساسي</span><span id="price-base">${{ number_format($initialBase, 2) }}</span></div>
                                             <div class="flex items-center justify-between gap-3"><span>رسوم الخدمة</span><span id="price-fee">${{ number_format($initialFee, 2) }}</span></div>
-                                            <div class="flex items-center justify-between gap-3 font-semibold"><span>Total = Price + Service Fee</span><span id="price-gross">${{ number_format($initialGross, 2) }}</span></div>
+                                            <div class="flex items-center justify-between gap-3 font-semibold"><span>الإجمالي قبل الخصم</span><span id="price-gross">${{ number_format($initialGross, 2) }}</span></div>
                                         </div>
                                         @if ($vipDiscount > 0)
                                             <span id="original-price" class="text-xs text-slate-500 line-through">${{ number_format($initialGross, 2) }}</span>
@@ -567,9 +581,9 @@
                         @endauth
                     </form>
 
-                    @if ($service->localized_seo_content)
-                        <article class="prose prose-slate mt-8 max-w-none rounded-2xl border border-slate-200 bg-white p-5 text-sm leading-7 text-slate-700 dark:prose-invert dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
-                            {!! $service->localized_seo_content !!}
+                    @if (!empty($serviceArticleHtml))
+                        <article class="service-richtext prose prose-slate mt-8 max-w-none rounded-2xl border border-slate-200 bg-white p-5 text-sm leading-7 text-slate-700 dark:prose-invert dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
+                            {!! $serviceArticleHtml !!}
                         </article>
                     @endif
                 </div>

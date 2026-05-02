@@ -17,8 +17,38 @@
                         <td class="py-3 text-slate-700 dark:text-white">{{ $field->label }}</td>
                         <td class="py-3 text-slate-500">{{ $field->name_key }}</td>
                         <td class="py-3 text-slate-700 dark:text-white">{{ $field->type }}</td>
-                        <td class="py-3">{{ $field->is_enabled ? 'مفعل' : 'معطل' }}</td>
-                        <td class="py-3"><a href="{{ route('admin.verification-fields.edit', $field) }}" class="text-emerald-700">تعديل</a></td>
+                        <td class="py-3">
+                            <span class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold {{ $field->is_enabled ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300' : 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-300' }}">
+                                {{ $field->is_enabled ? 'مفعل' : 'معطل' }}
+                            </span>
+                        </td>
+                        <td class="py-3">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <a href="{{ route('admin.verification-fields.edit', $field) }}" class="rounded-lg border border-emerald-200 px-2.5 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-700 dark:text-emerald-300">تعديل</a>
+                                <form method="POST" action="{{ route('admin.verification-fields.update', $field) }}">
+                                    @csrf
+                                    @method('PUT')
+                                    <input type="hidden" name="label" value="{{ $field->label }}">
+                                    <input type="hidden" name="label_en" value="{{ $field->label_en }}">
+                                    <input type="hidden" name="name_key" value="{{ $field->name_key }}">
+                                    <input type="hidden" name="type" value="{{ $field->type }}">
+                                    <input type="hidden" name="placeholder" value="{{ $field->placeholder }}">
+                                    <input type="hidden" name="placeholder_en" value="{{ $field->placeholder_en }}">
+                                    <input type="hidden" name="sort_order" value="{{ $field->sort_order }}">
+                                    <input type="hidden" name="options_text" value="{{ is_array($field->options) ? implode(PHP_EOL, $field->options) : '' }}">
+                                    <input type="hidden" name="is_required" value="{{ $field->is_required ? 1 : 0 }}">
+                                    <input type="hidden" name="is_enabled" value="{{ $field->is_enabled ? 0 : 1 }}">
+                                    <button type="submit" class="rounded-lg border border-amber-200 px-2.5 py-1 text-xs font-semibold text-amber-700 dark:border-amber-700 dark:text-amber-300">
+                                        {{ $field->is_enabled ? 'تعطيل' : 'تفعيل' }}
+                                    </button>
+                                </form>
+                                <form method="POST" action="{{ route('admin.verification-fields.destroy', $field) }}" onsubmit="return confirm('هل أنت متأكد من حذف هذا الحقل؟');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="rounded-lg border border-rose-200 px-2.5 py-1 text-xs font-semibold text-rose-700 dark:border-rose-700 dark:text-rose-300">حذف</button>
+                                </form>
+                            </div>
+                        </td>
                     </tr>
                 @empty
                     <tr><td colspan="5" class="py-6 text-center text-slate-500">لا توجد حقول.</td></tr>

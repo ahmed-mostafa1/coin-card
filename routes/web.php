@@ -6,7 +6,6 @@ use App\Http\Controllers\AccountNotificationController;
 use App\Http\Controllers\AccountWalletController;
 use App\Http\Controllers\AccountOrderController;
 use App\Http\Controllers\AccountSecurityController;
-use App\Http\Controllers\AccountVipController;
 use App\Http\Controllers\AccountVerificationController;
 use App\Http\Controllers\AgencyRequestController;
 use App\Http\Controllers\Admin\DepositController as AdminDepositController;
@@ -77,7 +76,7 @@ Route::middleware(['auth', 'not_banned'])->group(function () {
     Route::get('/account/wallet', [AccountWalletController::class, 'index'])->name('account.wallet');
     Route::get('/account/orders', [AccountOrderController::class, 'index'])->name('account.orders');
     Route::get('/account/orders/{order}', [AccountOrderController::class, 'show'])->name('account.orders.show');
-    Route::get('/account/vip', [AccountVipController::class, 'show'])->name('account.vip');
+    Route::get('/account/vip', fn () => redirect()->route('account.verification.show'))->name('account.vip');
     Route::get('/account/verification', [AccountVerificationController::class, 'show'])->name('account.verification.show');
     Route::post('/account/verification', [AccountVerificationController::class, 'store'])->name('account.verification.store');
     Route::get('/account/notifications', [AccountNotificationController::class, 'index'])->name('account.notifications');
@@ -165,7 +164,12 @@ Route::middleware(['auth', 'not_banned', 'role:admin'])->prefix('admin')->name('
     Route::get('/notifications/create', [\App\Http\Controllers\Admin\NotificationController::class, 'create'])->name('notifications.create');
     Route::post('/notifications', [\App\Http\Controllers\Admin\NotificationController::class, 'store'])->name('notifications.store');
 
-    Route::resource('vip-tiers', \App\Http\Controllers\Admin\VipTierController::class)->except(['show']);
+    Route::get('/vip-tiers', fn () => redirect()->route('admin.verification-requests.index'))->name('vip-tiers.index');
+    Route::get('/vip-tiers/create', fn () => redirect()->route('admin.verification-requests.index'))->name('vip-tiers.create');
+    Route::get('/vip-tiers/{vipTier}/edit', fn () => redirect()->route('admin.verification-requests.index'))->name('vip-tiers.edit');
+    Route::post('/vip-tiers', fn () => redirect()->route('admin.verification-requests.index'))->name('vip-tiers.store');
+    Route::put('/vip-tiers/{vipTier}', fn () => redirect()->route('admin.verification-requests.index'))->name('vip-tiers.update');
+    Route::delete('/vip-tiers/{vipTier}', fn () => redirect()->route('admin.verification-requests.index'))->name('vip-tiers.destroy');
     Route::get('/appearance', [AdminAppearanceController::class, 'edit'])->name('appearance.edit');
     Route::post('/appearance', [AdminAppearanceController::class, 'update'])->name('appearance.update');
     // Site Settings Routes

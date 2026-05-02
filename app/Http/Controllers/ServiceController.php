@@ -15,7 +15,9 @@ use App\Services\NotificationService;
 use App\Services\ServicePricingService;
 use App\Services\WalletService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\QueryException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
@@ -37,7 +39,11 @@ class ServiceController extends Controller
 
         $wallet = auth()->check() ? auth()->user()->wallet()->firstOrCreate([]) : null;
 
-        return view('services.show', compact('service', 'wallet'));
+        $serviceDescriptionHtml = $this->sanitizeRichHtml((string) ($service->localized_description ?? ''));
+        $serviceArticleHtml = $this->sanitizeRichHtml((string) ($service->localized_seo_content ?? ''));
+        $purchaseIdempotencyToken = (string) Str::uuid();
+
+        return view('services.show', compact('service', 'wallet', 'serviceDescriptionHtml', 'serviceArticleHtml', 'purchaseIdempotencyToken'));
     }
 
     public function purchase(
@@ -64,6 +70,19 @@ class ServiceController extends Controller
         $shouldAutoPlace = $isDailyCard || $isGenericProvider;
 
         $user = $request->user();
+        $idempotencyToken = trim((string) $request->input('idempotency_token'));
+
+        $existingOrder = Order::query()
+            ->where('user_id', $user->id)
+            ->where('idempotency_token', $idempotencyToken)
+            ->latest('id')
+            ->first();
+
+        if ($existingOrder) {
+            return redirect()
+                ->route('account.orders.show', $existingOrder)
+                ->with('status', 'تم إنشاء الطلب مسبقًا.');
+        }
 
         $payload = $request->input('fields', []);
         $allowedKeys = $service->formFields()->pluck('name_key')->all();
@@ -76,21 +95,23 @@ class ServiceController extends Controller
 
         $order = null;
 
-        DB::transaction(function () use (
-            $user,
-            $service,
-            $payload,
-            $walletService,
-            $variantId,
-            $quantity,
-            $request,
-            $uploadedImage,
-            $isDiscountedInput,
-            $shouldAutoPlace,
-            $pricingService,
-            $loyaltyService,
-            &$order
-        ) {
+        try {
+            DB::transaction(function () use (
+                $user,
+                $service,
+                $payload,
+                $walletService,
+                $variantId,
+                $quantity,
+                $request,
+                $uploadedImage,
+                $isDiscountedInput,
+                $shouldAutoPlace,
+                $pricingService,
+                $loyaltyService,
+                $idempotencyToken,
+                &$order
+            ) {
             $wallet = Wallet::where('user_id', $user->id)->lockForUpdate()->firstOrCreate(['user_id' => $user->id]);
             $variant = null;
 
@@ -192,6 +213,7 @@ class ServiceController extends Controller
                 'uploaded_image_original_name' => $uploadedImageOriginalName,
                 'uploaded_image_mime' => $uploadedImageMime,
                 'uploaded_image_size' => $uploadedImageSize,
+                'idempotency_token' => $idempotencyToken,
             ]);
 
             OrderEvent::create([
@@ -218,7 +240,27 @@ class ServiceController extends Controller
                 'approved_at' => now(),
                 'note' => 'تعليق مبلغ شراء خدمة',
             ], false);
-        });
+            });
+        } catch (QueryException $exception) {
+            $isDuplicate = (int) $exception->getCode() === 23000;
+            if (! $isDuplicate) {
+                throw $exception;
+            }
+
+            $existingDuplicateOrder = Order::query()
+                ->where('user_id', $user->id)
+                ->where('idempotency_token', $idempotencyToken)
+                ->latest('id')
+                ->first();
+
+            if ($existingDuplicateOrder) {
+                return redirect()
+                    ->route('account.orders.show', $existingDuplicateOrder)
+                    ->with('status', 'تم إنشاء الطلب مسبقًا.');
+            }
+
+            throw $exception;
+        }
 
         DB::afterCommit(function () use ($order, $notificationService, $user, $isDailyCard, $isGenericProvider, $shouldAutoPlace, $dailyCardOrderService, $apiProviderManager): void {
             if (! $order) {
@@ -249,5 +291,18 @@ class ServiceController extends Controller
 
         return redirect()->route($redirectRoute, $isDiscountedInput ? [] : $order)
             ->with('status', 'تم إنشاء الطلب، وسيظل المبلغ معلّقًا حتى تأكيد التنفيذ.');
+    }
+
+    private function sanitizeRichHtml(string $html): string
+    {
+        $clean = strip_tags($html, '<p><br><strong><b><em><i><u><ul><ol><li><blockquote><h2><h3><h4><a><img>');
+        $clean = preg_replace('/\son\w+="[^"]*"/iu', '', $clean) ?? $clean;
+        $clean = preg_replace("/\son\w+='[^']*'/iu", '', $clean) ?? $clean;
+        $clean = preg_replace('/\sstyle="[^"]*"/iu', '', $clean) ?? $clean;
+        $clean = preg_replace("/\sstyle='[^']*'/iu", '', $clean) ?? $clean;
+        $clean = preg_replace('/href=(["\'])\s*javascript:[^"\']*\1/iu', 'href="#"', $clean) ?? $clean;
+        $clean = preg_replace('/src=(["\'])\s*javascript:[^"\']*\1/iu', '', $clean) ?? $clean;
+
+        return trim((string) $clean);
     }
 }

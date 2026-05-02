@@ -92,21 +92,10 @@
     }
 
 
-    /* Force all text to white in dark mode */
-    .dark *:not(svg):not(path):not(circle):not(rect):not(line):not(polyline):not(polygon) {
-        color: white !important;
-    }
-
-    /* Keep icon colors */
-    .dark svg,
-    .dark svg * {
-        color: inherit !important;
-    }
-
     .dark thead {
         @apply bg-slate-900;
-        color: #064e3b !important;
-        /* emerald-900 */
+        color: #cbd5e1 !important;
+        /* slate-300 */
     }
 
     /* SweetAlert2 dark mode — popup renders outside .dark scope */

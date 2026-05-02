@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Notifications\AdminGeneralNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
+use Throwable;
 use Illuminate\View\View;
 
 class NotificationController extends Controller
@@ -40,26 +41,11 @@ class NotificationController extends Controller
             ? $request->file('image')->store('notifications', 'public')
             : null;
 
-        // Send to all users
-        // This might take time, so ideally it should be queued.
-        // For now we use Notification::send which processes them.
-        // If queue is configured, Notification implements ShouldQueue logic if the notification class uses Queueable.
-        // AdminGeneralNotification uses Queueable.
-
-        // Filter out admin users
         $users = User::whereDoesntHave('roles', function ($query) {
             $query->where('name', 'admin');
         })->get();
 
-        Notification::send($users, new AdminGeneralNotification(
-            $data['title_ar'],
-            $data['title_en'],
-            $data['content_ar'],
-            $data['content_en'],
-            $imagePath
-        ));
-
-        AdminSentNotification::create([
+        $history = AdminSentNotification::create([
             'admin_user_id' => $request->user()?->id,
             'scope' => AdminSentNotification::SCOPE_ALL_USERS,
             'title_ar' => $data['title_ar'],
@@ -67,12 +53,31 @@ class NotificationController extends Controller
             'content_ar' => $data['content_ar'],
             'content_en' => $data['content_en'],
             'image_path' => $imagePath,
-            'recipient_count' => $users->count(),
+            'recipient_count' => 0,
             'ip_address' => $request->ip(),
             'user_agent' => $request->userAgent(),
         ]);
 
+        try {
+            Notification::send($users, new AdminGeneralNotification(
+                $data['title_ar'],
+                $data['title_en'],
+                $data['content_ar'],
+                $data['content_en'],
+                $imagePath
+            ));
+
+            $history->update([
+                'recipient_count' => $users->count(),
+            ]);
+        } catch (Throwable $exception) {
+            report($exception);
+
+            return redirect()->route('admin.notifications.create')
+                ->with('status', 'تم حفظ الإشعار في السجل ولكن حدثت مشكلة أثناء الإرسال. يرجى المحاولة مرة أخرى.');
+        }
+
         return redirect()->route('admin.notifications.create')
-            ->with('status', 'تم بدء إرسال الإشعار لجميع المستخدمين.');
+            ->with('status', 'تم إرسال الإشعار لجميع المستخدمين بنجاح.');
     }
 }

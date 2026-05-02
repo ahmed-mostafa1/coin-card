@@ -3,24 +3,35 @@
 @section('title', __('messages.order_details_title'))
 
 @section('content')
-    <div class="grid gap-6 lg:grid-cols-3">
-        <x-card class="p-8 lg:col-span-2" :hover="false">
+    <div class="grid gap-4 lg:grid-cols-3">
+        <x-card class="p-4 sm:p-6 lg:col-span-2" :hover="false">
             @if (session('status'))
                 <div class="mb-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">
                     {{ session('status') }}
                 </div>
             @endif
 
-            <div class="flex items-center justify-between gap-4">
-                <div>
-                    <h1 class="text-2xl font-bold text-slate-900">{{ __('messages.order_id_title', ['id' => $order->id]) }}</h1>
-                    <p class="mt-2 text-sm text-slate-600">{{ $order->service->name }}</p>
+            <div class="flex flex-wrap items-start justify-between gap-3">
+                <div class="flex items-start gap-3 min-w-0">
+                    @if ($order->service?->image_path)
+                        <img src="{{ asset('storage/' . $order->service->image_path) }}" alt="{{ $order->service->name }}" class="h-14 w-14 rounded-xl object-cover">
+                    @endif
+                    <div class="min-w-0">
+                        <h1 class="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white">{{ __('messages.order_id_title', ['id' => $order->id]) }}</h1>
+                        <p class="mt-1 text-sm font-semibold text-slate-700 dark:text-slate-200 truncate">{{ $order->service->name }}</p>
+                    </div>
                 </div>
-                <a href="{{ route('account.orders') }}" class="text-sm text-emerald-700 hover:text-emerald-900">{{ __('messages.back_to_orders') }}</a>
+                <div class="flex items-center gap-2">
+                    <button type="button" class="inline-flex items-center gap-2 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-1.5 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200" data-share-order data-share-title="{{ __('messages.order_id_title', ['id' => $order->id]) }}" data-share-url="{{ route('account.orders.show', $order) }}">
+                        <i class="fa-solid fa-share-nodes"></i>
+                        <span>مشاركة</span>
+                    </button>
+                    <a href="{{ route('account.orders') }}" class="text-xs sm:text-sm text-emerald-700 hover:text-emerald-900">{{ __('messages.back_to_orders') }}</a>
+                </div>
             </div>
 
-            <div class="mt-6 grid gap-4 sm:grid-cols-2">
-                <div class="rounded-2xl border border-slate-200 p-4">
+            <div class="mt-4 grid gap-3 sm:grid-cols-2">
+                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 p-3.5">
                     <p class="text-xs text-slate-500">{{ __('messages.price_label') }}</p>
                     @if ($order->discount_percentage > 0)
                         <div class="mt-2 space-y-1">
@@ -43,11 +54,11 @@
                         <p class="mt-1 text-xs text-emerald-600 dark:text-emerald-400">{{ app()->getLocale() == 'ar' ? 'خصم الحساب' : 'Account Discount' }}</p>
                     </div>
                 @endif
-                <div class="rounded-2xl border border-slate-200 p-4">
+                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 p-3.5">
                     <p class="text-xs text-slate-500">{{ __('messages.held_amount') }}</p>
                     <p class="mt-2 text-sm font-semibold text-slate-700">{{ number_format($order->amount_held, 2) }} USD</p>
                 </div>
-                <div class="rounded-2xl border border-slate-200 p-4">
+                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 p-3.5">
                     <p class="text-xs text-slate-500">{{ __('messages.status') }}</p>
                     <p class="mt-2 text-sm font-semibold text-slate-700">
                         @if ($order->status === 'new')
@@ -63,25 +74,25 @@
                         @endif
                     </p>
                 </div>
-                <div class="rounded-2xl border border-slate-200 p-4">
+                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 p-3.5">
                     <p class="text-xs text-slate-500">{{ __('messages.package') }}</p>
                     <p class="mt-2 text-sm font-semibold text-slate-700">{{ $order->variant?->name ?? __('messages.base_price_label') }}</p>
                 </div>
-                <div class="rounded-2xl border border-slate-200 p-4">
+                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 p-3.5">
                     <p class="text-xs text-slate-500">{{ __('messages.date') }}</p>
                     <p class="mt-2 text-sm font-semibold text-slate-700">{{ $order->created_at->format('Y-m-d H:i') }}</p>
                 </div>
-                <div class="rounded-2xl border border-slate-200 p-4">
+                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 p-3.5">
                     <p class="text-xs text-slate-500">{{ __('messages.settled_at_label') }}</p>
                     <p class="mt-2 text-sm font-semibold text-slate-700">{{ $order->settled_at?->format('Y-m-d H:i') ?? '-' }}</p>
                 </div>
-                <div class="rounded-2xl border border-slate-200 p-4">
+                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 p-3.5">
                     <p class="text-xs text-slate-500">{{ __('messages.released_at_label') }}</p>
                     <p class="mt-2 text-sm font-semibold text-slate-700">{{ $order->released_at?->format('Y-m-d H:i') ?? '-' }}</p>
                 </div>
             </div>
 
-            <div class="mt-6 rounded-2xl border border-slate-200 p-4">
+            <div class="mt-4 rounded-2xl border border-slate-200 dark:border-slate-700 p-4">
                 <p class="text-xs text-slate-500">{{ __('messages.order_data_label') }}</p>
                 @if (count($order->payload))
                     <div class="mt-3 grid gap-3 sm:grid-cols-2">
@@ -206,4 +217,28 @@
             });
         </script>
     @endif
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const shareButton = document.querySelector('[data-share-order]');
+            if (!shareButton) return;
+
+            shareButton.addEventListener('click', async () => {
+                const title = shareButton.dataset.shareTitle || document.title;
+                const url = shareButton.dataset.shareUrl || window.location.href;
+
+                try {
+                    if (navigator.share) {
+                        await navigator.share({ title, url });
+                        return;
+                    }
+
+                    await navigator.clipboard.writeText(url);
+                    Swal.fire({ toast: true, position: 'top', icon: 'success', title: 'تم نسخ رابط الطلب', showConfirmButton: false, timer: 1800 });
+                } catch (error) {
+                    if (error?.name === 'AbortError') return;
+                    Swal.fire({ toast: true, position: 'top', icon: 'error', title: 'تعذر مشاركة الطلب', showConfirmButton: false, timer: 1800 });
+                }
+            });
+        });
+    </script>
 @endsection

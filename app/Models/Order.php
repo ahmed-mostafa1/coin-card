@@ -60,6 +60,7 @@ class Order extends Model
         'provider_transaction_id',
         'provider_execution_status',
         'provider_replay',
+        'idempotency_token',
     ];
 
     protected $casts = [

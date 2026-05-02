@@ -8,7 +8,7 @@
         <x-page-header title="توثيق الحساب" subtitle="أرسل البيانات المطلوبة لمراجعة التوثيق من الإدارة." />
 
         @if (session('status'))
-            <div class="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{{ session('status') }}</div>
+            <div class="mt-6 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-300">{{ session('status') }}</div>
         @endif
 
         <div class="mt-6 rounded-2xl border border-slate-200 p-4 dark:border-slate-700">
@@ -17,9 +17,9 @@
                 <div>
                     <p class="font-semibold text-slate-800 dark:text-white">{{ auth()->user()->is_verified ? 'حسابك موثق' : 'حسابك غير موثق' }}</p>
                     @if ($verificationRequest)
-                        <p class="text-sm text-slate-500">آخر طلب: {{ $verificationRequest->status }}</p>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">آخر طلب: {{ $verificationRequest->status }}</p>
                         @if ($verificationRequest->review_note)
-                            <p class="mt-1 text-sm text-amber-700">ملاحظة الإدارة: {{ $verificationRequest->review_note }}</p>
+                            <p class="mt-1 text-sm text-amber-700 dark:text-amber-300">ملاحظة الإدارة: {{ $verificationRequest->review_note }}</p>
                         @endif
                     @endif
                 </div>
@@ -27,7 +27,7 @@
         </div>
 
         @if ($fields->isEmpty())
-            <div class="mt-6 rounded-2xl border border-dashed border-slate-200 p-8 text-center text-sm text-slate-500">نموذج التوثيق غير متاح حالياً.</div>
+            <div class="mt-6 rounded-2xl border border-dashed border-slate-200 dark:border-slate-700 p-8 text-center text-sm text-slate-500 dark:text-slate-400">نموذج التوثيق غير متاح حالياً.</div>
         @else
             <form method="POST" action="{{ route('account.verification.store') }}" enctype="multipart/form-data" class="mt-6 space-y-4">
                 @csrf

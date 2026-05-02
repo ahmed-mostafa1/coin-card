@@ -119,12 +119,8 @@
                         <span class="font-semibold" data-preview-local>0.00</span>
                     </div>
                     <div class="mt-2 flex items-center justify-between gap-4">
-                        <span>سعر التحويل إلى USD</span>
-                        <span class="font-semibold" data-preview-rate>1</span>
-                    </div>
-                    <div class="mt-2 flex items-center justify-between gap-4">
-                        <span>العمولة</span>
-                        <span class="font-semibold" data-preview-commission>0.00</span>
+                        <span>الحد الأدنى/الأقصى المسموح</span>
+                        <span class="font-semibold" data-preview-limits>--</span>
                     </div>
                     <div class="mt-3 border-t border-emerald-200 pt-3 flex items-center justify-between gap-4 text-emerald-800 dark:border-emerald-800 dark:text-emerald-200">
                         <span class="font-bold">الرصيد الصافي الذي سيضاف</span>
@@ -217,8 +213,7 @@
             const configs = JSON.parse(configElement.textContent || '[]');
             const byId = new Map(configs.map((item) => [String(item.id), item]));
             const localEl = document.querySelector('[data-preview-local]');
-            const rateEl = document.querySelector('[data-preview-rate]');
-            const commissionEl = document.querySelector('[data-preview-commission]');
+            const limitsEl = document.querySelector('[data-preview-limits]');
             const netEl = document.querySelector('[data-preview-net]');
 
             const format = (value, digits = 2) => Number(value || 0).toFixed(digits);
@@ -232,10 +227,11 @@
                 const boundedCommission = Math.min(amount, Math.max(0, commission));
                 const net = Math.max(0, amount - boundedCommission) * parseFloat(config.rate || 0);
                 const currency = `${config.code}${config.symbol ? ' ' + config.symbol : ''}`;
+                const minValue = config.minAmount !== null ? format(config.minAmount) : '-';
+                const maxValue = config.maxAmount !== null ? format(config.maxAmount) : '-';
 
                 if (localEl) localEl.textContent = `${format(amount)} ${currency}`;
-                if (rateEl) rateEl.textContent = `1 ${config.code} = ${format(config.rate, 8)} USD`;
-                if (commissionEl) commissionEl.textContent = `${format(boundedCommission)} ${currency}`;
+                if (limitsEl) limitsEl.textContent = `${minValue} - ${maxValue} ${currency}`;
                 if (netEl) netEl.textContent = `${format(net)} USD`;
 
                 if (config.minAmount !== null) amountInput.min = config.minAmount;

@@ -37,13 +37,12 @@
             ],
             [
                 'title' => 'المستخدمون',
-                'description' => 'الحسابات، التوثيق، الولاء ومستويات VIP.',
+                'description' => 'الحسابات، التوثيق، وإعدادات الولاء.',
                 'icon' => 'fa-solid fa-users',
                 'links' => [
                     ['label' => 'المستخدمون', 'route' => route('admin.users.index'), 'icon' => 'fa-solid fa-user-group'],
                     ['label' => 'طلبات التوثيق', 'route' => route('admin.verification-requests.index'), 'icon' => 'fa-solid fa-user-shield'],
                     ['label' => 'حقول التوثيق', 'route' => route('admin.verification-fields.index'), 'icon' => 'fa-solid fa-list-check'],
-                    ['label' => 'مستويات VIP', 'route' => route('admin.vip-tiers.index'), 'icon' => 'fa-solid fa-crown'],
                     ['label' => 'إعدادات الولاء', 'route' => route('admin.loyalty-settings.edit'), 'icon' => 'fa-solid fa-award'],
                 ],
             ],
@@ -53,7 +52,7 @@
                 'icon' => 'fa-solid fa-window-restore',
                 'links' => [
                     ['label' => 'إدارة الموقع', 'route' => route('admin.site-settings.edit'), 'icon' => 'fa-solid fa-sliders'],
-                    ['label' => 'المظهر', 'route' => route('admin.appearance.edit'), 'icon' => 'fa-solid fa-palette'],
+                    ['label' => 'الشريط المتحرك', 'route' => route('admin.appearance.edit'), 'icon' => 'fa-solid fa-palette'],
                     ['label' => 'محتوى الصفحات', 'route' => route('admin.pages.edit'), 'icon' => 'fa-solid fa-file-lines'],
                     ['label' => 'النوافذ المنبثقة', 'route' => route('admin.popups.index'), 'icon' => 'fa-solid fa-message'],
                     ['label' => 'البانرات', 'route' => route('admin.banners.index'), 'icon' => 'fa-solid fa-images'],

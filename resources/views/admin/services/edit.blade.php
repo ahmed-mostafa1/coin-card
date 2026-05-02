@@ -54,6 +54,7 @@
                 <div>
                     <x-input-label for="description" :value="__('messages.description_ar')" />
                     <textarea id="description" name="description" rows="4" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">{{ old('description', $service->description) }}</textarea>
+                    <p class="mt-1 text-xs text-slate-500">يدعم HTML آمن مثل الروابط والصور والقوائم. سيتم تنظيف المحتوى تلقائياً قبل العرض.</p>
                     <x-input-error :messages="$errors->get('description')" />
                 </div>
 
@@ -288,10 +289,10 @@
                         <p>الحالة: <span class="font-semibold">{{ $service->provider_status ?? ($service->provider_is_available ? 'available' : 'unavailable') }}</span></p>
                         <p>آخر مزامنة: {{ $service->provider_status_synced_at?->format('Y-m-d H:i') ?? $service->provider_last_synced_at?->format('Y-m-d H:i') ?? '-' }}</p>
                         @if ($service->provider_status_message)
-                            <p class="text-amber-700">{{ $service->provider_status_message }}</p>
+                            <p class="text-amber-700 dark:text-amber-300">{{ $service->provider_status_message }}</p>
                         @endif
                         @if ($service->provider_status_sync_error)
-                            <p class="text-rose-700">{{ $service->provider_status_sync_error }}</p>
+                            <p class="text-rose-700 dark:text-rose-300">{{ $service->provider_status_sync_error }}</p>
                         @endif
                     </div>
                 </div>

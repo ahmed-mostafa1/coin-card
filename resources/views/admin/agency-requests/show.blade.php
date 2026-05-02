@@ -3,13 +3,13 @@
 @section('title', 'تفاصيل طلب الوكالة')
 
 @section('content')
-    <div class="rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm">
+    <div class="rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm">
         <div class="flex items-center justify-between gap-4">
             <div>
                 <h1 class="text-2xl font-semibold text-emerald-700">طلب وكالة #{{ $agencyRequest->id }}</h1>
-                <p class="mt-2 text-sm text-slate-600">تم الإرسال في {{ $agencyRequest->created_at->format('Y-m-d H:i') }}</p>
+                <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">تم الإرسال في {{ $agencyRequest->created_at->format('Y-m-d H:i') }}</p>
             </div>
-            <a href="{{ route('admin.agency-requests.index') }}" class="text-sm text-emerald-700 hover:text-emerald-900">عودة للقائمة</a>
+            <a href="{{ route('admin.agency-requests.index') }}" class="text-sm text-emerald-700 dark:text-emerald-300 hover:text-emerald-900">عودة للقائمة</a>
         </div>
 
         <div class="mt-6 grid gap-4 sm:grid-cols-2">
@@ -24,19 +24,19 @@
             @endphp
 
             @forelse ($payload as $key => $value)
-                <div class="rounded-2xl border border-slate-200 p-4">
-                    <p class="text-xs text-slate-500">{{ $fields[$key]->localized_label ?? $key }}</p>
-                    <p class="mt-2 text-sm font-semibold text-slate-700">{{ $value }}</p>
+                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 p-4">
+                    <p class="text-xs text-slate-500 dark:text-slate-400">{{ $fields[$key]->localized_label ?? $key }}</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-700 dark:text-slate-200">{{ $value }}</p>
                 </div>
             @empty
-                <p class="col-span-2 text-sm text-slate-500">لا توجد بيانات.</p>
+                <p class="col-span-2 text-sm text-slate-500 dark:text-slate-400">لا توجد بيانات.</p>
             @endforelse
         </div>
 
         <form method="POST" action="{{ route('admin.agency-requests.destroy', $agencyRequest) }}" class="mt-6">
             @csrf
             @method('DELETE')
-            <button type="submit" class="rounded-full border border-rose-200 px-4 py-2 text-sm font-semibold text-rose-700 transition hover:bg-rose-50" onclick="return confirm('هل أنت متأكد من حذف الطلب؟')">
+            <button type="submit" class="rounded-full border border-rose-200 dark:border-rose-700 px-4 py-2 text-sm font-semibold text-rose-700 dark:text-rose-300 transition hover:bg-rose-50 dark:hover:bg-rose-900/20" onclick="return confirm('هل أنت متأكد من حذف الطلب؟')">
                 حذف الطلب
             </button>
         </form>
