@@ -6,7 +6,8 @@
     <div class="grid gap-4 lg:grid-cols-3">
         <x-card class="p-4 sm:p-6 lg:col-span-2" :hover="false">
             @if (session('status'))
-                <div class="mb-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900 dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">
+                <div
+                    class="mb-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900 dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">
                     {{ session('status') }}
                 </div>
             @endif
@@ -14,30 +15,68 @@
             <div class="flex flex-wrap items-start justify-between gap-3">
                 <div class="flex items-start gap-3 min-w-0">
                     @if ($order->service?->image_path)
-                        <img src="{{ asset('storage/' . $order->service->image_path) }}" alt="{{ $order->service->name }}" class="h-14 w-14 rounded-xl object-cover">
+                        <img src="{{ asset('storage/' . $order->service->image_path) }}" alt="{{ $order->service->name }}"
+                            class="h-14 w-14 rounded-xl object-cover">
                     @endif
                     <div class="min-w-0">
-                        <h1 class="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white">{{ __('messages.order_id_title', ['id' => $order->id]) }}</h1>
-                        <p class="mt-1 text-sm font-semibold text-slate-900 dark:text-slate-50 truncate">{{ $order->service->name }}</p>
+                        <h1 class="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white">
+                            {{ __('messages.order_id_title', ['id' => $order->id]) }}</h1>
+                        <p class="mt-1 text-sm font-semibold text-slate-900 dark:text-slate-50 truncate">
+                            {{ $order->service->name }}</p>
                     </div>
                 </div>
-                <div class="flex items-center gap-2">
-                    
-                    <a href="{{ route('account.orders') }}" class="text-xs sm:text-sm text-emerald-50 hover:text-emerald-50">{{ __('messages.back_to_orders') }}</a>
+                @php
+                    $shareText = __('messages.order_id_title', ['id' => $order->id]) . "\n";
+                    $shareText .= (app()->getLocale() === 'ar' ? "الخدمة: " : "Service: ") . $order->service->name . "\n";
+                    $shareText .= (app()->getLocale() === 'ar' ? "السعر: " : "Price: ") . number_format($order->price_at_purchase, 2) . " USD\n";
+                    $statusName = [
+                        'new' => __('messages.status_new'),
+                        'processing' => __('messages.status_processing'),
+                        'done' => __('messages.status_done'),
+                        'rejected' => __('messages.status_rejected'),
+                        'cancelled' => __('messages.status_cancelled'),
+                    ][$order->status] ?? $order->status;
+                    $shareText .= (app()->getLocale() === 'ar' ? "الحالة: " : "Status: ") . $statusName . "\n";
+
+                    if (count($order->payload)) {
+                        $shareText .= "\n--- " . (app()->getLocale() === 'ar' ? "تفاصيل الطلب" : "Order Details") . " ---\n";
+                        foreach ($order->payload as $key => $value) {
+                            $displayValue = is_scalar($value) || $value === null ? (string) $value : json_encode($value, JSON_UNESCAPED_UNICODE);
+                            $label = $fieldLabels[$key] ?? \Illuminate\Support\Str::headline((string) $key);
+                            $shareText .= $label . ": " . trim($displayValue) . "\n";
+                        }
+                    }
+                @endphp
+                <div class="flex space-between gap-3 mt-4">
+                    <button type="button" data-share-order data-share-text="{{ $shareText }}"
+                        class="flex items-center gap-1 text-sm  text-emerald-50 hover:text-emerald-100 transition">
+                        <i class="fa-solid fa-share-nodes"></i>
+                        <span>{{ app()->getLocale() === 'ar' ? 'مشاركة' : 'Share' }}</span>
+                    </button>
+                    <a href="{{ route('account.orders') }}"
+                        class="text-sm text-emerald-50 hover:text-emerald-100 transition">{{ __('messages.back_to_orders') }}</a>
                 </div>
             </div>
 
-            <div class="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800/80">
+            <div
+                class="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800/80">
                 <table class="w-full table-fixed text-right text-sm">
                     <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
                         <tr>
-                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">{{ __('messages.price_label') }}</th>
+                            <th scope="row"
+                                class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">
+                                {{ __('messages.price_label') }}</th>
                             <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">
                                 @if ($order->discount_percentage > 0)
-                                    <span class="block text-xs font-medium text-slate-400 line-through">{{ number_format($order->original_price, 2) }} USD</span>
+                                    <span
+                                        class="block text-xs font-medium text-slate-400 line-through">{{ number_format($order->original_price, 2) }}
+                                        USD</span>
                                     <span class="mt-1 flex flex-wrap items-center gap-2">
-                                        <span class="text-emerald-900 dark:text-emerald-300">{{ number_format($order->price_at_purchase, 2) }} USD</span>
-                                        <span class="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-900 dark:bg-emerald-900/30 dark:text-emerald-400">
+                                        <span
+                                            class="text-emerald-900 dark:text-emerald-300">{{ number_format($order->price_at_purchase, 2) }}
+                                            USD</span>
+                                        <span
+                                            class="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-900 dark:bg-emerald-900/30 dark:text-emerald-400">
                                             -{{ number_format($order->discount_percentage, 0) }}%
                                         </span>
                                     </span>
@@ -48,19 +87,27 @@
                         </tr>
                         @if ($order->discount_percentage > 0)
                             <tr>
-                                <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-emerald-700 dark:text-emerald-400">{{ app()->getLocale() == 'ar' ? 'المبلغ الموفر' : 'Amount Saved' }}</th>
+                                <th scope="row"
+                                    class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-emerald-700 dark:text-emerald-400">
+                                    {{ app()->getLocale() == 'ar' ? 'المبلغ الموفر' : 'Amount Saved' }}</th>
                                 <td class="px-4 py-3 text-sm font-semibold text-emerald-900 dark:text-emerald-300">
                                     {{ number_format($order->discount_amount, 2) }} USD
-                                    <span class="mt-1 block text-xs font-medium text-emerald-700 dark:text-emerald-400">{{ app()->getLocale() == 'ar' ? 'خصم الحساب' : 'Account Discount' }}</span>
+                                    <span
+                                        class="mt-1 block text-xs font-medium text-emerald-700 dark:text-emerald-400">{{ app()->getLocale() == 'ar' ? 'خصم الحساب' : 'Account Discount' }}</span>
                                 </td>
                             </tr>
                         @endif
                         <tr>
-                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">{{ __('messages.held_amount') }}</th>
-                            <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ number_format($order->amount_held, 2) }} USD</td>
+                            <th scope="row"
+                                class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">
+                                {{ __('messages.held_amount') }}</th>
+                            <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">
+                                {{ number_format($order->amount_held, 2) }} USD</td>
                         </tr>
                         <tr>
-                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">{{ __('messages.status') }}</th>
+                            <th scope="row"
+                                class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">
+                                {{ __('messages.status') }}</th>
                             <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">
                                 @if ($order->status === 'new')
                                     <x-badge type="new">{{ __('messages.status_new') }}</x-badge>
@@ -76,20 +123,32 @@
                             </td>
                         </tr>
                         <tr>
-                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">{{ __('messages.package') }}</th>
-                            <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $order->variant?->name ?? __('messages.base_price_label') }}</td>
+                            <th scope="row"
+                                class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">
+                                {{ __('messages.package') }}</th>
+                            <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">
+                                {{ $order->variant?->name ?? __('messages.base_price_label') }}</td>
                         </tr>
                         <tr>
-                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">{{ __('messages.date') }}</th>
-                            <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $order->created_at->format('Y-m-d H:i') }}</td>
+                            <th scope="row"
+                                class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">
+                                {{ __('messages.date') }}</th>
+                            <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">
+                                {{ $order->created_at->format('Y-m-d H:i') }}</td>
                         </tr>
                         <tr>
-                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">{{ __('messages.settled_at_label') }}</th>
-                            <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $order->settled_at?->format('Y-m-d H:i') ?? '-' }}</td>
+                            <th scope="row"
+                                class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">
+                                {{ __('messages.settled_at_label') }}</th>
+                            <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">
+                                {{ $order->settled_at?->format('Y-m-d H:i') ?? '-' }}</td>
                         </tr>
                         <tr>
-                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">{{ __('messages.released_at_label') }}</th>
-                            <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $order->released_at?->format('Y-m-d H:i') ?? '-' }}</td>
+                            <th scope="row"
+                                class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">
+                                {{ __('messages.released_at_label') }}</th>
+                            <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">
+                                {{ $order->released_at?->format('Y-m-d H:i') ?? '-' }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -116,7 +175,7 @@
 
                                 $isUrl = filter_var($displayValue, FILTER_VALIDATE_URL) !== false;
                                 $isImageByExt = preg_match('/\.(jpg|jpeg|png|webp|gif|bmp|svg)(\?.*)?$/i', $displayValue) === 1;
-                                $isImagePath = ! $isUrl
+                                $isImagePath = !$isUrl
                                     && $isImageByExt
                                     && !\Illuminate\Support\Str::contains($displayValue, [' ', "\n", "\r", "\t"]);
 
@@ -127,15 +186,19 @@
                                     $imageUrl = asset('storage/' . ltrim($displayValue, '/'));
                                 }
                             @endphp
-                            <div class="rounded-xl border border-slate-200 bg-slate-50/70 p-3 dark:border-slate-700 dark:bg-slate-800/50">
-                                <p class="text-xs text-slate-700 dark:text-slate-50">{{ $fieldLabels[$key] ?? \Illuminate\Support\Str::headline((string) $key) }}</p>
+                            <div
+                                class="rounded-xl border border-slate-200 bg-slate-50/70 p-3 dark:border-slate-700 dark:bg-slate-800/50">
+                                <p class="text-xs text-slate-700 dark:text-slate-50">
+                                    {{ $fieldLabels[$key] ?? \Illuminate\Support\Str::headline((string) $key) }}</p>
 
                                 @if ($imageUrl)
                                     <a href="{{ $imageUrl }}" target="_blank" rel="noopener noreferrer" class="mt-2 inline-block">
-                                        <img src="{{ $imageUrl }}" alt="{{ $fieldLabels[$key] ?? (string) $key }}" class="h-40 w-auto max-w-full rounded-lg border border-slate-200 bg-white object-contain">
+                                        <img src="{{ $imageUrl }}" alt="{{ $fieldLabels[$key] ?? (string) $key }}"
+                                            class="h-40 w-auto max-w-full rounded-lg border border-slate-200 bg-white object-contain">
                                     </a>
                                 @elseif ($isUrl)
-                                    <a href="{{ $displayValue }}" target="_blank" rel="noopener noreferrer" class="mt-2 block break-all text-sm font-semibold text-emerald-900 hover:underline">
+                                    <a href="{{ $displayValue }}" target="_blank" rel="noopener noreferrer"
+                                        class="mt-2 block break-all text-sm font-semibold text-emerald-900 hover:underline">
                                         {{ $displayValue }}
                                     </a>
                                 @else
@@ -159,7 +222,8 @@
         </x-card>
 
         <x-card class="p-8" :hover="false">
-            <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-100">{{ __('messages.order_history_title') }}</h2>
+            <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-100">
+                {{ __('messages.order_history_title') }}</h2>
             @php
                 $statusLabels = [
                     'new' => __('messages.status_new'),
@@ -179,17 +243,19 @@
                     @endphp
                     <div class="rounded-2xl border border-slate-200 p-4">
                         <div class="flex items-center justify-between gap-2">
-                            <p class="text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $event->message ?? __('messages.update_label') }}</p>
+                            <p class="text-sm font-semibold text-slate-900 dark:text-slate-50">
+                                {{ $event->message ?? __('messages.update_label') }}</p>
                             <span class="text-xs text-slate-400">{{ $event->created_at->format('Y-m-d H:i') }}</span>
                         </div>
-                        <p class="mt-2 text-xs text-slate-700 dark:text-slate-50">{{ __('messages.actor_label', ['actor' => $actorLabel]) }}</p>
+                        <p class="mt-2 text-xs text-slate-700 dark:text-slate-50">
+                            {{ __('messages.actor_label', ['actor' => $actorLabel]) }}</p>
                         @if ($event->old_status || $event->new_status)
-                            <p class="mt-1 text-xs text-slate-900 dark:text-slate-50">
-                                {{ __('messages.status_change_label', [
-                                    'old' => $statusLabels[$event->old_status] ?? '-',
-                                    'new' => $statusLabels[$event->new_status] ?? '-'
-                                ]) }}
-                            </p>
+                                    <p class="mt-1 text-xs text-slate-900 dark:text-slate-50">
+                                        {{ __('messages.status_change_label', [
+                                'old' => $statusLabels[$event->old_status] ?? '-',
+                                'new' => $statusLabels[$event->new_status] ?? '-'
+                            ]) }}
+                                    </p>
                         @endif
                     </div>
                 @empty
@@ -200,7 +266,8 @@
     </div>
 
     @if (session('status'))
-        <div id="order-status-toast" data-message="{{ session('status') }}" data-position="{{ app()->getLocale() === 'ar' ? 'top-start' : 'top-end' }}" hidden></div>
+        <div id="order-status-toast" data-message="{{ session('status') }}"
+            data-position="{{ app()->getLocale() === 'ar' ? 'top-start' : 'top-end' }}" hidden></div>
         <script>
             document.addEventListener('DOMContentLoaded', () => {
                 const toastElement = document.getElementById('order-status-toast');
@@ -227,16 +294,16 @@
 
             shareButton.addEventListener('click', async () => {
                 const title = shareButton.dataset.shareTitle || document.title;
-                const url = shareButton.dataset.shareUrl || window.location.href;
+                const text = shareButton.dataset.shareText || '';
 
                 try {
                     if (navigator.share) {
-                        await navigator.share({ title, url });
+                        await navigator.share({ title, text });
                         return;
                     }
 
-                    await navigator.clipboard.writeText(url);
-                    Swal.fire({ toast: true, position: 'top', icon: 'success', title: 'تم نسخ رابط الطلب', showConfirmButton: false, timer: 1800 });
+                    await navigator.clipboard.writeText(text);
+                    Swal.fire({ toast: true, position: 'top', icon: 'success', title: 'تم نسخ تفاصيل الطلب', showConfirmButton: false, timer: 1800 });
                 } catch (error) {
                     if (error?.name === 'AbortError') return;
                     Swal.fire({ toast: true, position: 'top', icon: 'error', title: 'تعذر مشاركة الطلب', showConfirmButton: false, timer: 1800 });

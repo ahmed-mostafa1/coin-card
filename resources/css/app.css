@@ -889,7 +889,7 @@
     }
 
     .home-account-card__topline {
-        @apply relative flex min-h-8 items-start;
+        @apply flex items-center justify-between min-h-8 gap-2;
     }
 
     .home-account-card__summary-badge {
@@ -901,7 +901,7 @@
     }
 
     .home-account-card__vip-badge {
-        @apply absolute left-1/2 top-0 inline-flex -translate-x-1/2 items-center justify-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50/90 px-3 py-1 text-[11px] font-extrabold text-emerald-800 shadow-sm;
+        @apply inline-flex items-center justify-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50/90 px-3 py-1 text-[11px] font-extrabold text-emerald-800 shadow-sm;
     }
 
     .dark .home-account-card__vip-badge {
@@ -1145,13 +1145,7 @@
             @apply px-2.5 py-1 text-[11px];
         }
 
-        .home-account-card__topline {
-            @apply min-h-0 flex-col gap-2;
-        }
 
-        .home-account-card__vip-badge {
-            @apply static translate-x-0 self-center;
-        }
 
         .home-balance-tile {
             @apply rounded-[1.1rem] px-3.5 py-3;

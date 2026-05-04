@@ -12,7 +12,7 @@
                 $userVipStatus = null;
                 $vipTier = null;
                 $vipDiscount = 0;
-                
+
                 if ($currentUser) {
                     $currentUser->load('vipStatus.vipTier');
                     $userVipStatus = $currentUser->vipStatus;
@@ -45,8 +45,10 @@
                         <div class="space-y-2 text-sm">
                             <p class="text-emerald-600">✅ User has VIP status</p>
                             <p><span class="font-semibold">VIP Tier ID:</span> {{ $userVipStatus->vip_tier_id }}</p>
-                            <p><span class="font-semibold">Lifetime Spent:</span> ${{ number_format($userVipStatus->lifetime_spent, 2) }}</p>
-                            <p><span class="font-semibold">Calculated At:</span> {{ $userVipStatus->calculated_at?->format('Y-m-d H:i:s') ?? 'N/A' }}</p>
+                            <p><span class="font-semibold">Lifetime Spent:</span>
+                                ${{ number_format($userVipStatus->lifetime_spent, 2) }}</p>
+                            <p><span class="font-semibold">Calculated At:</span>
+                                {{ $userVipStatus->calculated_at?->format('Y-m-d H:i:s') ?? 'N/A' }}</p>
                         </div>
                     @else
                         <p class="text-amber-600">⚠️ User has no VIP status assigned</p>
@@ -63,8 +65,10 @@
                             <p><span class="font-semibold">Tier Name (EN):</span> {{ $vipTier->title_en }}</p>
                             <p><span class="font-semibold">Tier Name (AR):</span> {{ $vipTier->title_ar }}</p>
                             <p><span class="font-semibold">Rank:</span> {{ $vipTier->rank }}</p>
-                            <p><span class="font-semibold text-emerald-900">Discount Percentage:</span> <span class="text-lg font-bold text-emerald-900">{{ $vipTier->discount_percentage }}%</span></p>
-                            <p><span class="font-semibold">Required Deposits:</span> ${{ number_format($vipTier->deposits_required, 2) }}</p>
+                            <p><span class="font-semibold text-emerald-900 dark:text-emerald-50">Discount Percentage:</span>
+                                <span class="text-lg font-bold text-emerald-900">{{ $vipTier->discount_percentage }}%</span></p>
+                            <p><span class="font-semibold">Required Deposits:</span>
+                                ${{ number_format($vipTier->deposits_required, 2) }}</p>
                         </div>
                     @else
                         <p class="text-rose-600">❌ No VIP tier found</p>
@@ -76,8 +80,9 @@
                 <div class="rounded-lg border border-emerald-200 bg-emerald-50 p-4">
                     <h2 class="text-lg font-semibold text-emerald-900 mb-3">4. Discount Calculation</h2>
                     <div class="space-y-2 text-sm">
-                        <p><span class="font-semibold">VIP Discount:</span> <span class="text-2xl font-bold text-emerald-900">{{ $vipDiscount }}%</span></p>
-                        
+                        <p><span class="font-semibold">VIP Discount:</span> <span
+                                class="text-2xl font-bold text-emerald-900">{{ $vipDiscount }}%</span></p>
+
                         @if ($vipDiscount > 0)
                             <div class="mt-4 p-3 bg-white rounded border border-emerald-200">
                                 <p class="font-semibold mb-2">Example Calculation:</p>
@@ -119,7 +124,8 @@
                                         <tr class="{{ $vipTier && $vipTier->id == $tier->id ? 'bg-emerald-50' : '' }}">
                                             <td class="px-3 py-2">{{ $tier->rank }}</td>
                                             <td class="px-3 py-2">{{ $tier->title_en }}</td>
-                                            <td class="px-3 py-2 font-semibold text-emerald-900">{{ $tier->discount_percentage }}%</td>
+                                            <td class="px-3 py-2 font-semibold text-emerald-900 dark:text-emerald-50">
+                                                {{ $tier->discount_percentage }}%</td>
                                             <td class="px-3 py-2">${{ number_format($tier->deposits_required, 2) }}</td>
                                         </tr>
                                     @endforeach
@@ -143,7 +149,8 @@
                                 </button>
                             </form>
                         @endif
-                        <a href="{{ route('services.index') }}" class="inline-block px-4 py-2 bg-slate-600 text-white rounded hover:bg-slate-700">
+                        <a href="{{ route('services.index') }}"
+                            class="inline-block px-4 py-2 bg-slate-600 text-white rounded hover:bg-slate-700">
                             View Services
                         </a>
                     </div>

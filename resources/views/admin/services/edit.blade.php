@@ -266,11 +266,11 @@
                     </div>
                     <div>
                         <x-input-label for="seo_content" value="مقال/محتوى عربي" />
-                        <textarea id="seo_content" name="seo_content" rows="8" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white">{{ old('seo_content', $service->seo_content) }}</textarea>
+                        <x-admin.rich-text-editor id="seo_content" name="seo_content" :value="old('seo_content', $service->seo_content)" dir="rtl" />
                     </div>
                     <div>
                         <x-input-label for="seo_content_en" value="SEO Content English" />
-                        <textarea id="seo_content_en" name="seo_content_en" rows="8" dir="ltr" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white">{{ old('seo_content_en', $service->seo_content_en) }}</textarea>
+                        <x-admin.rich-text-editor id="seo_content_en" name="seo_content_en" :value="old('seo_content_en', $service->seo_content_en)" dir="ltr" />
                     </div>
                 </div>
 
