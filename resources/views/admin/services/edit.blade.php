@@ -303,11 +303,7 @@
                         @endif
                         @if ($service->provider_status_sync_error)
                             <div class="mt-2 rounded-xl border border-rose-200 dark:border-rose-800/50 bg-rose-50 dark:bg-rose-900/20 p-3">
-                                <p class="text-xs font-semibold text-rose-700 dark:text-rose-300 mb-1">خطأ في المزامنة:</p>
-                                <p class="text-xs text-rose-600 dark:text-rose-400 break-all">{{ Str::limit(strip_tags($service->provider_status_sync_error), 300) }}</p>
-                                @if (str_contains($service->provider_status_sync_error, '<html') || str_contains($service->provider_status_sync_error, '<!doctype'))
-                                    <p class="mt-2 text-xs text-amber-700 dark:text-amber-400 font-medium">⚠️ المزود يعيد صفحة HTML — تحقق من صحة base_url وcatalog_endpoint في إعدادات المزود.</p>
-                                @endif
+                              
                             </div>
                         @endif
                     </div>
