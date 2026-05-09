@@ -21,7 +21,14 @@ class GenericStyledMail extends Mailable
         public ?string $actionUrl = null,
         public ?string $helperText = null,
         public ?string $fallbackUrl = null,
-        public string $direction = 'ltr'
+        public string $direction = 'ltr',
+        // Bilingual support
+        public ?string $arTitle = null,
+        public ?string $enTitle = null,
+        public ?array $arIntroLines = null,
+        public ?array $enIntroLines = null,
+        public ?array $arOutroLines = null,
+        public ?array $enOutroLines = null,
     ) {
     }
 
@@ -37,15 +44,22 @@ class GenericStyledMail extends Mailable
         return new Content(
             view: 'emails.app',
             with: [
-                'subject' => $this->emailSubject,
-                'title' => $this->title,
-                'introLines' => $this->introLines,
-                'outroLines' => $this->outroLines,
-                'actionText' => $this->actionText,
-                'actionUrl' => $this->actionUrl,
-                'helperText' => $this->helperText,
-                'fallbackUrl' => $this->fallbackUrl,
-                'direction' => $this->direction,
+                'subject'      => $this->emailSubject,
+                'title'        => $this->title,
+                'introLines'   => $this->introLines,
+                'outroLines'   => $this->outroLines,
+                'actionText'   => $this->actionText,
+                'actionUrl'    => $this->actionUrl,
+                'helperText'   => $this->helperText,
+                'fallbackUrl'  => $this->fallbackUrl,
+                'direction'    => $this->direction,
+                // Bilingual fields (null = fall back to shared fields in the component)
+                'arTitle'      => $this->arTitle,
+                'enTitle'      => $this->enTitle,
+                'arIntroLines' => $this->arIntroLines,
+                'enIntroLines' => $this->enIntroLines,
+                'arOutroLines' => $this->arOutroLines,
+                'enOutroLines' => $this->enOutroLines,
             ],
         );
     }

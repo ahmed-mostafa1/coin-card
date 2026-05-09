@@ -26,13 +26,18 @@ class EmailTwoFactorService
         try {
             Mail::to($user->email)->send(new GenericStyledMail(
                 emailSubject: 'رمز التحقق الثنائي / Two-Factor Code',
-                title: 'رمز التحقق الثنائي',
-                introLines: [
+                arTitle: 'رمز التحقق الثنائي',
+                enTitle: 'Two-Factor Verification Code',
+                arIntroLines: [
                     'رمز الدخول الخاص بك هو: '.$code,
                     'ينتهي هذا الرمز خلال 10 دقائق.',
                 ],
-                outroLines: ['إذا لم تحاول تسجيل الدخول، يرجى تغيير كلمة المرور والتواصل مع الإدارة.'],
-                direction: 'rtl'
+                enIntroLines: [
+                    'Your verification code is: '.$code,
+                    'This code expires in 10 minutes.',
+                ],
+                arOutroLines: ['إذا لم تحاول تسجيل الدخول، يرجى تغيير كلمة المرور والتواصل مع الإدارة.'],
+                enOutroLines: ['If you did not attempt to log in, please change your password and contact support.'],
             ));
         } catch (\Throwable $e) {
             Log::error('2FA email failed', ['user_id' => $user->id, 'error' => $e->getMessage()]);
