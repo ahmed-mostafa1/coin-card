@@ -12,12 +12,12 @@
 @endphp
 
 <a href="{{ $href }}"
-    class="group block overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-slate-700 dark:bg-slate-800"
+    class="group block overflow-hidden rounded-xl border border-slate-50 bg-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-slate-700 dark:bg-slate-800"
     data-filter-item="{{ $searchTarget }}"
     data-filter-name="{{ $title }}"
     data-filter-alt="{{ $subtitle }}">
 
-    <div class="aspect-square w-full overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-900">
+    <div class="aspect-square w-full overflow-hidden bg-gradient-to-br from-slate-50 to-slate-50 dark:from-slate-700 dark:to-slate-900">
         @if ($image)
             <img src="{{ $image }}"
                  alt="{{ $title }}"
@@ -35,6 +35,6 @@
     </div>
 
     <div class="flex min-h-[4.25rem] flex-col items-center justify-center px-2 py-3 text-center">
-        <span class="block text-[13px] font-bold leading-snug text-slate-800 line-clamp-2 dark:text-slate-100 sm:text-sm">{{ $title }}</span>
+        <span class="block text-[13px] font-bold leading-snug text-slate-800 line-clamp-2 dark:text-slate-50 sm:text-sm">{{ $title }}</span>
     </div>
 </a>

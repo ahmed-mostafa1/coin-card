@@ -8,7 +8,7 @@
         <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div>
                 <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">{{ __('messages.services_page_title') }}</h1>
-                <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-300">{{ __('messages.services_page_desc') }}</p>
+                <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-50">{{ __('messages.services_page_desc') }}</p>
             </div>
             <div class="admin-action-bar lg:w-auto">
                 <form action="{{ route('admin.services.index') }}" method="GET" class="flex w-full flex-col gap-2 sm:flex-row sm:items-center lg:w-auto">
@@ -17,7 +17,7 @@
                                name="search" 
                                value="{{ request('search') }}" 
                                placeholder=".." 
-                               class="min-h-11 w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pr-10 pl-4 text-sm outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-1 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-900/50 dark:text-white dark:focus:border-emerald-500 dark:focus:bg-slate-900">
+                               class="min-h-11 w-full rounded-xl border border-slate-50 bg-slate-50 py-2.5 pr-10 pl-4 text-sm outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-1 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-900/50 dark:text-white dark:focus:border-emerald-500 dark:focus:bg-slate-900">
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
@@ -44,7 +44,7 @@
         @endif
 
         <x-table class="mt-6">
-            <thead class="border-b border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400">
+            <thead class="border-b border-slate-50 dark:border-slate-700 text-slate-900 dark:text-slate-400">
                 <tr>
                     <th class="py-2">{{ __('messages.name_label') }}</th>
                     <th class="py-2">{{ __('messages.category') }}</th>
@@ -55,7 +55,7 @@
                     <th class="py-2">{{ __('messages.actions') }}</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+            <tbody class="divide-y divide-slate-50 dark:divide-slate-700">
                 @forelse ($services as $service)
                     <tr class="transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
                         <td class="py-3" data-label="{{ __('messages.name_label') }}">
@@ -63,11 +63,11 @@
                                 <span>{{ $service->name }}</span>
                             </div>
                         </td>
-                        <td class="py-3 text-slate-500 dark:text-slate-400" data-label="{{ __('messages.category') }}">{{ $service->category?->name }}</td>
+                        <td class="py-3 text-slate-900 dark:text-slate-400" data-label="{{ __('messages.category') }}">{{ $service->category?->name }}</td>
                         <td class="py-3 text-slate-700 dark:text-white" data-label="{{ __('messages.price') }}">{{ number_format($service->price, 2) }} USD</td>
                         <td class="py-3" data-label="المصدر">
                             @if (empty($service->source) || $service->source === 'manual')
-                                <span class="rounded-full bg-slate-100 dark:bg-slate-700 px-3 py-1 text-xs text-slate-700 dark:text-slate-300">يدوي</span>
+                                <span class="rounded-full bg-slate-50 dark:bg-slate-700 px-3 py-1 text-xs text-slate-700 dark:text-slate-50">يدوي</span>
                             @else
                                 <span class="rounded-full bg-indigo-100 dark:bg-indigo-900/50 px-3 py-1 text-xs text-indigo-700 dark:text-indigo-400 font-medium">
                                     {{ $service->source === 'dailycard' ? 'DailyCard' : ucfirst($service->source) }}
@@ -105,7 +105,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="py-6 text-center text-slate-500 dark:text-slate-400">{{ __('messages.no_services_yet') }}</td>
+                        <td colspan="7" class="py-6 text-center text-slate-900 dark:text-slate-400">{{ __('messages.no_services_yet') }}</td>
                     </tr>
                 @endforelse
             </tbody>

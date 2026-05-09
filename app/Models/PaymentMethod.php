@@ -16,6 +16,7 @@ class PaymentMethod extends Model
         'account_number',
         'show_account_number',
         'show_contact_button',
+        'require_transfer_proof',
         'icon_path',
         'is_active',
         'sort_order',
@@ -25,6 +26,7 @@ class PaymentMethod extends Model
         'is_active' => 'boolean',
         'show_account_number' => 'boolean',
         'show_contact_button' => 'boolean',
+        'require_transfer_proof' => 'boolean',
     ];
 
     /**

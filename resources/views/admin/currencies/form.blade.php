@@ -27,11 +27,11 @@
         <x-input-error :messages="$errors->get('sort_order')" />
     </div>
 </div>
-<label class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
-    <input type="checkbox" name="is_enabled" value="1" class="rounded border-slate-300 text-emerald-600" @checked(old('is_enabled', $currency?->is_enabled ?? true))>
+<label class="flex items-center gap-3 text-sm text-slate-900 dark:text-slate-400">
+    <input type="checkbox" name="is_enabled" value="1" class="rounded border-slate-50 text-emerald-600" @checked(old('is_enabled', $currency?->is_enabled ?? true))>
     العملة مفعلة
 </label>
 <div class="flex gap-3">
     <x-primary-button>{{ __('messages.save') }}</x-primary-button>
-    <a href="{{ route('admin.currencies.index') }}" class="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-900 dark:border-slate-600 dark:text-slate-50">{{ __('messages.cancel') }}</a>
+    <a href="{{ route('admin.currencies.index') }}" class="rounded-full border border-slate-50 px-4 py-2 text-sm font-semibold text-slate-900 dark:border-slate-900 dark:text-slate-50">{{ __('messages.cancel') }}</a>
 </div>

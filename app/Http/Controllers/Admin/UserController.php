@@ -210,6 +210,47 @@ class UserController extends Controller
             ->with('status', 'تم خصم الرصيد بنجاح.');
     }
 
+    public function refundHeld(User $user, Request $request, WalletService $walletService): RedirectResponse
+    {
+        $data = $request->validate([
+            'amount' => ['required', 'numeric', 'min:0.01', 'max:100000'],
+            'note'   => ['required', 'string', 'max:500'],
+        ]);
+
+        $wallet = $user->wallet()->firstOrCreate([]);
+
+        if ($wallet->held_balance < $data['amount']) {
+            return redirect()->route('admin.users.show', $user)
+                ->withErrors(['amount' => 'الرصيد المعلّق أقل من المبلغ المطلوب استرداده.']);
+        }
+
+        $transaction = $walletService->releaseHeldAmount($wallet, (string) $data['amount'], [
+            'type'               => WalletTransaction::TYPE_RELEASE,
+            'reference_type'     => 'admin_held_refund',
+            'note'               => $data['note'],
+            'created_by_user_id' => $request->user()?->id,
+            'approved_by_user_id'=> $request->user()?->id,
+            'approved_at'        => now(),
+        ]);
+
+        $wallet->refresh();
+        app(SecurityLogger::class)->log('admin_held_refund', $user, $request, [
+            'wallet_transaction_id' => $transaction->id,
+            'amount' => $data['amount'],
+            'note'   => $data['note'],
+        ], $transaction, $request->user());
+
+        $user->notify(new \App\Notifications\BalanceAdjustedNotification(
+            $transaction,
+            'credit',
+            $data['note'],
+            $wallet->balance
+        ));
+
+        return redirect()->route('admin.users.show', $user)
+            ->with('status', 'تم إرجاع الرصيد المعلّق إلى رصيد المستخدم بنجاح.');
+    }
+
     public function sendEmail(User $user, Request $request): RedirectResponse
     {
         if (!$user->email) {

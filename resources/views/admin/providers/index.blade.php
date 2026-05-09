@@ -33,10 +33,10 @@
         @endif
 
         @if($providers->isEmpty())
-            <p class="mt-6 text-center text-slate-500 dark:text-slate-400">لا يوجد مزودون بعد. أضف مزوداً لبدء استيراد المنتجات.</p>
+            <p class="mt-6 text-center text-slate-900 dark:text-slate-400">لا يوجد مزودون بعد. أضف مزوداً لبدء استيراد المنتجات.</p>
         @else
             <x-table class="mt-6">
-                <thead class="bg-slate-50 dark:bg-slate-700/50 text-slate-500 dark:text-slate-400">
+                <thead class="bg-slate-50 dark:bg-slate-700/50 text-slate-900 dark:text-slate-400">
                     <tr>
                         <th class="py-2 px-3 text-right">الاسم</th>
                         <th class="py-2 px-3 text-right">المعرّف</th>
@@ -46,14 +46,14 @@
                         <th class="py-2 px-3 text-right">الإجراءات</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+                <tbody class="divide-y divide-slate-50 dark:divide-slate-700">
                     @foreach($providers as $provider)
                         <tr class="transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
                             <td class="py-3 px-3 font-semibold text-slate-700 dark:text-white">{{ $provider->name }}</td>
                             <td class="py-3 px-3">
-                                <code class="text-xs bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">{{ $provider->slug }}</code>
+                                <code class="text-xs bg-slate-50 dark:bg-slate-800 px-2 py-0.5 rounded">{{ $provider->slug }}</code>
                             </td>
-                            <td class="py-3 px-3 text-sm text-slate-500 dark:text-slate-400">
+                            <td class="py-3 px-3 text-sm text-slate-900 dark:text-slate-400">
                                 {{ \App\Models\ApiProvider::AUTH_TYPES[$provider->auth_type] ?? $provider->auth_type }}
                             </td>
                             <td class="py-3 px-3 text-slate-700 dark:text-white">{{ $provider->services_count }}</td>

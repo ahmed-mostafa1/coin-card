@@ -37,14 +37,14 @@
 
 📝 Simple cell:
 -->
-<td class="py-3 text-slate-700 dark:text-slate-300" data-label="Name">
+<td class="py-3 text-slate-700 dark:text-slate-50" data-label="Name">
     {{ $user->name }}
 </td>
 
 <!--
 👤 Cell with sub-text:
 -->
-<td class="py-3 text-slate-700 dark:text-slate-300" data-label="User">
+<td class="py-3 text-slate-700 dark:text-slate-50" data-label="User">
     {{ $user->name }}
     <div class="text-xs text-slate-9000 dark:text-slate-50">{{ $user->email }}</div>
 </td>
@@ -94,13 +94,13 @@
 </thead>
 
 <!-- Table body -->
-<tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+<tbody class="divide-y divide-slate-50 dark:divide-slate-700">
     <tr class="transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
         <!-- Regular text cell -->
-        <td class="py-3 text-slate-700 dark:text-slate-300" data-label="Label">Content</td>
+        <td class="py-3 text-slate-700 dark:text-slate-50" data-label="Label">Content</td>
         
         <!-- Muted text cell -->
-        <td class="py-3 text-slate-500 dark:text-slate-400" data-label="Label">Content</td>
+        <td class="py-3 text-slate-900 dark:text-slate-400" data-label="Label">Content</td>
         
         <!-- Component cell (badge, etc) -->
         <td class="py-3" data-label="Label">
@@ -110,7 +110,7 @@
     
     <!-- Empty state -->
     <tr>
-        <td colspan="7" class="py-6 text-center text-slate-500 dark:text-slate-400">
+        <td colspan="7" class="py-6 text-center text-slate-900 dark:text-slate-400">
             No data available
         </td>
     </tr>

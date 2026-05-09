@@ -18,7 +18,7 @@
         @endif
 
         <x-table class="mt-6">
-            <thead class="bg-slate-50 text-slate-500 dark:bg-emerald-800/60 dark:text-slate-300">
+            <thead class="bg-slate-50 text-slate-900 dark:bg-emerald-800/60 dark:text-slate-50">
                     <tr>
                         <th class="py-2">الطريقة</th>
                         <th class="py-2">المبلغ المطلوب</th>
@@ -28,7 +28,7 @@
                         <th class="py-2">الإجراء</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100">
+                <tbody class="divide-y divide-slate-50">
                     @forelse ($deposits as $deposit)
                         <tr class="transition hover:bg-slate-50">
                             <td class="py-3 text-slate-700 dark:text-slate-50">{{ $deposit->paymentMethod?->name ?? 'طريقة محذوفة' }}</td>
@@ -54,7 +54,7 @@
                                     <x-badge type="rejected">مرفوض</x-badge>
                                 @endif
                             </td>
-                            <td class="py-3 text-slate-500">{{ $deposit->created_at->format('Y-m-d') }}</td>
+                            <td class="py-3 text-slate-900">{{ $deposit->created_at->format('Y-m-d') }}</td>
                             <td class="py-3">
                                 <a href="{{ route('account.deposits.show', $deposit) }}" class="text-emerald-900 hover:text-emerald-900 dark:text-emerald-50">عرض</a>
                             </td>
@@ -66,7 +66,7 @@
                         @endif
                     @empty
                         <tr>
-                            <td colspan="6" class="py-6 text-center text-slate-500">لا توجد طلبات شحن بعد.</td>
+                            <td colspan="6" class="py-6 text-center text-slate-900">لا توجد طلبات شحن بعد.</td>
                         </tr>
                     @endforelse
                 </tbody>

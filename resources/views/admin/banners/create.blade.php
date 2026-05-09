@@ -23,7 +23,7 @@
 
             <div>
                 <x-input-label for="image" :value="__('messages.image')" />
-                <input id="image" name="image" type="file" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-600 dark:text-slate-300 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-800 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-900 dark:file:text-emerald-300" required>
+                <input id="image" name="image" type="file" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-900 dark:text-slate-50 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-800 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-900 dark:file:text-emerald-300" required>
                 <p class="mt-2 text-xs text-slate-9000 dark:text-slate-50">
                     <i class="fa-solid fa-info-circle ml-1"></i>
                     {{ __('messages.recommended_size') }}: 1400x400 px
@@ -31,8 +31,8 @@
                 <x-input-error :messages="$errors->get('image')" />
             </div>
 
-            <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
-                <input id="is_active" name="is_active" type="checkbox" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" checked>
+            <div class="flex items-center gap-3 text-sm text-slate-900 dark:text-slate-400">
+                <input id="is_active" name="is_active" type="checkbox" value="1" class="rounded border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" checked>
                 <label for="is_active">{{ __('messages.activate_banner') }}</label>
             </div>
 
@@ -43,7 +43,7 @@
 
             <div class="flex gap-3">
                 <x-primary-button>{{ __('messages.save') }}</x-primary-button>
-                <a href="{{ route('admin.banners.index') }}" class="rounded-full border border-slate-200 dark:border-slate-600 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-500">{{ __('messages.cancel') }}</a>
+                <a href="{{ route('admin.banners.index') }}" class="rounded-full border border-slate-50 dark:border-slate-900 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-slate-50 transition hover:border-emerald-200 dark:hover:border-emerald-500">{{ __('messages.cancel') }}</a>
             </div>
         </form>
     </div>

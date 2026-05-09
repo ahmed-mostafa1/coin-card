@@ -17,12 +17,12 @@
                 @endif
                 <div>
                     <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">{{ $paymentMethod->localized_name }}</h1>
-                    <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">{{ __('messages.deposit_instruction_desc') }}</p>
+                    <p class="mt-1 text-sm text-slate-900 dark:text-slate-400">{{ __('messages.deposit_instruction_desc') }}</p>
                 </div>
             </div>
 
             <div
-                class="mt-6 rounded-2xl border border-emerald-100 dark:border-emerald-900/30 bg-emerald-50 dark:bg-emerald-900/20 px-5 py-4 text-sm text-slate-700 dark:text-slate-300">
+                class="mt-6 rounded-2xl border border-emerald-100 dark:border-emerald-900/30 bg-emerald-50 dark:bg-emerald-900/20 px-5 py-4 text-sm text-slate-700 dark:text-slate-50">
                 <div class="whitespace-pre-line">{{ $paymentMethod->localized_instructions }}</div>
 
                 @if ($paymentMethod->buttons->isNotEmpty())
@@ -48,10 +48,10 @@
             @endif
 
             @if($paymentMethod->account_number)
-                <div class="mt-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4">
+                <div class="mt-4 rounded-2xl border border-slate-50 dark:border-slate-700 bg-white dark:bg-slate-800 p-4">
                     <div class="flex items-center justify-between gap-4">
                         <div>
-                            <p class="text-sm text-slate-500 dark:text-slate-400">{{ __('messages.account_number_label') }}</p>
+                            <p class="text-sm text-slate-900 dark:text-slate-400">{{ __('messages.account_number_label') }}</p>
                             <p class="mt-2 text-lg font-semibold text-slate-700 dark:text-slate-50 break-all" data-account-number>
                                 {{ $paymentMethod->account_number }}</p>
                             <p class="mt-1 text-xs text-emerald-600 dark:text-emerald-400 hidden" data-copy-feedback>
@@ -137,23 +137,25 @@
                                 name="fields[{{ $field->name_key }}]"
                                 type="text"
                                 value="{{ old('fields.' . $field->name_key) }}"
-                                class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-slate-50"
+                                class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-slate-50"
                                 {{ $field->is_required ? 'required' : '' }}>
                         @else
                             <textarea id="field_{{ $field->name_key }}" name="fields[{{ $field->name_key }}]" rows="3"
-                                class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-slate-50"
+                                class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-slate-50"
                                 {{ $field->is_required ? 'required' : '' }}>{{ old('fields.' . $field->name_key) }}</textarea>
                         @endif
                         <x-input-error :messages="$errors->get('fields.' . $field->name_key)" />
                     </div>
                 @endforeach
 
+                @if ($paymentMethod->require_transfer_proof ?? true)
                 <div>
                     <x-input-label for="proof" :value="__('messages.transfer_proof')" />
                     <input id="proof" name="proof" type="file" required
-                        class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-600 dark:text-slate-300 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-900/30 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-900 dark:file:text-emerald-400">
+                        class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-900 dark:text-slate-300 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-900/30 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-900 dark:file:text-emerald-400">
                     <x-input-error :messages="$errors->get('proof')" />
                 </div>
+                @endif
 
                 <x-primary-button class="w-full">{{ __('messages.confirm_deposit') }}</x-primary-button>
             </form>

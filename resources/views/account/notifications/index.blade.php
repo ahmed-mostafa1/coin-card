@@ -8,7 +8,7 @@
         <div class="flex flex-wrap items-center justify-between gap-4">
             <div>
                 <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">{{ __('messages.notifications') }}</h1>
-                <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-300">{{ __('messages.notifications_desc') }}</p>
+                <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-50">{{ __('messages.notifications_desc') }}</p>
             </div>
             <div class="flex items-center gap-3">
                 @if(auth()->user()->hasRole('admin'))
@@ -33,11 +33,11 @@
 
         <div class="mt-6 flex items-center gap-3 text-sm">
             <a href="{{ route('account.notifications', ['filter' => 'all']) }}"
-                class="rounded-full border px-4 py-2 transition {{ $filter === 'all' ? 'border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-900 dark:text-emerald-400' : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-emerald-200 dark:hover:border-emerald-700' }}">
+                class="rounded-full border px-4 py-2 transition {{ $filter === 'all' ? 'border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-900 dark:text-emerald-400' : 'border-slate-50 dark:border-slate-700 text-slate-900 dark:text-slate-50 hover:border-emerald-200 dark:hover:border-emerald-700' }}">
                 {{ __('messages.all') }}
             </a>
             <a href="{{ route('account.notifications', ['filter' => 'unread']) }}"
-                class="rounded-full border px-4 py-2 transition {{ $filter === 'unread' ? 'border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-900 dark:text-emerald-400' : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-emerald-200 dark:hover:border-emerald-700' }}">
+                class="rounded-full border px-4 py-2 transition {{ $filter === 'unread' ? 'border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-900 dark:text-emerald-400' : 'border-slate-50 dark:border-slate-700 text-slate-900 dark:text-slate-50 hover:border-emerald-200 dark:hover:border-emerald-700' }}">
                 {{ __('messages.unread') }}
             </a>
         </div>
@@ -46,7 +46,7 @@
             @forelse ($notifications as $notification)
                 <a href="{{ $notification->data['url'] ?? route('account.notifications') }}" 
                    onclick="event.preventDefault(); markAsRead('{{ $notification->id }}', '{{ $notification->data['url'] ?? route('account.notifications') }}');"
-                   class="block rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 transition hover:border-emerald-200 dark:hover:border-emerald-700 cursor-pointer">
+                   class="block rounded-2xl border border-slate-50 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 transition hover:border-emerald-200 dark:hover:border-emerald-700 cursor-pointer">
                     <div class="flex items-start justify-between gap-2">
                         @php
                             $locale = app()->getLocale();
@@ -77,15 +77,15 @@
                                 $description = __($description, $descriptionParams);
                             }
                         @endphp
-                        <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-300">{{ $description }}</p>
+                        <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-50">{{ $description }}</p>
                         @if (!empty($notification->data['image_url']) || !empty($notification->data['image_path']))
                             @php $notificationImage = $notification->data['image_url'] ?? asset('storage/'.$notification->data['image_path']); @endphp
-                            <img src="{{ $notificationImage }}" alt="{{ $title }}" class="mt-3 max-h-48 rounded-xl border border-slate-200 object-contain dark:border-slate-700">
+                            <img src="{{ $notificationImage }}" alt="{{ $title }}" class="mt-3 max-h-48 rounded-xl border border-slate-50 object-contain dark:border-slate-700">
                         @endif
                         <p class="mt-2 text-xs text-slate-400">{{ $notification->created_at->diffForHumans() }}</p>
                     </a>
             @empty
-                <p class="text-sm text-slate-500 dark:text-slate-400">{{ __('messages.no_notifications') }}</p>
+                <p class="text-sm text-slate-900 dark:text-slate-400">{{ __('messages.no_notifications') }}</p>
             @endforelse
         </div>
 

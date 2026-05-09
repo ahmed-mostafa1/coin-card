@@ -27,7 +27,7 @@
                     إدارة الخدمات
                 </a>
                 <a href="{{ route('admin.providers.index') }}"
-                   class="inline-flex items-center rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 transition dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700">
+                   class="inline-flex items-center rounded-xl border border-slate-50 px-4 py-2 text-sm font-medium text-slate-900 hover:bg-slate-50 transition dark:border-slate-700 dark:text-slate-50 dark:hover:bg-slate-700">
                     ← المزودون
                 </a>
             </div>
@@ -47,11 +47,11 @@
 
         <div class="mt-4 flex flex-wrap items-center gap-2">
             <a href="{{ route('admin.providers.catalog.index', array_merge(['provider' => $provider], $pageModeQuery)) }}"
-               class="inline-flex items-center rounded-xl px-4 py-2 text-sm font-medium transition {{ $mode === 'page' ? 'bg-emerald-600 text-white hover:bg-emerald-700' : 'border border-slate-200 text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700' }}">
+               class="inline-flex items-center rounded-xl px-4 py-2 text-sm font-medium transition {{ $mode === 'page' ? 'bg-emerald-600 text-white hover:bg-emerald-700' : 'border border-slate-50 text-slate-900 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-50 dark:hover:bg-slate-700' }}">
                 عرض مقسم للصفحات
             </a>
             <a href="{{ route('admin.providers.catalog.index', array_merge(['provider' => $provider], $allModeQuery)) }}"
-               class="inline-flex items-center rounded-xl px-4 py-2 text-sm font-medium transition {{ $mode === 'all' ? 'bg-emerald-600 text-white hover:bg-emerald-700' : 'border border-slate-200 text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700' }}">
+               class="inline-flex items-center rounded-xl px-4 py-2 text-sm font-medium transition {{ $mode === 'all' ? 'bg-emerald-600 text-white hover:bg-emerald-700' : 'border border-slate-50 text-slate-900 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-50 dark:hover:bg-slate-700' }}">
                 {{ $isDailyCard ? 'تحميل الكل' : 'محاولة تحميل الكل' }}
             </a>
         </div>
@@ -64,7 +64,7 @@
                        name="search"
                        value="{{ $search }}"
                        placeholder="بحث في اسم المنتج أو الوصف..."
-                       class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
+                       class="w-full rounded-xl border border-slate-50 bg-white px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
             </div>
 
             @if($isDailyCard)
@@ -74,13 +74,13 @@
                            value="{{ $categoryFilter }}"
                            min="1"
                            placeholder="معرف الفئة"
-                           class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                           class="w-full rounded-xl border border-slate-50 bg-white px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                            dir="ltr" />
                 </div>
 
                 <div>
                     <select name="product_type"
-                            class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-800 dark:text-white">
+                            class="w-full rounded-xl border border-slate-50 bg-white px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-800 dark:text-white">
                         <option value="">كل الأنواع</option>
                         <option value="package" @selected($productTypeFilter === 'package')>package</option>
                         <option value="quantity" @selected($productTypeFilter === 'quantity')>quantity</option>
@@ -96,14 +96,14 @@
                     بحث
                 </button>
                 <a href="{{ route('admin.providers.catalog.index', array_merge(['provider' => $provider], $resetQuery)) }}"
-                   class="inline-flex items-center rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 transition dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700">
+                   class="inline-flex items-center rounded-xl border border-slate-50 px-4 py-2 text-sm font-medium text-slate-900 hover:bg-slate-50 transition dark:border-slate-700 dark:text-slate-50 dark:hover:bg-slate-700">
                     إعادة ضبط
                 </a>
             </div>
         </form>
 
         @if($isDailyCard && $searchIsLocal)
-            <div class="mt-4 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600 dark:bg-slate-700/50 dark:text-slate-400">
+            <div class="mt-4 rounded-xl border border-slate-50 bg-slate-50 px-4 py-3 text-sm text-slate-900 dark:bg-slate-700/50 dark:text-slate-400">
                 بحث DailyCard يتم محليًا بعد تحميل النتائج، لأن واجهة المزود تعيد أخطاء عند استخدام `search` مباشرة.
             </div>
         @endif
@@ -133,7 +133,7 @@
         @endif
 
         <x-table class="mt-4">
-            <thead class="bg-slate-50 text-slate-500 dark:bg-slate-700/50 dark:text-slate-400">
+            <thead class="bg-slate-50 text-slate-900 dark:bg-slate-700/50 dark:text-slate-400">
                 <tr>
                     <th class="px-3 py-2 text-right">المعرّف</th>
                     <th class="px-3 py-2 text-right">الاسم</th>
@@ -143,13 +143,13 @@
                     <th class="px-3 py-2 text-right">الاستيراد</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+            <tbody class="divide-y divide-slate-50 dark:divide-slate-700">
                 @forelse($products as $product)
                     @php $extId = $product['external_id']; $isImported = isset($importedIds[$extId]); @endphp
                     <tr class="transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
                         <td class="px-3 py-3 font-mono text-xs text-slate-400">{{ $extId }}</td>
                         <td class="px-3 py-3 font-medium text-slate-700 dark:text-white">{{ $product['name'] }}</td>
-                        <td class="px-3 py-3 text-sm text-slate-500 dark:text-slate-400">{{ $product['type'] ?? '—' }}</td>
+                        <td class="px-3 py-3 text-sm text-slate-900 dark:text-slate-400">{{ $product['type'] ?? '—' }}</td>
                         <td class="px-3 py-3 font-semibold text-emerald-600">{{ number_format((float) $product['price'], 2) }}</td>
                         <td class="px-3 py-3">
                             @if($product['available'])
@@ -175,7 +175,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="py-8 text-center text-slate-500 dark:text-slate-400">لا توجد منتجات.</td>
+                        <td colspan="6" class="py-8 text-center text-slate-900 dark:text-slate-400">لا توجد منتجات.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -183,7 +183,7 @@
 
         @if($mode === 'page' && ($hasPreviousPage || $hasNextPage || $totalPages > 1))
             <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
-                <p class="text-sm text-slate-500 dark:text-slate-400">
+                <p class="text-sm text-slate-900 dark:text-slate-400">
                     الصفحة {{ $currentPage }}
                     @if($totalPages > 1)
                         من {{ $totalPages }}
@@ -193,7 +193,7 @@
                 <div class="flex items-center gap-2">
                     @if($hasPreviousPage)
                         <a href="{{ route('admin.providers.catalog.index', array_merge(['provider' => $provider], $previousQuery)) }}"
-                           class="inline-flex items-center rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 transition dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700">
+                           class="inline-flex items-center rounded-xl border border-slate-50 px-4 py-2 text-sm font-medium text-slate-900 hover:bg-slate-50 transition dark:border-slate-700 dark:text-slate-50 dark:hover:bg-slate-700">
                             السابق
                         </a>
                     @endif

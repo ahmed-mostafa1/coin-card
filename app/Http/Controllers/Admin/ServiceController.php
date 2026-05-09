@@ -98,6 +98,7 @@ class ServiceController extends Controller
         $this->ensureServiceIsEditable($service);
 
         $service->load([
+            'provider',
             'formFields.options' => fn ($query) => $query->orderBy('sort_order'),
             'buttons' => fn ($q) => $q->orderBy('sort_order'),
         ]);

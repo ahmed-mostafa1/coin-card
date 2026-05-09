@@ -220,7 +220,7 @@
                                 ? $service->variants->min('price')
                                 : $service->price;
                         @endphp
-                        <div class="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700">
+                        <div class="overflow-hidden rounded-xl border border-slate-50 dark:border-slate-700">
                             @if ($service->offer_image_path)
                                 <img src="{{ asset('storage/' . $service->offer_image_path) }}" alt="{{ $service->localized_name }}"
                                     width="1200" height="675" loading="eager" decoding="async" class="w-full object-fill">
@@ -254,7 +254,7 @@
 
                 <div class="store-card p-6">
                     <div
-                        class="flex flex-col items-center justify-center gap-3 border-b border-slate-100 dark:border-slate-700 pb-4">
+                        class="flex flex-col items-center justify-center gap-3 border-b border-slate-50 dark:border-slate-700 pb-4">
                         @if ($service->image_path)
                             <div class="relative">
                                 <img src="{{ asset('storage/' . $service->image_path) }}" alt="{{ $service->localized_name }}"
@@ -268,11 +268,11 @@
                         @endif
                         <div class="space-y-1 text-center">
                             <h1 class="text-xl font-bold text-slate-900 dark:text-white">{{ $service->localized_name }}</h1>
-                            <p class="text-sm text-slate-600 dark:text-slate-300">{{ $service->category->localized_name }}
+                            <p class="text-sm text-slate-900 dark:text-slate-50">{{ $service->category->localized_name }}
                             </p>
                             <div class="pt-2">
                                 <button type="button"
-                                    class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:border-emerald-200 hover:text-emerald-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50 dark:hover:border-emerald-700 dark:hover:text-emerald-300"
+                                    class="inline-flex items-center gap-2 rounded-full border border-slate-50 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:border-emerald-200 hover:text-emerald-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50 dark:hover:border-emerald-700 dark:hover:text-emerald-300"
                                     data-share-service data-share-title="{{ $service->localized_name }}"
                                     data-share-url="{{ route('services.show', $service->slug) }}"
                                     data-share-success="{{ $shareCopiedLabel }}"
@@ -292,7 +292,7 @@
 
                                     @if ($showLimitedOfferCountdown)
                                         <div
-                                            class="min-w-0 flex-1 border border-slate-200 bg-slate-100 px-2 py-1 dark:border-slate-700 dark:bg-slate-800">
+                                            class="min-w-0 flex-1 border border-slate-50 bg-slate-50 px-2 py-1 dark:border-slate-700 dark:bg-slate-800">
                                             <div class="offer-countdown" data-limited-offer-countdown
                                                 data-end-at="{{ $limitedOfferEndsAtIso }}">
                                                 <div class="offer-countdown__unit">
@@ -317,7 +317,7 @@
                                 </div>
                             @endif
                             @if (!empty($serviceDescriptionHtml))
-                                <div class="service-richtext mt-2 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+                                <div class="service-richtext mt-2 text-sm leading-relaxed text-slate-700 dark:text-slate-50">
                                     {!! $serviceDescriptionHtml !!}
                                 </div>
                             @endif
@@ -366,7 +366,7 @@
                                             $isChecked = old('variant_id') ? old('variant_id') == $variant->id : $index === 0;
                                         @endphp
                                         <label
-                                            class="flex items-center justify-between rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-3 text-sm text-slate-700 dark:text-slate-50 transition hover:border-emerald-200 dark:hover:border-emerald-500">
+                                            class="flex items-center justify-between rounded-lg border border-slate-50 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-3 text-sm text-slate-700 dark:text-slate-50 transition hover:border-emerald-200 dark:hover:border-emerald-500">
                                             <span class="flex items-center gap-2">
                                                 <input type="radio" name="variant_id" value="{{ $variant->id }}"
                                                     data-price="{{ $discountedPrice }}" data-original-price="{{ $originalPrice }}"
@@ -403,7 +403,7 @@
                                         min="{{ $service->min_quantity ?? 1 }}" @if($service->max_quantity)
                                         max="{{ $service->max_quantity }}" @endif value="{{ $service->min_quantity ?? 1 }}"
                                         data-price-per-unit="{{ $service->price_per_unit }}"
-                                        class="w-32 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-2 text-sm text-slate-700 dark:text-slate-50"
+                                        class="w-32 rounded-lg border border-slate-50 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-2 text-sm text-slate-700 dark:text-slate-50"
                                         lang="en" dir="ltr" required>
                                     @if($service->min_quantity > 1 || $service->max_quantity)
                                         <p class="text-xs text-slate-50 mt-1">
@@ -451,7 +451,7 @@
                                 $initialDiscountedPrice = max(0, round(((float) $oldOfferAmount) + $initialOfferFee - (((float) $oldOfferAmount) * ($serviceDiscountPercent / 100)), 2));
                             @endphp
                             <div
-                                class="space-y-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-3 text-sm text-slate-700 dark:text-slate-50">
+                                class="space-y-3 rounded-lg border border-slate-50 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-3 text-sm text-slate-700 dark:text-slate-50">
                                 <div class="space-y-1">
                                     <label for="offer_image"
                                         class="block text-sm font-semibold text-slate-900 dark:text-slate-50">صورة العرض</label>
@@ -479,7 +479,7 @@
                                             class="font-semibold">{{ number_format(((float) $oldOfferAmount) + $initialOfferFee, 2) }}
                                             USD</span></div>
                                     <div
-                                        class="flex items-center justify-between gap-3 border-t border-slate-200 pt-2 text-base font-bold text-emerald-900 dark:border-slate-600">
+                                        class="flex items-center justify-between gap-3 border-t border-slate-50 pt-2 text-base font-bold text-emerald-900 dark:border-slate-900">
                                         <span>القيمة النهائية للطلب</span>
                                         <span><span id="current-price">{{ number_format($initialDiscountedPrice, 2) }}</span>
                                             <span id="price-currency">USD</span></span>
@@ -494,7 +494,7 @@
                             </div>
                         @else
                             <div
-                                class="rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-3 text-sm text-slate-700 dark:text-slate-50">
+                                class="rounded-lg border border-slate-50 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-3 text-sm text-slate-700 dark:text-slate-50">
                                 <p>القيمة النهائية للطلب:
                                     @if ($service->variants->count())
                                             @php
@@ -603,12 +603,12 @@
                                 <x-input-error :messages="$errors->get('fields.' . $field->name_key)" />
                             </div>
                         @empty
-                            <p class="text-sm text-slate-500">{{ __('messages.no_required_fields') }}</p>
+                            <p class="text-sm text-slate-900">{{ __('messages.no_required_fields') }}</p>
                         @endforelse
 
                         @if ($service->order_image_upload_enabled)
                             <div
-                                class="space-y-1 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700 dark:bg-slate-700/50">
+                                class="space-y-1 rounded-lg border border-slate-50 bg-slate-50 px-4 py-3 dark:border-slate-700 dark:bg-slate-700/50">
                                 <label for="order_image" class="block text-sm font-semibold text-slate-900 dark:text-slate-50">
                                     صورة مرفقة مع الطلب {{ $service->order_image_required ? '*' : '(اختياري)' }}
                                 </label>
@@ -627,11 +627,11 @@
                         @endphp
 
                         <div
-                            class="rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-3">
+                            class="rounded-lg border border-slate-50 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-3">
                             <label for="accept-terms-checkbox"
                                 class="flex items-start gap-3 text-sm text-slate-700 dark:text-slate-50">
                                 <input id="accept-terms-checkbox" name="accept_terms" type="checkbox" value="1"
-                                    class="mt-1 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                                    class="mt-1 rounded border-slate-50 text-emerald-600 focus:ring-emerald-500"
                                     @checked(old('accept_terms'))>
                                 <span
                                     class="leading-7">{!! __('messages.accept_terms_purchase_label', ['terms' => $termsLink]) !!}</span>
@@ -655,7 +655,7 @@
 
                     @if (!empty($serviceArticleHtml))
                         <article
-                            class="service-richtext prose prose-slate mt-8 max-w-none rounded-2xl border border-slate-200 bg-white p-5 text-sm leading-7 text-slate-700 dark:prose-invert dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50">
+                            class="service-richtext prose prose-slate mt-8 max-w-none rounded-2xl border border-slate-50 bg-white p-5 text-sm leading-7 text-slate-700 dark:prose-invert dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50">
                             {!! $serviceArticleHtml !!}
                         </article>
                     @endif

@@ -25,10 +25,10 @@
          x-transition:leave="transition ease-in-out duration-300 transform"
          x-transition:leave-start="translate-x-0"
          x-transition:leave-end="ltr:-translate-x-full rtl:translate-x-full"
-         class="relative flex w-full max-w-xs flex-col overflow-y-auto bg-slate-100 dark:bg-slate-900 shadow-xl transition-all h-full">
+         class="relative flex w-full max-w-xs flex-col overflow-y-auto bg-slate-50 dark:bg-slate-900 shadow-xl transition-all h-full">
 
         <!-- Header -->
-        <div class="flex items-center justify-between px-4 py-6 border-b border-slate-200 dark:border-slate-800">
+        <div class="flex items-center justify-between px-4 py-6 border-b border-slate-50 dark:border-slate-800">
              <div class="flex items-center gap-3">
                   @auth
                           @inject('loyaltyService', 'App\Services\LoyaltyService')
@@ -37,7 +37,7 @@
                               $progress = $loyaltyData['progress_percent'];
                           @endphp
 
-                    <div class="h-10 w-10 overflow-hidden rounded-full ring-2 ring-emerald-500 bg-slate-200 dark:bg-slate-700 flex items-center justify-center">
+                    <div class="h-10 w-10 overflow-hidden rounded-full ring-2 ring-emerald-500 bg-slate-50 dark:bg-slate-700 flex items-center justify-center">
                         <x-user-badge :user="auth()->user()" class="h-8 w-8" />
                     </div>
                     <div>
@@ -59,21 +59,21 @@
                               <div class="bg-gray-200 dark:bg-slate-700 rounded-full h-1.5 w-full max-w-[120px] mb-1 overflow-hidden">
                                   <div class="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full transition-all duration-500" style="width: {{ $progress }}%"></div>
                               </div>
-                              <p class="text-[10px] text-slate-500 dark:text-slate-400 leading-tight">{{ $loyaltyData['next_requirement'] }}</p>
+                              <p class="text-[10px] text-slate-900 dark:text-slate-400 leading-tight">{{ $loyaltyData['next_requirement'] }}</p>
                          </div>
                     </div>
                  @else
                     <a href="{{ route('login') }}" class="font-bold text-slate-800 dark:text-white">{{ __('messages.login') }}</a>
                  @endauth
              </div>
-            <button @click="sidebarOpen = false" type="button" class="rounded-md p-2 text-slate-400 hover:text-slate-500 dark:hover:text-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+            <button @click="sidebarOpen = false" type="button" class="rounded-md p-2 text-slate-400 hover:text-slate-900 dark:hover:text-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 <span class="sr-only">Close sidebar</span>
                 <i class="fa-solid fa-xmark text-xl"></i>
             </button>
         </div>
 
         <!-- Language Switcher (Below User Name) -->
-        <div class="px-4 pb-4 border-b border-slate-200 dark:border-slate-800">
+        <div class="px-4 pb-4 border-b border-slate-50 dark:border-slate-800">
             @if(app()->getLocale() == 'ar')
                 <a href="{{ route('lang.switch', 'en') }}" class="flex items-center justify-center gap-2 rounded-lg border border-slate-400 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-50 transition hover:bg-slate-50 dark:hover:bg-slate-700">
                     <i class="fa-solid fa-language text-emerald-600 dark:text-emerald-400"></i>
@@ -104,7 +104,7 @@
 
             @auth
             <!-- API Docs (Placeholder route) -->
-            {{-- <a href="#" class="flex items-center gap-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-50 transition hover:bg-slate-50 dark:hover:bg-slate-700">
+            {{-- <a href="#" class="flex items-center gap-3 rounded-lg border border-slate-50 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-50 transition hover:bg-slate-50 dark:hover:bg-slate-700">
                 <i class="fa-solid fa-file-code text-orange-400 w-5"></i>
                 <span>{{ __('messages.api_docs') ?? 'وثائق API' }}</span>
             </a> --}}
@@ -187,7 +187,7 @@
         </nav>
 
         <!-- Footer Socials -->
-        <div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
+        <div class="p-4 border-t border-slate-50 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
             <div class="flex justify-center gap-6">
                 @if(($sharedWhatsappEnabled ?? '0') === '1' && filled($sharedWhatsappLink ?? '') && $sharedWhatsappLink !== '#')
                  <a href="{{ $sharedWhatsappLink }}" target="_blank" class="text-green-500 hover:scale-110 transition">

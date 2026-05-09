@@ -73,7 +73,7 @@
             
             {{-- Theme Toggle (Absolute positioned to the right) --}}
             <button type="button" @click="darkMode = !darkMode" 
-                    class="absolute right-0 rounded-lg p-2 text-slate-500 hover:bg-white/50 dark:hover:bg-slate-800/50 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition">
+                    class="absolute right-0 rounded-lg p-2 text-slate-900 hover:bg-white/50 dark:hover:bg-slate-800/50 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-50 transition">
                 <svg x-show="!darkMode" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
@@ -84,7 +84,7 @@
         </div>
 
         {{-- Auth Card --}}
-        <div class="w-full rounded-3xl border border-slate-200/60 dark:border-slate-700/60 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl p-8 shadow-2xl shadow-slate-900/5 dark:shadow-slate-900/30">
+        <div class="w-full rounded-3xl border border-slate-50/60 dark:border-slate-700/60 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl p-8 shadow-2xl shadow-slate-900/5 dark:shadow-slate-900/30">
             @yield('content')
         </div>
 
@@ -92,7 +92,7 @@
         <div class="mt-6 text-center">
             @if(app()->getLocale() == 'ar')
                 <a href="{{ route('lang.switch', 'en') }}" 
-                   class="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 dark:text-slate-400 transition hover:text-emerald-600 dark:hover:text-emerald-400">
+                   class="inline-flex items-center gap-2 text-sm font-semibold text-slate-900 dark:text-slate-400 transition hover:text-emerald-600 dark:hover:text-emerald-400">
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
                     </svg>
@@ -100,7 +100,7 @@
                 </a>
             @else
                 <a href="{{ route('lang.switch', 'ar') }}" 
-                   class="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 dark:text-slate-400 transition hover:text-emerald-600 dark:hover:text-emerald-400">
+                   class="inline-flex items-center gap-2 text-sm font-semibold text-slate-900 dark:text-slate-400 transition hover:text-emerald-600 dark:hover:text-emerald-400">
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
                     </svg>

@@ -8,7 +8,7 @@
         @if (session('status'))<div class="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">{{ session('status') }}</div>@endif
         <form method="POST" action="{{ route('admin.loyalty-settings.update') }}" class="mt-6 space-y-4">
             @csrf
-            <label class="flex items-center gap-2 text-sm text-slate-600"><input type="checkbox" name="is_enabled" value="1" class="rounded border-slate-300 text-emerald-600" @checked($settings->is_enabled)> تفعيل نظام الولاء</label>
+            <label class="flex items-center gap-2 text-sm text-slate-900"><input type="checkbox" name="is_enabled" value="1" class="rounded border-slate-50 text-emerald-600" @checked($settings->is_enabled)> تفعيل نظام الولاء</label>
             <div class="grid gap-4 md:grid-cols-2">
                 <div><x-input-label for="points_per_usd" value="نقاط لكل 1 USD" /><x-text-input id="points_per_usd" name="points_per_usd" type="number" step="0.0001" min="0" :value="old('points_per_usd', $settings->points_per_usd)" required /><p class="mt-1 text-xs text-slate-900 dark:text-slate-50">عدد النقاط المكتسبة عند كل دولار من الطلبات المكتملة.</p></div>
                 <div><x-input-label for="level_3_points" value="نقاط الوصول للمستوى 3" /><x-text-input id="level_3_points" name="level_3_points" type="number" min="1" :value="old('level_3_points', $settings->level_3_points)" required /><p class="mt-1 text-xs text-slate-900 dark:text-slate-50">عند بلوغ هذا الرقم ينتقل المستخدم إلى المستوى 3.</p></div>

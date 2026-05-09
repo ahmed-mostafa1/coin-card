@@ -36,8 +36,8 @@
                     <x-input-error :messages="$errors->get('email')" />
                 </div>
 
-                <div class="border-t border-slate-200 dark:border-slate-700 pt-4">
-                    <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">اترك حقول كلمة المرور فارغة إذا كنت لا تريد تغييرها</p>
+                <div class="border-t border-slate-50 dark:border-slate-700 pt-4">
+                    <p class="text-sm text-slate-900 dark:text-slate-400 mb-4">اترك حقول كلمة المرور فارغة إذا كنت لا تريد تغييرها</p>
                     
                     <div class="space-y-4">
                         <div>
@@ -64,7 +64,7 @@
                 <div class="flex gap-3">
                     <x-primary-button class="flex-1">حفظ التغييرات</x-primary-button>
                     <a href="{{ route('account') }}"
-                        class="flex-1 rounded-xl border border-slate-200 px-4 py-2 text-center text-sm font-semibold text-slate-900 transition hover:border-emerald-200">
+                        class="flex-1 rounded-xl border border-slate-50 px-4 py-2 text-center text-sm font-semibold text-slate-900 transition hover:border-emerald-200">
                         إلغاء
                     </a>
                 </div>

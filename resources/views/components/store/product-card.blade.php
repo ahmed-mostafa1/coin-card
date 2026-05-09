@@ -22,12 +22,12 @@
 @endphp
 
 <a href="{{ $service->is_active ? ($href ?? route('services.show', $service->slug)) : '#' }}"
-    class="group relative block overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-slate-700 dark:bg-slate-800 {{ !$service->is_active ? 'opacity-70 grayscale cursor-not-allowed' : '' }}"
+    class="group relative block overflow-hidden rounded-xl border border-slate-50 bg-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-slate-700 dark:bg-slate-800 {{ !$service->is_active ? 'opacity-70 grayscale cursor-not-allowed' : '' }}"
     data-filter-item="{{ $searchTarget }}"
     data-filter-name="{{ $service->localized_name }}"
     data-filter-alt="{{ $subtitle }}">
 
-    <div class="relative aspect-square w-full overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800">
+    <div class="relative aspect-square w-full overflow-hidden bg-gradient-to-br from-slate-50 to-slate-50 dark:from-slate-700 dark:to-slate-800">
         @if ($service->topup_label_text)
             <span class="absolute end-2 top-2 z-10 rounded-full bg-emerald-600/95 px-2.5 py-1 text-[11px] font-bold text-white shadow">
                 {{ $service->topup_label_text }}
@@ -43,7 +43,7 @@
                  class="h-full w-full object-cover transition duration-300 group-hover:scale-105">
         @else
             <div class="flex h-full w-full items-center justify-center {{ $isCategoryLayout ? 'bg-gradient-to-br from-slate-700 to-slate-900' : '' }}">
-                <i class="fa-solid fa-box text-3xl {{ $isCategoryLayout ? 'text-slate-400' : 'text-slate-300 dark:text-slate-600' }}"></i>
+                <i class="fa-solid fa-box text-3xl {{ $isCategoryLayout ? 'text-slate-400' : 'text-slate-50 dark:text-slate-900' }}"></i>
             </div>
         @endif
 
@@ -58,18 +58,18 @@
 
     @if ($isFeatureLayout || $isCategoryLayout)
         <div class="flex min-h-[4.25rem] flex-col items-center justify-center px-2 py-3 text-center">
-            <span class="block text-[13px] font-bold leading-snug text-slate-800 line-clamp-2 dark:text-slate-100 sm:text-sm">{{ $service->localized_name }}</span>
+            <span class="block text-[13px] font-bold leading-snug text-slate-800 line-clamp-2 dark:text-slate-50 sm:text-sm">{{ $service->localized_name }}</span>
             @if ($subtitle && $isFeatureLayout)
-                <span class="mt-1 block truncate text-[11px] text-slate-400 dark:text-slate-500">{{ $subtitle }}</span>
+                <span class="mt-1 block truncate text-[11px] text-slate-400 dark:text-slate-900">{{ $subtitle }}</span>
             @endif
         </div>
     @else
         <div class="flex min-h-[4.25rem] flex-col items-center justify-center px-2 py-3 text-center">
-            <p class="text-[13px] font-semibold text-slate-800 dark:text-slate-100 line-clamp-2 leading-snug">
+            <p class="text-[13px] font-semibold text-slate-800 dark:text-slate-50 line-clamp-2 leading-snug">
                 {{ $service->localized_name }}
             </p>
             @if ($subtitle)
-                <p class="mt-0.5 truncate text-[11px] text-slate-400 dark:text-slate-500">{{ $subtitle }}</p>
+                <p class="mt-0.5 truncate text-[11px] text-slate-400 dark:text-slate-900">{{ $subtitle }}</p>
             @endif
         </div>
     @endif

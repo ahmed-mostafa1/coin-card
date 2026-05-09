@@ -9,19 +9,19 @@
             <x-page-header title="لوحة العمليات" subtitle="إدارة سريعة للطلبات وطلبات الشحن." />
 
             <div class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4">
+                <div class="rounded-2xl border border-slate-50 dark:border-slate-700 p-4">
                     <p class="text-xs text-slate-9000 dark:text-slate-50">طلبات الشحن</p>
                     <p class="mt-2 text-lg font-semibold text-emerald-900 dark:text-emerald-400">{{ $pendingDepositsCount }}</p>
                 </div>
-                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4">
+                <div class="rounded-2xl border border-slate-50 dark:border-slate-700 p-4">
                     <p class="text-xs text-slate-9000 dark:text-slate-50">طلبات جديدة</p>
                     <p class="mt-2 text-lg font-semibold text-emerald-900 dark:text-emerald-400">{{ $newOrdersCount }}</p>
                 </div>
-                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4">
+                <div class="rounded-2xl border border-slate-50 dark:border-slate-700 p-4">
                     <p class="text-xs text-slate-9000 dark:text-slate-50">طلبات تحت التنفيذ</p>
                     <p class="mt-2 text-lg font-semibold text-emerald-900 dark:text-emerald-400">{{ $processingOrdersCount }}</p>
                 </div>
-                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4">
+                <div class="rounded-2xl border border-slate-50 dark:border-slate-700 p-4">
                     <p class="text-xs text-slate-9000 dark:text-slate-50">طلبات منتهية</p>
                     <p class="mt-2 text-lg font-semibold text-emerald-900 dark:text-emerald-400">{{ $doneOrdersCount }}</p>
                 </div>
@@ -75,16 +75,16 @@
                             <th class="py-2">عرض</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+                    <tbody class="divide-y divide-slate-50 dark:divide-slate-700">
                         @forelse ($deposits as $deposit)
                             <tr class="transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
-                                <td class="py-3 text-slate-500 dark:text-slate-400" data-label="رقم الطلب">#{{ $deposit->id }}</td>
-                                <td class="py-3 text-slate-700 dark:text-slate-300" data-label="المستخدم">
+                                <td class="py-3 text-slate-900 dark:text-slate-400" data-label="رقم الطلب">#{{ $deposit->id }}</td>
+                                <td class="py-3 text-slate-700 dark:text-slate-50" data-label="المستخدم">
                                     {{ $deposit->user?->name ?? 'مستخدم محذوف' }}
                                     <div class="text-xs text-slate-9000 dark:text-slate-50">{{ $deposit->user?->email }}</div>
                                 </td>
-                                <td class="py-3 text-slate-700 dark:text-slate-300" data-label="الطريقة">{{ $deposit->paymentMethod?->name ?? 'طريقة محذوفة' }}</td>
-                                <td class="py-3 text-slate-700 dark:text-slate-300" data-label="المبلغ">{{ number_format($deposit->user_amount, 2) }} USD</td>
+                                <td class="py-3 text-slate-700 dark:text-slate-50" data-label="الطريقة">{{ $deposit->paymentMethod?->name ?? 'طريقة محذوفة' }}</td>
+                                <td class="py-3 text-slate-700 dark:text-slate-50" data-label="المبلغ">{{ number_format($deposit->user_amount, 2) }} USD</td>
                                 <td class="py-3" data-label="الحالة">
                                     @if ($deposit->status === 'pending')
                                         <x-badge type="pending">قيد المراجعة</x-badge>
@@ -94,14 +94,14 @@
                                         <x-badge type="rejected">مرفوض</x-badge>
                                     @endif
                                 </td>
-                                <td class="py-3 text-slate-500 dark:text-slate-400" data-label="التاريخ">{{ $deposit->created_at->format('Y-m-d H:i') }}</td>
+                                <td class="py-3 text-slate-900 dark:text-slate-400" data-label="التاريخ">{{ $deposit->created_at->format('Y-m-d H:i') }}</td>
                                 <td class="py-3" data-label="عرض">
                                     <a href="{{ route('admin.deposits.show', $deposit) }}" class="admin-inline-link">عرض</a>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="py-6 text-center text-slate-500 dark:text-slate-400">لا توجد طلبات مطابقة.</td>
+                                <td colspan="7" class="py-6 text-center text-slate-900 dark:text-slate-400">لا توجد طلبات مطابقة.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -135,17 +135,17 @@
                             <th class="py-2">الإجراء</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+                    <tbody class="divide-y divide-slate-50 dark:divide-slate-700">
                         @forelse ($orders as $order)
                             <tr class="transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
-                                <td class="py-3 text-slate-500 dark:text-slate-400" data-label="رقم الطلب">#{{ $order->id }}</td>
-                                <td class="py-3 text-slate-700 dark:text-slate-300" data-label="المستخدم">
+                                <td class="py-3 text-slate-900 dark:text-slate-400" data-label="رقم الطلب">#{{ $order->id }}</td>
+                                <td class="py-3 text-slate-700 dark:text-slate-50" data-label="المستخدم">
                                     {{ $order->user?->name ?? 'مستخدم محذوف' }}
                                     <div class="text-xs text-slate-9000 dark:text-slate-50">{{ $order->user?->email }}</div>
                                 </td>
-                                <td class="py-3 text-slate-700 dark:text-slate-300" data-label="الخدمة">{{ $order->service?->name ?? 'خدمة محذوفة' }}</td>
-                                <td class="py-3 text-slate-700 dark:text-slate-300" data-label="الباقة">{{ $order->variant?->name ?? '-' }}</td>
-                                <td class="py-3 text-slate-700 dark:text-slate-300" data-label="المبلغ المعلّق">{{ number_format($order->amount_held, 2) }} USD</td>
+                                <td class="py-3 text-slate-700 dark:text-slate-50" data-label="الخدمة">{{ $order->service?->name ?? 'خدمة محذوفة' }}</td>
+                                <td class="py-3 text-slate-700 dark:text-slate-50" data-label="الباقة">{{ $order->variant?->name ?? '-' }}</td>
+                                <td class="py-3 text-slate-700 dark:text-slate-50" data-label="المبلغ المعلّق">{{ number_format($order->amount_held, 2) }} USD</td>
                                 <td class="py-3" data-label="الحالة">
                                     @if ($order->status === 'new')
                                         <x-badge type="new">جديد</x-badge>
@@ -157,7 +157,7 @@
                                         <x-badge type="rejected">مرفوض</x-badge>
                                     @endif
                                 </td>
-                                <td class="py-3 text-slate-500 dark:text-slate-400" data-label="التاريخ">{{ $order->created_at->format('Y-m-d H:i') }}</td>
+                                <td class="py-3 text-slate-900 dark:text-slate-400" data-label="التاريخ">{{ $order->created_at->format('Y-m-d H:i') }}</td>
                                 <td class="py-3" data-label="الإجراء">
                                     <div class="admin-inline-actions">
                                         <a href="{{ route('admin.orders.show', $order) }}" class="admin-inline-link">عرض</a>
@@ -191,7 +191,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" class="py-6 text-center text-slate-500 dark:text-slate-400">لا توجد طلبات مطابقة.</td>
+                                <td colspan="8" class="py-6 text-center text-slate-900 dark:text-slate-400">لا توجد طلبات مطابقة.</td>
                             </tr>
                         @endforelse
                     </tbody>

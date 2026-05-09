@@ -8,10 +8,10 @@
         <div class="flex flex-wrap items-center justify-between gap-4">
             <div>
                 <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">مستويات VIP</h1>
-                <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-300">إدارة مستويات العضوية والمميزات.</p>
+                <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-50">إدارة مستويات العضوية والمميزات.</p>
             </div>
             <div class="flex gap-2">
-                <a href="{{ route('admin.index') }}" class="inline-flex items-center gap-2 rounded-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-slate-300 transition hover:bg-slate-50 dark:hover:bg-slate-700">
+                <a href="{{ route('admin.index') }}" class="inline-flex items-center gap-2 rounded-full border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-800 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-slate-50 transition hover:bg-slate-50 dark:hover:bg-slate-700">
                     <i class="fa-solid fa-arrow-left"></i>
                     {{ __('messages.return_to_dashboard') }}
                 </a>
@@ -26,7 +26,7 @@
         @endif
 
         <x-table class="mt-6">
-            <thead class="border-b border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400">
+            <thead class="border-b border-slate-50 dark:border-slate-700 text-slate-900 dark:text-slate-400">
                 <tr>
                     <th class="py-2">الرتبة</th>
                     <th class="py-2">الشعار</th>
@@ -37,10 +37,10 @@
                     <th class="py-2">إجراءات</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+            <tbody class="divide-y divide-slate-50 dark:divide-slate-700">
                 @forelse ($tiers as $tier)
                     <tr>
-                        <td class="py-3 text-slate-500 dark:text-slate-400">{{ $tier->rank }}</td>
+                        <td class="py-3 text-slate-900 dark:text-slate-400">{{ $tier->rank }}</td>
                         <td class="py-3">
                             @if($tier->image_path)
                                 <img src="{{ asset('storage/' . $tier->image_path) }}" alt="{{ $tier->title_ar }}" class="h-10 w-10 rounded-full object-cover">
@@ -71,7 +71,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="py-6 text-center text-slate-500 dark:text-slate-400">لا توجد مستويات بعد.</td>
+                        <td colspan="7" class="py-6 text-center text-slate-900 dark:text-slate-400">لا توجد مستويات بعد.</td>
                     </tr>
                 @endforelse
             </tbody>

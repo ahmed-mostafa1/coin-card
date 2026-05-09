@@ -25,7 +25,7 @@
 
             <div class="space-y-6">
                 <!-- User Info -->
-                <div class="rounded-lg border border-slate-200 p-4">
+                <div class="rounded-lg border border-slate-50 p-4">
                     <h2 class="text-lg font-semibold text-slate-900 mb-3">1. Current User</h2>
                     @auth
                         <div class="space-y-2 text-sm">
@@ -39,7 +39,7 @@
                 </div>
 
                 <!-- VIP Status -->
-                <div class="rounded-lg border border-slate-200 p-4">
+                <div class="rounded-lg border border-slate-50 p-4">
                     <h2 class="text-lg font-semibold text-slate-900 mb-3">2. VIP Status</h2>
                     @if ($userVipStatus)
                         <div class="space-y-2 text-sm">
@@ -57,7 +57,7 @@
                 </div>
 
                 <!-- VIP Tier -->
-                <div class="rounded-lg border border-slate-200 p-4">
+                <div class="rounded-lg border border-slate-50 p-4">
                     <h2 class="text-lg font-semibold text-slate-900 mb-3">3. VIP Tier Details</h2>
                     @if ($vipTier)
                         <div class="space-y-2 text-sm">
@@ -103,7 +103,7 @@
                 </div>
 
                 <!-- All VIP Tiers -->
-                <div class="rounded-lg border border-slate-200 p-4">
+                <div class="rounded-lg border border-slate-50 p-4">
                     <h2 class="text-lg font-semibold text-slate-900 mb-3">5. All Available VIP Tiers</h2>
                     @php
                         $allTiers = \App\Models\VipTier::orderBy('rank')->get();
@@ -119,7 +119,7 @@
                                         <th class="px-3 py-2 text-left">Required</th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y divide-slate-100">
+                                <tbody class="divide-y divide-slate-50">
                                     @foreach ($allTiers as $tier)
                                         <tr class="{{ $vipTier && $vipTier->id == $tier->id ? 'bg-emerald-50' : '' }}">
                                             <td class="px-3 py-2">{{ $tier->rank }}</td>
@@ -150,7 +150,7 @@
                             </form>
                         @endif
                         <a href="{{ route('services.index') }}"
-                            class="inline-block px-4 py-2 bg-slate-600 text-white rounded hover:bg-slate-700">
+                            class="inline-block px-4 py-2 bg-slate-900 text-white rounded hover:bg-slate-700">
                             View Services
                         </a>
                     </div>

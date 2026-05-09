@@ -22,7 +22,7 @@
 
                 <div>
                     <x-input-label for="category_id" :value="__('messages.category')" />
-                    <select id="category_id" name="category_id" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500" required>
+                    <select id="category_id" name="category_id" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500" required>
                         @foreach ($categories as $category)
                             @php
                                 $label = $category->parent ? $category->parent->name . ' › ' . $category->name : $category->name;
@@ -65,19 +65,19 @@
 
                 <div>
                     <x-input-label for="additional_rules" value="قواعد إضافية (عربي)" />
-                    <textarea id="additional_rules" name="additional_rules" rows="3" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">{{ old('additional_rules', $service->additional_rules) }}</textarea>
+                    <textarea id="additional_rules" name="additional_rules" rows="3" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">{{ old('additional_rules', $service->additional_rules) }}</textarea>
                     <x-input-error :messages="$errors->get('additional_rules')" />
                 </div>
 
                 <div>
                     <x-input-label for="additional_rules_en" value="قواعد إضافية (English)" />
-                    <textarea id="additional_rules_en" name="additional_rules_en" rows="3" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500" dir="ltr">{{ old('additional_rules_en', $service->additional_rules_en) }}</textarea>
+                    <textarea id="additional_rules_en" name="additional_rules_en" rows="3" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500" dir="ltr">{{ old('additional_rules_en', $service->additional_rules_en) }}</textarea>
                     <x-input-error :messages="$errors->get('additional_rules_en')" />
                 </div>
 
                 <div>
                     <x-input-label for="pricing_mode" value="نوع تسعير الخدمة" />
-                    <select id="pricing_mode" name="pricing_mode" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
+                    <select id="pricing_mode" name="pricing_mode" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                         <option value="fixed" @selected(old('pricing_mode', $service->pricing_mode ?? \App\Models\Service::PRICING_MODE_FIXED) === 'fixed')>سعر ثابت</option>
                         <option value="discounted_input" @selected(old('pricing_mode', $service->pricing_mode) === 'discounted_input')>خصم على قيمة يدخلها المستخدم</option>
                     </select>
@@ -91,9 +91,9 @@
                     <p class="mt-1 text-xs text-slate-900 dark:text-slate-50">تُطبّق هذه النسبة على قيمة العرض التي يدخلها المستخدم. القيمة السالبة تعني زيادة على السعر (Overprice).</p>
                 </div>
 
-                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4 space-y-4">
-                    <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
-                        <input id="is_quantity_based" name="is_quantity_based" type="checkbox" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" {{ old('is_quantity_based', $service->is_quantity_based) ? 'checked' : '' }} onchange="toggleQuantityFields(this)">
+                <div class="rounded-2xl border border-slate-50 dark:border-slate-700 p-4 space-y-4">
+                    <div class="flex items-center gap-3 text-sm text-slate-900 dark:text-slate-400">
+                        <input id="is_quantity_based" name="is_quantity_based" type="checkbox" value="1" class="rounded border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" {{ old('is_quantity_based', $service->is_quantity_based) ? 'checked' : '' }} onchange="toggleQuantityFields(this)">
                         <label for="is_quantity_based">خدمة بالكمية (سعر ثابت للقطعة)</label>
                     </div>
                     <div id="quantity-fields" class="{{ old('is_quantity_based', $service->is_quantity_based) ? '' : 'hidden' }} space-y-4">
@@ -143,37 +143,37 @@
 
                 <div>
                     <x-input-label for="image" :value="__('messages.image_optional')" />
-                    <input id="image" name="image" type="file" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-600 dark:text-slate-300 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-800 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-900 dark:file:text-emerald-300">
+                    <input id="image" name="image" type="file" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-900 dark:text-slate-50 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-800 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-900 dark:file:text-emerald-300">
                     <x-input-error :messages="$errors->get('image')" />
                     <p class="mt-1 text-xs text-slate-900 dark:text-slate-50">{{ __('messages.recommended_size') }}: 500x500 px</p>
                     @if ($service->image_path)
                     @endif
                 </div>
 
-                <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
-                    <input id="is_active" name="is_active" type="checkbox" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" {{ $service->is_active ? 'checked' : '' }}>
+                <div class="flex items-center gap-3 text-sm text-slate-900 dark:text-slate-400">
+                    <input id="is_active" name="is_active" type="checkbox" value="1" class="rounded border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" {{ $service->is_active ? 'checked' : '' }}>
                     <label for="is_active">{{ __('messages.activate_service') }}</label>
                 </div>
 
-                <div class="rounded-2xl border border-slate-200 p-4 dark:border-slate-700 space-y-4">
-                    <label class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
-                        <input name="order_image_upload_enabled" type="checkbox" value="1" class="rounded border-slate-300 text-emerald-600" @checked(old('order_image_upload_enabled', $service->order_image_upload_enabled))>
+                <div class="rounded-2xl border border-slate-50 p-4 dark:border-slate-700 space-y-4">
+                    <label class="flex items-center gap-3 text-sm text-slate-900 dark:text-slate-400">
+                        <input name="order_image_upload_enabled" type="checkbox" value="1" class="rounded border-slate-50 text-emerald-600" @checked(old('order_image_upload_enabled', $service->order_image_upload_enabled))>
                         إظهار حقل رفع صورة في طلب هذه الخدمة
                     </label>
-                    <label class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
-                        <input name="order_image_required" type="checkbox" value="1" class="rounded border-slate-300 text-emerald-600" @checked(old('order_image_required', $service->order_image_required))>
+                    <label class="flex items-center gap-3 text-sm text-slate-900 dark:text-slate-400">
+                        <input name="order_image_required" type="checkbox" value="1" class="rounded border-slate-50 text-emerald-600" @checked(old('order_image_required', $service->order_image_required))>
                         جعل الصورة مطلوبة
                     </label>
                     <div>
                         <x-input-label for="order_image_help_text" value="تعليمات رفع الصورة (اختياري)" />
-                        <textarea id="order_image_help_text" name="order_image_help_text" rows="2" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white">{{ old('order_image_help_text', $service->order_image_help_text) }}</textarea>
+                        <textarea id="order_image_help_text" name="order_image_help_text" rows="2" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white">{{ old('order_image_help_text', $service->order_image_help_text) }}</textarea>
                         <x-input-error :messages="$errors->get('order_image_help_text')" />
                     </div>
                 </div>
 
-                <div class="rounded-2xl border border-slate-200 p-4 dark:border-slate-700">
-                    <label class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
-                        <input id="is_topup_label_active" name="is_topup_label_active" type="checkbox" value="1" class="rounded border-slate-300 text-emerald-600" @checked(old('is_topup_label_active', $service->is_topup_label_active))>
+                <div class="rounded-2xl border border-slate-50 p-4 dark:border-slate-700">
+                    <label class="flex items-center gap-3 text-sm text-slate-900 dark:text-slate-400">
+                        <input id="is_topup_label_active" name="is_topup_label_active" type="checkbox" value="1" class="rounded border-slate-50 text-emerald-600" @checked(old('is_topup_label_active', $service->is_topup_label_active))>
                         إظهار شارة نوع الشحن على بطاقة الخدمة
                     </label>
                     <div class="mt-3">
@@ -186,13 +186,13 @@
                     </div>
                 </div>
 
-                <div class="mt-4 border-t border-slate-100 dark:border-slate-700 pt-4">
+                <div class="mt-4 border-t border-slate-50 dark:border-slate-700 pt-4">
                      <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400 mb-4">{{ __('messages.offer_settings') ?? (app()->getLocale() == 'ar' ? 'إعدادات العرض' : 'Offer Settings') }}</h2>
                      
                      <div class="space-y-4">
                         <div>
                             <x-input-label for="offer_image" :value="__('messages.offer_image') ?? (app()->getLocale() == 'ar' ? 'صورة العرض' : 'Offer Image')" />
-                            <input id="offer_image" name="offer_image" type="file" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-600 dark:text-slate-300 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-800 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-900 dark:file:text-emerald-300">
+                            <input id="offer_image" name="offer_image" type="file" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-900 dark:text-slate-50 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-800 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-900 dark:file:text-emerald-300">
                             <x-input-error :messages="$errors->get('offer_image')" />
                             
                             @if ($service->offer_image_path)
@@ -204,8 +204,8 @@
                             <p class="mt-1 text-xs text-slate-900 dark:text-slate-50">{{ __('messages.recommended_size') }}: 500x500 px</p>
                         </div>
 
-                        <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
-                            <input id="is_offer_active" name="is_offer_active" type="checkbox" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" {{ $service->is_offer_active ? 'checked' : '' }}>
+                        <div class="flex items-center gap-3 text-sm text-slate-900 dark:text-slate-400">
+                            <input id="is_offer_active" name="is_offer_active" type="checkbox" value="1" class="rounded border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" {{ $service->is_offer_active ? 'checked' : '' }}>
                             <label for="is_offer_active">{{ __('messages.activate_offer') ?? (app()->getLocale() == 'ar' ? 'تفعيل العرض' : 'Activate Offer') }}</label>
                         </div>
                      </div>
@@ -215,8 +215,8 @@
                     <h2 class="text-lg font-semibold text-rose-700 dark:text-rose-300">{{ __('messages.limited_time_offer') }}</h2>
 
                     <div class="space-y-2">
-                        <label for="is_limited_offer_label_active" class="inline-flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
-                            <input id="is_limited_offer_label_active" name="is_limited_offer_label_active" type="checkbox" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-rose-600 focus:ring-rose-500" @checked(old('is_limited_offer_label_active', $service->is_limited_offer_label_active))>
+                        <label for="is_limited_offer_label_active" class="inline-flex items-center gap-2 text-sm text-slate-700 dark:text-slate-50">
+                            <input id="is_limited_offer_label_active" name="is_limited_offer_label_active" type="checkbox" value="1" class="rounded border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 text-rose-600 focus:ring-rose-500" @checked(old('is_limited_offer_label_active', $service->is_limited_offer_label_active))>
                             {{ __('messages.activate_limited_offer_label') }}
                         </label>
                         <div>
@@ -232,13 +232,13 @@
                     </div>
 
                     <div class="space-y-2">
-                        <label for="is_limited_offer_countdown_active" class="inline-flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
-                            <input id="is_limited_offer_countdown_active" name="is_limited_offer_countdown_active" type="checkbox" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-rose-600 focus:ring-rose-500" @checked(old('is_limited_offer_countdown_active', $service->is_limited_offer_countdown_active))>
+                        <label for="is_limited_offer_countdown_active" class="inline-flex items-center gap-2 text-sm text-slate-700 dark:text-slate-50">
+                            <input id="is_limited_offer_countdown_active" name="is_limited_offer_countdown_active" type="checkbox" value="1" class="rounded border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 text-rose-600 focus:ring-rose-500" @checked(old('is_limited_offer_countdown_active', $service->is_limited_offer_countdown_active))>
                             {{ __('messages.activate_limited_offer_countdown') }}
                         </label>
                         <div>
                             <x-input-label for="limited_offer_ends_at" :value="__('messages.limited_offer_ends_at')" />
-                            <input id="limited_offer_ends_at" name="limited_offer_ends_at" type="datetime-local" value="{{ old('limited_offer_ends_at', $service->limited_offer_ends_at?->format('Y-m-d\\TH:i')) }}" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-rose-500 focus:ring-rose-500">
+                            <input id="limited_offer_ends_at" name="limited_offer_ends_at" type="datetime-local" value="{{ old('limited_offer_ends_at', $service->limited_offer_ends_at?->format('Y-m-d\\TH:i')) }}" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-rose-500 focus:ring-rose-500">
                             <x-input-error :messages="$errors->get('limited_offer_ends_at')" />
                             <p class="mt-1 text-xs text-slate-900 dark:text-slate-50">{{ __('messages.limited_offer_auto_deactivate_hint') }}</p>
                         </div>
@@ -250,7 +250,7 @@
                     <x-text-input id="sort_order" name="sort_order" type="number" min="0" :value="old('sort_order', $service->sort_order)" />
                 </div>
 
-                <div class="rounded-2xl border border-slate-200 p-4 dark:border-slate-700 space-y-4">
+                <div class="rounded-2xl border border-slate-50 p-4 dark:border-slate-700 space-y-4">
                     <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">محتوى SEO للخدمة</h2>
                     <div>
                         <x-input-label for="seo_title" value="عنوان SEO" />
@@ -258,7 +258,7 @@
                     </div>
                     <div>
                         <x-input-label for="seo_meta_description" value="وصف SEO" />
-                        <textarea id="seo_meta_description" name="seo_meta_description" rows="2" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white">{{ old('seo_meta_description', $service->seo_meta_description) }}</textarea>
+                        <textarea id="seo_meta_description" name="seo_meta_description" rows="2" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white">{{ old('seo_meta_description', $service->seo_meta_description) }}</textarea>
                     </div>
                     <div>
                         <x-input-label for="seo_keywords" value="كلمات مفتاحية" />
@@ -282,8 +282,19 @@
 
         <div class="space-y-6">
             @if ($service->provider_id)
-                <div class="rounded-3xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm">
-                    <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">حالة المزود</h2>
+                <div class="rounded-3xl border border-slate-50 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm">
+                    <div class="flex items-center justify-between gap-3">
+                        <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">حالة المزود</h2>
+                        @php $provider = $service->provider; @endphp
+                        @if ($provider)
+                            <form method="POST" action="{{ route('admin.providers.sync-provider-statuses', $provider) }}">
+                                @csrf
+                                <button type="submit" class="text-xs rounded-full border border-emerald-200 dark:border-emerald-700 px-3 py-1 font-semibold text-emerald-800 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 transition">
+                                    مزامنة يدوية
+                                </button>
+                            </form>
+                        @endif
+                    </div>
                     <div class="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-300">
                         <p>الحالة: <span class="font-semibold">{{ $service->provider_status ?? ($service->provider_is_available ? 'available' : 'unavailable') }}</span></p>
                         <p>آخر مزامنة: {{ $service->provider_status_synced_at?->format('Y-m-d H:i') ?? $service->provider_last_synced_at?->format('Y-m-d H:i') ?? '-' }}</p>
@@ -291,17 +302,24 @@
                             <p class="text-amber-700 dark:text-amber-300">{{ $service->provider_status_message }}</p>
                         @endif
                         @if ($service->provider_status_sync_error)
-                            <p class="text-rose-700 dark:text-rose-300">{{ $service->provider_status_sync_error }}</p>
+                            <div class="mt-2 rounded-xl border border-rose-200 dark:border-rose-800/50 bg-rose-50 dark:bg-rose-900/20 p-3">
+                                <p class="text-xs font-semibold text-rose-700 dark:text-rose-300 mb-1">خطأ في المزامنة:</p>
+                                <p class="text-xs text-rose-600 dark:text-rose-400 break-all">{{ Str::limit(strip_tags($service->provider_status_sync_error), 300) }}</p>
+                                @if (str_contains($service->provider_status_sync_error, '<html') || str_contains($service->provider_status_sync_error, '<!doctype'))
+                                    <p class="mt-2 text-xs text-amber-700 dark:text-amber-400 font-medium">⚠️ المزود يعيد صفحة HTML — تحقق من صحة base_url وcatalog_endpoint في إعدادات المزود.</p>
+                                @endif
+                            </div>
                         @endif
                     </div>
                 </div>
             @endif
 
+
             <div class="rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm transition-colors duration-200">
                 <div class="flex items-center justify-between">
                     <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">{{ __('messages.variants') }}</h2>
                     @if (($service->pricing_mode ?? \App\Models\Service::PRICING_MODE_FIXED) === \App\Models\Service::PRICING_MODE_DISCOUNTED_INPUT)
-                        <span class="text-sm text-slate-500">غير متاح</span>
+                        <span class="text-sm text-slate-900">غير متاح</span>
                     @else
                         <a href="{{ route('admin.services.variants.index', $service) }}" class="text-sm text-emerald-900 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300">{{ __('messages.manage_variants') }}</a>
                     @endif
@@ -309,7 +327,7 @@
                 @if (($service->pricing_mode ?? \App\Models\Service::PRICING_MODE_FIXED) === \App\Models\Service::PRICING_MODE_DISCOUNTED_INPUT)
                     <p class="mt-3 text-sm text-amber-700">هذا النوع يستخدم التسعير بالخصم على قيمة مدخلة، لذلك الباقات معطلة.</p>
                 @else
-                    <p class="mt-3 text-sm text-slate-600 dark:text-slate-400">{{ __('messages.variants_hint') }}</p>
+                    <p class="mt-3 text-sm text-slate-900 dark:text-slate-400">{{ __('messages.variants_hint') }}</p>
                 @endif
             </div>
 
@@ -320,17 +338,17 @@
             </div>
             <div class="mt-4 space-y-3">
                 @forelse ($service->formFields->sortBy('sort_order') as $field)
-                    <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-3">
+                    <div class="rounded-2xl border border-slate-50 dark:border-slate-700 p-3">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-sm font-semibold text-slate-900 dark:text-slate-300">{{ $field->label }}</p>
+                                <p class="text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $field->label }}</p>
                                 <p class="text-xs text-slate-9000 dark:text-slate-50">{{ $field->name_key }} - {{ $field->type }}</p>
                             </div>
                             <a href="{{ route('admin.services.fields.edit', [$service, $field]) }}" class="text-xs text-emerald-900 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300">{{ __('messages.edit') }}</a>
                         </div>
                     </div>
                 @empty
-                    <p class="text-sm text-slate-500 dark:text-slate-400">{{ __('messages.no_fields_yet') }}</p>
+                    <p class="text-sm text-slate-900 dark:text-slate-400">{{ __('messages.no_fields_yet') }}</p>
                 @endforelse
             </div>
             </div>
@@ -343,13 +361,13 @@
                 </div>
                 <div class="mt-4 space-y-3">
                     @forelse ($service->buttons->sortBy('sort_order') as $button)
-                        <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-3">
+                        <div class="rounded-2xl border border-slate-50 dark:border-slate-700 p-3">
                             <div class="flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-2 min-w-0">
                                     <span class="inline-block h-5 w-5 flex-shrink-0 rounded"
                                         style="background-color: {{ $button->bg_color }}"></span>
                                     <div class="min-w-0">
-                                        <p class="truncate text-sm font-semibold text-slate-900 dark:text-slate-300">{{ $button->label_ar }}</p>
+                                        <p class="truncate text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $button->label_ar }}</p>
                                         @if ($button->label_en)
                                             <p class="truncate text-xs text-slate-9000 dark:text-slate-50">{{ $button->label_en }}</p>
                                         @endif
@@ -362,7 +380,7 @@
                             </div>
                         </div>
                     @empty
-                        <p class="text-sm text-slate-500 dark:text-slate-400">{{ __('messages.no_buttons_yet') }}</p>
+                        <p class="text-sm text-slate-900 dark:text-slate-400">{{ __('messages.no_buttons_yet') }}</p>
                     @endforelse
                 </div>
             </div>

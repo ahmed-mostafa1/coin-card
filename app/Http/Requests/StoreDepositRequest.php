@@ -46,7 +46,10 @@ class StoreDepositRequest extends FormRequest
                 'max:'.config('coin-card.deposit_max_amount'),
             ],
             'currency_id' => ['required', 'integer'],
-            'proof' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:5120'],
+            'proof' => [
+                ($this->route('paymentMethod')?->require_transfer_proof ?? true) ? 'required' : 'nullable',
+                'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:5120',
+            ],
         ];
 
         $paymentMethod = $this->route('paymentMethod');

@@ -6,7 +6,7 @@
 @section('content')
     <div class="rounded-3xl border border-emerald-100 bg-white dark:bg-slate-800 p-8 shadow-sm">
         <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400 text-center">{{ __('messages.deposit_title') }}</h1>
-        <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-300 text-center">{{ __('messages.deposit_desc') }}</p>
+        <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-50 text-center">{{ __('messages.deposit_desc') }}</p>
 
         <div class="mt-6 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
             @forelse ($methods as $method)
@@ -21,7 +21,7 @@
                                     width="320" height="320" loading="lazy" decoding="async"
                                     class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110">
                             @else
-                                <div class="flex h-full w-full items-center justify-center bg-slate-100 text-3xl font-bold text-slate-600">
+                                <div class="flex h-full w-full items-center justify-center bg-slate-50 text-3xl font-bold text-slate-900">
                                     {{ mb_substr($method->localized_name, 0, 1) }}
                                 </div>
                             @endif
@@ -39,7 +39,7 @@
                     </h2>
                 </a>
             @empty
-                <div class="col-span-full rounded-2xl border border-dashed border-slate-200 p-12 text-center text-sm text-slate-500 dark:text-slate-400">
+                <div class="col-span-full rounded-2xl border border-dashed border-slate-50 p-12 text-center text-sm text-slate-900 dark:text-slate-400">
                     {{ __('messages.no_payment_methods') }}
                 </div>
             @endforelse

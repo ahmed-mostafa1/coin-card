@@ -7,7 +7,7 @@
     <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-8 shadow-sm">
         <div class="mb-6 flex items-center justify-between">
             <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">{{ __('messages.add_field') }}</h1>
-            <a href="{{ route('admin.agency-request-fields.index') }}" class="text-sm text-slate-500 hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-400">
+            <a href="{{ route('admin.agency-request-fields.index') }}" class="text-sm text-slate-900 hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-400">
                 <i class="fa-solid fa-arrow-right ml-1"></i>
                 {{ __('messages.back_to_list') }}
             </a>
@@ -71,15 +71,15 @@
                     <x-input-error :messages="$errors->get('sort_order')" class="mt-2" />
                 </div>
 
-                <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
-                    <input id="is_required" name="is_required" type="checkbox" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500 dark:focus:ring-emerald-600" {{ old('is_required', true) ? 'checked' : '' }}>
+                <div class="flex items-center gap-3 text-sm text-slate-900 dark:text-slate-400">
+                    <input id="is_required" name="is_required" type="checkbox" value="1" class="rounded border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500 dark:focus:ring-emerald-600" {{ old('is_required', true) ? 'checked' : '' }}>
                     <label for="is_required">{{ __('messages.required_field') }}</label>
                 </div>
             </div>
 
             <div class="flex items-center gap-4">
                 <x-primary-button>{{ __('messages.save') }}</x-primary-button>
-                <a href="{{ route('admin.agency-request-fields.index') }}" class="text-sm text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200">{{ __('messages.cancel') }}</a>
+                <a href="{{ route('admin.agency-request-fields.index') }}" class="text-sm text-slate-900 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-50">{{ __('messages.cancel') }}</a>
             </div>
         </form>
     </div>

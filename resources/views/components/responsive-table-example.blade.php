@@ -26,14 +26,14 @@
             <th class="py-2">Actions</th>
         </tr>
     </thead>
-    <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+    <tbody class="divide-y divide-slate-50 dark:divide-slate-700">
         <tr class="transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
-            <td class="py-3 text-slate-500 dark:text-slate-400" data-label="Order ID">#12345</td>
-            <td class="py-3 text-slate-700 dark:text-slate-300" data-label="Customer">
+            <td class="py-3 text-slate-900 dark:text-slate-400" data-label="Order ID">#12345</td>
+            <td class="py-3 text-slate-700 dark:text-slate-50" data-label="Customer">
                 Ahmed Mostafa
                 <div class="text-xs text-slate-9000 dark:text-slate-50">ahmed@example.com</div>
             </td>
-            <td class="py-3 text-slate-700 dark:text-slate-300" data-label="Amount">$150.00</td>
+            <td class="py-3 text-slate-700 dark:text-slate-50" data-label="Amount">$150.00</td>
             <td class="py-3" data-label="Status">
                 <x-badge type="approved">Approved</x-badge>
             </td>
@@ -64,19 +64,19 @@
             <th class="py-2">عرض</th>
         </tr>
     </thead>
-    <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+    <tbody class="divide-y divide-slate-50 dark:divide-slate-700">
         <tr class="transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
-            <td class="py-3 text-slate-500 dark:text-slate-400" data-label="رقم الطلب">#123</td>
-            <td class="py-3 text-slate-700 dark:text-slate-300" data-label="المستخدم">
+            <td class="py-3 text-slate-900 dark:text-slate-400" data-label="رقم الطلب">#123</td>
+            <td class="py-3 text-slate-700 dark:text-slate-50" data-label="المستخدم">
                 أحمد مصطفى
                 <div class="text-xs text-slate-9000 dark:text-slate-50">ahmed@example.com</div>
             </td>
-            <td class="py-3 text-slate-700 dark:text-slate-300" data-label="النوع">USD</td>
-            <td class="py-3 text-slate-700 dark:text-slate-300" data-label="المبلغ">150.00 USD</td>
+            <td class="py-3 text-slate-700 dark:text-slate-50" data-label="النوع">USD</td>
+            <td class="py-3 text-slate-700 dark:text-slate-50" data-label="المبلغ">150.00 USD</td>
             <td class="py-3" data-label="الحالة">
                 <x-badge type="pending">قيد المراجعة</x-badge>
             </td>
-            <td class="py-3 text-slate-500 dark:text-slate-400" data-label="التاريخ">2026-01-30 19:45</td>
+            <td class="py-3 text-slate-900 dark:text-slate-400" data-label="التاريخ">2026-01-30 19:45</td>
             <td class="py-3" data-label="عرض">
                 <a href="#" class="text-emerald-900 dark:text-emerald-400 hover:text-emerald-900">عرض</a>
             </td>
@@ -95,7 +95,7 @@
     
     2. Keep existing desktop table classes:
        - thead: bg-slate-50 dark:bg-slate-700/50 text-xs
-       - tbody: divide-y divide-slate-100 dark:divide-slate-700
+       - tbody: divide-y divide-slate-50 dark:divide-slate-700
        - tr: transition hover:bg-slate-50 dark:hover:bg-slate-700/50
        - td: py-3 (and color classes)
     

@@ -11,11 +11,11 @@
         @if (session('status'))<div class="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">{{ session('status') }}</div>@endif
         <x-table class="mt-6">
             <thead><tr><th class="py-2">الاسم</th><th class="py-2">المفتاح</th><th class="py-2">النوع</th><th class="py-2">الحالة</th><th class="py-2">إجراءات</th></tr></thead>
-            <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+            <tbody class="divide-y divide-slate-50 dark:divide-slate-700">
                 @forelse ($fields as $field)
                     <tr>
                         <td class="py-3 text-slate-700 dark:text-white">{{ $field->label }}</td>
-                        <td class="py-3 text-slate-500">{{ $field->name_key }}</td>
+                        <td class="py-3 text-slate-900">{{ $field->name_key }}</td>
                         <td class="py-3 text-slate-700 dark:text-white">{{ $field->type }}</td>
                         <td class="py-3">
                             <span class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold {{ $field->is_enabled ? 'bg-emerald-100 text-emerald-900 dark:bg-emerald-900/30 dark:text-emerald-300' : 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-300' }}">
@@ -51,7 +51,7 @@
                         </td>
                     </tr>
                 @empty
-                    <tr><td colspan="5" class="py-6 text-center text-slate-500">لا توجد حقول.</td></tr>
+                    <tr><td colspan="5" class="py-6 text-center text-slate-900">لا توجد حقول.</td></tr>
                 @endforelse
             </tbody>
         </x-table>

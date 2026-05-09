@@ -18,19 +18,19 @@
             </div>
         @endif
 
-        <div class="mt-6 overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700">
+        <div class="mt-6 overflow-hidden rounded-2xl border border-slate-50 dark:border-slate-700">
             <table class="w-full">
                 <thead class="bg-slate-50 dark:bg-slate-700/50">
                     <tr>
-                        <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">الترتيب</th>
-                        <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">العنوان</th>
-                        <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">المفتاح</th>
-                        <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">النوع</th>
-                        <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">مطلوب</th>
-                        <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">إجراءات</th>
+                        <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-900 dark:text-slate-50">الترتيب</th>
+                        <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-900 dark:text-slate-50">العنوان</th>
+                        <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-900 dark:text-slate-50">المفتاح</th>
+                        <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-900 dark:text-slate-50">النوع</th>
+                        <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-900 dark:text-slate-50">مطلوب</th>
+                        <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-900 dark:text-slate-50">إجراءات</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-200 dark:divide-slate-700 bg-white dark:bg-slate-800">
+                <tbody class="divide-y divide-slate-50 dark:divide-slate-700 bg-white dark:bg-slate-800">
                     @forelse ($fields as $field)
                         <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30">
                             <td class="px-4 py-3 text-sm text-slate-700 dark:text-slate-50">{{ $field->sort_order }}</td>
@@ -40,15 +40,15 @@
                                     <div class="text-xs text-slate-9000 dark:text-slate-50">{{ $field->label_en }}</div>
                                 @endif
                             </td>
-                            <td class="px-4 py-3 text-sm font-mono text-slate-600 dark:text-slate-300">{{ $field->name_key }}</td>
+                            <td class="px-4 py-3 text-sm font-mono text-slate-900 dark:text-slate-50">{{ $field->name_key }}</td>
                             <td class="px-4 py-3 text-sm text-slate-700 dark:text-slate-50">
-                                <span class="rounded-full bg-slate-100 dark:bg-slate-700 px-2 py-1 text-xs">{{ $field->type }}</span>
+                                <span class="rounded-full bg-slate-50 dark:bg-slate-700 px-2 py-1 text-xs">{{ $field->type }}</span>
                             </td>
                             <td class="px-4 py-3 text-sm text-slate-700 dark:text-slate-50">
                                 @if ($field->is_required)
                                     <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/30 px-2 py-1 text-xs text-emerald-900 dark:text-emerald-300">نعم</span>
                                 @else
-                                    <span class="rounded-full bg-slate-100 dark:bg-slate-700 px-2 py-1 text-xs text-slate-600 dark:text-slate-300">لا</span>
+                                    <span class="rounded-full bg-slate-50 dark:bg-slate-700 px-2 py-1 text-xs text-slate-900 dark:text-slate-50">لا</span>
                                 @endif
                             </td>
                             <td class="px-4 py-3 text-sm">
@@ -64,7 +64,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-4 py-8 text-center text-sm text-slate-500 dark:text-slate-400">
+                            <td colspan="6" class="px-4 py-8 text-center text-sm text-slate-900 dark:text-slate-400">
                                 لا توجد حقول. <a href="{{ route('admin.agency-request-fields.create') }}" class="text-emerald-900 dark:text-emerald-400 hover:underline">أضف حقل جديد</a>
                             </td>
                         </tr>

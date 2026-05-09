@@ -44,8 +44,8 @@
                 </div>
             </div>
 
-            <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
-                <input id="is_active" name="is_active" type="checkbox" value="1" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 dark:border-slate-600 dark:bg-slate-700" checked>
+            <div class="flex items-center gap-3 text-sm text-slate-900 dark:text-slate-50">
+                <input id="is_active" name="is_active" type="checkbox" value="1" class="rounded border-slate-50 text-emerald-600 focus:ring-emerald-500 dark:border-slate-900 dark:bg-slate-700" checked>
                 <label for="is_active">{{ __('messages.activate_variant') }}</label>
             </div>
 
@@ -56,7 +56,7 @@
 
             <div class="flex gap-3">
                 <x-primary-button>{{ __('messages.save') }}</x-primary-button>
-                <a href="{{ route('admin.services.variants.index', $service) }}" class="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-900 dark:border-slate-600 dark:text-slate-50">{{ __('messages.cancel') }}</a>
+                <a href="{{ route('admin.services.variants.index', $service) }}" class="rounded-full border border-slate-50 px-4 py-2 text-sm font-semibold text-slate-900 dark:border-slate-900 dark:text-slate-50">{{ __('messages.cancel') }}</a>
             </div>
         </form>
     </div>

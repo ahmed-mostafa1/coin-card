@@ -9,9 +9,9 @@
             <div class="flex flex-wrap items-center justify-between gap-4">
                 <div>
                     <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">{{ $user->name }} <x-user-badge :user="$user" class="h-6 w-6" /></h1>
-                    <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-300">{{ $user->email }}</p>
+                    <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-50">{{ $user->email }}</p>
                 </div>
-                <div class="text-sm text-slate-600 dark:text-slate-300">
+                <div class="text-sm text-slate-900 dark:text-slate-50">
                     <p>تاريخ الإنشاء: {{ $user->created_at->format('Y-m-d') }}</p>
                     <p>الأدوار: {{ $user->roles->pluck('name')->implode('، ') ?: 'بدون دور' }}</p>
                 </div>
@@ -60,7 +60,7 @@
                 <form method="POST" action="{{ route('admin.users.destroy', $user) }}" onsubmit="return confirm('هل أنت متأكد من حذف هذا المستخدم؟ لا يمكن التراجع عن هذا الإجراء.')">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="rounded-full border border-slate-200 dark:border-slate-700 px-4 py-2 font-semibold text-slate-600 dark:text-slate-300">حذف المستخدم</button>
+                    <button type="submit" class="rounded-full border border-slate-50 dark:border-slate-700 px-4 py-2 font-semibold text-slate-900 dark:text-slate-50">حذف المستخدم</button>
                 </form>
             </div>
         </div>
@@ -73,25 +73,25 @@
                     <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">المحفظة</h2>
                     <div class="mt-4 space-y-3 text-sm">
                         <div class="flex items-center justify-between">
-                            <span class="text-slate-500">الرصيد المتاح</span>
+                            <span class="text-slate-900">الرصيد المتاح</span>
                             <span class="font-semibold text-slate-700">{{ number_format($wallet->balance, 2) }} USD</span>
                         </div>
                         <div class="flex items-center justify-between">
-                            <span class="text-slate-500">الرصيد المعلّق</span>
+                            <span class="text-slate-900">الرصيد المعلّق</span>
                             <span class="font-semibold text-slate-700">{{ number_format($wallet->held_balance, 2) }} USD</span>
                         </div>
                     </div>
-                    <div class="mt-6 border-t border-slate-100 dark:border-slate-700 pt-4 text-sm">
+                    <div class="mt-6 border-t border-slate-50 dark:border-slate-700 pt-4 text-sm">
                         <div class="flex items-center justify-between">
-                            <span class="text-slate-500 dark:text-slate-300">مستوى الولاء</span>
+                            <span class="text-slate-900 dark:text-slate-50">مستوى الولاء</span>
                             <span class="font-semibold text-emerald-900 dark:text-emerald-400">{{ $loyaltySummary['level_label'] }}</span>
                         </div>
                         <div class="mt-2 flex items-center justify-between">
-                            <span class="text-slate-500 dark:text-slate-300">نقاط الولاء</span>
+                            <span class="text-slate-900 dark:text-slate-50">نقاط الولاء</span>
                             <span class="font-semibold text-slate-700 dark:text-slate-50">{{ number_format($loyaltySummary['points']) }}</span>
                         </div>
                         <div class="mt-2 flex items-center justify-between">
-                            <span class="text-slate-500 dark:text-slate-300">خصم الحساب</span>
+                            <span class="text-slate-900 dark:text-slate-50">خصم الحساب</span>
                             <span class="font-semibold text-slate-700 dark:text-slate-50">{{ number_format($loyaltySummary['discount_percentage'], 2) }}%</span>
                         </div>
                     </div>
@@ -101,8 +101,8 @@
                     <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">التوثيق والخصم</h2>
                     <form method="POST" action="{{ route('admin.users.verification-discount', $user) }}" class="mt-4 space-y-4">
                         @csrf
-                        <label class="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
-                            <input type="checkbox" name="is_verified" value="1" class="rounded border-slate-300 text-emerald-600" @checked($user->is_verified)>
+                        <label class="flex items-center gap-2 text-sm text-slate-900 dark:text-slate-50">
+                            <input type="checkbox" name="is_verified" value="1" class="rounded border-slate-50 text-emerald-600" @checked($user->is_verified)>
                             مستخدم موثق
                         </label>
                         <div>
@@ -128,15 +128,15 @@
                         </div>
                         <div>
                             <x-input-label for="notif_content_ar" value="المحتوى (عربي)" />
-                            <textarea id="notif_content_ar" name="content_ar" rows="2" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white" required>{{ old('content_ar') }}</textarea>
+                            <textarea id="notif_content_ar" name="content_ar" rows="2" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white" required>{{ old('content_ar') }}</textarea>
                         </div>
                         <div>
                             <x-input-label for="notif_content_en" value="المحتوى (إنجليزي)" />
-                            <textarea id="notif_content_en" name="content_en" rows="2" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white" required>{{ old('content_en') }}</textarea>
+                            <textarea id="notif_content_en" name="content_en" rows="2" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white" required>{{ old('content_en') }}</textarea>
                         </div>
                         <div>
                             <x-input-label for="notif_image" value="صورة الإشعار (اختياري)" />
-                            <input id="notif_image" name="image" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" class="w-full rounded-xl border border-slate-200 px-4 py-2 text-sm">
+                            <input id="notif_image" name="image" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" class="w-full rounded-xl border border-slate-50 px-4 py-2 text-sm">
                         </div>
                         <x-primary-button class="w-full">إرسال إشعار</x-primary-button>
                     </form>
@@ -156,7 +156,7 @@
                         </div>
                         <div>
                             <x-input-label for="password_reason" value="سبب التغيير (اختياري)" />
-                            <textarea id="password_reason" name="reason" rows="2" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white"></textarea>
+                            <textarea id="password_reason" name="reason" rows="2" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white"></textarea>
                         </div>
                         <button type="submit" class="w-full rounded-lg bg-rose-600 px-4 py-2 text-sm font-medium text-white hover:bg-rose-700">تغيير كلمة المرور</button>
                     </form>
@@ -171,7 +171,7 @@
                     <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-6 shadow-sm">
                         <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">إضافة/خصم رصيد</h2>
                         
-                        <div class="mt-4 border-b border-slate-100 dark:border-slate-700 pb-4">
+                        <div class="mt-4 border-b border-slate-50 dark:border-slate-700 pb-4">
                             <h3 class="text-sm font-bold text-emerald-600 dark:text-emerald-400 mb-2">إضافة رصيد</h3>
                             <form method="POST" action="{{ route('admin.users.credit', $user) }}" class="space-y-4">
                                 @csrf
@@ -181,7 +181,7 @@
                                 </div>
                                 <div>
                                     <x-input-label for="credit_note" value="ملاحظة (اختياري)" />
-                                    <textarea id="credit_note" name="note" rows="2" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white">{{ old('note') }}</textarea>
+                                    <textarea id="credit_note" name="note" rows="2" class="w-full rounded-xl border border-slate-50 dark:border-slate-600 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white">{{ old('note') }}</textarea>
                                 </div>
                                 <x-primary-button class="w-full">إضافة الرصيد</x-primary-button>
                             </form>
@@ -197,11 +197,31 @@
                                 </div>
                                 <div>
                                     <x-input-label for="debit_note" value="ملاحظة (اختياري)" />
-                                    <textarea id="debit_note" name="note" rows="2" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white">{{ old('note') }}</textarea>
+                                    <textarea id="debit_note" name="note" rows="2" class="w-full rounded-xl border border-slate-50 dark:border-slate-600 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white">{{ old('note') }}</textarea>
                                 </div>
                                 <button type="submit" class="w-full rounded-lg bg-rose-600 px-4 py-2 text-sm font-medium text-white hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2">خصم الرصيد</button>
                             </form>
                         </div>
+
+                        {{-- Refund Held Balance --}}
+                        @if ($wallet->held_balance > 0)
+                        <div class="mt-4 border-t border-slate-50 dark:border-slate-700 pt-4">
+                            <h3 class="text-sm font-bold text-amber-600 dark:text-amber-400 mb-2">إرجاع الرصيد المعلّق</h3>
+                            <p class="text-xs text-slate-900 dark:text-slate-400 mb-3">الرصيد المعلّق الحالي: <strong>{{ number_format($wallet->held_balance, 2) }} USD</strong></p>
+                            <form method="POST" action="{{ route('admin.users.refund-held', $user) }}" class="space-y-4">
+                                @csrf
+                                <div>
+                                    <x-input-label for="refund_held_amount" value="المبلغ" />
+                                    <x-text-input id="refund_held_amount" name="amount" type="number" step="0.01" min="0.01" max="{{ $wallet->held_balance }}" :value="old('amount')" required />
+                                </div>
+                                <div>
+                                    <x-input-label for="refund_held_note" value="سبب الإرجاع (مطلوب)" />
+                                    <textarea id="refund_held_note" name="note" rows="2" class="w-full rounded-xl border border-slate-50 dark:border-slate-600 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white" required>{{ old('note') }}</textarea>
+                                </div>
+                                <button type="submit" class="w-full rounded-lg bg-amber-500 px-4 py-2 text-sm font-medium text-white hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2">إرجاع الرصيد المعلّق</button>
+                            </form>
+                        </div>
+                        @endif
                     </div>
 
                     <!-- Send Email Card -->
@@ -215,7 +235,7 @@
                             </div>
                             <div>
                                 <x-input-label for="email_message" value="الرسالة" />
-                                <textarea id="email_message" name="message" rows="4" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white" required>{{ old('message') }}</textarea>
+                                <textarea id="email_message" name="message" rows="4" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white" required>{{ old('message') }}</textarea>
                             </div>
                             <x-primary-button class="w-full">إرسال بريد</x-primary-button>
                         </form>
@@ -229,15 +249,16 @@
             <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-6 shadow-sm">
                 <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">آخر حركات الرصيد</h2>
                 <x-table class="mt-4">
-                    <thead class="border-b border-slate-200 dark:border-slate-700 text-xs text-slate-50 dark:text-slate-300">
+                    <thead class="border-b border-slate-50 dark:border-slate-700 text-xs text-slate-50 dark:text-slate-50">
                         <tr>
                             <th class="py-2">النوع</th>
                             <th class="py-2">المبلغ</th>
                             <th class="py-2">المرجع</th>
+                            <th class="py-2">الملاحظة</th>
                             <th class="py-2">التاريخ</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+                    <tbody class="divide-y divide-slate-50 dark:divide-slate-700">
                         @forelse ($transactions as $transaction)
                             <tr>
                                 <td class="py-3 text-slate-700 dark:text-slate-50">
@@ -254,14 +275,17 @@
                                     @endif
                                 </td>
                                 <td class="py-3 text-slate-700 dark:text-slate-50">{{ number_format($transaction->amount, 2) }} USD</td>
-                                <td class="py-3 text-slate-500 dark:text-slate-400">
+                                <td class="py-3 text-slate-900 dark:text-slate-400">
                                     {{ $transaction->reference_type }} #{{ $transaction->reference_id ?? '-' }}
                                 </td>
-                                <td class="py-3 text-slate-500 dark:text-slate-400">{{ $transaction->created_at->format('Y-m-d H:i') }}</td>
+                                <td class="py-3 text-slate-900 dark:text-slate-400 max-w-[180px] truncate" title="{{ $transaction->note }}">
+                                    {{ $transaction->note ?? '-' }}
+                                </td>
+                                <td class="py-3 text-slate-900 dark:text-slate-400">{{ $transaction->created_at->format('Y-m-d H:i') }}</td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="py-4 text-center text-slate-500 dark:text-slate-400">لا توجد حركات حتى الآن.</td>
+                                <td colspan="5" class="py-4 text-center text-slate-900 dark:text-slate-400">لا توجد حركات حتى الآن.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -272,7 +296,7 @@
             <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-6 shadow-sm">
                 <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">آخر طلبات الشحن</h2>
                 <x-table class="mt-4">
-                    <thead class="border-b border-slate-200 dark:border-slate-700 text-xs text-slate-50 dark:text-slate-300">
+                    <thead class="border-b border-slate-50 dark:border-slate-700 text-xs text-slate-50 dark:text-slate-50">
                         <tr>
                             <th class="py-2">الحالة</th>
                             <th class="py-2">الطريقة</th>
@@ -283,7 +307,7 @@
                             <th class="py-2">عرض</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+                    <tbody class="divide-y divide-slate-50 dark:divide-slate-700">
                         @forelse ($deposits as $deposit)
                             <tr>
                                 <td class="py-3">
@@ -300,15 +324,15 @@
                                 <td class="py-3 text-slate-700 dark:text-slate-50">
                                     {{ $deposit->approved_amount ? number_format($deposit->approved_amount, 2) : '-' }} USD
                                 </td>
-                                <td class="py-3 text-slate-500 dark:text-slate-400">{{ $deposit->reviewed_at?->format('Y-m-d H:i') ?? '-' }}</td>
-                                <td class="py-3 text-slate-500 dark:text-slate-400">{{ $deposit->created_at->format('Y-m-d') }}</td>
+                                <td class="py-3 text-slate-900 dark:text-slate-400">{{ $deposit->reviewed_at?->format('Y-m-d H:i') ?? '-' }}</td>
+                                <td class="py-3 text-slate-900 dark:text-slate-400">{{ $deposit->created_at->format('Y-m-d') }}</td>
                                 <td class="py-3">
                                     <a href="{{ route('admin.deposits.show', $deposit) }}" class="text-emerald-900 hover:text-emerald-900 dark:text-emerald-50">عرض</a>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="py-4 text-center text-slate-500 dark:text-slate-400">لا توجد طلبات شحن.</td>
+                                <td colspan="7" class="py-4 text-center text-slate-900 dark:text-slate-400">لا توجد طلبات شحن.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -319,7 +343,7 @@
             <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-6 shadow-sm">
                 <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">آخر الطلبات</h2>
                 <x-table class="mt-4">
-                    <thead class="border-b border-slate-200 dark:border-slate-700 text-xs text-slate-50 dark:text-slate-300">
+                    <thead class="border-b border-slate-50 dark:border-slate-700 text-xs text-slate-50 dark:text-slate-50">
                         <tr>
                             <th class="py-2">الحالة</th>
                             <th class="py-2">الخدمة</th>
@@ -330,7 +354,7 @@
                             <th class="py-2">عرض</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+                    <tbody class="divide-y divide-slate-50 dark:divide-slate-700">
                         @forelse ($orders as $order)
                             <tr>
                                 <td class="py-3">
@@ -347,15 +371,15 @@
                                 <td class="py-3 text-slate-700 dark:text-slate-50">{{ $order->service->name }}</td>
                                 <td class="py-3 text-slate-700 dark:text-slate-50">{{ $order->variant?->name ?? 'السعر الأساسي' }}</td>
                                 <td class="py-3 text-slate-700 dark:text-slate-50">{{ number_format($order->amount_held, 2) }} USD</td>
-                                <td class="py-3 text-slate-500 dark:text-slate-400">{{ $order->settled_at?->format('Y-m-d H:i') ?? $order->released_at?->format('Y-m-d H:i') ?? '-' }}</td>
-                                <td class="py-3 text-slate-500 dark:text-slate-400">{{ $order->created_at->format('Y-m-d') }}</td>
+                                <td class="py-3 text-slate-900 dark:text-slate-400">{{ $order->settled_at?->format('Y-m-d H:i') ?? $order->released_at?->format('Y-m-d H:i') ?? '-' }}</td>
+                                <td class="py-3 text-slate-900 dark:text-slate-400">{{ $order->created_at->format('Y-m-d') }}</td>
                                 <td class="py-3">
                                     <a href="{{ route('admin.orders.show', $order) }}" class="text-emerald-900 hover:text-emerald-900 dark:text-emerald-50">عرض</a>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="py-4 text-center text-slate-500 dark:text-slate-400">لا توجد طلبات.</td>
+                                <td colspan="7" class="py-4 text-center text-slate-900 dark:text-slate-400">لا توجد طلبات.</td>
                             </tr>
                         @endforelse
                     </tbody>

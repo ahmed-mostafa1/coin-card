@@ -67,7 +67,7 @@
              x-transition:leave-end="opacity-0 scale-90">
 
             <div class="relative w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl transition-all dark:bg-slate-800">
-                <button @click="closePopup()" class="absolute right-3 top-3 z-10 flex items-center gap-1 rounded-full bg-white/80 p-2 text-slate-500 shadow-sm transition hover:text-red-500 dark:bg-slate-700/80">
+                <button @click="closePopup()" class="absolute right-3 top-3 z-10 flex items-center gap-1 rounded-full bg-white/80 p-2 text-slate-900 shadow-sm transition hover:text-red-500 dark:bg-slate-700/80">
                     <span class="px-1 text-sm font-bold">إغلاق</span>
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
@@ -78,7 +78,7 @@
 
                 <div class="p-6 text-center">
                     <h3 x-text="currentPopup && currentPopup.localized_title" class="mb-2 text-xl font-bold text-slate-800 dark:text-white"></h3>
-                    <p x-text="currentPopup && currentPopup.localized_content" class="whitespace-pre-wrap text-slate-600 dark:text-slate-300"></p>
+                    <p x-text="currentPopup && currentPopup.localized_content" class="whitespace-pre-wrap text-slate-900 dark:text-slate-50"></p>
 
                     <template x-if="currentPopup && currentPopup.localized_button_text && currentPopup.button_url">
                         <a :href="currentPopup.button_url"

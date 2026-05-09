@@ -8,10 +8,10 @@
         <div class="flex flex-wrap items-center justify-between gap-4">
             <div>
                 <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">النوافذ المنبثقة</h1>
-                <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-300">إدارة النوافذ التي تظهر للمستخدمين عند زيارة الموقع.</p>
+                <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-50">إدارة النوافذ التي تظهر للمستخدمين عند زيارة الموقع.</p>
             </div>
             <div class="flex gap-2">
-                <a href="{{ route('admin.index') }}" class="inline-flex items-center gap-2 rounded-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-slate-300 transition hover:bg-slate-50 dark:hover:bg-slate-700">
+                <a href="{{ route('admin.index') }}" class="inline-flex items-center gap-2 rounded-full border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-800 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-slate-50 transition hover:bg-slate-50 dark:hover:bg-slate-700">
                     <i class="fa-solid fa-arrow-left"></i>
                     {{ __('messages.return_to_dashboard') }}
                 </a>
@@ -26,7 +26,7 @@
         @endif
 
         <x-table class="mt-6">
-            <thead class="border-b border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400">
+            <thead class="border-b border-slate-50 dark:border-slate-700 text-slate-900 dark:text-slate-400">
                 <tr>
                     <th class="py-2">العنوان</th>
                     <th class="py-2">الصورة</th>
@@ -35,7 +35,7 @@
                     <th class="py-2">إجراءات</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+            <tbody class="divide-y divide-slate-50 dark:divide-slate-700">
                 @forelse ($popups as $popup)
                     <tr>
                         <td class="py-3 text-slate-700 dark:text-white">{{ $popup->title ?: 'بدون عنوان' }}</td>
@@ -53,7 +53,7 @@
                                 <span class="rounded-full bg-rose-100 dark:bg-rose-900/50 px-3 py-1 text-xs text-rose-700 dark:text-rose-400">متوقف</span>
                             @endif
                         </td>
-                        <td class="py-3 text-slate-500 dark:text-slate-400">{{ $popup->display_order }}</td>
+                        <td class="py-3 text-slate-900 dark:text-slate-400">{{ $popup->display_order }}</td>
                         <td class="py-3">
                             <div class="flex items-center gap-2">
                                 <a href="{{ route('admin.popups.edit', $popup) }}" class="text-emerald-900 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">تعديل</a>
@@ -67,7 +67,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="py-6 text-center text-slate-500 dark:text-slate-400">لا توجد نوافذ منبثقة بعد.</td>
+                        <td colspan="5" class="py-6 text-center text-slate-900 dark:text-slate-400">لا توجد نوافذ منبثقة بعد.</td>
                     </tr>
                 @endforelse
             </tbody>

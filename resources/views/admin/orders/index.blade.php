@@ -36,7 +36,7 @@
         @endif
 
         <x-table class="mt-6">
-            <thead class="bg-slate-50 dark:bg-slate-700/50 text-slate-500 dark:text-slate-400">
+            <thead class="bg-slate-50 dark:bg-slate-700/50 text-slate-900 dark:text-slate-400">
                     <tr>
                         <th class="py-2">المستخدم</th>
                         <th class="py-2">الخدمة</th>
@@ -46,7 +46,7 @@
                         <th class="py-2">إجراءات</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+                <tbody class="divide-y divide-slate-50 dark:divide-slate-700">
                     @forelse ($orders as $order)
                         <tr class="transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
                             <td class="py-3 text-slate-700 dark:text-white" data-label="المستخدم">{{ $order->user?->name ?? 'مستخدم محذوف' }} <x-user-badge :user="$order->user" /><div class="text-xs text-slate-9000 dark:text-slate-50">{{ $order->user?->email }}</div></td>
@@ -65,7 +65,7 @@
                                     <x-badge>ملغي</x-badge>
                                 @endif
                             </td>
-                            <td class="py-3 text-slate-500 dark:text-slate-400" data-label="التاريخ">{{ $order->created_at->format('Y-m-d') }}</td>
+                            <td class="py-3 text-slate-900 dark:text-slate-400" data-label="التاريخ">{{ $order->created_at->format('Y-m-d') }}</td>
                             <td class="py-3" data-label="إجراءات">
                                 <div class="admin-inline-actions">
                                     <a href="{{ route('admin.orders.show', $order) }}" class="admin-inline-link">عرض</a>
@@ -81,7 +81,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="py-6 text-center text-slate-500 dark:text-slate-400">لا توجد طلبات.</td>
+                            <td colspan="6" class="py-6 text-center text-slate-900 dark:text-slate-400">لا توجد طلبات.</td>
                         </tr>
                     @endforelse
                 </tbody>

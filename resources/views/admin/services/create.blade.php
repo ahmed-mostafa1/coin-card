@@ -11,7 +11,7 @@
 
             <div>
                 <x-input-label for="category_id" :value="__('messages.category')" />
-                <select id="category_id" name="category_id" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500" required>
+                <select id="category_id" name="category_id" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500" required>
                     <option value="">{{ __('messages.select_category') }}</option>
                     @foreach ($categories as $category)
                         @php
@@ -55,19 +55,19 @@
 
             <div>
                 <x-input-label for="additional_rules" value="قواعد إضافية (عربي)" />
-                <textarea id="additional_rules" name="additional_rules" rows="3" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">{{ old('additional_rules') }}</textarea>
+                <textarea id="additional_rules" name="additional_rules" rows="3" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">{{ old('additional_rules') }}</textarea>
                 <x-input-error :messages="$errors->get('additional_rules')" />
             </div>
 
             <div>
                 <x-input-label for="additional_rules_en" value="قواعد إضافية (English)" />
-                <textarea id="additional_rules_en" name="additional_rules_en" rows="3" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500" dir="ltr">{{ old('additional_rules_en') }}</textarea>
+                <textarea id="additional_rules_en" name="additional_rules_en" rows="3" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500" dir="ltr">{{ old('additional_rules_en') }}</textarea>
                 <x-input-error :messages="$errors->get('additional_rules_en')" />
             </div>
 
             <div>
                 <x-input-label for="pricing_mode" value="نوع تسعير الخدمة" />
-                <select id="pricing_mode" name="pricing_mode" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
+                <select id="pricing_mode" name="pricing_mode" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                     <option value="fixed" @selected(old('pricing_mode', 'fixed') === 'fixed')>سعر ثابت</option>
                     <option value="discounted_input" @selected(old('pricing_mode') === 'discounted_input')>خصم على قيمة يدخلها المستخدم</option>
                 </select>
@@ -81,9 +81,9 @@
                 <p class="mt-1 text-xs text-slate-900 dark:text-slate-50">تُطبّق هذه النسبة على قيمة العرض التي يدخلها المستخدم. القيمة السالبة تعني زيادة على السعر (Overprice).</p>
             </div>
 
-            <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4 space-y-4">
-                <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
-                    <input id="is_quantity_based" name="is_quantity_based" type="checkbox" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" @checked(old('is_quantity_based')) onchange="toggleQuantityFields(this)">
+            <div class="rounded-2xl border border-slate-50 dark:border-slate-700 p-4 space-y-4">
+                <div class="flex items-center gap-3 text-sm text-slate-900 dark:text-slate-400">
+                    <input id="is_quantity_based" name="is_quantity_based" type="checkbox" value="1" class="rounded border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" @checked(old('is_quantity_based')) onchange="toggleQuantityFields(this)">
                     <label for="is_quantity_based">خدمة بالكمية (سعر ثابت للقطعة)</label>
                 </div>
                 <div id="quantity-fields" class="{{ old('is_quantity_based') ? '' : 'hidden' }} space-y-4">
@@ -132,35 +132,35 @@
 
             <div>
                 <x-input-label for="image" :value="__('messages.image_optional')" />
-                <input id="image" name="image" type="file" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-600 dark:text-slate-300 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-800 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-900 dark:file:text-emerald-300">
+                <input id="image" name="image" type="file" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-900 dark:text-slate-50 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-800 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-900 dark:file:text-emerald-300">
                 <x-input-error :messages="$errors->get('image')" />
                         <p class="mt-1 text-xs text-slate-900 dark:text-slate-50">{{ __('messages.recommended_size') }}: 500x500 px</p>
             </div>
 
-            <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
-                <input id="is_active" name="is_active" type="checkbox" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" checked>
+            <div class="flex items-center gap-3 text-sm text-slate-900 dark:text-slate-400">
+                <input id="is_active" name="is_active" type="checkbox" value="1" class="rounded border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" checked>
                 <label for="is_active">{{ __('messages.activate_service') }}</label>
             </div>
 
-            <div class="rounded-2xl border border-slate-200 p-4 dark:border-slate-700 space-y-4">
-                <label class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
-                    <input name="order_image_upload_enabled" type="checkbox" value="1" class="rounded border-slate-300 text-emerald-600" @checked(old('order_image_upload_enabled'))>
+            <div class="rounded-2xl border border-slate-50 p-4 dark:border-slate-700 space-y-4">
+                <label class="flex items-center gap-3 text-sm text-slate-900 dark:text-slate-400">
+                    <input name="order_image_upload_enabled" type="checkbox" value="1" class="rounded border-slate-50 text-emerald-600" @checked(old('order_image_upload_enabled'))>
                     إظهار حقل رفع صورة في طلب هذه الخدمة
                 </label>
-                <label class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
-                    <input name="order_image_required" type="checkbox" value="1" class="rounded border-slate-300 text-emerald-600" @checked(old('order_image_required'))>
+                <label class="flex items-center gap-3 text-sm text-slate-900 dark:text-slate-400">
+                    <input name="order_image_required" type="checkbox" value="1" class="rounded border-slate-50 text-emerald-600" @checked(old('order_image_required'))>
                     جعل الصورة مطلوبة
                 </label>
                 <div>
                     <x-input-label for="order_image_help_text" value="تعليمات رفع الصورة (اختياري)" />
-                    <textarea id="order_image_help_text" name="order_image_help_text" rows="2" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white">{{ old('order_image_help_text') }}</textarea>
+                    <textarea id="order_image_help_text" name="order_image_help_text" rows="2" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white">{{ old('order_image_help_text') }}</textarea>
                     <x-input-error :messages="$errors->get('order_image_help_text')" />
                 </div>
             </div>
 
-            <div class="rounded-2xl border border-slate-200 p-4 dark:border-slate-700">
-                <label class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
-                    <input name="is_topup_label_active" type="checkbox" value="1" class="rounded border-slate-300 text-emerald-600" @checked(old('is_topup_label_active'))>
+            <div class="rounded-2xl border border-slate-50 p-4 dark:border-slate-700">
+                <label class="flex items-center gap-3 text-sm text-slate-900 dark:text-slate-400">
+                    <input name="is_topup_label_active" type="checkbox" value="1" class="rounded border-slate-50 text-emerald-600" @checked(old('is_topup_label_active'))>
                     إظهار شارة نوع الشحن على بطاقة الخدمة
                 </label>
                 <div class="mt-3">
@@ -173,19 +173,19 @@
                 </div>
             </div>
 
-            <div class="mt-4 border-t border-slate-100 dark:border-slate-700 pt-4">
+            <div class="mt-4 border-t border-slate-50 dark:border-slate-700 pt-4">
                  <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400 mb-4">{{ __('messages.offer_settings') ?? (app()->getLocale() == 'ar' ? 'إعدادات العرض' : 'Offer Settings') }}</h2>
                  
                  <div class="space-y-4">
                     <div>
                         <x-input-label for="offer_image" :value="__('messages.offer_image') ?? (app()->getLocale() == 'ar' ? 'صورة العرض' : 'Offer Image')" />
-                        <input id="offer_image" name="offer_image" type="file" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-600 dark:text-slate-300 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-800 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-900 dark:file:text-emerald-300">
+                        <input id="offer_image" name="offer_image" type="file" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-900 dark:text-slate-50 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-800 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-900 dark:file:text-emerald-300">
                         <x-input-error :messages="$errors->get('offer_image')" />
                                 <p class="mt-1 text-xs text-slate-900 dark:text-slate-50">{{ __('messages.recommended_size') }}: 500x500 px</p>
                     </div>
 
-                    <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
-                        <input id="is_offer_active" name="is_offer_active" type="checkbox" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500">
+                    <div class="flex items-center gap-3 text-sm text-slate-900 dark:text-slate-400">
+                        <input id="is_offer_active" name="is_offer_active" type="checkbox" value="1" class="rounded border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500">
                         <label for="is_offer_active">{{ __('messages.activate_offer') ?? (app()->getLocale() == 'ar' ? 'تفعيل العرض' : 'Activate Qffer') }}</label>
                     </div>
                  </div>
@@ -195,8 +195,8 @@
                 <h2 class="text-lg font-semibold text-rose-700 dark:text-rose-300">{{ __('messages.limited_time_offer') }}</h2>
 
                 <div class="space-y-2">
-                    <label for="is_limited_offer_label_active" class="inline-flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
-                        <input id="is_limited_offer_label_active" name="is_limited_offer_label_active" type="checkbox" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-rose-600 focus:ring-rose-500" @checked(old('is_limited_offer_label_active'))>
+                    <label for="is_limited_offer_label_active" class="inline-flex items-center gap-2 text-sm text-slate-700 dark:text-slate-50">
+                        <input id="is_limited_offer_label_active" name="is_limited_offer_label_active" type="checkbox" value="1" class="rounded border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 text-rose-600 focus:ring-rose-500" @checked(old('is_limited_offer_label_active'))>
                         {{ __('messages.activate_limited_offer_label') }}
                     </label>
                     <div>
@@ -212,13 +212,13 @@
                 </div>
 
                 <div class="space-y-2">
-                    <label for="is_limited_offer_countdown_active" class="inline-flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
-                        <input id="is_limited_offer_countdown_active" name="is_limited_offer_countdown_active" type="checkbox" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-rose-600 focus:ring-rose-500" @checked(old('is_limited_offer_countdown_active'))>
+                    <label for="is_limited_offer_countdown_active" class="inline-flex items-center gap-2 text-sm text-slate-700 dark:text-slate-50">
+                        <input id="is_limited_offer_countdown_active" name="is_limited_offer_countdown_active" type="checkbox" value="1" class="rounded border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 text-rose-600 focus:ring-rose-500" @checked(old('is_limited_offer_countdown_active'))>
                         {{ __('messages.activate_limited_offer_countdown') }}
                     </label>
                     <div>
                         <x-input-label for="limited_offer_ends_at" :value="__('messages.limited_offer_ends_at')" />
-                        <input id="limited_offer_ends_at" name="limited_offer_ends_at" type="datetime-local" value="{{ old('limited_offer_ends_at') }}" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-rose-500 focus:ring-rose-500">
+                        <input id="limited_offer_ends_at" name="limited_offer_ends_at" type="datetime-local" value="{{ old('limited_offer_ends_at') }}" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-rose-500 focus:ring-rose-500">
                         <x-input-error :messages="$errors->get('limited_offer_ends_at')" />
                         <p class="mt-1 text-xs text-slate-900 dark:text-slate-50">{{ __('messages.limited_offer_auto_deactivate_hint') }}</p>
                     </div>
@@ -230,7 +230,7 @@
                 <x-text-input id="sort_order" name="sort_order" type="number" min="0" :value="old('sort_order', 0)" />
             </div>
 
-            <div class="rounded-2xl border border-slate-200 p-4 dark:border-slate-700 space-y-4">
+            <div class="rounded-2xl border border-slate-50 p-4 dark:border-slate-700 space-y-4">
                 <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">محتوى SEO للخدمة</h2>
                 <div>
                     <x-input-label for="seo_title" value="عنوان SEO" />
@@ -238,7 +238,7 @@
                 </div>
                 <div>
                     <x-input-label for="seo_meta_description" value="وصف SEO" />
-                    <textarea id="seo_meta_description" name="seo_meta_description" rows="2" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white">{{ old('seo_meta_description') }}</textarea>
+                    <textarea id="seo_meta_description" name="seo_meta_description" rows="2" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white">{{ old('seo_meta_description') }}</textarea>
                 </div>
                 <div>
                     <x-input-label for="seo_keywords" value="كلمات مفتاحية" />
@@ -267,7 +267,7 @@
                 <p id="variants-disabled-hint" class="mt-2 hidden text-xs text-amber-700">الباقات غير متاحة لهذا النوع من التسعير.</p>
                 <div class="mt-4 space-y-4" data-variants-container>
                     @foreach ($variants as $index => $variant)
-                        <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4" data-variant-row>
+                        <div class="rounded-2xl border border-slate-50 dark:border-slate-700 p-4" data-variant-row>
                             <div class="grid gap-4 lg:grid-cols-4">
                                 <div class="lg:col-span-2">
                                     <x-input-label value="{{ __('messages.variant_name') }}" />
@@ -284,9 +284,9 @@
                                     <x-text-input name="variants[{{ $index }}][sort_order]" type="number" min="0" :value="$variant['sort_order'] ?? 0" />
                                 </div>
                             </div>
-                            <div class="mt-3 flex flex-wrap items-center justify-between gap-3 text-sm text-slate-600 dark:text-slate-400">
+                            <div class="mt-3 flex flex-wrap items-center justify-between gap-3 text-sm text-slate-900 dark:text-slate-400">
                                 <label class="flex items-center gap-2">
-                                    <input type="checkbox" name="variants[{{ $index }}][is_active]" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" {{ ($variant['is_active'] ?? true) ? 'checked' : '' }}>
+                                    <input type="checkbox" name="variants[{{ $index }}][is_active]" value="1" class="rounded border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" {{ ($variant['is_active'] ?? true) ? 'checked' : '' }}>
                                     {{ __('messages.activate_variant') }}
                                 </label>
                                 <button type="button" class="text-xs text-rose-600 dark:text-rose-400 hover:text-rose-700" data-variant-remove>{{ __('messages.remove') }}</button>
@@ -303,7 +303,7 @@
                 </div>
                 <div class="mt-4 space-y-4" data-fields-container>
                     @foreach ($fields as $index => $field)
-                        <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4" data-field-row>
+                        <div class="rounded-2xl border border-slate-50 dark:border-slate-700 p-4" data-field-row>
                             <div class="grid gap-4 lg:grid-cols-4">
                                 <div class="lg:col-span-2">
                                     <x-input-label value="{{ __('messages.field_label') }} (عربي)" />
@@ -341,13 +341,13 @@
                             <div class="mt-3 grid gap-3 lg:grid-cols-3">
                                 <div>
                                     <x-input-label value="{{ __('messages.field_type') }}" />
-                                    <select name="fields[{{ $index }}][type]" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500" required>
+                                    <select name="fields[{{ $index }}][type]" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500" required>
                                         <option value="text" @selected(($field['type'] ?? 'text') === 'text')>{{ __('messages.field_type_text') }}</option>
                                         <option value="textarea" @selected(($field['type'] ?? 'text') === 'textarea')>{{ __('messages.field_type_textarea') }}</option>
                                     </select>
                                 </div>
-                                <div class="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
-                                    <input type="checkbox" name="fields[{{ $index }}][is_required]" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" {{ ($field['is_required'] ?? true) ? 'checked' : '' }}>
+                                <div class="flex items-center gap-2 text-sm text-slate-900 dark:text-slate-400">
+                                    <input type="checkbox" name="fields[{{ $index }}][is_required]" value="1" class="rounded border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" {{ ($field['is_required'] ?? true) ? 'checked' : '' }}>
                                     {{ __('messages.required_field') }}
                                 </div>
                                 <div class="flex items-center justify-end">
@@ -378,24 +378,24 @@
                     const maxQuantityInput = document.getElementById('max_quantity');
 
                     const buildVariantRow = (index) => `
-                        <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4" data-variant-row>
+                        <div class="rounded-2xl border border-slate-50 dark:border-slate-700 p-4" data-variant-row>
                             <div class="grid gap-4 lg:grid-cols-4">
                                 <div class="lg:col-span-2">
-                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-300">{{ __('messages.variant_name') }}</label>
-                                    <input name="variants[${index}][name]" type="text" required class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
+                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-50">{{ __('messages.variant_name') }}</label>
+                                    <input name="variants[${index}][name]" type="text" required class="mt-2 w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
                                 <div>
-                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-300">{{ __('messages.price') }}</label>
-                                    <input name="variants[${index}][price]" type="number" step="0.01" min="0.01" required class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
+                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-50">{{ __('messages.price') }}</label>
+                                    <input name="variants[${index}][price]" type="number" step="0.01" min="0.01" required class="mt-2 w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
                                 <div>
-                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-300">{{ __('messages.sort_order') }}</label>
-                                    <input name="variants[${index}][sort_order]" type="number" min="0" value="${index}" class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
+                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-50">{{ __('messages.sort_order') }}</label>
+                                    <input name="variants[${index}][sort_order]" type="number" min="0" value="${index}" class="mt-2 w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
                             </div>
-                            <div class="mt-3 flex flex-wrap items-center justify-between gap-3 text-sm text-slate-600 dark:text-slate-400">
+                            <div class="mt-3 flex flex-wrap items-center justify-between gap-3 text-sm text-slate-900 dark:text-slate-400">
                                 <label class="flex items-center gap-2">
-                                    <input type="checkbox" name="variants[${index}][is_active]" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" checked>
+                                    <input type="checkbox" name="variants[${index}][is_active]" value="1" class="rounded border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" checked>
                                     {{ __('messages.activate_variant') }}
                                 </label>
                                 <button type="button" class="text-xs text-rose-600 dark:text-rose-400 hover:text-rose-700" data-variant-remove>{{ __('messages.remove') }}</button>
@@ -404,46 +404,46 @@
                     `;
 
                     const buildFieldRow = (index) => `
-                        <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4" data-field-row>
+                        <div class="rounded-2xl border border-slate-50 dark:border-slate-700 p-4" data-field-row>
                             <div class="grid gap-4 lg:grid-cols-4">
                                 <div class="lg:col-span-2">
-                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-300">{{ __('messages.field_label') }} (عربي)</label>
-                                    <input name="fields[${index}][label]" type="text" required class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
+                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-50">{{ __('messages.field_label') }} (عربي)</label>
+                                    <input name="fields[${index}][label]" type="text" required class="mt-2 w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
                                 <div class="lg:col-span-2">
-                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-300">{{ __('messages.field_label') }} (English)</label>
-                                    <input name="fields[${index}][label_en]" type="text" class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
+                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-50">{{ __('messages.field_label') }} (English)</label>
+                                    <input name="fields[${index}][label_en]" type="text" class="mt-2 w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
                             </div>
                             <div class="mt-3 grid gap-4 lg:grid-cols-3">
                                 <div>
-                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-300">{{ __('messages.field_key') }}</label>
-                                    <input name="fields[${index}][name_key]" type="text" required class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
+                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-50">{{ __('messages.field_key') }}</label>
+                                    <input name="fields[${index}][name_key]" type="text" required class="mt-2 w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
                                 <div>
-                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-300">Placeholder (عربي)</label>
-                                    <input name="fields[${index}][placeholder]" type="text" class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
+                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-50">Placeholder (عربي)</label>
+                                    <input name="fields[${index}][placeholder]" type="text" class="mt-2 w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
                                 <div>
-                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-300">Placeholder (English)</label>
-                                    <input name="fields[${index}][placeholder_en]" type="text" class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
+                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-50">Placeholder (English)</label>
+                                    <input name="fields[${index}][placeholder_en]" type="text" class="mt-2 w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
                             </div>
                             <div class="mt-3 grid gap-3 lg:grid-cols-4">
                                 <div>
-                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-300">{{ __('messages.sort_order') }}</label>
-                                    <input name="fields[${index}][sort_order]" type="number" min="0" value="${index}" class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
+                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-50">{{ __('messages.sort_order') }}</label>
+                                    <input name="fields[${index}][sort_order]" type="number" min="0" value="${index}" class="mt-2 w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
                             <div class="mt-3 grid gap-3 lg:grid-cols-3">
                                 <div>
-                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-300">{{ __('messages.field_type') }}</label>
-                                    <select name="fields[${index}][type]" class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500" required>
+                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-50">{{ __('messages.field_type') }}</label>
+                                    <select name="fields[${index}][type]" class="mt-2 w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500" required>
                                         <option value="text">{{ __('messages.field_type_text') }}</option>
                                         <option value="textarea">{{ __('messages.field_type_textarea') }}</option>
                                     </select>
                                 </div>
-                                <div class="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
-                                    <input type="checkbox" name="fields[${index}][is_required]" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" checked>
+                                <div class="flex items-center gap-2 text-sm text-slate-900 dark:text-slate-400">
+                                    <input type="checkbox" name="fields[${index}][is_required]" value="1" class="rounded border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" checked>
                                     {{ __('messages.required_field') }}
                                 </div>
                                 <div class="flex items-center justify-end">
@@ -578,7 +578,7 @@
 
             <div class="flex gap-3">
                 <x-primary-button>{{ __('messages.save') }}</x-primary-button>
-                <a href="{{ route('admin.services.index') }}" class="rounded-full border border-slate-200 dark:border-slate-600 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-500">{{ __('messages.cancel') }}</a>
+                <a href="{{ route('admin.services.index') }}" class="rounded-full border border-slate-50 dark:border-slate-900 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-slate-50 transition hover:border-emerald-200 dark:hover:border-emerald-500">{{ __('messages.cancel') }}</a>
             </div>
         </form>
     </div>

@@ -6,8 +6,8 @@
     <div class="space-y-8">
         {{-- Header Section --}}
         <div class="text-center">
-            <h1 class="text-3xl font-bold text-slate-900 dark:text-slate-100">{{ __('messages.login') }}</h1>
-            <p class="mt-3 text-base text-slate-600 dark:text-slate-400">{{ __('messages.login_desc') }}</p>
+            <h1 class="text-3xl font-bold text-slate-900 dark:text-slate-50">{{ __('messages.login') }}</h1>
+            <p class="mt-3 text-base text-slate-900 dark:text-slate-400">{{ __('messages.login_desc') }}</p>
         </div>
 
         {{-- Status Messages --}}
@@ -21,28 +21,28 @@
 
             {{-- Email Field --}}
             <div class="space-y-2">
-                <x-input-label for="email" :value="__('messages.email_label')" class="text-sm font-semibold text-slate-900 dark:text-slate-300" />
+                <x-input-label for="email" :value="__('messages.email_label')" class="text-sm font-semibold text-slate-900 dark:text-slate-50" />
                 <x-text-input id="email" name="email" type="email" :value="old('email')" required autofocus
                     autocomplete="username" 
-                    class="block w-full rounded-xl border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 px-4 py-3 text-slate-900 dark:text-slate-100 placeholder-slate-400 transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20" 
+                    class="block w-full rounded-xl border-slate-50 dark:border-slate-900 bg-slate-50 dark:bg-slate-800 px-4 py-3 text-slate-900 dark:text-slate-50 placeholder-slate-400 transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20" 
                     placeholder="user@example.com" />
                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
             </div>
 
             {{-- Password Field --}}
             <div class="space-y-2">
-                <x-input-label for="password" :value="__('messages.password_label')" class="text-sm font-semibold text-slate-900 dark:text-slate-300" />
+                <x-input-label for="password" :value="__('messages.password_label')" class="text-sm font-semibold text-slate-900 dark:text-slate-50" />
                 <x-text-input id="password" name="password" type="password" required autocomplete="current-password"
-                    class="block w-full rounded-xl border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 px-4 py-3 text-slate-900 dark:text-slate-100 placeholder-slate-400 transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+                    class="block w-full rounded-xl border-slate-50 dark:border-slate-900 bg-slate-50 dark:bg-slate-800 px-4 py-3 text-slate-900 dark:text-slate-50 placeholder-slate-400 transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
                     placeholder="••••••••" />
                 <x-input-error :messages="$errors->get('password')" class="mt-2" />
             </div>
 
             {{-- Remember Me & Forgot Password --}}
             <div class="flex items-center justify-between">
-                <label class="flex items-center gap-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 cursor-pointer">
+                <label class="flex items-center gap-2.5 text-sm font-medium text-slate-700 dark:text-slate-50 cursor-pointer">
                     <input type="checkbox" name="remember"
-                        class="h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-emerald-600 focus:ring-2 focus:ring-emerald-500/20 transition">
+                        class="h-4 w-4 rounded border-slate-50 dark:border-slate-900 text-emerald-600 focus:ring-2 focus:ring-emerald-500/20 transition">
                     {{ __('messages.remember_me') }}
                 </label>
                 <a href="{{ route('password.request') }}"
@@ -60,17 +60,17 @@
         {{-- Divider --}}
         <div class="relative">
             <div class="absolute inset-0 flex items-center">
-                <div class="w-full border-t border-slate-200 dark:border-slate-700"></div>
+                <div class="w-full border-t border-slate-50 dark:border-slate-700"></div>
             </div>
             <div class="relative flex justify-center text-sm">
-                <span class="bg-white dark:bg-slate-800 px-4 text-slate-500 dark:text-slate-400 font-medium">{{ __('messages.or') }}</span>
+                <span class="bg-white dark:bg-slate-800 px-4 text-slate-900 dark:text-slate-400 font-medium">{{ __('messages.or') }}</span>
             </div>
         </div>
 
         {{-- Google Login --}}
         <div>
             <a href="{{ route('google.redirect') }}"
-                class="flex w-full items-center justify-center gap-3 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-300 shadow-sm transition hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:shadow-md">
+                class="flex w-full items-center justify-center gap-3 rounded-xl border-2 border-slate-50 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50 shadow-sm transition hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-50 dark:hover:border-slate-900 hover:shadow-md">
                 <svg class="h-5 w-5" viewBox="0 0 24 24">
                     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                     <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -83,7 +83,7 @@
 
         {{-- Sign Up Link --}}
         <div class="text-center">
-            <p class="text-sm text-slate-600 dark:text-slate-400">
+            <p class="text-sm text-slate-900 dark:text-slate-400">
                 {{ __('messages.dont_have_account') }}
                 <a href="{{ route('register') }}"
                     class="font-semibold text-emerald-600 dark:text-emerald-500 transition hover:text-emerald-900 dark:hover:text-emerald-400">

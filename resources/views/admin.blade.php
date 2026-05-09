@@ -76,7 +76,7 @@
             <div class="min-w-0">
                 <span class="admin-dashboard-eyebrow">لوحة التحكم</span>
                 <h1 class="mt-3 text-2xl font-black text-slate-950 dark:text-white sm:text-3xl">لوحة الأدمن</h1>
-                <p class="mt-3 max-w-2xl text-sm leading-7 text-slate-600 dark:text-slate-300">
+                <p class="mt-3 max-w-2xl text-sm leading-7 text-slate-900 dark:text-slate-50">
                     إدارة منظمة للطلبات والمدفوعات والخدمات والمستخدمين من مكان واحد، بتجربة مريحة للهاتف أولاً.
                 </p>
             </div>
@@ -96,7 +96,7 @@
                         </span>
                         <div class="min-w-0">
                             <h2 class="text-base font-black text-slate-950 dark:text-white">{{ $group['title'] }}</h2>
-                            <p class="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ $group['description'] }}</p>
+                            <p class="mt-1 text-xs leading-6 text-slate-900 dark:text-slate-400">{{ $group['description'] }}</p>
                         </div>
                     </div>
 
@@ -107,7 +107,7 @@
                                     <i class="{{ $link['icon'] }}"></i>
                                 </span>
                                 <span class="min-w-0 flex-1 truncate">{{ $link['label'] }}</span>
-                                <i class="fa-solid fa-arrow-left text-[11px] text-slate-400 dark:text-slate-500"></i>
+                                <i class="fa-solid fa-arrow-left text-[11px] text-slate-400 dark:text-slate-900"></i>
                             </a>
                         @endforeach
                     </div>

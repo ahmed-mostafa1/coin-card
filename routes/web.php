@@ -111,6 +111,7 @@ Route::middleware(['auth', 'not_banned', 'role:admin'])->prefix('admin')->name('
     Route::post('/users/{user}/freeze', [AdminUserController::class, 'toggleFreeze'])->name('users.freeze');
     Route::post('/users/{user}/credit', [AdminUserController::class, 'credit'])->name('users.credit');
     Route::post('/users/{user}/debit', [AdminUserController::class, 'debit'])->name('users.debit');
+    Route::post('/users/{user}/refund-held', [AdminUserController::class, 'refundHeld'])->name('users.refund-held');
     Route::post('/users/{user}/verification-discount', [AdminUserController::class, 'updateVerificationDiscount'])->name('users.verification-discount');
     Route::post('/users/{user}/send-email', [AdminUserController::class, 'sendEmail'])->name('users.send-email');
     Route::post('/users/{user}/send-notification', [AdminUserController::class, 'sendNotification'])->name('users.send-notification');

@@ -10,7 +10,7 @@
                 <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-100">الشريط المتحرك</h1>
                 <p class="mt-2 text-sm text-slate-900 dark:text-slate-50">تعديل شريط الملاحظة المتحرك.</p>
             </div>
-            <a href="{{ route('admin.index') }}" class="inline-flex items-center gap-2 rounded-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-slate-300 transition hover:bg-slate-50 dark:hover:bg-slate-700">
+            <a href="{{ route('admin.index') }}" class="inline-flex items-center gap-2 rounded-full border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-800 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-slate-50 transition hover:bg-slate-50 dark:hover:bg-slate-700">
                 <i class="fa-solid fa-arrow-left"></i>
                 {{ __('messages.return_to_dashboard') }}
             </a>
@@ -27,7 +27,7 @@
 
             <div>
                 <x-input-label for="ticker_text" value="نص الشريط المتحرك" />
-                <textarea id="ticker_text" name="ticker_text" rows="3" class="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-3 text-sm text-slate-700 focus:border-emerald-500 focus:ring-emerald-500 dark:bg-slate-700 dark:text-emerald-50" required>{{ old('ticker_text', $tickerText) }}</textarea>
+                <textarea id="ticker_text" name="ticker_text" rows="3" class="w-full rounded-xl border border-slate-50 bg-white/80 px-4 py-3 text-sm text-slate-700 focus:border-emerald-500 focus:ring-emerald-500 dark:bg-slate-700 dark:text-emerald-50" required>{{ old('ticker_text', $tickerText) }}</textarea>
                 <x-input-error :messages="$errors->get('ticker_text')" />
             </div>
 

@@ -31,19 +31,19 @@
 
             <div>
                 <x-input-label for="instructions" :value="__('messages.instructions_ar')" />
-                <textarea id="instructions" name="instructions" rows="5" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">{{ old('instructions') }}</textarea>
+                <textarea id="instructions" name="instructions" rows="5" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">{{ old('instructions') }}</textarea>
                 <x-input-error :messages="$errors->get('instructions')" />
             </div>
 
             <div>
                 <x-input-label for="instructions_en" :value="__('messages.instructions_en')" />
-                <textarea id="instructions_en" name="instructions_en" rows="5" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">{{ old('instructions_en') }}</textarea>
+                <textarea id="instructions_en" name="instructions_en" rows="5" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">{{ old('instructions_en') }}</textarea>
                 <x-input-error :messages="$errors->get('instructions_en')" />
             </div>
 
             <div>
                 <x-input-label for="icon" :value="__('messages.icon_optional')" />
-                <input id="icon" name="icon" type="file" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-600 dark:text-slate-300 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-800 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-900 dark:file:text-emerald-300">
+                <input id="icon" name="icon" type="file" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-900 dark:text-slate-50 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-800 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-900 dark:file:text-emerald-300">
                 <p class="mt-1 text-xs text-slate-900 dark:text-slate-50">{{ __('messages.recommended_size') }}: 200x200 px</p>
                 <x-input-error :messages="$errors->get('icon')" />
             </div>
@@ -54,24 +54,30 @@
                 <x-input-error :messages="$errors->get('account_number')" />
             </div>
 
-            <div class="flex flex-col gap-3 text-sm text-slate-600 dark:text-slate-400">
+            <div class="flex flex-col gap-3 text-sm text-slate-900 dark:text-slate-400">
                 <label class="flex items-center gap-3">
                     <input id="show_account_number" name="show_account_number" type="checkbox" value="1"
-                        class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500"
+                        class="rounded border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500"
                         {{ old('show_account_number', true) ? 'checked' : '' }}>
                     {{ __('messages.show_account_number') }}
                 </label>
                 <label class="flex items-center gap-3">
                     <input id="show_contact_button" name="show_contact_button" type="checkbox" value="1"
-                        class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500"
+                        class="rounded border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500"
                         {{ old('show_contact_button', true) ? 'checked' : '' }}>
                     {{ __('messages.show_contact_button') }}
+                </label>
+                <label class="flex items-center gap-3">
+                    <input id="require_transfer_proof" name="require_transfer_proof" type="checkbox" value="1"
+                        class="rounded border-slate-300 dark:border-slate-900 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500"
+                        {{ old('require_transfer_proof', true) ? 'checked' : '' }}>
+                    إظهار حقل إثبات التحويل (Transfer Proof)
                 </label>
             </div>
 
 
-            <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
-                <input id="is_active" name="is_active" type="checkbox" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" checked>
+            <div class="flex items-center gap-3 text-sm text-slate-900 dark:text-slate-400">
+                <input id="is_active" name="is_active" type="checkbox" value="1" class="rounded border-slate-300 dark:border-slate-900 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" checked>
                 <label for="is_active">{{ __('messages.activate_payment_method') }}</label>
             </div>
 
@@ -95,7 +101,7 @@
                 </div>
                 <div class="mt-4 space-y-4" data-fields-container>
                     @foreach ($fields as $index => $field)
-                        <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4" data-field-row>
+                        <div class="rounded-2xl border border-slate-50 dark:border-slate-700 p-4" data-field-row>
                             <div class="grid gap-4 lg:grid-cols-4">
                                 <div class="lg:col-span-2">
                                     <x-input-label value="{{ __('messages.field_label') }}" />
@@ -120,13 +126,13 @@
                             <div class="mt-3 grid gap-3 lg:grid-cols-3">
                                 <div>
                                     <x-input-label value="{{ __('messages.field_type') }}" />
-                                    <select name="fields[{{ $index }}][type]" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500" required>
+                                    <select name="fields[{{ $index }}][type]" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500" required>
                                         <option value="text" @selected(($field['type'] ?? 'text') === 'text')>{{ __('messages.field_type_text') }}</option>
                                         <option value="textarea" @selected(($field['type'] ?? 'text') === 'textarea')>{{ __('messages.field_type_textarea') }}</option>
                                     </select>
                                 </div>
-                                <div class="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
-                                    <input type="checkbox" name="fields[{{ $index }}][is_required]" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" {{ ($field['is_required'] ?? true) ? 'checked' : '' }}>
+                                <div class="flex items-center gap-2 text-sm text-slate-900 dark:text-slate-400">
+                                    <input type="checkbox" name="fields[{{ $index }}][is_required]" value="1" class="rounded border-slate-300 dark:border-slate-900 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" {{ ($field['is_required'] ?? true) ? 'checked' : '' }}>
                                     {{ __('messages.required_field') }}
                                 </div>
                                 <div class="flex items-center justify-end">
@@ -169,36 +175,35 @@
                     
                     fieldsContainer.addEventListener('input', handleLabelInput);
 
-
                     const buildFieldRow = (index) => `
-                        <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4" data-field-row>
+                        <div class="rounded-2xl border border-slate-50 dark:border-slate-700 p-4" data-field-row>
                             <div class="grid gap-4 lg:grid-cols-4">
                                 <div class="lg:col-span-2">
                                     <label class="text-sm font-semibold text-slate-900 dark:text-slate-300">{{ __('messages.field_label') }}</label>
-                                    <input name="fields[${index}][label]" type="text" required data-field-label-input class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
+                                    <input name="fields[${index}][label]" type="text" required data-field-label-input class="mt-2 w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                                     
                                     <label class="mt-2 block text-sm font-semibold text-slate-900 dark:text-slate-300">{{ __('messages.field_label') }} (EN)</label>
-                                    <input name="fields[${index}][label_en]" type="text" class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
+                                    <input name="fields[${index}][label_en]" type="text" class="mt-2 w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
                                 <div>
                                     <label class="text-sm font-semibold text-slate-900 dark:text-slate-300">{{ __('messages.field_key') }}</label>
-                                    <input name="fields[${index}][name_key]" type="text" required data-field-key-input class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
+                                    <input name="fields[${index}][name_key]" type="text" required data-field-key-input class="mt-2 w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
                                 <div>
-                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-300">{{ __('messages.sort_order') }}</label>
-                                    <input name="fields[${index}][sort_order]" type="number" min="0" value="${index}" class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
+                                    <label class="text-sm font-semibold text-slate-900 dark:text-slate-50">{{ __('messages.sort_order') }}</label>
+                                    <input name="fields[${index}][sort_order]" type="number" min="0" value="${index}" class="mt-2 w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
                             </div>
                             <div class="mt-3 grid gap-3 lg:grid-cols-3">
                                 <div>
                                     <label class="text-sm font-semibold text-slate-900 dark:text-slate-300">{{ __('messages.field_type') }}</label>
-                                    <select name="fields[${index}][type]" class="mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500" required>
+                                    <select name="fields[${index}][type]" class="mt-2 w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white shadow-sm transition focus:border-emerald-500 focus:ring-emerald-500" required>
                                         <option value="text">{{ __('messages.field_type_text') }}</option>
                                         <option value="textarea">{{ __('messages.field_type_textarea') }}</option>
                                     </select>
                                 </div>
-                                <div class="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
-                                    <input type="checkbox" name="fields[${index}][is_required]" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" checked>
+                                <div class="flex items-center gap-2 text-sm text-slate-900 dark:text-slate-400">
+                                    <input type="checkbox" name="fields[${index}][is_required]" value="1" class="rounded border-slate-300 dark:border-slate-900 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" checked>
                                     {{ __('messages.required_field') }}
                                 </div>
                                 <div class="flex items-center justify-end">
@@ -225,7 +230,7 @@
 
             <div class="flex gap-3">
                 <x-primary-button>{{ __('messages.save') }}</x-primary-button>
-                <a href="{{ route('admin.payment-methods.index') }}" class="rounded-full border border-slate-200 dark:border-slate-600 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-500">{{ __('messages.cancel') }}</a>
+                <a href="{{ route('admin.payment-methods.index') }}" class="rounded-full border border-slate-50 dark:border-slate-900 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-slate-300 transition hover:border-emerald-200 dark:hover:border-emerald-500">{{ __('messages.cancel') }}</a>
             </div>
         </form>
     </div>

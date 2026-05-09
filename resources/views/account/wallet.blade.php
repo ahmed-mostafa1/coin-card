@@ -22,7 +22,7 @@
                     <th class="py-2">{{ __('messages.notes') }}</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+            <tbody class="divide-y divide-slate-50 dark:divide-slate-700">
                 @php
                     $typeLabels = [
                         'deposit' => __('messages.type_deposit'),
@@ -44,7 +44,7 @@
                         $amountClass = $displayAmount >= 0 ? 'text-emerald-900' : 'text-rose-700';
                     @endphp
                     <tr class="transition hover:bg-slate-50 dark:hover:bg-transparent">
-                        <td class="py-3 text-slate-900 dark:text-slate-300" data-label="{{ __('messages.type') }}">
+                        <td class="py-3 text-slate-900 dark:text-slate-50" data-label="{{ __('messages.type') }}">
                             {{ $typeLabels[$transaction->type] ?? $transaction->type }}
                         </td>
                         <td class="py-3" data-label="{{ __('messages.amount') }}">
@@ -66,7 +66,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="py-6 text-center text-slate-500 dark:text-slate-400">{{ __('messages.no_transactions_yet') }}</td>
+                        <td colspan="5" class="py-6 text-center text-slate-900 dark:text-slate-400">{{ __('messages.no_transactions_yet') }}</td>
                     </tr>
                 @endforelse
             </tbody>

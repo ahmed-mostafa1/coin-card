@@ -5,8 +5,8 @@
 @section('content')
     <div class="space-y-8">
         <div class="text-center">
-            <h1 class="text-3xl font-bold text-slate-900 dark:text-slate-100">التحقق الثنائي</h1>
-            <p class="mt-3 text-base text-slate-600 dark:text-slate-400">أدخل الرمز المرسل إلى بريدك الإلكتروني لإكمال تسجيل الدخول.</p>
+            <h1 class="text-3xl font-bold text-slate-900 dark:text-slate-50">التحقق الثنائي</h1>
+            <p class="mt-3 text-base text-slate-900 dark:text-slate-400">أدخل الرمز المرسل إلى بريدك الإلكتروني لإكمال تسجيل الدخول.</p>
         </div>
 
         <x-auth-session-status :status="session('status')" />

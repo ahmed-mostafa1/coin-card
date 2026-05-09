@@ -33,25 +33,25 @@
                 <div class="grid gap-6 md:grid-cols-2">
                     <div>
                         <x-input-label for="content_ar" value="المحتوى (عربي)" />
-                        <textarea id="content_ar" name="content_ar" rows="4" class="mt-1 w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/50 px-4 py-2 text-sm text-slate-700 dark:text-slate-300 focus:border-emerald-500 dark:focus:border-emerald-600 focus:ring-emerald-500 dark:focus:ring-emerald-600" required>{{ old('content_ar') }}</textarea>
+                        <textarea id="content_ar" name="content_ar" rows="4" class="mt-1 w-full rounded-xl border border-slate-50 dark:border-slate-700 bg-white/80 dark:bg-slate-900/50 px-4 py-2 text-sm text-slate-700 dark:text-slate-50 focus:border-emerald-500 dark:focus:border-emerald-600 focus:ring-emerald-500 dark:focus:ring-emerald-600" required>{{ old('content_ar') }}</textarea>
                         <x-input-error :messages="$errors->get('content_ar')" />
                     </div>
                     <div>
                         <x-input-label for="content_en" value="المحتوى (إنجليزي)" />
-                        <textarea id="content_en" name="content_en" rows="4" class="mt-1 w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/50 px-4 py-2 text-sm text-slate-700 dark:text-slate-300 focus:border-emerald-500 dark:focus:border-emerald-600 focus:ring-emerald-500 dark:focus:ring-emerald-600" required>{{ old('content_en') }}</textarea>
+                        <textarea id="content_en" name="content_en" rows="4" class="mt-1 w-full rounded-xl border border-slate-50 dark:border-slate-700 bg-white/80 dark:bg-slate-900/50 px-4 py-2 text-sm text-slate-700 dark:text-slate-50 focus:border-emerald-500 dark:focus:border-emerald-600 focus:ring-emerald-500 dark:focus:ring-emerald-600" required>{{ old('content_en') }}</textarea>
                         <x-input-error :messages="$errors->get('content_en')" />
                     </div>
                 </div>
 
                 <div>
                     <x-input-label for="image" value="صورة الإشعار (اختياري)" />
-                    <input id="image" name="image" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" class="mt-1 w-full rounded-xl border border-slate-200 px-4 py-2 text-sm">
+                    <input id="image" name="image" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" class="mt-1 w-full rounded-xl border border-slate-50 px-4 py-2 text-sm">
                     <x-input-error :messages="$errors->get('image')" />
                 </div>
 
                 <div class="flex items-center gap-4">
                     <x-primary-button>إرسال للجميع</x-primary-button>
-                    <a href="{{ route('admin.notifications.index') }}" class="rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-600">سجل الإشعارات</a>
+                    <a href="{{ route('admin.notifications.index') }}" class="rounded-xl border border-slate-50 px-4 py-2 text-sm font-semibold text-slate-900">سجل الإشعارات</a>
                 </div>
             </form>
         </div>
@@ -61,7 +61,7 @@
                 <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">آخر الإشعارات المرسلة</h2>
                 <div class="mt-4 space-y-3">
                     @foreach($sentNotifications->take(5) as $notification)
-                        <div class="rounded-xl border border-slate-200 p-3 text-sm dark:border-slate-700">
+                        <div class="rounded-xl border border-slate-50 p-3 text-sm dark:border-slate-700">
                             <div class="flex items-center justify-between gap-2">
                                 <span class="font-semibold">{{ $notification->title_ar }}</span>
                                 <span class="text-xs text-slate-400">{{ $notification->created_at->format('Y-m-d H:i') }}</span>

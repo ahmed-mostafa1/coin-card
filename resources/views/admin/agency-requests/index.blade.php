@@ -9,7 +9,7 @@
         <div class="flex flex-wrap items-center justify-between gap-4">
             <div>
                 <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">طلبات الوكالة</h1>
-                <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                <p class="mt-1 text-sm text-slate-900 dark:text-slate-400">
                     {{ $requests->total() }} طلب وارد
                 </p>
             </div>
@@ -36,20 +36,20 @@
                     ], fn ($value) => filled($value));
                 @endphp
 
-                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/40 p-5 transition hover:shadow-md">
+                <div class="rounded-2xl border border-slate-50 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/40 p-5 transition hover:shadow-md">
                     {{-- Header row --}}
                     <div class="flex items-center justify-between gap-4 mb-4">
                         <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 dark:bg-emerald-900/40 px-3 py-1 text-xs font-semibold text-emerald-900 dark:text-emerald-300">
                             #{{ $request->id }}
                         </span>
-                        <span class="text-xs text-slate-400 dark:text-slate-500">{{ $request->created_at->format('Y-m-d H:i') }}</span>
+                        <span class="text-xs text-slate-400 dark:text-slate-900">{{ $request->created_at->format('Y-m-d H:i') }}</span>
                     </div>
 
                     {{-- Fields grid --}}
                     <div class="grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-3 lg:grid-cols-4">
                         @foreach ($payload as $key => $value)
                             <div>
-                                <p class="text-[11px] font-medium uppercase tracking-wide text-slate-400 dark:text-slate-500">
+                                <p class="text-[11px] font-medium uppercase tracking-wide text-slate-400 dark:text-slate-900">
                                     {{ $fieldDefs[$key]->localized_label ?? $key }}
                                 </p>
                                 <p class="mt-0.5 text-sm font-semibold text-slate-900 dark:text-white break-words">
@@ -69,7 +69,7 @@
                 </div>
 
             @empty
-                <div class="py-16 text-center text-slate-400 dark:text-slate-500">
+                <div class="py-16 text-center text-slate-400 dark:text-slate-900">
                     <p class="text-lg font-medium">لا توجد طلبات بعد.</p>
                 </div>
             @endforelse

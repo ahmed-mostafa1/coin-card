@@ -57,8 +57,9 @@ class DepositController extends Controller
         $currencyConfig = $depositQuoteService->enabledConfigFor($paymentMethod, $request->input('currency_id'));
         $quote = $depositQuoteService->quote($currencyConfig, $request->input('amount'));
 
-        $file = $request->file('proof');
-        $fileHash = hash_file('sha256', $file->getRealPath());
+        $requireProof = $paymentMethod->require_transfer_proof ?? true;
+        $file = $requireProof ? $request->file('proof') : null;
+        $fileHash = $file ? hash_file('sha256', $file->getRealPath()) : null;
 
         $deposit = null;
 
@@ -77,15 +78,17 @@ class DepositController extends Controller
                 ...$quote,
             ]);
 
-            $path = $file->store('deposit-evidences/'.$user->id, 'local');
+            if ($file && $fileHash) {
+                $path = $file->store('deposit-evidences/'.$user->id, 'local');
 
-            DepositEvidence::create([
-                'deposit_request_id' => $deposit->id,
-                'file_path' => $path,
-                'file_hash' => $fileHash,
-                'mime' => $file->getClientMimeType(),
-                'size' => $file->getSize(),
-            ]);
+                DepositEvidence::create([
+                    'deposit_request_id' => $deposit->id,
+                    'file_path' => $path,
+                    'file_hash' => $fileHash,
+                    'mime' => $file->getClientMimeType(),
+                    'size' => $file->getSize(),
+                ]);
+            }
         });
 
         DB::afterCommit(function () use ($deposit, $notificationService): void {

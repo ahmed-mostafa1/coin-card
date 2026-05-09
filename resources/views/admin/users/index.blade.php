@@ -9,7 +9,7 @@
             <div class="flex flex-wrap items-center justify-between gap-4">
                 <div>
                     <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">{{ __('messages.users_management') }}</h1>
-                    <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-300">{{ __('messages.users_management_desc') }}</p>
+                    <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-50">{{ __('messages.users_management_desc') }}</p>
                 </div>
                 <form method="GET" action="{{ route('admin.users.index') }}" class="flex items-center gap-2">
                     <x-text-input name="q" type="text" placeholder="{{ __('messages.search_name_email') }}" :value="$search" />
@@ -20,7 +20,7 @@
 
         <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-6 shadow-sm">
             <x-table>
-                <thead class="border-b border-slate-200 dark:border-slate-700 text-xs text-slate-9000 dark:text-slate-50">
+                <thead class="border-b border-slate-50 dark:border-slate-700 text-xs text-slate-9000 dark:text-slate-50">
                     <tr>
                         <th class="py-2">{{ __('messages.user_label') }}</th>
                         <th class="py-2">{{ __('messages.status') }}</th>
@@ -28,7 +28,7 @@
                         <th class="py-2">{{ __('messages.view_link') }}</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+                <tbody class="divide-y divide-slate-50 dark:divide-slate-700">
                     @forelse ($users as $user)
                         <tr>
                             <td class="py-3 text-slate-700 dark:text-white">
@@ -46,14 +46,14 @@
                                     <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/50 px-3 py-1 text-xs text-emerald-900 dark:text-emerald-400">{{ __('messages.active_user') }}</span>
                                 @endif
                             </td>
-                            <td class="py-3 text-slate-500 dark:text-slate-400">{{ $user->created_at->format('Y-m-d') }}</td>
+                            <td class="py-3 text-slate-900 dark:text-slate-400">{{ $user->created_at->format('Y-m-d') }}</td>
                             <td class="py-3">
                                 <a href="{{ route('admin.users.show', $user) }}" class="text-emerald-900 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">{{ __('messages.view_link') }}</a>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="py-4 text-center text-slate-500 dark:text-slate-400">{{ __('messages.no_users_found') }}</td>
+                            <td colspan="4" class="py-4 text-center text-slate-900 dark:text-slate-400">{{ __('messages.no_users_found') }}</td>
                         </tr>
                     @endforelse
                 </tbody>

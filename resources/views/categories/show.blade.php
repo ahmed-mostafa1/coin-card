@@ -89,7 +89,7 @@
                 </div>
             @endif
             <div class="min-w-0">
-                <h1 class="text-base font-bold text-slate-800 dark:text-slate-100 leading-tight truncate">{{ $category->localized_name }}</h1>
+                <h1 class="text-base font-bold text-slate-800 dark:text-slate-50 leading-tight truncate">{{ $category->localized_name }}</h1>
                 {{-- Breadcrumb --}}
                 <div class="flex items-center gap-1 text-xs text-slate-9000 dark:text-slate-50 mt-0.5">
                     <a href="{{ route('home') }}" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition">{{ __('messages.home') }}</a>
@@ -98,7 +98,7 @@
                         <a href="{{ route('categories.show', $category->parent->slug) }}" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition truncate">{{ $category->parent->localized_name }}</a>
                     @endif
                     <i class="fa-solid fa-chevron-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} text-[9px]"></i>
-                    <span class="truncate text-slate-700 dark:text-slate-300 font-medium">{{ $category->localized_name }}</span>
+                    <span class="truncate text-slate-700 dark:text-slate-50 font-medium">{{ $category->localized_name }}</span>
                 </div>
             </div>
         </div>

@@ -24,12 +24,12 @@
             @endphp
 
             @forelse ($payload as $key => $value)
-                <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 p-4">
+                <div class="rounded-2xl border border-slate-50 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 p-4">
                     <p class="text-xs text-slate-9000 dark:text-slate-50">{{ $fields[$key]->localized_label ?? $key }}</p>
                     <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50 dark:text-slate-50">{{ $value }}</p>
                 </div>
             @empty
-                <p class="col-span-2 text-sm text-slate-500 dark:text-slate-400">لا توجد بيانات.</p>
+                <p class="col-span-2 text-sm text-slate-900 dark:text-slate-400">لا توجد بيانات.</p>
             @endforelse
         </div>
 

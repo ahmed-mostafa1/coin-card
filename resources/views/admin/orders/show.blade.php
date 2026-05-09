@@ -8,31 +8,31 @@
             <div class="flex items-center justify-between gap-4">
                 <div>
                     <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">طلب #{{ $order->id }}</h1>
-                    <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-300">{{ $order->service?->name ?? 'خدمة محذوفة' }}</p>
+                    <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-50">{{ $order->service?->name ?? 'خدمة محذوفة' }}</p>
                 </div>
                 <a href="{{ route('admin.orders.index') }}" class="text-sm text-emerald-900 dark:text-emerald-400">عودة للقائمة</a>
             </div>
 
-            <div class="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white/60 dark:border-slate-700 dark:bg-slate-900/40">
+            <div class="mt-6 overflow-hidden rounded-2xl border border-slate-50 bg-white/60 dark:border-slate-700 dark:bg-slate-900/40">
                 <table class="w-full table-fixed text-right text-sm">
-                    <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                    <tbody class="divide-y divide-slate-50 dark:divide-slate-700">
                         <tr>
-                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">المستخدم</th>
+                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-900 dark:text-slate-50">المستخدم</th>
                             <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">
                                 <span class="block break-words">{{ $order->user?->name ?? 'مستخدم محذوف' }}</span>
-                                <span class="mt-1 block break-all text-xs font-medium text-slate-500 dark:text-slate-300">{{ $order->user?->email }}</span>
+                                <span class="mt-1 block break-all text-xs font-medium text-slate-900 dark:text-slate-50">{{ $order->user?->email }}</span>
                             </td>
                         </tr>
                         <tr>
-                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">السعر</th>
+                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-900 dark:text-slate-50">السعر</th>
                             <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ number_format($order->price_at_purchase, 2) }} USD</td>
                         </tr>
                         <tr>
-                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">المبلغ المعلّق</th>
+                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-900 dark:text-slate-50">المبلغ المعلّق</th>
                             <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ number_format($order->amount_held, 2) }} USD</td>
                         </tr>
                         <tr>
-                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">الحالة</th>
+                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-900 dark:text-slate-50">الحالة</th>
                             <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">
                                 @if ($order->status === 'new')
                                     جديد
@@ -48,22 +48,22 @@
                             </td>
                         </tr>
                         <tr>
-                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">الباقة</th>
+                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-900 dark:text-slate-50">الباقة</th>
                             <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $order->variant?->name ?? 'السعر الأساسي' }}</td>
                         </tr>
                         <tr>
-                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">تأكيد الخصم</th>
+                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-900 dark:text-slate-50">تأكيد الخصم</th>
                             <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $order->settled_at?->format('Y-m-d H:i') ?? '-' }}</td>
                         </tr>
                         <tr>
-                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">إرجاع الرصيد</th>
+                            <th scope="row" class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-900 dark:text-slate-50">إرجاع الرصيد</th>
                             <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $order->released_at?->format('Y-m-d H:i') ?? '-' }}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <div class="mt-6 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 p-4">
+            <div class="mt-6 rounded-2xl border border-slate-50 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 p-4">
                 <p class="text-xs text-slate-9000 dark:text-slate-50">{{ __('messages.order_data_label') }}</p>
                 @if (count($order->payload))
                     <div class="mt-3 grid gap-3 sm:grid-cols-2">
@@ -95,12 +95,12 @@
                                     $imageUrl = asset('storage/' . ltrim($displayValue, '/'));
                                 }
                             @endphp
-                            <div class="rounded-xl border border-slate-200 dark:border-slate-700 bg-white/70 dark:bg-slate-900/50 p-3">
+                            <div class="rounded-xl border border-slate-50 dark:border-slate-700 bg-white/70 dark:bg-slate-900/50 p-3">
                                 <p class="text-xs text-slate-9000 dark:text-slate-50">{{ $fieldLabels[$key] ?? \Illuminate\Support\Str::headline((string) $key) }}</p>
 
                                 @if ($imageUrl)
                                     <a href="{{ $imageUrl }}" target="_blank" rel="noopener noreferrer" class="mt-2 inline-block">
-                                        <img src="{{ $imageUrl }}" alt="{{ $fieldLabels[$key] ?? (string) $key }}" class="h-40 w-auto max-w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 object-contain">
+                                        <img src="{{ $imageUrl }}" alt="{{ $fieldLabels[$key] ?? (string) $key }}" class="h-40 w-auto max-w-full rounded-lg border border-slate-50 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 object-contain">
                                     </a>
                                 @elseif ($isUrl)
                                     <a href="{{ $displayValue }}" target="_blank" rel="noopener noreferrer" class="mt-2 block break-all text-sm font-semibold text-emerald-900 dark:text-emerald-400 hover:underline">
@@ -115,15 +115,15 @@
                         @endforeach
                     </div>
                 @else
-                    <p class="mt-3 text-sm text-slate-500 dark:text-slate-400">{{ __('messages.no_additional_data') }}</p>
+                    <p class="mt-3 text-sm text-slate-900 dark:text-slate-400">{{ __('messages.no_additional_data') }}</p>
                 @endif
             </div>
 
             @if ($order->uploaded_image_path)
-                <div class="mt-6 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 p-4">
+                <div class="mt-6 rounded-2xl border border-slate-50 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 p-4">
                     <p class="text-xs text-slate-9000 dark:text-slate-50">الصورة المرفقة مع الطلب</p>
                     <a href="{{ asset('storage/' . $order->uploaded_image_path) }}" target="_blank" rel="noopener noreferrer" class="mt-3 inline-block">
-                        <img src="{{ asset('storage/' . $order->uploaded_image_path) }}" alt="الصورة المرفقة" class="h-48 w-auto max-w-full rounded-lg border border-slate-200 object-contain dark:border-slate-700">
+                        <img src="{{ asset('storage/' . $order->uploaded_image_path) }}" alt="الصورة المرفقة" class="h-48 w-auto max-w-full rounded-lg border border-slate-50 object-contain dark:border-slate-700">
                     </a>
                     <p class="mt-2 text-xs text-slate-700 dark:text-slate-50">{{ $order->uploaded_image_original_name ?? basename($order->uploaded_image_path) }}</p>
                 </div>
@@ -151,7 +151,7 @@
 
                 <div>
                     <x-input-label for="status" value="الحالة" />
-                    <select id="status" name="status" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white">
+                    <select id="status" name="status" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white">
                         <option value="new" @selected($order->status === 'new')>جديد</option>
                         <option value="processing" @selected($order->status === 'processing')>قيد التنفيذ</option>
                         <option value="done" @selected($order->status === 'done')>تم التنفيذ</option>
@@ -161,7 +161,7 @@
 
                 <div>
                     <x-input-label for="admin_note" value="ملاحظة" />
-                    <textarea id="admin_note" name="admin_note" rows="4" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white">{{ old('admin_note', $order->admin_note) }}</textarea>
+                    <textarea id="admin_note" name="admin_note" rows="4" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white">{{ old('admin_note', $order->admin_note) }}</textarea>
                 </div>
 
                 <x-primary-button class="w-full">حفظ التحديث</x-primary-button>
@@ -174,7 +174,7 @@
                         <span>🔗</span> تنفيذ DailyCard
                     </h3>
 
-                    <div class="space-y-2 text-xs text-slate-600 dark:text-slate-300">
+                    <div class="space-y-2 text-xs text-slate-900 dark:text-slate-50">
                         <div class="flex justify-between">
                             <span>رقم المعاملة</span>
                             <span class="font-mono font-semibold">{{ $order->provider_transaction_id ?? '—' }}</span>
@@ -215,7 +215,7 @@
                 </div>
             @endif
 
-            <div class="mt-8 border-t border-slate-200 dark:border-slate-700 pt-6">
+            <div class="mt-8 border-t border-slate-50 dark:border-slate-700 pt-6">
                 <h3 class="text-base font-semibold text-emerald-900 dark:text-emerald-400">سجل الطلب</h3>
                 @php
                     $statusLabels = [
@@ -228,7 +228,7 @@
                 @endphp
                 <div class="mt-4 space-y-4">
                     @forelse ($order->events as $event)
-                        <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 p-4">
+                        <div class="rounded-2xl border border-slate-50 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 p-4">
                             <div class="flex items-center justify-between gap-2">
                                 <p class="text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $event->message ?? 'تحديث جديد' }}</p>
                                 <span class="text-xs text-slate-400">{{ $event->created_at->format('Y-m-d H:i') }}</span>
@@ -241,7 +241,7 @@
                             @endif
                         </div>
                     @empty
-                        <p class="text-sm text-slate-500 dark:text-slate-400">لا توجد تحديثات مسجلة بعد.</p>
+                        <p class="text-sm text-slate-900 dark:text-slate-400">لا توجد تحديثات مسجلة بعد.</p>
                     @endforelse
                 </div>
             </div>

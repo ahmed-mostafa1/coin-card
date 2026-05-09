@@ -59,12 +59,12 @@
             </div>
 
             <div
-                class="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800/80">
+                class="mt-4 overflow-hidden rounded-2xl border border-slate-50 bg-slate-50 dark:border-slate-700 dark:bg-slate-800/80">
                 <table class="w-full table-fixed text-right text-sm">
-                    <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                    <tbody class="divide-y divide-slate-50 dark:divide-slate-700">
                         <tr>
                             <th scope="row"
-                                class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">
+                                class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-900 dark:text-slate-50">
                                 {{ __('messages.price_label') }}</th>
                             <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">
                                 @if ($order->discount_percentage > 0)
@@ -99,14 +99,14 @@
                         @endif
                         <tr>
                             <th scope="row"
-                                class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">
+                                class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-900 dark:text-slate-50">
                                 {{ __('messages.held_amount') }}</th>
                             <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">
                                 {{ number_format($order->amount_held, 2) }} USD</td>
                         </tr>
                         <tr>
                             <th scope="row"
-                                class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">
+                                class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-900 dark:text-slate-50">
                                 {{ __('messages.status') }}</th>
                             <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">
                                 @if ($order->status === 'new')
@@ -124,28 +124,28 @@
                         </tr>
                         <tr>
                             <th scope="row"
-                                class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">
+                                class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-900 dark:text-slate-50">
                                 {{ __('messages.package') }}</th>
                             <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">
                                 {{ $order->variant?->name ?? __('messages.base_price_label') }}</td>
                         </tr>
                         <tr>
                             <th scope="row"
-                                class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">
+                                class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-900 dark:text-slate-50">
                                 {{ __('messages.date') }}</th>
                             <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">
                                 {{ $order->created_at->format('Y-m-d H:i') }}</td>
                         </tr>
                         <tr>
                             <th scope="row"
-                                class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">
+                                class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-900 dark:text-slate-50">
                                 {{ __('messages.settled_at_label') }}</th>
                             <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">
                                 {{ $order->settled_at?->format('Y-m-d H:i') ?? '-' }}</td>
                         </tr>
                         <tr>
                             <th scope="row"
-                                class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-600 dark:text-slate-300">
+                                class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-slate-900 dark:text-slate-50">
                                 {{ __('messages.released_at_label') }}</th>
                             <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">
                                 {{ $order->released_at?->format('Y-m-d H:i') ?? '-' }}</td>
@@ -154,7 +154,7 @@
                 </table>
             </div>
 
-            <div class="mt-4 rounded-2xl border border-slate-200 dark:border-slate-700 p-4">
+            <div class="mt-4 rounded-2xl border border-slate-50 dark:border-slate-700 p-4">
                 <p class="text-xs text-slate-700 dark:text-slate-50">{{ __('messages.order_data_label') }}</p>
                 @if (count($order->payload))
                     <div class="mt-3 grid gap-3 sm:grid-cols-2">
@@ -187,14 +187,14 @@
                                 }
                             @endphp
                             <div
-                                class="rounded-xl border border-slate-200 bg-slate-50/70 p-3 dark:border-slate-700 dark:bg-slate-800/50">
+                                class="rounded-xl border border-slate-50 bg-slate-50/70 p-3 dark:border-slate-700 dark:bg-slate-800/50">
                                 <p class="text-xs text-slate-700 dark:text-slate-50">
                                     {{ $fieldLabels[$key] ?? \Illuminate\Support\Str::headline((string) $key) }}</p>
 
                                 @if ($imageUrl)
                                     <a href="{{ $imageUrl }}" target="_blank" rel="noopener noreferrer" class="mt-2 inline-block">
                                         <img src="{{ $imageUrl }}" alt="{{ $fieldLabels[$key] ?? (string) $key }}"
-                                            class="h-40 w-auto max-w-full rounded-lg border border-slate-200 bg-white object-contain">
+                                            class="h-40 w-auto max-w-full rounded-lg border border-slate-50 bg-white object-contain">
                                     </a>
                                 @elseif ($isUrl)
                                     <a href="{{ $displayValue }}" target="_blank" rel="noopener noreferrer"
@@ -210,7 +210,7 @@
                         @endforeach
                     </div>
                 @else
-                    <p class="mt-3 text-sm text-slate-500">{{ __('messages.no_additional_data') }}</p>
+                    <p class="mt-3 text-sm text-slate-900">{{ __('messages.no_additional_data') }}</p>
                 @endif
             </div>
 
@@ -241,7 +241,7 @@
                             $actorLabel = $event->actor->id === auth()->id() ? __('messages.actor_you') : __('messages.actor_admin');
                         }
                     @endphp
-                    <div class="rounded-2xl border border-slate-200 p-4">
+                    <div class="rounded-2xl border border-slate-50 p-4">
                         <div class="flex items-center justify-between gap-2">
                             <p class="text-sm font-semibold text-slate-900 dark:text-slate-50">
                                 {{ $event->message ?? __('messages.update_label') }}</p>
@@ -259,7 +259,7 @@
                         @endif
                     </div>
                 @empty
-                    <p class="text-sm text-slate-500">{{ __('messages.no_updates_yet') }}</p>
+                    <p class="text-sm text-slate-900">{{ __('messages.no_updates_yet') }}</p>
                 @endforelse
             </div>
         </x-card>

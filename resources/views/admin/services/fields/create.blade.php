@@ -14,7 +14,7 @@
 
             <div>
                 <x-input-label for="type" :value="__('messages.field_type')" />
-                <select id="type" name="type" class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white" required>
+                <select id="type" name="type" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white" required>
                     <option value="text" @selected(old('type') === 'text')>{{ __('messages.field_type_text') }}</option>
                     <option value="textarea" @selected(old('type') === 'textarea')>{{ __('messages.field_type_textarea') }}</option>
                 </select>
@@ -57,13 +57,13 @@
             <div>
                 <x-input-label for="additional_rules_en" value="قواعد إضافية إنجليزي" />
                 <textarea id="additional_rules_en" name="additional_rules_en" rows="3"
-                    class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white"
+                    class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white"
                     dir="ltr">{{ old('additional_rules_en') }}</textarea>
                 <x-input-error :messages="$errors->get('additional_rules_en')" />
             </div>
 
-            <div class="flex items-center gap-3 text-sm text-slate-600">
-                <input id="is_required" name="is_required" type="checkbox" value="1" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500" checked>
+            <div class="flex items-center gap-3 text-sm text-slate-900">
+                <input id="is_required" name="is_required" type="checkbox" value="1" class="rounded border-slate-50 text-emerald-600 focus:ring-emerald-500" checked>
                 <label for="is_required">{{ __('messages.required_field') }}</label>
             </div>
 

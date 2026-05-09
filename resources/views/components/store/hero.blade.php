@@ -12,7 +12,7 @@
     }
 @endphp
 
-<div class="relative w-full overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-900 shadow-md {{ $height }}"
+<div class="relative w-full overflow-hidden rounded-xl border border-slate-50 dark:border-slate-700 bg-slate-900 shadow-md {{ $height }}"
     style="aspect-ratio: var(--store-hero-ratio, 16 / 8);"
     dir="ltr" data-hero-slider>
 
@@ -25,7 +25,7 @@
                     $src       = $isAbs ? $rawPath : asset('storage/' . ltrim($rawPath, '/'));
                     $fallback  = asset('img/placeholder-banner.jpg');
                 @endphp
-                <div class="relative flex h-full w-full shrink-0 flex-[0_0_100%] items-center justify-center bg-slate-100 dark:bg-slate-900">
+                <div class="relative flex h-full w-full shrink-0 flex-[0_0_100%] items-center justify-center bg-slate-50 dark:bg-slate-900">
                     <img src="{{ $src }}"
                         alt="{{ is_array($banner) ? ($banner['title'] ?? '') : ($banner->localized_title ?? $banner->title ?? '') }}"
                         width="1600"
@@ -40,7 +40,7 @@
             @endforeach
         </div>
     @else
-        <div class="flex h-full w-full items-center justify-center text-slate-500">
+        <div class="flex h-full w-full items-center justify-center text-slate-900">
             <i class="fa-solid fa-image text-4xl"></i>
         </div>
     @endif

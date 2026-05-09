@@ -65,13 +65,13 @@
                 <div>
                     <x-input-label for="additional_rules_en" value="قواعد إضافية إنجليزي" />
                     <textarea id="additional_rules_en" name="additional_rules_en" rows="3"
-                        class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white"
+                        class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white"
                         dir="ltr">{{ old('additional_rules_en', $field->additional_rules_en) }}</textarea>
                     <x-input-error :messages="$errors->get('additional_rules_en')" />
                 </div>
 
-                <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
-                    <input id="is_required" name="is_required" type="checkbox" value="1" class="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" {{ $field->is_required ? 'checked' : '' }}>
+                <div class="flex items-center gap-3 text-sm text-slate-900 dark:text-slate-400">
+                    <input id="is_required" name="is_required" type="checkbox" value="1" class="rounded border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" {{ $field->is_required ? 'checked' : '' }}>
                     <label for="is_required">{{ __('messages.required_field') }}</label>
                 </div>
 

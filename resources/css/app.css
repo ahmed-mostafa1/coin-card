@@ -96,7 +96,7 @@
     .dark thead {
         @apply bg-slate-900;
         color: #cbd5e1 !important;
-        /* slate-300 */
+        /* slate-50 */
     }
 
     /* SweetAlert2 dark mode — popup renders outside .dark scope */
@@ -105,7 +105,7 @@
         background-color: #1e293b !important;
         /* slate-800 */
         color: #f1f5f9 !important;
-        /* slate-100 */
+        /* slate-50 */
     }
 
     .dark .swal2-popup .swal2-title {
@@ -115,7 +115,7 @@
     .dark .swal2-popup .swal2-html-container,
     .dark .swal2-popup .swal2-content {
         color: #cbd5e1 !important;
-        /* slate-300 */
+        /* slate-50 */
     }
 
     /* Warning icon border + dot */
@@ -133,7 +133,7 @@
 
     .dark .swal2-popup .swal2-actions .swal2-cancel {
         background-color: #475569 !important;
-        /* slate-600 */
+        /* slate-900 */
         color: #f1f5f9 !important;
     }
 
@@ -275,7 +275,7 @@
     }
 
     .dark .cc-nav-link {
-        @apply border-emerald-700 bg-slate-800 text-slate-200 hover:border-emerald-600 hover:bg-slate-700 hover:text-emerald-400;
+        @apply border-emerald-700 bg-slate-800 text-slate-50 hover:border-emerald-600 hover:bg-slate-700 hover:text-emerald-400;
     }
 
     .cc-nav-link-pill {
@@ -291,7 +291,7 @@
     }
 
     .dark .cc-pill {
-        @apply border-emerald-700 bg-slate-800 text-slate-200 hover:border-emerald-600 hover:bg-slate-700 hover:text-emerald-400;
+        @apply border-emerald-700 bg-slate-800 text-slate-50 hover:border-emerald-600 hover:bg-slate-700 hover:text-emerald-400;
     }
 
     .cc-pill-active {
@@ -303,11 +303,11 @@
     }
 
     .cc-nav-utility {
-        @apply relative inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-600 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400;
+        @apply relative inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-slate-50 bg-white text-slate-900 shadow-sm transition hover:border-slate-50 hover:bg-slate-50 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400;
     }
 
     .dark .cc-nav-utility {
-        @apply border-slate-700 bg-slate-900 text-slate-300 hover:border-slate-600 hover:bg-slate-800 hover:text-white;
+        @apply border-slate-700 bg-slate-900 text-slate-50 hover:border-slate-900 hover:bg-slate-800 hover:text-white;
     }
 
     .cc-nav-utility-label {
@@ -323,11 +323,11 @@
     }
 
     .cc-nav-cta-secondary {
-        @apply border border-slate-200 bg-white text-slate-700 hover:border-emerald-200 hover:text-emerald-900;
+        @apply border border-slate-50 bg-white text-slate-700 hover:border-emerald-200 hover:text-emerald-900;
     }
 
     .dark .cc-nav-cta-secondary {
-        @apply border-slate-700 bg-slate-900 text-slate-200 hover:border-emerald-700 hover:text-emerald-300;
+        @apply border-slate-700 bg-slate-900 text-slate-50 hover:border-emerald-700 hover:text-emerald-300;
     }
 
     .cc-profile-chip {
@@ -347,7 +347,7 @@
     }
 
     .cc-nav-tab {
-        @apply inline-flex shrink-0 items-center gap-2 rounded-2xl px-3 py-2.5 text-sm font-semibold text-slate-500 transition hover:bg-slate-50 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400;
+        @apply inline-flex shrink-0 items-center gap-2 rounded-2xl px-3 py-2.5 text-sm font-semibold text-slate-900 transition hover:bg-slate-50 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400;
     }
 
     .dark .cc-nav-tab {
@@ -363,11 +363,11 @@
     }
 
     .cc-rich-editor {
-        @apply overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-500/20 dark:border-slate-600 dark:bg-slate-700;
+        @apply overflow-hidden rounded-xl border border-slate-50 bg-white shadow-sm transition focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-500/20 dark:border-slate-900 dark:bg-slate-700;
     }
 
     .cc-rich-editor .ql-toolbar.ql-snow {
-        @apply border-0 border-b border-slate-200 bg-slate-50 px-3 py-2 dark:border-slate-600 dark:bg-slate-800;
+        @apply border-0 border-b border-slate-50 bg-slate-50 px-3 py-2 dark:border-slate-900 dark:bg-slate-800;
     }
 
     .cc-rich-editor .ql-container.ql-snow {
@@ -381,24 +381,24 @@
     }
 
     .cc-rich-editor .ql-editor.ql-blank::before {
-        @apply text-slate-400 not-italic dark:text-slate-300;
+        @apply text-slate-400 not-italic dark:text-slate-50;
     }
 
     .cc-rich-editor .ql-snow .ql-stroke {
-        @apply stroke-slate-600 dark:stroke-slate-200;
+        @apply stroke-slate-900 dark:stroke-slate-50;
     }
 
     .cc-rich-editor .ql-snow .ql-fill {
-        @apply fill-slate-600 dark:fill-slate-200;
+        @apply fill-slate-900 dark:fill-slate-50;
     }
 
     .cc-rich-editor .ql-snow .ql-picker,
     .cc-rich-editor .ql-snow .ql-picker-label {
-        @apply text-slate-700 dark:text-slate-100;
+        @apply text-slate-700 dark:text-slate-50;
     }
 
     .cc-rich-editor .ql-snow .ql-picker-options {
-        @apply rounded-xl border border-slate-200 bg-white shadow-lg dark:border-slate-600 dark:bg-slate-800;
+        @apply rounded-xl border border-slate-50 bg-white shadow-lg dark:border-slate-900 dark:bg-slate-800;
     }
 
     .cc-rich-editor .ql-snow a {
@@ -410,7 +410,7 @@
     }
 
     .admin-dashboard-hero {
-        @apply flex flex-col gap-4 rounded-[1.35rem] border border-slate-200 bg-slate-50/80 p-4 dark:border-slate-700 dark:bg-slate-900/45 sm:p-5 lg:flex-row lg:items-center lg:justify-between;
+        @apply flex flex-col gap-4 rounded-[1.35rem] border border-slate-50 bg-slate-50/80 p-4 dark:border-slate-700 dark:bg-slate-900/45 sm:p-5 lg:flex-row lg:items-center lg:justify-between;
     }
 
     .admin-dashboard-eyebrow {
@@ -426,7 +426,7 @@
     }
 
     .admin-dashboard-card {
-        @apply rounded-[1.35rem] border border-slate-200 bg-white p-4 shadow-sm transition hover:border-emerald-200 hover:shadow-md dark:border-slate-700 dark:bg-slate-900/45 dark:hover:border-emerald-800 sm:p-5;
+        @apply rounded-[1.35rem] border border-slate-50 bg-white p-4 shadow-sm transition hover:border-emerald-200 hover:shadow-md dark:border-slate-700 dark:bg-slate-900/45 dark:hover:border-emerald-800 sm:p-5;
     }
 
     .admin-dashboard-card-icon {
@@ -434,11 +434,11 @@
     }
 
     .admin-dashboard-link {
-        @apply flex min-h-12 w-full items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-3.5 py-3 text-sm font-bold text-slate-700 transition hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 active:scale-[0.99] dark:border-slate-700 dark:bg-slate-800/85 dark:text-slate-50 dark:hover:border-emerald-800 dark:hover:bg-emerald-950/25 dark:hover:text-emerald-200 motion-reduce:transform-none;
+        @apply flex min-h-12 w-full items-center gap-3 rounded-2xl border border-slate-50 bg-slate-50 px-3.5 py-3 text-sm font-bold text-slate-700 transition hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 active:scale-[0.99] dark:border-slate-700 dark:bg-slate-800/85 dark:text-slate-50 dark:hover:border-emerald-800 dark:hover:bg-emerald-950/25 dark:hover:text-emerald-200 motion-reduce:transform-none;
     }
 
     .admin-dashboard-link-icon {
-        @apply inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-xs text-emerald-900 shadow-sm dark:bg-slate-900 dark:text-slate-300;
+        @apply inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-xs text-emerald-900 shadow-sm dark:bg-slate-900 dark:text-slate-50;
     }
 
     .admin-action-bar {
@@ -454,7 +454,7 @@
     }
 
     .admin-action-button-secondary {
-        @apply border border-slate-200 bg-white text-slate-700 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50 dark:hover:border-emerald-800 dark:hover:bg-emerald-950/25 dark:hover:text-emerald-300;
+        @apply border border-slate-50 bg-white text-slate-700 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50 dark:hover:border-emerald-800 dark:hover:bg-emerald-950/25 dark:hover:text-emerald-300;
     }
 
     .admin-action-button-danger {
@@ -470,7 +470,7 @@
     }
 
     .admin-inline-link {
-        @apply inline-flex min-h-10 items-center justify-center rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-slate-700 transition hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50 dark:hover:border-emerald-800 dark:hover:bg-emerald-950/25 dark:hover:text-emerald-300;
+        @apply inline-flex min-h-10 items-center justify-center rounded-xl border border-slate-50 bg-white px-3 py-2 text-sm font-bold text-slate-700 transition hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50 dark:hover:border-emerald-800 dark:hover:bg-emerald-950/25 dark:hover:text-emerald-300;
     }
 
     .admin-inline-link-danger {
@@ -482,26 +482,26 @@
     }
 
     .store-pill {
-        @apply relative flex items-center gap-2 overflow-hidden rounded-full border border-slate-300 bg-white px-5 py-2 shadow-sm;
+        @apply relative flex items-center gap-2 overflow-hidden rounded-full border border-slate-50 bg-white px-5 py-2 shadow-sm;
         width: 100%;
         max-width: 100%;
         justify-content: flex-start;
     }
 
     .dark .store-pill {
-        @apply border-slate-600 bg-slate-800 text-slate-200;
+        @apply border-slate-900 bg-slate-800 text-slate-50;
     }
 
     .store-search {
-        @apply w-full rounded-full border border-slate-300 bg-slate-100 px-5 py-2.5 text-sm text-slate-700 outline-none placeholder:text-slate-500 focus:border-emerald-400 focus:bg-white focus:ring-2 focus:ring-emerald-300;
+        @apply w-full rounded-full border border-slate-50 bg-slate-50 px-5 py-2.5 text-sm text-slate-700 outline-none placeholder:text-slate-900 focus:border-emerald-400 focus:bg-white focus:ring-2 focus:ring-emerald-300;
     }
 
     .dark .store-search {
-        @apply border-slate-600 bg-slate-800 text-slate-200 placeholder:text-slate-400 focus:border-emerald-500 focus:bg-slate-800 focus:ring-emerald-600;
+        @apply border-slate-900 bg-slate-800 text-slate-50 placeholder:text-slate-400 focus:border-emerald-500 focus:bg-slate-800 focus:ring-emerald-600;
     }
 
     .store-card {
-        @apply rounded-xl border border-slate-300 bg-white;
+        @apply rounded-xl border border-slate-50 bg-white;
     }
 
     .dark .store-card {
@@ -513,15 +513,15 @@
     }
 
     .dark .store-card-title {
-        @apply text-slate-200;
+        @apply text-slate-50;
     }
 
     .store-input {
-        @apply w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-700 shadow-inner focus:border-emerald-400 focus:ring-2 focus:ring-emerald-300;
+        @apply w-full rounded-lg border border-slate-50 bg-white px-4 py-3 text-sm text-slate-700 shadow-inner focus:border-emerald-400 focus:ring-2 focus:ring-emerald-300;
     }
 
     .dark .store-input {
-        @apply border-slate-600 bg-slate-800 text-slate-200 focus:border-emerald-500 focus:ring-emerald-600;
+        @apply border-slate-900 bg-slate-800 text-slate-50 focus:border-emerald-500 focus:ring-emerald-600;
     }
 
     .store-ticker-track {
@@ -539,7 +539,7 @@
     }
 
     .dark .store-ticker-track {
-        @apply text-slate-300;
+        @apply text-slate-50;
     }
 
     /* Responsive Table Component */
@@ -585,12 +585,12 @@
         }
 
         .rt-table tr {
-            @apply block rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-md;
+            @apply block rounded-2xl border border-slate-50 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-md;
         }
 
         /* Each cell becomes a vertical stack: label on top, value below */
         .rt-table td {
-            @apply block border-b border-slate-100 dark:border-slate-700/50 py-3.5 text-sm;
+            @apply block border-b border-slate-50 dark:border-slate-700/50 py-3.5 text-sm;
         }
 
         .rt-table td:first-child {
@@ -604,12 +604,12 @@
         /* Label from data-label attribute - displayed above value */
         .rt-table td::before {
             content: attr(data-label);
-            @apply block text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-1.5;
+            @apply block text-xs font-semibold uppercase tracking-wide text-slate-900 dark:text-slate-400 mb-1.5;
         }
 
         /* Value styling - more prominent */
         .rt-table td>* {
-            @apply text-slate-900 dark:text-slate-100;
+            @apply text-slate-900 dark:text-slate-50;
         }
 
         /* Ensure proper text sizing for values */
@@ -724,19 +724,19 @@
     }
 
     .home-btn--secondary {
-        @apply border border-slate-200 bg-white/90 text-slate-800 shadow-sm hover:border-emerald-200 hover:text-emerald-900;
+        @apply border border-slate-50 bg-white/90 text-slate-800 shadow-sm hover:border-emerald-200 hover:text-emerald-900;
     }
 
     .dark .home-btn--secondary {
-        @apply border-slate-700 bg-slate-900 text-slate-100 hover:border-emerald-700 hover:text-emerald-300;
+        @apply border-slate-700 bg-slate-900 text-slate-50 hover:border-emerald-700 hover:text-emerald-300;
     }
 
     .home-btn--ghost {
-        @apply border border-transparent bg-slate-100 text-slate-700 hover:bg-slate-200;
+        @apply border border-transparent bg-slate-50 text-slate-700 hover:bg-slate-50;
     }
 
     .dark .home-btn--ghost {
-        @apply bg-slate-800 text-slate-200 hover:bg-slate-700;
+        @apply bg-slate-800 text-slate-50 hover:bg-slate-700;
     }
 
     .home-hero__visual {
@@ -794,11 +794,11 @@
     }
 
     .home-hero-card__fallback {
-        @apply flex h-full items-center justify-center rounded-[1.75rem] border border-slate-200/80 bg-white/70 px-6 text-center text-sm font-semibold text-slate-500;
+        @apply flex h-full items-center justify-center rounded-[1.75rem] border border-slate-50/80 bg-white/70 px-6 text-center text-sm font-semibold text-slate-900;
     }
 
     .dark .home-hero-card__fallback {
-        @apply border-slate-700/80 bg-slate-950/70 text-slate-300;
+        @apply border-slate-700/80 bg-slate-950/70 text-slate-50;
     }
 
     .home-ticker {
@@ -826,7 +826,7 @@
     .home-alert-card,
     .home-feature-card,
     .home-callout {
-        @apply rounded-[1.75rem] border border-slate-200 bg-white p-5 sm:p-6;
+        @apply rounded-[1.75rem] border border-slate-50 bg-white p-5 sm:p-6;
     }
 
     .dark .home-account-card,
@@ -837,15 +837,15 @@
     }
 
     .home-section-badge {
-        @apply inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-bold text-slate-700;
+        @apply inline-flex items-center gap-2 rounded-full border border-slate-50 bg-slate-50 px-3 py-1.5 text-xs font-bold text-slate-700;
     }
 
     .dark .home-section-badge {
-        @apply border-slate-700 bg-slate-800 text-slate-200;
+        @apply border-slate-700 bg-slate-800 text-slate-50;
     }
 
     .home-balance-tile {
-        @apply rounded-3xl border border-slate-200 bg-slate-50 px-4 py-4;
+        @apply rounded-3xl border border-slate-50 bg-slate-50 px-4 py-4;
     }
 
     .dark .home-balance-tile {
@@ -853,7 +853,7 @@
     }
 
     .home-balance-tile__label {
-        @apply block text-xs font-semibold text-slate-500;
+        @apply block text-xs font-semibold text-slate-900;
     }
 
     .dark .home-balance-tile__label {
@@ -929,11 +929,11 @@
     }
 
     .home-account-card__heading p {
-        @apply mt-2 text-xs font-semibold leading-6 text-slate-600 sm:text-sm;
+        @apply mt-2 text-xs font-semibold leading-6 text-slate-900 sm:text-sm;
     }
 
     .dark .home-account-card__heading p {
-        @apply text-slate-300;
+        @apply text-slate-50;
     }
 
     .home-account-card__tiles {
@@ -958,11 +958,11 @@
     }
 
     .home-account-card .home-balance-tile__label {
-        @apply text-[11px] font-semibold text-slate-500;
+        @apply text-[11px] font-semibold text-slate-900;
     }
 
     .dark .home-account-card .home-balance-tile__label {
-        @apply text-slate-300;
+        @apply text-slate-50;
     }
 
     .home-account-card .home-balance-tile__value {
@@ -974,11 +974,11 @@
     }
 
     .home-balance-tile__icon {
-        @apply inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-slate-600;
+        @apply inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-slate-900;
     }
 
     .dark .home-balance-tile__icon {
-        @apply bg-slate-700/80 text-slate-100;
+        @apply bg-slate-700/80 text-slate-50;
     }
 
     .home-balance-tile__icon--success {
@@ -1036,7 +1036,7 @@
     }
 
     .dark .home-alert-card__icon {
-        @apply bg-slate-900 text-slate-200;
+        @apply bg-slate-900 text-slate-50;
     }
 
     .home-feature-card {
@@ -1060,11 +1060,11 @@
     }
 
     .home-feature-card__text {
-        @apply mt-3 max-w-[18rem] text-sm leading-7 text-slate-600;
+        @apply mt-3 max-w-[18rem] text-sm leading-7 text-slate-900;
     }
 
     .dark .home-feature-card__text {
-        @apply text-slate-300;
+        @apply text-slate-50;
     }
 
     .home-section-heading {

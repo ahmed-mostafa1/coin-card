@@ -14,7 +14,7 @@
         @endif
 
         <x-table class="mt-6">
-            <thead class="bg-slate-50 dark:bg-slate-800/60 text-slate-500 dark:text-slate-300">
+            <thead class="bg-slate-50 dark:bg-slate-800/60 text-slate-900 dark:text-slate-50">
                 <tr>
                     <th class="py-2">{{ __('messages.service') }}</th>
                     <th class="py-2">{{ __('messages.package') }}</th>
@@ -25,7 +25,7 @@
                     <th class="py-2">{{ __('messages.details_link') }}</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+            <tbody class="divide-y divide-slate-50 dark:divide-slate-700">
                 @forelse ($orders as $order)
                     <tr class="transition">
                         <td class="py-3 text-slate-700 dark:text-slate-50" data-label="{{ __('messages.service') }}">{{ $order->service->name }}</td>
@@ -57,7 +57,7 @@
                                 <x-badge>{{ __('messages.status_cancelled') }}</x-badge>
                             @endif
                         </td>
-                        <td class="py-3 text-slate-500 dark:text-slate-400" data-label="{{ __('messages.date') }}">{{ $order->created_at->format('Y-m-d') }}</td>
+                        <td class="py-3 text-slate-900 dark:text-slate-400" data-label="{{ __('messages.date') }}">{{ $order->created_at->format('Y-m-d') }}</td>
                         <td class="py-3" data-label="{{ __('messages.details_link') }}">
                             <a href="{{ route('account.orders.show', $order) }}"
                                 class="text-emerald-900 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">{{ __('messages.view_link') }}</a>
@@ -65,7 +65,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="py-6 text-center text-slate-500 dark:text-slate-400">{{ __('messages.no_orders_yet') }}</td>
+                        <td colspan="7" class="py-6 text-center text-slate-900 dark:text-slate-400">{{ __('messages.no_orders_yet') }}</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -74,25 +74,4 @@
         <div class="mt-6">{{ $orders->links() }}</div>
     </x-card>
 
-    @if (session('status'))
-        <div id="orders-status-toast" data-message="{{ session('status') }}" data-position="{{ app()->getLocale() === 'ar' ? 'top-start' : 'top-end' }}" hidden></div>
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                const toastElement = document.getElementById('orders-status-toast');
-                if (!toastElement) {
-                    return;
-                }
-
-                Swal.fire({
-                    toast: true,
-                    position: toastElement.dataset.position || 'top-end',
-                    icon: 'success',
-                    title: toastElement.dataset.message || '',
-                    showConfirmButton: false,
-                    timer: 2600,
-                    timerProgressBar: true,
-                });
-            });
-        </script>
-    @endif
 @endsection

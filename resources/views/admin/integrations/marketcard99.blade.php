@@ -6,7 +6,7 @@
     <div class="space-y-6">
         <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-8 shadow-sm">
             <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">تكامل MarketCard99</h1>
-            <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-300">
+            <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-50">
                 مزامنة الكتالوج الخارجي ومزامنة حالات الطلبات يدوياً.
             </p>
 
@@ -70,7 +70,7 @@
                         </div>
                     @endif
                 @else
-                    <p class="mt-4 text-sm text-slate-500 dark:text-slate-400">لا يوجد سجل مزامنة بعد.</p>
+                    <p class="mt-4 text-sm text-slate-900 dark:text-slate-400">لا يوجد سجل مزامنة بعد.</p>
                 @endif
             </div>
 
@@ -100,7 +100,7 @@
                         </div>
                     @endif
                 @else
-                    <p class="mt-4 text-sm text-slate-500 dark:text-slate-400">لا يوجد سجل مزامنة بعد.</p>
+                    <p class="mt-4 text-sm text-slate-900 dark:text-slate-400">لا يوجد سجل مزامنة بعد.</p>
                 @endif
             </div>
         </div>

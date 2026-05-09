@@ -14,7 +14,7 @@
             </div>
         @endif
 
-        <div class="mt-6 rounded-2xl border border-slate-200 p-4 dark:border-slate-700">
+        <div class="mt-6 rounded-2xl border border-slate-50 p-4 dark:border-slate-700">
             <div class="flex items-center gap-3">
                 <x-user-badge :user="auth()->user()" class="h-7 w-7" />
                 <div>
@@ -22,7 +22,7 @@
                         {{ auth()->user()->is_verified ? 'حسابك موثق' : 'حسابك غير موثق' }}
                     </p>
                     @if ($verificationRequest)
-                        <p class="text-sm text-slate-500 dark:text-slate-400">آخر طلب: {{ $verificationRequest->status }}</p>
+                        <p class="text-sm text-slate-900 dark:text-slate-400">آخر طلب: {{ $verificationRequest->status }}</p>
                         @if ($verificationRequest->review_note)
                             <p class="mt-1 text-sm text-amber-700 dark:text-amber-300">ملاحظة الإدارة:
                                 {{ $verificationRequest->review_note }}
@@ -35,7 +35,7 @@
 
         @if ($fields->isEmpty())
             <div
-                class="mt-6 rounded-2xl border border-dashed border-slate-200 dark:border-slate-700 p-8 text-center text-sm text-slate-500 dark:text-slate-400">
+                class="mt-6 rounded-2xl border border-dashed border-slate-50 dark:border-slate-700 p-8 text-center text-sm text-slate-900 dark:text-slate-400">
                 نموذج التوثيق غير متاح حالياً.</div>
         @else
             <form method="POST" action="{{ route('account.verification.store') }}" enctype="multipart/form-data"
@@ -61,12 +61,12 @@
                                 accept="{{ $field->type === 'image' ? 'image/*' : '.jpg,.jpeg,.png,.webp,.pdf,image/*,application/pdf' }}"
                                 @required($field->is_required)>
                         @elseif ($field->type === 'camera')
-                            <div class="rounded-2xl border border-slate-200 p-3 dark:border-slate-700" data-camera-field>
+                            <div class="rounded-2xl border border-slate-50 p-3 dark:border-slate-700" data-camera-field>
                                 <input id="{{ $field->name_key }}" name="fields[{{ $field->name_key }}]" type="hidden" data-camera-input
                                     @required($field->is_required)>
                                 <video class="hidden w-full rounded-xl" autoplay playsinline data-camera-video></video>
                                 <canvas class="hidden" data-camera-canvas></canvas>
-                                <img class="mt-3 hidden max-h-64 rounded-xl border border-slate-200 object-contain" data-camera-preview
+                                <img class="mt-3 hidden max-h-64 rounded-xl border border-slate-50 object-contain" data-camera-preview
                                     alt="camera preview">
                                 <div class="mt-3 flex flex-wrap gap-2">
                                     <button type="button"
