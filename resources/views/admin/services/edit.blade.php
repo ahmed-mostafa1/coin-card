@@ -301,11 +301,6 @@
                         @if ($service->provider_status_message)
                             <p class="text-amber-700 dark:text-amber-300">{{ $service->provider_status_message }}</p>
                         @endif
-                        @if ($service->provider_status_sync_error)
-                            <div class="mt-2 rounded-xl border border-rose-200 dark:border-rose-800/50 bg-rose-50 dark:bg-rose-900/20 p-3">
-                              
-                            </div>
-                        @endif
                     </div>
                 </div>
             @endif
