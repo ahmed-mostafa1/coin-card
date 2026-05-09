@@ -412,7 +412,7 @@
                                         <form method="POST" action="{{ route('logout') }}" class="mt-4">
                                             @csrf
                                             <button type="submit"
-                                                    class="flex w-full items-center justify-center gap-2 rounded-[1rem] bg-slate-950 px-4 py-3 text-sm font-bold text-white transition hover:bg-slate-800 dark:bg-slate-900 dark:text-emerald-900 dark:hover:bg-slate-50">
+                                                    class="flex w-full items-center justify-center gap-2 rounded-[1rem] bg-slate-950 px-4 py-3 text-sm font-bold text-white transition hover:bg-slate-800 dark:bg-slate-500 dark:text-emerald-50 dark:hover:bg-slate-50">
                                                 <i class="fa-solid fa-right-from-bracket text-sm"></i>
                                                 <span>{{ __('messages.logout') }}</span>
                                             </button>
