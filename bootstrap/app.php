@@ -18,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\SetLocale::class,
             \App\Http\Middleware\DeactivateExpiredLimitedOffers::class,
             \App\Http\Middleware\EnsureUserNotBanned::class,
+            \App\Http\Middleware\CheckStoreMaintenance::class,
         ]);
 
         $middleware->redirectGuestsTo(fn() => route('login'));

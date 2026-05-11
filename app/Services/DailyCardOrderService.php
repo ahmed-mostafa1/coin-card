@@ -143,14 +143,14 @@ class DailyCardOrderService
      */
     public function mapToLocalStatus(string $executionStatus, string $providerStatus = ''): ?string
     {
-        if (in_array($executionStatus, ['success', 'completed', 'done'], true)
-            || in_array($providerStatus, ['completed', 'success', 'done'], true)) {
-            return Order::STATUS_DONE;
-        }
-
         if (in_array($executionStatus, ['failed', 'error', 'rejected', 'canceled', 'cancelled'], true)
             || in_array($providerStatus, ['cancelled', 'canceled', 'rejected', 'failed', 'error'], true)) {
             return Order::STATUS_REJECTED;
+        }
+
+        if (in_array($executionStatus, ['success', 'completed', 'done'], true)
+            || in_array($providerStatus, ['completed', 'success', 'done'], true)) {
+            return Order::STATUS_DONE;
         }
 
         return null; // still in-progress
