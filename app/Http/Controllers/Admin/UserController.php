@@ -7,6 +7,7 @@ use App\Models\WalletTransaction;
 use App\Models\AdminSentNotification;
 use App\Models\User;
 use App\Services\LoyaltyService;
+use App\Services\MailDeliveryService;
 use App\Services\SecurityLogger;
 use App\Services\WalletService;
 use Illuminate\Http\RedirectResponse;
@@ -343,7 +344,7 @@ class UserController extends Controller
             ->with('status', 'تم تسوية الرصيد المعلّق بنجاح (خصم نهائي).');
     }
 
-    public function sendEmail(User $user, Request $request): RedirectResponse
+    public function sendEmail(User $user, Request $request, MailDeliveryService $mailDelivery): RedirectResponse
     {
         if (!$user->email) {
             return redirect()->route('admin.users.show', $user)
@@ -355,11 +356,9 @@ class UserController extends Controller
             'message' => ['required', 'string'],
         ]);
 
-        try {
-            \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\AdminUserMessage($data['subject'], $data['message']));
-        } catch (\Exception $e) {
+        if (! $mailDelivery->send($user->email, new \App\Mail\AdminUserMessage($data['subject'], $data['message']), 'admin_user_message', $user->id)) {
             return redirect()->route('admin.users.show', $user)
-                ->with('error', 'فشل إرسال البريد الإلكتروني: ' . $e->getMessage());
+                ->with('error', __('messages.mail_delivery_unavailable'));
         }
 
         return redirect()->route('admin.users.show', $user)

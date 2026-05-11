@@ -115,4 +115,13 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    'rate_limits' => [
+        'global_per_minute' => env('MAIL_GLOBAL_RATE_LIMIT_PER_MINUTE', 25),
+        'recipient_per_minute' => env('MAIL_RECIPIENT_RATE_LIMIT_PER_MINUTE', 3),
+    ],
+
+    'notifications' => [
+        'email_enabled' => env('MAIL_NOTIFICATIONS_EMAIL_ENABLED', false),
+    ],
+
 ];

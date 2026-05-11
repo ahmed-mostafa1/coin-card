@@ -3,17 +3,20 @@
 namespace App\Notifications;
 
 use App\Models\DepositRequest;
+use App\Notifications\Concerns\ResolvesNotificationChannels;
 use Illuminate\Notifications\Notification;
 
 class DepositStatusChangedNotification extends Notification
 {
+    use ResolvesNotificationChannels;
+
     public function __construct(private readonly DepositRequest $deposit)
     {
     }
 
     public function via(object $notifiable): array
     {
-        return ['database', 'mail'];
+        return $this->notificationChannels();
     }
 
     /**

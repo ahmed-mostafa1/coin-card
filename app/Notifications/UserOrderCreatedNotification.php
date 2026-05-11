@@ -3,12 +3,14 @@
 namespace App\Notifications;
 
 use App\Models\Order;
+use App\Notifications\Concerns\ResolvesNotificationChannels;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 class UserOrderCreatedNotification extends Notification
 {
+    use ResolvesNotificationChannels;
     use Queueable;
 
     public function __construct(private readonly Order $order)
@@ -17,7 +19,7 @@ class UserOrderCreatedNotification extends Notification
 
     public function via(object $notifiable): array
     {
-        return ['database', 'mail'];
+        return $this->notificationChannels();
     }
 
     public function toMail(object $notifiable): MailMessage

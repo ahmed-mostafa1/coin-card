@@ -540,4 +540,5 @@ return [
     'status_frozen' => 'مجمّد',
     'active_user' => 'نشط',
     'no_users_found' => 'لا يوجد مستخدمون.',
+    'mail_delivery_unavailable' => 'خدمة إرسال البريد غير متاحة مؤقتا. يرجى المحاولة لاحقا.',
 ];

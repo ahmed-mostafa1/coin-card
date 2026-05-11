@@ -25,7 +25,13 @@ class AuthenticatedSessionController extends Controller
         if ($user->two_factor_email_enabled) {
             $request->session()->put(EmailTwoFactorService::SESSION_USER_ID, $user->id);
             $request->session()->put(EmailTwoFactorService::SESSION_REMEMBER, $request->boolean('remember'));
-            $twoFactorService->sendCode($user);
+            if (! $twoFactorService->sendCode($user)) {
+                $request->session()->forget([EmailTwoFactorService::SESSION_USER_ID, EmailTwoFactorService::SESSION_REMEMBER]);
+
+                return back()->withErrors([
+                    'email' => __('messages.mail_delivery_unavailable'),
+                ]);
+            }
 
             return redirect()->route('two-factor.email.challenge')
                 ->with('status', 'تم إرسال رمز التحقق إلى بريدك الإلكتروني.');

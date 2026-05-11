@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreContactRequest;
 use App\Mail\ContactMessageToAdminMail;
 use App\Models\User;
+use App\Services\MailDeliveryService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
 class ContactController extends Controller
@@ -17,7 +17,7 @@ class ContactController extends Controller
         return view('pages.contact');
     }
 
-    public function store(StoreContactRequest $request): RedirectResponse
+    public function store(StoreContactRequest $request, MailDeliveryService $mailDelivery): RedirectResponse
     {
         $admins = User::role('admin')
             ->whereNotNull('email')
@@ -36,11 +36,16 @@ class ContactController extends Controller
         $submittedBy = $request->user();
 
         foreach ($admins as $admin) {
-            Mail::to($admin->email)->send(new ContactMessageToAdminMail(
-                payload: $payload,
-                recipientName: $admin->name,
-                submittedBy: $submittedBy,
-            ));
+            $mailDelivery->send(
+                $admin->email,
+                new ContactMessageToAdminMail(
+                    payload: $payload,
+                    recipientName: $admin->name,
+                    submittedBy: $submittedBy,
+                ),
+                'contact_form',
+                $submittedBy?->id
+            );
         }
 
         return redirect()

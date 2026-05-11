@@ -58,7 +58,11 @@ class TwoFactorEmailController extends Controller
             return redirect()->route('login');
         }
 
-        $twoFactorService->sendCode($user);
+        if (! $twoFactorService->sendCode($user)) {
+            return back()->withErrors([
+                'code' => __('messages.mail_delivery_unavailable'),
+            ]);
+        }
 
         return back()->with('status', 'تم إرسال رمز جديد إلى بريدك الإلكتروني.');
     }

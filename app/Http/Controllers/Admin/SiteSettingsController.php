@@ -287,8 +287,5 @@ class SiteSettingsController extends Controller
         cache()->forget('shared_maintenance_enabled');
 
         return redirect()->route('admin.site-settings.edit')->with('status', 'تم تحديث إعدادات الصيانة بنجاح.');
-    }
-}
-�ات الصيانة بنجاح.');
-    }
-}
+        }
+        }

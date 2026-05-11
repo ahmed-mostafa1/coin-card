@@ -507,6 +507,7 @@ return [
     'service-offer-card' => 'Limited Time Offer',
     'processing' => 'Processing...',
     'otp_sent' => 'OTP sent to your email address.',
+    'mail_delivery_unavailable' => 'Email delivery is temporarily unavailable. Please try again later.',
     'sending' => 'Sending...',
     'discount' => 'Discount',
     'select_package_first' => 'Select Package First',

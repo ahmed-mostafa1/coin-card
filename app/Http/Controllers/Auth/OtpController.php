@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Mail\OtpMail;
+use App\Services\MailDeliveryService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
 
 class OtpController extends Controller
 {
@@ -42,7 +41,7 @@ class OtpController extends Controller
         return response()->json(['message' => __('messages.success'), 'redirect' => route('home')]);
     }
 
-    public function resend(Request $request)
+    public function resend(Request $request, MailDeliveryService $mailDelivery)
     {
         $user = auth()->user();
         
@@ -52,12 +51,15 @@ class OtpController extends Controller
         }
 
         $otp = rand(100000, 999999);
+
+        if (! $mailDelivery->send($user, new OtpMail($otp), 'otp_resend', $user->id)) {
+            return response()->json(['message' => __('messages.mail_delivery_unavailable')], 429);
+        }
+
         $user->forceFill([
             'otp_code' => $otp,
             'otp_expires_at' => now()->addMinutes(10),
         ])->save();
-
-        Mail::to($user)->send(new OtpMail($otp));
 
         return response()->json(['message' => __('messages.otp_sent')]);
     }

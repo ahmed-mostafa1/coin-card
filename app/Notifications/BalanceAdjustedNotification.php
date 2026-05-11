@@ -3,11 +3,14 @@
 namespace App\Notifications;
 
 use App\Models\WalletTransaction;
+use App\Notifications\Concerns\ResolvesNotificationChannels;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 class BalanceAdjustedNotification extends Notification
 {
+    use ResolvesNotificationChannels;
+
     public function __construct(
         private readonly WalletTransaction $transaction,
         private readonly string $direction,
@@ -18,7 +21,7 @@ class BalanceAdjustedNotification extends Notification
 
     public function via(object $notifiable): array
     {
-        return ['database', 'mail'];
+        return $this->notificationChannels();
     }
 
     public function toMail(object $notifiable): MailMessage

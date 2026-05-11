@@ -2,12 +2,14 @@
 
 namespace App\Notifications;
 
+use App\Notifications\Concerns\ResolvesNotificationChannels;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 class AdminGeneralNotification extends Notification
 {
+    use ResolvesNotificationChannels;
     use Queueable;
 
     /**
@@ -38,7 +40,7 @@ class AdminGeneralNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'database'];
+        return $this->notificationChannels();
     }
 
     /**

@@ -77,7 +77,12 @@ class GoogleController extends Controller
         if ($user->two_factor_email_enabled) {
             session()->put(\App\Services\EmailTwoFactorService::SESSION_USER_ID, $user->id);
             session()->put(\App\Services\EmailTwoFactorService::SESSION_REMEMBER, true);
-            $twoFactorService->sendCode($user);
+            if (! $twoFactorService->sendCode($user)) {
+                session()->forget([\App\Services\EmailTwoFactorService::SESSION_USER_ID, \App\Services\EmailTwoFactorService::SESSION_REMEMBER]);
+
+                return redirect()->route('login')
+                    ->with('status', __('messages.mail_delivery_unavailable'));
+            }
 
             return redirect()->route('two-factor.email.challenge')
                 ->with('status', 'تم إرسال رمز التحقق إلى بريدك الإلكتروني.');

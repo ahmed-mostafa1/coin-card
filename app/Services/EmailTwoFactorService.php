@@ -5,15 +5,13 @@ namespace App\Services;
 use App\Mail\GenericStyledMail;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 
 class EmailTwoFactorService
 {
     public const SESSION_USER_ID = 'two_factor_email_user_id';
     public const SESSION_REMEMBER = 'two_factor_email_remember';
 
-    public function sendCode(User $user): void
+    public function sendCode(User $user): bool
     {
         $code = (string) random_int(100000, 999999);
 
@@ -23,8 +21,9 @@ class EmailTwoFactorService
             'two_factor_email_code_attempts' => 0,
         ])->save();
 
-        try {
-            Mail::to($user->email)->send(new GenericStyledMail(
+        return app(MailDeliveryService::class)->send(
+            $user->email,
+            new GenericStyledMail(
                 emailSubject: 'رمز التحقق الثنائي / Two-Factor Code',
                 arTitle: 'رمز التحقق الثنائي',
                 enTitle: 'Two-Factor Verification Code',
@@ -38,11 +37,10 @@ class EmailTwoFactorService
                 ],
                 arOutroLines: ['إذا لم تحاول تسجيل الدخول، يرجى تغيير كلمة المرور والتواصل مع الإدارة.'],
                 enOutroLines: ['If you did not attempt to log in, please change your password and contact support.'],
-            ));
-        } catch (\Throwable $e) {
-            Log::error('2FA email failed', ['user_id' => $user->id, 'error' => $e->getMessage()]);
-            throw $e;
-        }
+            ),
+            'two_factor_email',
+            $user->id
+        );
     }
 
     public function verify(User $user, string $code): bool

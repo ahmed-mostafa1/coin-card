@@ -3,10 +3,13 @@
 namespace App\Notifications;
 
 use App\Models\Order;
+use App\Notifications\Concerns\ResolvesNotificationChannels;
 use Illuminate\Notifications\Notification;
 
 class OrderStatusChangedNotification extends Notification
 {
+    use ResolvesNotificationChannels;
+
     public function __construct(
         private readonly Order $order,
         private readonly ?string $oldStatus = null,
@@ -16,7 +19,7 @@ class OrderStatusChangedNotification extends Notification
 
     public function via(object $notifiable): array
     {
-        return ['database', 'mail'];
+        return $this->notificationChannels();
     }
 
     /**
