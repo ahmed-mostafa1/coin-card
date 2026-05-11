@@ -240,7 +240,7 @@
             <div class="order-2 w-full space-y-4">
                 @if (session('status'))
                     <div
-                        class="rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-400">
+                        class="rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-100">
                         {{ session('status') }}
                     </div>
                 @endif
@@ -272,7 +272,7 @@
                             </p>
                             <div class="pt-2">
                                 <button type="button"
-                                    class="inline-flex items-center gap-2 rounded-full border border-slate-50 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:border-emerald-200 hover:text-emerald-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50 dark:hover:border-emerald-700 dark:hover:text-emerald-300"
+                                    class="inline-flex items-center gap-2 rounded-full border border-slate-50 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:border-emerald-200 hover:text-emerald-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50 dark:hover:border-emerald-700 dark:hover:text-emerald-100"
                                     data-share-service data-share-title="{{ $service->localized_name }}"
                                     data-share-url="{{ route('services.show', $service->slug) }}"
                                     data-share-success="{{ $shareCopiedLabel }}"
@@ -379,7 +379,7 @@
                                             <span class="flex items-center gap-2">
                                                 @if ($vipDiscount > 0)
                                                     <span
-                                                        class="text-xs text-slate-50 line-through">${{ number_format($grossPrice, 2) }}</span>
+                                                        class="text-xs text-slate-900 dark:text-slate-50 line-through">${{ number_format($grossPrice, 2) }}</span>
                                                     <span
                                                         class="font-semibold text-emerald-900 dark:text-emerald-50">${{ number_format($discountedPrice, 2) }}</span>
                                                 @else
@@ -406,7 +406,7 @@
                                         class="w-32 rounded-lg border border-slate-50 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-4 py-2 text-sm text-slate-700 dark:text-slate-50"
                                         lang="en" dir="ltr" required>
                                     @if($service->min_quantity > 1 || $service->max_quantity)
-                                        <p class="text-xs text-slate-50 mt-1">
+                                        <p class="text-xs text-slate-900 dark:text-slate-50 mt-1">
                                             @if($service->max_quantity)
                                                 {!! __('messages.quantity_limits', ['min' => '<span class="latin-digits" lang="en" dir="ltr">' . e($service->min_quantity ?? 1) . '</span>', 'max' => '<span class="latin-digits" lang="en" dir="ltr">' . e($service->max_quantity) . '</span>']) !!}
                                             @else
@@ -432,11 +432,11 @@
                         @if (!$isDiscountedInputPricing && $vipDiscount > 0)
                             <div
                                 class="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 px-4 py-3">
-                                <p class="text-sm font-semibold text-emerald-900 dark:text-emerald-300">
+                                <p class="text-sm font-semibold text-emerald-900 dark:text-emerald-100">
                                     {{ app()->getLocale() == 'ar' ? 'خصم الحساب فعّال' : 'Account discount active' }}:
                                     {{ number_format($vipDiscount, 0) }}%
                                 </p>
-                                <p class="text-xs text-emerald-800 dark:text-emerald-200 mt-1">
+                                <p class="text-xs text-emerald-800 dark:text-emerald-100 mt-1">
                                     {{ app()->getLocale() == 'ar' ? 'يتم احتساب خصم التوثيق أو الولاء تلقائياً.' : 'Verification or loyalty discount is applied automatically.' }}
                                 </p>
                             </div>
@@ -518,7 +518,7 @@
                                         </div>
                                         @if ($vipDiscount > 0)
                                             <span id="original-price"
-                                                class="text-xs text-slate-50 line-through">${{ number_format($initialGross, 2) }}</span>
+                                                class="text-xs text-slate-900 dark:text-slate-50 line-through">${{ number_format($initialGross, 2) }}</span>
                                         @endif
                                         <span id="current-price"
                                             class="font-semibold text-emerald-900 dark:text-emerald-50">${{ number_format($displayPrice, 2) }}</span>
@@ -542,7 +542,7 @@
                                     </div>
                                     @if ($vipDiscount > 0)
                                         <span id="original-price"
-                                            class="text-xs text-slate-50 line-through">${{ number_format($initialGross, 2) }}</span>
+                                            class="text-xs text-slate-900 dark:text-slate-50 line-through">${{ number_format($initialGross, 2) }}</span>
                                     @endif
                                     <span id="current-price"
                                         class="font-semibold text-emerald-900 dark:text-emerald-50">${{ number_format($displayPrice, 2) }}</span>
@@ -566,7 +566,7 @@
                                     </div>
                                     @if ($vipDiscount > 0)
                                         <span id="original-price"
-                                            class="text-xs text-slate-50 line-through">${{ number_format($initialGross, 2) }}</span>
+                                            class="text-xs text-slate-900 dark:text-slate-50 line-through">${{ number_format($initialGross, 2) }}</span>
                                     @endif
                                     <span id="current-price"
                                         class="font-semibold text-emerald-900 dark:text-emerald-50">${{ number_format($displayPrice, 2) }}</span>
@@ -623,7 +623,7 @@
                         @endif
 
                         @php
-                            $termsLink = '<a href="' . route('terms-of-use') . '" class="font-semibold text-emerald-900 hover:underline dark:text-emerald-400">' . e(__('messages.terms_of_use')) . '</a>';
+                            $termsLink = '<a href="' . route('terms-of-use') . '" class="font-semibold text-emerald-900 hover:underline dark:text-emerald-100">' . e(__('messages.terms_of_use')) . '</a>';
                         @endphp
 
                         <div

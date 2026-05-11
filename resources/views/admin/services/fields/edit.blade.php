@@ -6,12 +6,12 @@
     <div class="grid gap-6 lg:grid-cols-3">
         <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-8 shadow-sm lg:col-span-2">
             <div class="flex items-center justify-between">
-                <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">{{ __('messages.edit_field') }}</h1>
-                <a href="{{ route('admin.services.edit', $service) }}" class="text-sm text-emerald-900 dark:text-emerald-400">{{ __('messages.back_to_service') }}</a>
+                <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-100">{{ __('messages.edit_field') }}</h1>
+                <a href="{{ route('admin.services.edit', $service) }}" class="text-sm text-emerald-900 dark:text-emerald-100">{{ __('messages.back_to_service') }}</a>
             </div>
 
             @if (session('status'))
-            <div class="mt-6 rounded-lg border border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-300">
+            <div class="mt-6 rounded-lg border border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-100">
                     {{ session('status') }}
                 </div>
             @endif
@@ -70,7 +70,7 @@
                     <x-input-error :messages="$errors->get('additional_rules_en')" />
                 </div>
 
-                <div class="flex items-center gap-3 text-sm text-slate-900 dark:text-slate-400">
+                <div class="flex items-center gap-3 text-sm text-slate-900 dark:text-slate-100">
                     <input id="is_required" name="is_required" type="checkbox" value="1" class="rounded border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" {{ $field->is_required ? 'checked' : '' }}>
                     <label for="is_required">{{ __('messages.required_field') }}</label>
                 </div>

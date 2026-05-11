@@ -7,10 +7,10 @@
         <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-8 shadow-sm lg:col-span-2">
             <div class="flex items-center justify-between gap-4">
                 <div>
-                    <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">طلب #{{ $order->id }}</h1>
+                    <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-100">طلب #{{ $order->id }}</h1>
                     <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-50">{{ $order->service?->name ?? 'خدمة محذوفة' }}</p>
                 </div>
-                <a href="{{ route('admin.orders.index') }}" class="text-sm text-emerald-900 dark:text-emerald-400">عودة للقائمة</a>
+                <a href="{{ route('admin.orders.index') }}" class="text-sm text-emerald-900 dark:text-emerald-100">عودة للقائمة</a>
             </div>
 
             <div class="mt-6 overflow-hidden rounded-2xl border border-slate-50 bg-white/60 dark:border-slate-700 dark:bg-slate-900/40">
@@ -103,7 +103,7 @@
                                         <img src="{{ $imageUrl }}" alt="{{ $fieldLabels[$key] ?? (string) $key }}" class="h-40 w-auto max-w-full rounded-lg border border-slate-50 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 object-contain">
                                     </a>
                                 @elseif ($isUrl)
-                                    <a href="{{ $displayValue }}" target="_blank" rel="noopener noreferrer" class="mt-2 block break-all text-sm font-semibold text-emerald-900 dark:text-emerald-400 hover:underline">
+                                    <a href="{{ $displayValue }}" target="_blank" rel="noopener noreferrer" class="mt-2 block break-all text-sm font-semibold text-emerald-900 dark:text-emerald-100 hover:underline">
                                         {{ $displayValue }}
                                     </a>
                                 @else
@@ -115,7 +115,7 @@
                         @endforeach
                     </div>
                 @else
-                    <p class="mt-3 text-sm text-slate-900 dark:text-slate-400">{{ __('messages.no_additional_data') }}</p>
+                    <p class="mt-3 text-sm text-slate-900 dark:text-slate-100">{{ __('messages.no_additional_data') }}</p>
                 @endif
             </div>
 
@@ -130,17 +130,17 @@
             @endif
 
             @if ($order->admin_note)
-                <div class="mt-6 rounded-2xl border border-emerald-100 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 p-4 text-sm text-emerald-900 dark:text-emerald-300">
+                <div class="mt-6 rounded-2xl border border-emerald-100 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 p-4 text-sm text-emerald-900 dark:text-emerald-100">
                     ملاحظة الإدارة: {{ $order->admin_note }}
                 </div>
             @endif
         </div>
 
         <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-8 shadow-sm">
-            <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">تحديث الحالة</h2>
+            <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-100">تحديث الحالة</h2>
 
             @if (session('status'))
-                <div class="mt-4 rounded-lg border border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-300">
+                <div class="mt-4 rounded-lg border border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-100">
                     {{ session('status') }}
                 </div>
             @endif
@@ -216,7 +216,7 @@
             @endif
 
             <div class="mt-8 border-t border-slate-50 dark:border-slate-700 pt-6">
-                <h3 class="text-base font-semibold text-emerald-900 dark:text-emerald-400">سجل الطلب</h3>
+                <h3 class="text-base font-semibold text-emerald-900 dark:text-emerald-100">سجل الطلب</h3>
                 @php
                     $statusLabels = [
                         'new' => 'جديد',
@@ -231,17 +231,17 @@
                         <div class="rounded-2xl border border-slate-50 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 p-4">
                             <div class="flex items-center justify-between gap-2">
                                 <p class="text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $event->message ?? 'تحديث جديد' }}</p>
-                                <span class="text-xs text-slate-400">{{ $event->created_at->format('Y-m-d H:i') }}</span>
+                                <span class="text-xs text-slate-100">{{ $event->created_at->format('Y-m-d H:i') }}</span>
                             </div>
                             <p class="mt-2 text-xs text-slate-9000 dark:text-slate-50">الجهة: {{ $event->actor?->name ?? 'النظام' }}</p>
                             @if ($event->old_status || $event->new_status)
-                                <p class="mt-1 text-xs text-slate-900 dark:text-slate-400">
+                                <p class="mt-1 text-xs text-slate-900 dark:text-slate-100">
                                     الحالة: {{ $statusLabels[$event->old_status] ?? '-' }} → {{ $statusLabels[$event->new_status] ?? '-' }}
                                 </p>
                             @endif
                         </div>
                     @empty
-                        <p class="text-sm text-slate-900 dark:text-slate-400">لا توجد تحديثات مسجلة بعد.</p>
+                        <p class="text-sm text-slate-900 dark:text-slate-100">لا توجد تحديثات مسجلة بعد.</p>
                     @endforelse
                 </div>
             </div>

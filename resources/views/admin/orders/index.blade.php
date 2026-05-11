@@ -30,13 +30,13 @@
         </form>
 
         @if (session('status'))
-            <div class="mt-6 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-400">
+            <div class="mt-6 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-100">
                 {{ session('status') }}
             </div>
         @endif
 
         <x-table class="mt-6">
-            <thead class="bg-slate-50 dark:bg-slate-700/50 text-slate-900 dark:text-slate-400">
+            <thead class="bg-slate-50 dark:bg-slate-700/50 text-slate-900 dark:text-slate-100">
                     <tr>
                         <th class="py-2">المستخدم</th>
                         <th class="py-2">الخدمة</th>
@@ -65,7 +65,7 @@
                                     <x-badge>ملغي</x-badge>
                                 @endif
                             </td>
-                            <td class="py-3 text-slate-900 dark:text-slate-400" data-label="التاريخ">{{ $order->created_at->format('Y-m-d') }}</td>
+                            <td class="py-3 text-slate-900 dark:text-slate-100" data-label="التاريخ">{{ $order->created_at->format('Y-m-d') }}</td>
                             <td class="py-3" data-label="إجراءات">
                                 <div class="admin-inline-actions">
                                     <a href="{{ route('admin.orders.show', $order) }}" class="admin-inline-link">عرض</a>
@@ -81,7 +81,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="py-6 text-center text-slate-900 dark:text-slate-400">لا توجد طلبات.</td>
+                            <td colspan="6" class="py-6 text-center text-slate-900 dark:text-slate-100">لا توجد طلبات.</td>
                         </tr>
                     @endforelse
                 </tbody>

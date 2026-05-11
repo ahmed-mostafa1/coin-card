@@ -85,17 +85,17 @@
                      class="h-12 w-12 flex-shrink-0 rounded-full object-cover border-2 border-emerald-200 dark:border-emerald-800 shadow-sm">
             @else
                 <div class="h-12 w-12 flex-shrink-0 rounded-full bg-emerald-100 dark:bg-emerald-900 flex items-center justify-center">
-                    <i class="fa-solid fa-layer-group text-emerald-600 dark:text-emerald-400"></i>
+                    <i class="fa-solid fa-layer-group text-emerald-600 dark:text-emerald-100"></i>
                 </div>
             @endif
             <div class="min-w-0">
                 <h1 class="text-base font-bold text-slate-800 dark:text-slate-50 leading-tight truncate">{{ $category->localized_name }}</h1>
                 {{-- Breadcrumb --}}
                 <div class="flex items-center gap-1 text-xs text-slate-9000 dark:text-slate-50 mt-0.5">
-                    <a href="{{ route('home') }}" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition">{{ __('messages.home') }}</a>
+                    <a href="{{ route('home') }}" class="hover:text-emerald-600 dark:hover:text-emerald-100 transition">{{ __('messages.home') }}</a>
                     @if($category->parent)
                         <i class="fa-solid fa-chevron-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} text-[9px]"></i>
-                        <a href="{{ route('categories.show', $category->parent->slug) }}" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition truncate">{{ $category->parent->localized_name }}</a>
+                        <a href="{{ route('categories.show', $category->parent->slug) }}" class="hover:text-emerald-600 dark:hover:text-emerald-100 transition truncate">{{ $category->parent->localized_name }}</a>
                     @endif
                     <i class="fa-solid fa-chevron-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} text-[9px]"></i>
                     <span class="truncate text-slate-700 dark:text-slate-50 font-medium">{{ $category->localized_name }}</span>

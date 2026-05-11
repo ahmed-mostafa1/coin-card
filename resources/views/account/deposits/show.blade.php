@@ -50,7 +50,7 @@
             @if ($depositRequest->paymentMethod && $depositRequest->paymentMethod->fields->isNotEmpty())
                 <div class="mt-6 rounded-2xl border border-slate-50 dark:border-slate-700 bg-white dark:bg-slate-900 p-4">
                     <p class="text-xs text-slate-700 dark:text-slate-50">{{ __('messages.additional_details_label') }}</p>
-                    <div class="mt-3 space-y-2 text-sm text-slate-700">
+                    <div class="mt-3 space-y-2 text-sm text-slate-700 dark:text-slate-50">
                         @foreach ($depositRequest->paymentMethod->fields->sortBy('sort_order') as $field)
                             <div class="flex items-center justify-between gap-4">
                                 <p class="text-xs text-slate-700 dark:text-slate-50">{{ $field->label }}</p>

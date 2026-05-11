@@ -7,7 +7,7 @@
         {{-- Header Section --}}
         <div class="text-center">
             <h1 class="text-3xl font-bold text-slate-900 dark:text-slate-50">{{ __('messages.login') }}</h1>
-            <p class="mt-3 text-base text-slate-900 dark:text-slate-400">{{ __('messages.login_desc') }}</p>
+            <p class="mt-3 text-base text-slate-900 dark:text-slate-100">{{ __('messages.login_desc') }}</p>
         </div>
 
         {{-- Status Messages --}}
@@ -24,7 +24,7 @@
                 <x-input-label for="email" :value="__('messages.email_label')" class="text-sm font-semibold text-slate-900 dark:text-slate-50" />
                 <x-text-input id="email" name="email" type="email" :value="old('email')" required autofocus
                     autocomplete="username" 
-                    class="block w-full rounded-xl border-slate-50 dark:border-slate-900 bg-slate-50 dark:bg-slate-800 px-4 py-3 text-slate-900 dark:text-slate-50 placeholder-slate-400 transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20" 
+                    class="block w-full rounded-xl border-slate-50 dark:border-slate-900 bg-slate-50 dark:bg-slate-800 px-4 py-3 text-slate-900 dark:text-slate-50 placeholder-slate-100 transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20" 
                     placeholder="user@example.com" />
                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
             </div>
@@ -33,7 +33,7 @@
             <div class="space-y-2">
                 <x-input-label for="password" :value="__('messages.password_label')" class="text-sm font-semibold text-slate-900 dark:text-slate-50" />
                 <x-text-input id="password" name="password" type="password" required autocomplete="current-password"
-                    class="block w-full rounded-xl border-slate-50 dark:border-slate-900 bg-slate-50 dark:bg-slate-800 px-4 py-3 text-slate-900 dark:text-slate-50 placeholder-slate-400 transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+                    class="block w-full rounded-xl border-slate-50 dark:border-slate-900 bg-slate-50 dark:bg-slate-800 px-4 py-3 text-slate-900 dark:text-slate-50 placeholder-slate-100 transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
                     placeholder="••••••••" />
                 <x-input-error :messages="$errors->get('password')" class="mt-2" />
             </div>
@@ -46,7 +46,7 @@
                     {{ __('messages.remember_me') }}
                 </label>
                 <a href="{{ route('password.request') }}"
-                    class="text-sm font-semibold text-emerald-600 dark:text-emerald-500 transition hover:text-emerald-900 dark:hover:text-emerald-400">
+                    class="text-sm font-semibold text-emerald-600 dark:text-emerald-500 transition hover:text-emerald-900 dark:hover:text-emerald-100">
                     {{ __('messages.forgot_password') }}
                 </a>
             </div>
@@ -63,7 +63,7 @@
                 <div class="w-full border-t border-slate-50 dark:border-slate-700"></div>
             </div>
             <div class="relative flex justify-center text-sm">
-                <span class="bg-white dark:bg-slate-800 px-4 text-slate-900 dark:text-slate-400 font-medium">{{ __('messages.or') }}</span>
+                <span class="bg-white dark:bg-slate-800 px-4 text-slate-900 dark:text-slate-100 font-medium">{{ __('messages.or') }}</span>
             </div>
         </div>
 
@@ -83,10 +83,10 @@
 
         {{-- Sign Up Link --}}
         <div class="text-center">
-            <p class="text-sm text-slate-900 dark:text-slate-400">
+            <p class="text-sm text-slate-900 dark:text-slate-100">
                 {{ __('messages.dont_have_account') }}
                 <a href="{{ route('register') }}"
-                    class="font-semibold text-emerald-600 dark:text-emerald-500 transition hover:text-emerald-900 dark:hover:text-emerald-400">
+                    class="font-semibold text-emerald-600 dark:text-emerald-500 transition hover:text-emerald-900 dark:hover:text-emerald-100">
                     {{ __('messages.create_new_account') }}
                 </a>
             </p>

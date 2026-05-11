@@ -275,7 +275,7 @@
     }
 
     .dark .cc-nav-link {
-        @apply border-emerald-700 bg-slate-800 text-slate-50 hover:border-emerald-600 hover:bg-slate-700 hover:text-emerald-400;
+        @apply border-emerald-700 bg-slate-800 text-slate-50 hover:border-emerald-600 hover:bg-slate-700 hover:text-emerald-100;
     }
 
     .cc-nav-link-pill {
@@ -283,7 +283,7 @@
     }
 
     .dark .cc-nav-link-pill {
-        @apply border-emerald-600 bg-emerald-900 text-emerald-300 hover:bg-emerald-800;
+        @apply border-emerald-600 bg-emerald-900 text-emerald-100 hover:bg-emerald-800;
     }
 
     .cc-pill {
@@ -291,7 +291,7 @@
     }
 
     .dark .cc-pill {
-        @apply border-emerald-700 bg-slate-800 text-slate-50 hover:border-emerald-600 hover:bg-slate-700 hover:text-emerald-400;
+        @apply border-emerald-700 bg-slate-800 text-slate-50 hover:border-emerald-600 hover:bg-slate-700 hover:text-emerald-100;
     }
 
     .cc-pill-active {
@@ -299,7 +299,7 @@
     }
 
     .dark .cc-pill-active {
-        @apply border-emerald-600 bg-emerald-900 text-emerald-300 hover:bg-emerald-800;
+        @apply border-emerald-600 bg-emerald-900 text-emerald-100 hover:bg-emerald-800;
     }
 
     .cc-nav-utility {
@@ -327,7 +327,7 @@
     }
 
     .dark .cc-nav-cta-secondary {
-        @apply border-slate-700 bg-slate-900 text-slate-50 hover:border-emerald-700 hover:text-emerald-300;
+        @apply border-slate-700 bg-slate-900 text-slate-50 hover:border-emerald-700 hover:text-emerald-100;
     }
 
     .cc-profile-chip {
@@ -351,7 +351,7 @@
     }
 
     .dark .cc-nav-tab {
-        @apply text-slate-400 hover:bg-slate-800 hover:text-white;
+        @apply text-slate-100 hover:bg-slate-800 hover:text-white;
     }
 
     .cc-nav-tab-active {
@@ -359,7 +359,7 @@
     }
 
     .dark .cc-nav-tab-active {
-        @apply bg-emerald-950/30 text-emerald-300;
+        @apply bg-emerald-950/30 text-emerald-100;
     }
 
     .cc-rich-editor {
@@ -381,7 +381,7 @@
     }
 
     .cc-rich-editor .ql-editor.ql-blank::before {
-        @apply text-slate-400 not-italic dark:text-slate-50;
+        @apply text-slate-100 not-italic dark:text-slate-50;
     }
 
     .cc-rich-editor .ql-snow .ql-stroke {
@@ -402,7 +402,7 @@
     }
 
     .cc-rich-editor .ql-snow a {
-        @apply text-emerald-700 dark:text-emerald-300;
+        @apply text-emerald-700 dark:text-emerald-100;
     }
 
     .admin-dashboard-shell {
@@ -414,7 +414,7 @@
     }
 
     .admin-dashboard-eyebrow {
-        @apply inline-flex w-fit items-center rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-black text-emerald-900 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-300;
+        @apply inline-flex w-fit items-center rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-black text-emerald-900 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-100;
     }
 
     .admin-dashboard-primary-link {
@@ -430,11 +430,11 @@
     }
 
     .admin-dashboard-card-icon {
-        @apply inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-sm text-emerald-900 dark:bg-emerald-950/35 dark:text-emerald-300;
+        @apply inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-sm text-emerald-900 dark:bg-emerald-950/35 dark:text-emerald-100;
     }
 
     .admin-dashboard-link {
-        @apply flex min-h-12 w-full items-center gap-3 rounded-2xl border border-slate-50 bg-slate-50 px-3.5 py-3 text-sm font-bold text-slate-700 transition hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 active:scale-[0.99] dark:border-slate-700 dark:bg-slate-800/85 dark:text-slate-50 dark:hover:border-emerald-800 dark:hover:bg-emerald-950/25 dark:hover:text-emerald-200 motion-reduce:transform-none;
+        @apply flex min-h-12 w-full items-center gap-3 rounded-2xl border border-slate-50 bg-slate-50 px-3.5 py-3 text-sm font-bold text-slate-700 transition hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 active:scale-[0.99] dark:border-slate-700 dark:bg-slate-800/85 dark:text-slate-50 dark:hover:border-emerald-800 dark:hover:bg-emerald-950/25 dark:hover:text-emerald-100 motion-reduce:transform-none;
     }
 
     .admin-dashboard-link-icon {
@@ -454,7 +454,7 @@
     }
 
     .admin-action-button-secondary {
-        @apply border border-slate-50 bg-white text-slate-700 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50 dark:hover:border-emerald-800 dark:hover:bg-emerald-950/25 dark:hover:text-emerald-300;
+        @apply border border-slate-50 bg-white text-slate-700 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50 dark:hover:border-emerald-800 dark:hover:bg-emerald-950/25 dark:hover:text-emerald-100;
     }
 
     .admin-action-button-danger {
@@ -470,7 +470,7 @@
     }
 
     .admin-inline-link {
-        @apply inline-flex min-h-10 items-center justify-center rounded-xl border border-slate-50 bg-white px-3 py-2 text-sm font-bold text-slate-700 transition hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50 dark:hover:border-emerald-800 dark:hover:bg-emerald-950/25 dark:hover:text-emerald-300;
+        @apply inline-flex min-h-10 items-center justify-center rounded-xl border border-slate-50 bg-white px-3 py-2 text-sm font-bold text-slate-700 transition hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50 dark:hover:border-emerald-800 dark:hover:bg-emerald-950/25 dark:hover:text-emerald-100;
     }
 
     .admin-inline-link-danger {
@@ -497,7 +497,7 @@
     }
 
     .dark .store-search {
-        @apply border-slate-900 bg-slate-800 text-slate-50 placeholder:text-slate-400 focus:border-emerald-500 focus:bg-slate-800 focus:ring-emerald-600;
+        @apply border-slate-900 bg-slate-800 text-slate-50 placeholder:text-slate-100 focus:border-emerald-500 focus:bg-slate-800 focus:ring-emerald-600;
     }
 
     .store-card {
@@ -604,7 +604,7 @@
         /* Label from data-label attribute - displayed above value */
         .rt-table td::before {
             content: attr(data-label);
-            @apply block text-xs font-semibold uppercase tracking-wide text-slate-900 dark:text-slate-400 mb-1.5;
+            @apply block text-xs font-semibold uppercase tracking-wide text-slate-900 dark:text-slate-100 mb-1.5;
         }
 
         /* Value styling - more prominent */
@@ -728,7 +728,7 @@
     }
 
     .dark .home-btn--secondary {
-        @apply border-slate-700 bg-slate-900 text-slate-50 hover:border-emerald-700 hover:text-emerald-300;
+        @apply border-slate-700 bg-slate-900 text-slate-50 hover:border-emerald-700 hover:text-emerald-100;
     }
 
     .home-btn--ghost {
@@ -857,7 +857,7 @@
     }
 
     .dark .home-balance-tile__label {
-        @apply text-slate-400;
+        @apply text-slate-100;
     }
 
     .home-balance-tile__value {
@@ -913,7 +913,7 @@
     }
 
     .dark .home-account-card__vip-badge i {
-        @apply text-emerald-300;
+        @apply text-emerald-100;
     }
 
     .home-account-card__heading {
@@ -986,7 +986,7 @@
     }
 
     .dark .home-balance-tile__icon--success {
-        @apply bg-emerald-500/15 text-emerald-300;
+        @apply bg-emerald-500/15 text-emerald-100;
     }
 
     .home-account-card__actions {
@@ -1048,7 +1048,7 @@
     }
 
     .dark .home-feature-card__icon {
-        @apply bg-emerald-950/40 text-emerald-300;
+        @apply bg-emerald-950/40 text-emerald-100;
     }
 
     .home-feature-card__title {

@@ -5,13 +5,13 @@
 @section('content')
     <div class="space-y-6">
         <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-8 shadow-sm">
-            <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">تكامل MarketCard99</h1>
+            <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-100">تكامل MarketCard99</h1>
             <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-50">
                 مزامنة الكتالوج الخارجي ومزامنة حالات الطلبات يدوياً.
             </p>
 
             @if (session('status'))
-                <div class="mt-4 rounded-lg border border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-300">
+                <div class="mt-4 rounded-lg border border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-100">
                     {{ session('status') }}
                 </div>
             @endif
@@ -41,7 +41,7 @@
 
         <div class="grid gap-6 lg:grid-cols-2">
             <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-6 shadow-sm">
-                <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">آخر مزامنة كتالوج</h2>
+                <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-100">آخر مزامنة كتالوج</h2>
                 @php
                     $catalog = session('catalog_result', $catalogSummary);
                 @endphp
@@ -70,12 +70,12 @@
                         </div>
                     @endif
                 @else
-                    <p class="mt-4 text-sm text-slate-900 dark:text-slate-400">لا يوجد سجل مزامنة بعد.</p>
+                    <p class="mt-4 text-sm text-slate-900 dark:text-slate-100">لا يوجد سجل مزامنة بعد.</p>
                 @endif
             </div>
 
             <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-6 shadow-sm">
-                <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">آخر مزامنة حالات الطلبات</h2>
+                <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-100">آخر مزامنة حالات الطلبات</h2>
                 @php
                     $orders = session('orders_result', $orderSummary);
                 @endphp
@@ -100,7 +100,7 @@
                         </div>
                     @endif
                 @else
-                    <p class="mt-4 text-sm text-slate-900 dark:text-slate-400">لا يوجد سجل مزامنة بعد.</p>
+                    <p class="mt-4 text-sm text-slate-900 dark:text-slate-100">لا يوجد سجل مزامنة بعد.</p>
                 @endif
             </div>
         </div>

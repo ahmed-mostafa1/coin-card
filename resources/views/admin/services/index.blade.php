@@ -7,7 +7,7 @@
     <div class="rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm transition-colors duration-200 sm:p-6 lg:p-8">
         <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div>
-                <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">{{ __('messages.services_page_title') }}</h1>
+                <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-100">{{ __('messages.services_page_title') }}</h1>
                 <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-50">{{ __('messages.services_page_desc') }}</p>
             </div>
             <div class="admin-action-bar lg:w-auto">
@@ -18,7 +18,7 @@
                                value="{{ request('search') }}" 
                                placeholder=".." 
                                class="min-h-11 w-full rounded-xl border border-slate-50 bg-slate-50 py-2.5 pr-10 pl-4 text-sm outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-1 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-900/50 dark:text-white dark:focus:border-emerald-500 dark:focus:bg-slate-900">
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400">
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-slate-100">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                             </svg>
@@ -38,13 +38,13 @@
         </div>
 
         @if (session('status'))
-            <div class="mt-6 rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-400">
+            <div class="mt-6 rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-100">
                 {{ session('status') }}
             </div>
         @endif
 
         <x-table class="mt-6">
-            <thead class="border-b border-slate-50 dark:border-slate-700 text-slate-900 dark:text-slate-400">
+            <thead class="border-b border-slate-50 dark:border-slate-700 text-slate-900 dark:text-slate-100">
                 <tr>
                     <th class="py-2">{{ __('messages.name_label') }}</th>
                     <th class="py-2">{{ __('messages.category') }}</th>
@@ -63,7 +63,7 @@
                                 <span>{{ $service->name }}</span>
                             </div>
                         </td>
-                        <td class="py-3 text-slate-900 dark:text-slate-400" data-label="{{ __('messages.category') }}">{{ $service->category?->name }}</td>
+                        <td class="py-3 text-slate-900 dark:text-slate-100" data-label="{{ __('messages.category') }}">{{ $service->category?->name }}</td>
                         <td class="py-3 text-slate-700 dark:text-white" data-label="{{ __('messages.price') }}">{{ number_format($service->price, 2) }} USD</td>
                         <td class="py-3" data-label="المصدر">
                             @if (empty($service->source) || $service->source === 'manual')
@@ -86,7 +86,7 @@
                         </td>
                         <td class="py-3" data-label="{{ __('messages.status') }}">
                             @if ($service->is_active)
-                                <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/50 px-3 py-1 text-xs text-emerald-900 dark:text-emerald-400">{{ __('messages.status_active') }}</span>
+                                <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/50 px-3 py-1 text-xs text-emerald-900 dark:text-emerald-100">{{ __('messages.status_active') }}</span>
                             @else
                                 <span class="rounded-full bg-rose-100 dark:bg-rose-900/50 px-3 py-1 text-xs text-rose-700 dark:text-rose-400">{{ __('messages.status_inactive') }}</span>
                             @endif
@@ -105,7 +105,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="py-6 text-center text-slate-900 dark:text-slate-400">{{ __('messages.no_services_yet') }}</td>
+                        <td colspan="7" class="py-6 text-center text-slate-900 dark:text-slate-100">{{ __('messages.no_services_yet') }}</td>
                     </tr>
                 @endforelse
             </tbody>

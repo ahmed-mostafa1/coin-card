@@ -7,10 +7,10 @@
 <div class="rounded-3xl border border-emerald-100 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800">
     <div class="flex flex-wrap items-center justify-between gap-3">
         <div>
-            <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">عملات طريقة الدفع</h2>
-            <p class="mt-1 text-sm text-slate-900 dark:text-slate-400">فعّل العملات المدعومة واضبط العمولة والحدود لكل عملة.</p>
+            <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-100">عملات طريقة الدفع</h2>
+            <p class="mt-1 text-sm text-slate-900 dark:text-slate-100">فعّل العملات المدعومة واضبط العمولة والحدود لكل عملة.</p>
         </div>
-        <a href="{{ route('admin.currencies.index') }}" class="text-sm font-semibold text-emerald-900 dark:text-emerald-400">إدارة العملات</a>
+        <a href="{{ route('admin.currencies.index') }}" class="text-sm font-semibold text-emerald-900 dark:text-emerald-100">إدارة العملات</a>
     </div>
 
     <div class="mt-4 space-y-4">

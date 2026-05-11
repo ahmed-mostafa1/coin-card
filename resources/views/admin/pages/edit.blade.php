@@ -7,8 +7,8 @@
     <div class="space-y-6">
         <div class="flex items-center justify-between">
             <div>
-                <h1 class="text-2xl font-semibold text-emerald-800 dark:text-emerald-400">إدارة الصفحات</h1>
-                <p class="mt-1 text-sm text-slate-900 dark:text-slate-400">تحكم بمحتوى صفحات من نحن وسياسة الخصوصية وشروط الاستخدام.</p>
+                <h1 class="text-2xl font-semibold text-emerald-800 dark:text-emerald-100">إدارة الصفحات</h1>
+                <p class="mt-1 text-sm text-slate-900 dark:text-slate-100">تحكم بمحتوى صفحات من نحن وسياسة الخصوصية وشروط الاستخدام.</p>
             </div>
             <a href="{{ route('dashboard') }}" class="rounded-full bg-slate-50 dark:bg-slate-700 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-slate-50 transition hover:bg-slate-50 dark:hover:bg-slate-900">
                 <i class="fa-solid fa-arrow-right ml-2 rtl:ml-0 rtl:mr-2"></i> {{ __('messages.dashboard') ?? 'لوحة التحكم' }}
@@ -16,7 +16,7 @@
         </div>
 
         @if (session('status'))
-            <div class="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-400">
+            <div class="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-100">
                 {{ session('status') }}
             </div>
         @endif

@@ -60,7 +60,7 @@
 🔗 Single action:
 -->
 <td class="py-3" data-label="Actions">
-    <a href="#" class="text-emerald-900 dark:text-emerald-400">View</a>
+    <a href="#" class="text-emerald-900 dark:text-emerald-100">View</a>
 </td>
 
 <!--
@@ -68,7 +68,7 @@
 -->
 <td class="py-3" data-label="Actions">
     <div class="flex flex-wrap gap-2 text-xs">
-        <a href="#" class="text-emerald-900 dark:text-emerald-400">View</a>
+        <a href="#" class="text-emerald-900 dark:text-emerald-100">View</a>
         <a href="#" class="text-blue-700 dark:text-blue-400">Edit</a>
         <form method="POST" action="#" class="inline">
             @csrf
@@ -100,7 +100,7 @@
         <td class="py-3 text-slate-700 dark:text-slate-50" data-label="Label">Content</td>
         
         <!-- Muted text cell -->
-        <td class="py-3 text-slate-900 dark:text-slate-400" data-label="Label">Content</td>
+        <td class="py-3 text-slate-900 dark:text-slate-100" data-label="Label">Content</td>
         
         <!-- Component cell (badge, etc) -->
         <td class="py-3" data-label="Label">
@@ -110,7 +110,7 @@
     
     <!-- Empty state -->
     <tr>
-        <td colspan="7" class="py-6 text-center text-slate-900 dark:text-slate-400">
+        <td colspan="7" class="py-6 text-center text-slate-900 dark:text-slate-100">
             No data available
         </td>
     </tr>

@@ -27,7 +27,7 @@
         <x-input-error :messages="$errors->get('sort_order')" />
     </div>
 </div>
-<label class="flex items-center gap-3 text-sm text-slate-900 dark:text-slate-400">
+<label class="flex items-center gap-3 text-sm text-slate-900 dark:text-slate-100">
     <input type="checkbox" name="is_enabled" value="1" class="rounded border-slate-50 text-emerald-600" @checked(old('is_enabled', $currency?->is_enabled ?? true))>
     العملة مفعلة
 </label>

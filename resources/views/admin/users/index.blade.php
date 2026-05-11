@@ -8,7 +8,7 @@
         <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-8 shadow-sm">
             <div class="flex flex-wrap items-center justify-between gap-4">
                 <div>
-                    <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">{{ __('messages.users_management') }}</h1>
+                    <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-100">{{ __('messages.users_management') }}</h1>
                     <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-50">{{ __('messages.users_management_desc') }}</p>
                 </div>
                 <form method="GET" action="{{ route('admin.users.index') }}" class="flex items-center gap-2">
@@ -43,17 +43,17 @@
                                     <span class="rounded-full bg-amber-100 dark:bg-amber-900/50 px-3 py-1 text-xs text-amber-700 dark:text-amber-400">{{ __('messages.status_frozen') }}</span>
                                 @endif
                                 @if (! $user->is_banned && ! $user->is_frozen)
-                                    <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/50 px-3 py-1 text-xs text-emerald-900 dark:text-emerald-400">{{ __('messages.active_user') }}</span>
+                                    <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/50 px-3 py-1 text-xs text-emerald-900 dark:text-emerald-100">{{ __('messages.active_user') }}</span>
                                 @endif
                             </td>
-                            <td class="py-3 text-slate-900 dark:text-slate-400">{{ $user->created_at->format('Y-m-d') }}</td>
+                            <td class="py-3 text-slate-900 dark:text-slate-100">{{ $user->created_at->format('Y-m-d') }}</td>
                             <td class="py-3">
-                                <a href="{{ route('admin.users.show', $user) }}" class="text-emerald-900 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">{{ __('messages.view_link') }}</a>
+                                <a href="{{ route('admin.users.show', $user) }}" class="text-emerald-900 dark:text-emerald-100 hover:text-emerald-900 dark:hover:text-emerald-100">{{ __('messages.view_link') }}</a>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="py-4 text-center text-slate-900 dark:text-slate-400">{{ __('messages.no_users_found') }}</td>
+                            <td colspan="4" class="py-4 text-center text-slate-900 dark:text-slate-100">{{ __('messages.no_users_found') }}</td>
                         </tr>
                     @endforelse
                 </tbody>

@@ -66,7 +66,7 @@
                             <p><span class="font-semibold">Tier Name (AR):</span> {{ $vipTier->title_ar }}</p>
                             <p><span class="font-semibold">Rank:</span> {{ $vipTier->rank }}</p>
                             <p><span class="font-semibold text-emerald-900 dark:text-emerald-50">Discount Percentage:</span>
-                                <span class="text-lg font-bold text-emerald-900">{{ $vipTier->discount_percentage }}%</span></p>
+                                <span class="text-lg font-bold text-emerald-900 dark:text-emerald-50 dark:bg-emerald-900 dark:border-emerald-700">{{ $vipTier->discount_percentage }}%</span></p>
                             <p><span class="font-semibold">Required Deposits:</span>
                                 ${{ number_format($vipTier->deposits_required, 2) }}</p>
                         </div>
@@ -81,7 +81,7 @@
                     <h2 class="text-lg font-semibold text-emerald-900 mb-3">4. Discount Calculation</h2>
                     <div class="space-y-2 text-sm">
                         <p><span class="font-semibold">VIP Discount:</span> <span
-                                class="text-2xl font-bold text-emerald-900">{{ $vipDiscount }}%</span></p>
+                                class="text-2xl font-bold text-emerald-900 dark:text-emerald-50 dark:bg-emerald-900 dark:border-emerald-700">{{ $vipDiscount }}%</span></p>
 
                         @if ($vipDiscount > 0)
                             <div class="mt-4 p-3 bg-white rounded border border-emerald-200">

@@ -5,8 +5,8 @@
 @section('content')
     <div class="w-full rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm transition-colors duration-200">
         <div class="flex items-center justify-between">
-            <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">{{ __('messages.edit_button') }}</h1>
-            <a href="{{ route('admin.payment-methods.edit', $paymentMethod) }}" class="text-sm text-emerald-900 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300">{{ __('messages.back_to_payment_method') }}</a>
+            <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-100">{{ __('messages.edit_button') }}</h1>
+            <a href="{{ route('admin.payment-methods.edit', $paymentMethod) }}" class="text-sm text-emerald-900 dark:text-emerald-100 hover:text-emerald-800 dark:hover:text-emerald-100">{{ __('messages.back_to_payment_method') }}</a>
         </div>
 
         @if ($errors->any())

@@ -5,8 +5,8 @@
 
 @section('content')
     <div class="w-full rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm transition-colors duration-200">
-        <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">{{ __('messages.add_payment_method') }}</h1>
-        <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-400">{{ __('messages.enter_payment_method_details') }}</p>
+        <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-100">{{ __('messages.add_payment_method') }}</h1>
+        <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-100">{{ __('messages.enter_payment_method_details') }}</p>
 
         <form method="POST" action="{{ route('admin.payment-methods.store') }}" enctype="multipart/form-data" class="mt-6 space-y-4">
             @csrf
@@ -43,7 +43,7 @@
 
             <div>
                 <x-input-label for="icon" :value="__('messages.icon_optional')" />
-                <input id="icon" name="icon" type="file" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-900 dark:text-slate-50 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-800 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-900 dark:file:text-emerald-300">
+                <input id="icon" name="icon" type="file" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-900 dark:text-slate-50 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-800 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-900 dark:file:text-emerald-100">
                 <p class="mt-1 text-xs text-slate-900 dark:text-slate-50">{{ __('messages.recommended_size') }}: 200x200 px</p>
                 <x-input-error :messages="$errors->get('icon')" />
             </div>
@@ -54,7 +54,7 @@
                 <x-input-error :messages="$errors->get('account_number')" />
             </div>
 
-            <div class="flex flex-col gap-3 text-sm text-slate-900 dark:text-slate-400">
+            <div class="flex flex-col gap-3 text-sm text-slate-900 dark:text-slate-100">
                 <label class="flex items-center gap-3">
                     <input id="show_account_number" name="show_account_number" type="checkbox" value="1"
                         class="rounded border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500"
@@ -76,7 +76,7 @@
             </div>
 
 
-            <div class="flex items-center gap-3 text-sm text-slate-900 dark:text-slate-400">
+            <div class="flex items-center gap-3 text-sm text-slate-900 dark:text-slate-100">
                 <input id="is_active" name="is_active" type="checkbox" value="1" class="rounded border-slate-300 dark:border-slate-900 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" checked>
                 <label for="is_active">{{ __('messages.activate_payment_method') }}</label>
             </div>
@@ -96,8 +96,8 @@
 
             <div class="rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm transition-colors duration-200">
                 <div class="flex items-center justify-between">
-                    <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-400">{{ __('messages.additional_fields') }}</h2>
-                    <button type="button" class="text-sm font-semibold text-emerald-900 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300" data-field-add>{{ __('messages.add_field') }}</button>
+                    <h2 class="text-lg font-semibold text-emerald-900 dark:text-emerald-100">{{ __('messages.additional_fields') }}</h2>
+                    <button type="button" class="text-sm font-semibold text-emerald-900 dark:text-emerald-100 hover:text-emerald-800 dark:hover:text-emerald-100" data-field-add>{{ __('messages.add_field') }}</button>
                 </div>
                 <div class="mt-4 space-y-4" data-fields-container>
                     @foreach ($fields as $index => $field)
@@ -131,7 +131,7 @@
                                         <option value="textarea" @selected(($field['type'] ?? 'text') === 'textarea')>{{ __('messages.field_type_textarea') }}</option>
                                     </select>
                                 </div>
-                                <div class="flex items-center gap-2 text-sm text-slate-900 dark:text-slate-400">
+                                <div class="flex items-center gap-2 text-sm text-slate-900 dark:text-slate-100">
                                     <input type="checkbox" name="fields[{{ $index }}][is_required]" value="1" class="rounded border-slate-300 dark:border-slate-900 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" {{ ($field['is_required'] ?? true) ? 'checked' : '' }}>
                                     {{ __('messages.required_field') }}
                                 </div>
@@ -202,7 +202,7 @@
                                         <option value="textarea">{{ __('messages.field_type_textarea') }}</option>
                                     </select>
                                 </div>
-                                <div class="flex items-center gap-2 text-sm text-slate-900 dark:text-slate-400">
+                                <div class="flex items-center gap-2 text-sm text-slate-900 dark:text-slate-100">
                                     <input type="checkbox" name="fields[${index}][is_required]" value="1" class="rounded border-slate-300 dark:border-slate-900 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" checked>
                                     {{ __('messages.required_field') }}
                                 </div>

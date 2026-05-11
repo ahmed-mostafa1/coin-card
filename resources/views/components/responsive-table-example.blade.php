@@ -28,7 +28,7 @@
     </thead>
     <tbody class="divide-y divide-slate-50 dark:divide-slate-700">
         <tr class="transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
-            <td class="py-3 text-slate-900 dark:text-slate-400" data-label="Order ID">#12345</td>
+            <td class="py-3 text-slate-900 dark:text-slate-100" data-label="Order ID">#12345</td>
             <td class="py-3 text-slate-700 dark:text-slate-50" data-label="Customer">
                 Ahmed Mostafa
                 <div class="text-xs text-slate-9000 dark:text-slate-50">ahmed@example.com</div>
@@ -39,7 +39,7 @@
             </td>
             <td class="py-3" data-label="Actions">
                 <div class="flex flex-wrap gap-2 text-xs">
-                    <a href="#" class="text-emerald-900 dark:text-emerald-400 hover:text-emerald-900">View</a>
+                    <a href="#" class="text-emerald-900 dark:text-emerald-100 hover:text-emerald-900 dark:text-emerald-50 dark:bg-emerald-900 dark:border-emerald-700">View</a>
                     <a href="#" class="text-blue-700 dark:text-blue-400 hover:text-blue-900">Edit</a>
                 </div>
             </td>
@@ -66,7 +66,7 @@
     </thead>
     <tbody class="divide-y divide-slate-50 dark:divide-slate-700">
         <tr class="transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
-            <td class="py-3 text-slate-900 dark:text-slate-400" data-label="رقم الطلب">#123</td>
+            <td class="py-3 text-slate-900 dark:text-slate-100" data-label="رقم الطلب">#123</td>
             <td class="py-3 text-slate-700 dark:text-slate-50" data-label="المستخدم">
                 أحمد مصطفى
                 <div class="text-xs text-slate-9000 dark:text-slate-50">ahmed@example.com</div>
@@ -76,9 +76,9 @@
             <td class="py-3" data-label="الحالة">
                 <x-badge type="pending">قيد المراجعة</x-badge>
             </td>
-            <td class="py-3 text-slate-900 dark:text-slate-400" data-label="التاريخ">2026-01-30 19:45</td>
+            <td class="py-3 text-slate-900 dark:text-slate-100" data-label="التاريخ">2026-01-30 19:45</td>
             <td class="py-3" data-label="عرض">
-                <a href="#" class="text-emerald-900 dark:text-emerald-400 hover:text-emerald-900">عرض</a>
+                <a href="#" class="text-emerald-900 dark:text-emerald-100 hover:text-emerald-900 dark:text-emerald-50 dark:bg-emerald-900 dark:border-emerald-700">عرض</a>
             </td>
         </tr>
     </tbody>

@@ -7,8 +7,8 @@
     <div class="space-y-6">
         <div class="flex items-center justify-between">
             <div>
-                <h1 class="text-2xl font-semibold text-emerald-800 dark:text-emerald-400">إعدادات الموقع</h1>
-                <p class="mt-1 text-sm text-slate-900 dark:text-slate-400">تحكم في الإعدادات العامة، الشعار، وروابط التواصل الاجتماعي.</p>
+                <h1 class="text-2xl font-semibold text-emerald-800 dark:text-emerald-100">إعدادات الموقع</h1>
+                <p class="mt-1 text-sm text-slate-900 dark:text-slate-100">تحكم في الإعدادات العامة، الشعار، وروابط التواصل الاجتماعي.</p>
             </div>
             <a href="{{ route('dashboard') }}" class="rounded-full bg-slate-50 dark:bg-slate-700 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-slate-50 transition hover:bg-slate-50 dark:hover:bg-slate-900">
                 <i class="fa-solid fa-arrow-right ml-2 rtl:ml-0 rtl:mr-2"></i> {{ __('messages.dashboard') ?? 'لوحة التحكم' }}
@@ -16,7 +16,7 @@
         </div>
 
         @if (session('status'))
-            <div class="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-400">
+            <div class="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-100">
                 {{ session('status') }}
             </div>
         @endif
@@ -71,7 +71,7 @@
                     </div>
                     <div class="border-t border-slate-50 pt-5 dark:border-slate-700">
                         <h3 class="text-lg font-semibold text-slate-800 dark:text-slate-50">نصوص الهيرو في الصفحة الرئيسية</h3>
-                        <p class="mt-1 text-sm text-slate-900 dark:text-slate-400">هذه الحقول تتحكم في العنوان والوصف الرئيسي أعلى الصفحة الرئيسية.</p>
+                        <p class="mt-1 text-sm text-slate-900 dark:text-slate-100">هذه الحقول تتحكم في العنوان والوصف الرئيسي أعلى الصفحة الرئيسية.</p>
                     </div>
 
                     <div class="grid gap-4 md:grid-cols-2">
@@ -101,13 +101,13 @@
 
                     <div class="border-t border-slate-50 pt-5 dark:border-slate-700">
                         <h3 class="text-lg font-semibold text-slate-800 dark:text-slate-50">بطاقات مزايا الصفحة الرئيسية</h3>
-                        <p class="mt-1 text-sm text-slate-900 dark:text-slate-400">يمكنك تعديل العنوان والوصف لكل بطاقة كما ستظهر في الصفحة الرئيسية.</p>
+                        <p class="mt-1 text-sm text-slate-900 dark:text-slate-100">يمكنك تعديل العنوان والوصف لكل بطاقة كما ستظهر في الصفحة الرئيسية.</p>
                     </div>
 
                     @foreach($homeFeatureSettings as $feature)
                         <div class="rounded-2xl border border-slate-50 p-4 dark:border-slate-700">
                             <div class="mb-4 flex items-center gap-3">
-                                <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-300">
+                                <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-100">
                                     <i class="{{ $feature['icon'] }}"></i>
                                 </span>
                                 <div>
@@ -162,11 +162,11 @@
                         <div class="mt-2 flex gap-4">
                             <label class="flex items-center gap-2 cursor-pointer">
                                 <input type="radio" name="logo_type" value="text" x-model="type" class="text-emerald-600 focus:ring-emerald-500">
-                                <span class="text-sm text-slate-900 dark:text-slate-400">نص</span>
+                                <span class="text-sm text-slate-900 dark:text-slate-100">نص</span>
                             </label>
                             <label class="flex items-center gap-2 cursor-pointer">
                                 <input type="radio" name="logo_type" value="image" x-model="type" class="text-emerald-600 focus:ring-emerald-500">
-                                <span class="text-sm text-slate-900 dark:text-slate-400">صورة</span>
+                                <span class="text-sm text-slate-900 dark:text-slate-100">صورة</span>
                             </label>
                         </div>
                     </div>
@@ -174,7 +174,7 @@
                     <div>
                         <x-input-label for="logo_text" value="نص الشعار" />
                         <x-text-input id="logo_text" name="logo_text" type="text" :value="old('logo_text', $logoText)" class="w-full" />
-                        <p class="mt-1 text-xs text-slate-900 dark:text-slate-400">يظهر هذا النص بجانب الشعار في الهيدر سواء كان الشعار نصًا أو صورة.</p>
+                        <p class="mt-1 text-xs text-slate-900 dark:text-slate-100">يظهر هذا النص بجانب الشعار في الهيدر سواء كان الشعار نصًا أو صورة.</p>
                         <x-input-error :messages="$errors->get('logo_text')" />
                     </div>
 
@@ -186,8 +186,8 @@
                                     <img src="{{ asset('storage/' . $logoImage) }}" alt="Current Logo" class="h-full w-full object-contain">
                                 </div>
                             @endif
-                            <input type="file" id="logo_image" name="logo_image" accept="image/*" class="block w-full text-sm text-slate-900 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-900 hover:file:bg-emerald-100 dark:file:bg-emerald-900/50 dark:file:text-emerald-400">
-                            <p class="mt-1 text-xs text-slate-900 dark:text-slate-400">المقاس المفضل: 200×60 بكسل</p>
+                            <input type="file" id="logo_image" name="logo_image" accept="image/*" class="block w-full text-sm text-slate-900 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-900 hover:file:bg-emerald-100 dark:file:bg-emerald-900/50 dark:file:text-emerald-100">
+                            <p class="mt-1 text-xs text-slate-900 dark:text-slate-100">المقاس المفضل: 200×60 بكسل</p>
                         </div>
                         <x-input-error :messages="$errors->get('logo_image')" />
                     </div>
@@ -236,7 +236,7 @@
 
                             <div class="relative mt-4 rounded-md shadow-sm">
                                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                    <i class="fa-brands {{ $social['icon'] }} text-slate-400"></i>
+                                    <i class="fa-brands {{ $social['icon'] }} text-slate-100"></i>
                                 </div>
                                 <x-text-input id="{{ $social['key'] }}_link"
                                               name="{{ $social['key'] }}_link"
@@ -271,13 +271,13 @@
 
                     {{-- ── SERP Live Preview ───────────────────────────────────────── --}}
                     <div class="rounded-2xl border border-slate-50 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 p-4">
-                        <p class="mb-3 flex items-center gap-2 text-xs font-semibold text-slate-900 dark:text-slate-400 uppercase tracking-wide">
+                        <p class="mb-3 flex items-center gap-2 text-xs font-semibold text-slate-900 dark:text-slate-100 uppercase tracking-wide">
                             <i class="fa-brands fa-google text-blue-500"></i>
                             معاينة مباشرة – هكذا تظهر في نتائج البحث
                         </p>
                         {{-- Fake Google search bar --}}
-                        <div class="mb-3 flex items-center gap-2 rounded-full border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-800 px-4 py-2 shadow-sm text-sm text-slate-400 max-w-md">
-                            <i class="fa-solid fa-magnifying-glass text-slate-400 text-xs"></i>
+                        <div class="mb-3 flex items-center gap-2 rounded-full border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-800 px-4 py-2 shadow-sm text-sm text-slate-100 max-w-md">
+                            <i class="fa-solid fa-magnifying-glass text-slate-100 text-xs"></i>
                             <span class="truncate">{{ config('app.url') }}</span>
                         </div>
                         {{-- SERP Result card --}}
@@ -286,7 +286,7 @@
                                 <div class="w-5 h-5 rounded-full bg-emerald-600 flex items-center justify-center text-white text-[9px] font-bold">S</div>
                                 <div class="text-xs">
                                     <div class="text-slate-800 dark:text-slate-50 font-medium" id="serp_site_name">{{ $seoTitle ?: $logoText }}</div>
-                                    <div class="text-slate-900 dark:text-slate-400 text-[11px]" dir="ltr">{{ rtrim(config('app.url'), '/') }} › ...</div>
+                                    <div class="text-slate-900 dark:text-slate-100 text-[11px]" dir="ltr">{{ rtrim(config('app.url'), '/') }} › ...</div>
                                 </div>
                             </div>
                             <div id="serp_title_preview"
@@ -294,7 +294,7 @@
                                 {{ $seoTitle ?: $logoText }}
                             </div>
                             <div id="serp_desc_preview"
-                                class="text-sm text-slate-900 dark:text-slate-400 leading-relaxed line-clamp-2">
+                                class="text-sm text-slate-900 dark:text-slate-100 leading-relaxed line-clamp-2">
                                 {{ $metaDescription ?: $storeDescription }}
                             </div>
                         </div>
@@ -356,7 +356,7 @@
 
                     {{-- ── Tracking & Pixels ─────────────────────────────────────── --}}
                     <div class="rounded-2xl border border-slate-50 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/40 p-4">
-                        <p class="mb-4 text-xs font-semibold text-slate-900 dark:text-slate-400 uppercase tracking-wide">
+                        <p class="mb-4 text-xs font-semibold text-slate-900 dark:text-slate-100 uppercase tracking-wide">
                             <i class="fa-solid fa-chart-line ml-1 text-emerald-500"></i> التتبع والتحليلات
                         </p>
                         <div class="grid gap-4 md:grid-cols-2">
@@ -392,7 +392,7 @@
                     {{-- ── Advanced Scripts ──────────────────────────────────────── --}}
                     <details class="rounded-2xl border border-slate-50 dark:border-slate-700 overflow-hidden">
                         <summary class="cursor-pointer select-none bg-slate-50 dark:bg-slate-900/40 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-50 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition">
-                            <i class="fa-solid fa-code ml-2 text-slate-400 text-xs"></i>
+                            <i class="fa-solid fa-code ml-2 text-slate-100 text-xs"></i>
                             سكريبتات متقدمة (للمطورين فقط)
                         </summary>
                         <div class="p-4 space-y-4 bg-white dark:bg-slate-800">
@@ -435,8 +435,8 @@
     const TITLE_MAX = 60, DESC_MAX = 160;
 
     function colorClass(len, soft, hard) {
-        if (len === 0) return 'text-slate-400 dark:text-slate-900';
-        if (len <= soft) return 'text-emerald-600 dark:text-emerald-400';
+        if (len === 0) return 'text-slate-100 dark:text-slate-900';
+        if (len <= soft) return 'text-emerald-600 dark:text-emerald-100';
         if (len <= hard) return 'text-amber-500';
         return 'text-rose-500';
     }

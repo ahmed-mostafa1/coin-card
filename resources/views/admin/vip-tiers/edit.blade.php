@@ -6,8 +6,8 @@
 @section('content')
     <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-8 shadow-sm">
         <div class="mb-6 flex items-center justify-between">
-            <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">تعديل مستوى VIP: {{ $vipTier->title_ar }}</h1>
-            <a href="{{ route('admin.vip-tiers.index') }}" class="text-sm text-slate-900 hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-400">
+            <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-100">تعديل مستوى VIP: {{ $vipTier->title_ar }}</h1>
+            <a href="{{ route('admin.vip-tiers.index') }}" class="text-sm text-slate-900 hover:text-emerald-600 dark:text-slate-100 dark:hover:text-emerald-100">
                 <i class="fa-solid fa-arrow-right ml-1"></i>
                 عودة للقائمة
             </a>
@@ -58,7 +58,7 @@
                     </div>
                 @endif
                 <input type="file" id="image_path" name="image_path" accept="image/*" class="mt-1 block w-full rounded-md border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-3 py-2 text-sm text-slate-700 dark:text-slate-50 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500">
-                <p class="mt-1 text-xs text-slate-900 dark:text-slate-400">المقاس المفضل: 200×200 بكسل</p>
+                <p class="mt-1 text-xs text-slate-900 dark:text-slate-100">المقاس المفضل: 200×200 بكسل</p>
                 <x-input-error :messages="$errors->get('image_path')" class="mt-2" />
             </div>
 
@@ -66,13 +66,13 @@
             <div class="block">
                 <label for="is_active" class="inline-flex items-center">
                     <input id="is_active" type="checkbox" class="rounded border-slate-50 text-emerald-600 shadow-sm focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-900 dark:focus:ring-emerald-600 dark:focus:ring-offset-slate-800" name="is_active" value="1" {{ old('is_active', $vipTier->is_active) ? 'checked' : '' }}>
-                    <span class="ms-2 text-sm text-slate-900 dark:text-slate-400">تفعيل هذا المستوى</span>
+                    <span class="ms-2 text-sm text-slate-900 dark:text-slate-100">تفعيل هذا المستوى</span>
                 </label>
             </div>
 
             <div class="flex items-center gap-4">
                 <x-primary-button>تحديث</x-primary-button>
-                <a href="{{ route('admin.vip-tiers.index') }}" class="text-sm text-slate-900 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-50">إلغاء</a>
+                <a href="{{ route('admin.vip-tiers.index') }}" class="text-sm text-slate-900 hover:text-slate-900 dark:text-slate-100 dark:hover:text-slate-50">إلغاء</a>
             </div>
         </form>
     </div>

@@ -8,7 +8,7 @@
             <x-page-header title="تعديل الملف الشخصي" subtitle="تحديث الاسم وكلمة المرور الخاصة بك." />
 
             @if (session('status'))
-                <div class="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
+                <div class="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-50 dark:bg-emerald-900 dark:border-emerald-700">
                     {{ session('status') }}
                 </div>
             @endif
@@ -37,7 +37,7 @@
                 </div>
 
                 <div class="border-t border-slate-50 dark:border-slate-700 pt-4">
-                    <p class="text-sm text-slate-900 dark:text-slate-400 mb-4">اترك حقول كلمة المرور فارغة إذا كنت لا تريد تغييرها</p>
+                    <p class="text-sm text-slate-900 dark:text-slate-100 mb-4">اترك حقول كلمة المرور فارغة إذا كنت لا تريد تغييرها</p>
                     
                     <div class="space-y-4">
                         <div>

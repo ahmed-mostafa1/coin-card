@@ -7,7 +7,7 @@
         {{-- Header Section --}}
         <div class="text-center">
             <h1 class="text-3xl font-bold text-slate-900 dark:text-slate-50">{{ __('messages.register') }}</h1>
-            <p class="mt-3 text-base text-slate-900 dark:text-slate-400">{{ __('messages.register_desc') }}</p>
+            <p class="mt-3 text-base text-slate-900 dark:text-slate-100">{{ __('messages.register_desc') }}</p>
         </div>
 
         {{-- Register Form --}}
@@ -19,7 +19,7 @@
                 <x-input-label for="name" :value="__('messages.full_name')" class="text-sm font-semibold text-slate-900 dark:text-slate-50" />
                 <x-text-input id="name" name="name" type="text" :value="old('name')" required autofocus
                     autocomplete="name"
-                    class="block w-full rounded-xl border-slate-50 dark:border-slate-900 bg-slate-50 dark:bg-slate-800 px-4 py-3 text-slate-900 dark:text-slate-50 placeholder-slate-400 transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+                    class="block w-full rounded-xl border-slate-50 dark:border-slate-900 bg-slate-50 dark:bg-slate-800 px-4 py-3 text-slate-900 dark:text-slate-50 placeholder-slate-100 transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
                     placeholder="{{ __('messages.full_name') }}" />
                 <x-input-error :messages="$errors->get('name')" class="mt-2" />
             </div>
@@ -28,7 +28,7 @@
             <div class="space-y-2">
                 <x-input-label for="email" :value="__('messages.email_label')" class="text-sm font-semibold text-slate-900 dark:text-slate-50" />
                 <x-text-input id="email" name="email" type="email" :value="old('email')" required autocomplete="username"
-                    class="block w-full rounded-xl border-slate-50 dark:border-slate-900 bg-slate-50 dark:bg-slate-800 px-4 py-3 text-slate-900 dark:text-slate-50 placeholder-slate-400 transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+                    class="block w-full rounded-xl border-slate-50 dark:border-slate-900 bg-slate-50 dark:bg-slate-800 px-4 py-3 text-slate-900 dark:text-slate-50 placeholder-slate-100 transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
                     placeholder="user@example.com" />
                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
             </div>
@@ -37,7 +37,7 @@
             <div class="space-y-2">
                 <x-input-label for="password" :value="__('messages.password_label')" class="text-sm font-semibold text-slate-900 dark:text-slate-50" />
                 <x-text-input id="password" name="password" type="password" required autocomplete="new-password"
-                    class="block w-full rounded-xl border-slate-50 dark:border-slate-900 bg-slate-50 dark:bg-slate-800 px-4 py-3 text-slate-900 dark:text-slate-50 placeholder-slate-400 transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+                    class="block w-full rounded-xl border-slate-50 dark:border-slate-900 bg-slate-50 dark:bg-slate-800 px-4 py-3 text-slate-900 dark:text-slate-50 placeholder-slate-100 transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
                     placeholder="••••••••" />
                 <x-input-error :messages="$errors->get('password')" class="mt-2" />
             </div>
@@ -47,7 +47,7 @@
                 <x-input-label for="password_confirmation" :value="__('messages.confirm_password')" class="text-sm font-semibold text-slate-900 dark:text-slate-50" />
                 <x-text-input id="password_confirmation" name="password_confirmation" type="password" required
                     autocomplete="new-password"
-                    class="block w-full rounded-xl border-slate-50 dark:border-slate-900 bg-slate-50 dark:bg-slate-800 px-4 py-3 text-slate-900 dark:text-slate-50 placeholder-slate-400 transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+                    class="block w-full rounded-xl border-slate-50 dark:border-slate-900 bg-slate-50 dark:bg-slate-800 px-4 py-3 text-slate-900 dark:text-slate-50 placeholder-slate-100 transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
                     placeholder="••••••••" />
             </div>
 
@@ -63,7 +63,7 @@
                 <div class="w-full border-t border-slate-50 dark:border-slate-700"></div>
             </div>
             <div class="relative flex justify-center text-sm">
-                <span class="bg-white dark:bg-slate-800 px-4 text-slate-900 dark:text-slate-400 font-medium">{{ __('messages.or') }}</span>
+                <span class="bg-white dark:bg-slate-800 px-4 text-slate-900 dark:text-slate-100 font-medium">{{ __('messages.or') }}</span>
             </div>
         </div>
 
@@ -83,10 +83,10 @@
 
         {{-- Login Link --}}
         <div class="text-center">
-            <p class="text-sm text-slate-900 dark:text-slate-400">
+            <p class="text-sm text-slate-900 dark:text-slate-100">
                 {{ __('messages.already_have_account') }}
                 <a href="{{ route('login') }}"
-                    class="font-semibold text-emerald-600 dark:text-emerald-500 transition hover:text-emerald-900 dark:hover:text-emerald-400">
+                    class="font-semibold text-emerald-600 dark:text-emerald-500 transition hover:text-emerald-900 dark:hover:text-emerald-100">
                     {{ __('messages.login') }}
                 </a>
             </p>

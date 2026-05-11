@@ -33,9 +33,9 @@
                         <td class="py-3 text-slate-700 dark:text-slate-50" data-label="{{ __('messages.price_label') }}">
                             @if ($order->discount_percentage > 0)
                                 <div class="flex items-center gap-2">
-                                    <span class="text-xs text-slate-400 line-through">{{ number_format($order->original_price, 2) }}</span>
-                                    <span class="font-semibold text-emerald-900 dark:text-emerald-400">{{ number_format($order->price_at_purchase, 2) }}</span>
-                                    <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/30 px-1.5 py-0.5 text-xs font-semibold text-emerald-900 dark:text-emerald-400">
+                                    <span class="text-xs text-slate-100 line-through">{{ number_format($order->original_price, 2) }}</span>
+                                    <span class="font-semibold text-emerald-900 dark:text-emerald-100">{{ number_format($order->price_at_purchase, 2) }}</span>
+                                    <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/30 px-1.5 py-0.5 text-xs font-semibold text-emerald-900 dark:text-emerald-100">
                                         -{{ number_format($order->discount_percentage, 0) }}%
                                     </span>
                                 </div>
@@ -57,15 +57,15 @@
                                 <x-badge>{{ __('messages.status_cancelled') }}</x-badge>
                             @endif
                         </td>
-                        <td class="py-3 text-slate-900 dark:text-slate-400" data-label="{{ __('messages.date') }}">{{ $order->created_at->format('Y-m-d') }}</td>
+                        <td class="py-3 text-slate-900 dark:text-slate-100" data-label="{{ __('messages.date') }}">{{ $order->created_at->format('Y-m-d') }}</td>
                         <td class="py-3" data-label="{{ __('messages.details_link') }}">
                             <a href="{{ route('account.orders.show', $order) }}"
-                                class="text-emerald-900 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">{{ __('messages.view_link') }}</a>
+                                class="text-emerald-900 dark:text-emerald-100 hover:text-emerald-900 dark:hover:text-emerald-100">{{ __('messages.view_link') }}</a>
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="py-6 text-center text-slate-900 dark:text-slate-400">{{ __('messages.no_orders_yet') }}</td>
+                        <td colspan="7" class="py-6 text-center text-slate-900 dark:text-slate-100">{{ __('messages.no_orders_yet') }}</td>
                     </tr>
                 @endforelse
             </tbody>

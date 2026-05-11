@@ -5,12 +5,12 @@
 @section('content')
     <div class="w-full rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm transition-colors duration-200">
         <div class="flex items-center justify-between">
-            <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">{{ __('messages.edit_variant_name', ['variant' => $variant->name]) }}</h1>
-            <a href="{{ route('admin.services.variants.index', $service) }}" class="text-sm text-emerald-900 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300">{{ __('messages.back_to_variants') }}</a>
+            <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-100">{{ __('messages.edit_variant_name', ['variant' => $variant->name]) }}</h1>
+            <a href="{{ route('admin.services.variants.index', $service) }}" class="text-sm text-emerald-900 dark:text-emerald-100 hover:text-emerald-800 dark:hover:text-emerald-100">{{ __('messages.back_to_variants') }}</a>
         </div>
 
         @if (session('status'))
-            <div class="mt-6 rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-400">
+            <div class="mt-6 rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-100">
                 {{ session('status') }}
             </div>
         @endif
@@ -51,7 +51,7 @@
                 </div>
             </div>
 
-            <div class="flex items-center gap-3 text-sm text-slate-900 dark:text-slate-400">
+            <div class="flex items-center gap-3 text-sm text-slate-900 dark:text-slate-100">
                 <input id="is_active" name="is_active" type="checkbox" value="1" class="rounded border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" {{ $variant->is_active ? 'checked' : '' }}>
                 <label for="is_active">{{ __('messages.activate_variant') }}</label>
             </div>

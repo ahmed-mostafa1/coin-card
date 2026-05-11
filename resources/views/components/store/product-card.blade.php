@@ -43,7 +43,7 @@
                  class="h-full w-full object-cover transition duration-300 group-hover:scale-105">
         @else
             <div class="flex h-full w-full items-center justify-center {{ $isCategoryLayout ? 'bg-gradient-to-br from-slate-700 to-slate-900' : '' }}">
-                <i class="fa-solid fa-box text-3xl {{ $isCategoryLayout ? 'text-slate-400' : 'text-slate-50 dark:text-slate-900' }}"></i>
+                <i class="fa-solid fa-box text-3xl {{ $isCategoryLayout ? 'text-slate-100' : 'text-slate-50 dark:text-slate-900' }}"></i>
             </div>
         @endif
 
@@ -60,7 +60,7 @@
         <div class="flex min-h-[4.25rem] flex-col items-center justify-center px-2 py-3 text-center">
             <span class="block text-[13px] font-bold leading-snug text-slate-800 line-clamp-2 dark:text-slate-50 sm:text-sm">{{ $service->localized_name }}</span>
             @if ($subtitle && $isFeatureLayout)
-                <span class="mt-1 block truncate text-[11px] text-slate-400 dark:text-slate-900">{{ $subtitle }}</span>
+                <span class="mt-1 block truncate text-[11px] text-slate-100 dark:text-slate-900">{{ $subtitle }}</span>
             @endif
         </div>
     @else
@@ -69,7 +69,7 @@
                 {{ $service->localized_name }}
             </p>
             @if ($subtitle)
-                <p class="mt-0.5 truncate text-[11px] text-slate-400 dark:text-slate-900">{{ $subtitle }}</p>
+                <p class="mt-0.5 truncate text-[11px] text-slate-100 dark:text-slate-900">{{ $subtitle }}</p>
             @endif
         </div>
     @endif

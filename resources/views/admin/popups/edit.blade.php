@@ -5,7 +5,7 @@
 @section('content')
     <div class="w-full rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm transition-colors duration-200">
         <div class="flex items-center justify-between mb-6">
-            <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">تعديل نافذة منبثقة</h1>
+            <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-100">تعديل نافذة منبثقة</h1>
             <a href="{{ route('admin.popups.index') }}" class="inline-flex items-center gap-2 rounded-full border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-800 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-slate-50 transition hover:bg-slate-50 dark:hover:bg-slate-700">
                 <i class="fa-solid fa-arrow-left"></i>
                 رجوع
@@ -47,7 +47,7 @@
                         <img src="{{ asset('storage/' . $popup->image_path) }}" alt="Current Image" class="h-20 w-auto rounded-lg object-contain bg-slate-50 dark:bg-slate-700 p-1">
                     </div>
                 @endif
-                <input id="image_path" name="image_path" type="file" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-900 dark:text-slate-50 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-800 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-900 dark:file:text-emerald-300">
+                <input id="image_path" name="image_path" type="file" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-900 dark:text-slate-50 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-800 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-900 dark:file:text-emerald-100">
                 <p class="mt-2 text-xs text-slate-9000 dark:text-slate-50">
                     <i class="fa-solid fa-info-circle ml-1"></i>
                     {{ __('messages.recommended_size') }}: 600x400 px
@@ -90,7 +90,7 @@
                 </div>
             </div>
 
-            <div class="flex items-center gap-3 text-sm text-slate-900 dark:text-slate-400">
+            <div class="flex items-center gap-3 text-sm text-slate-900 dark:text-slate-100">
                 <input id="is_active" name="is_active" type="checkbox" value="1" class="rounded border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" {{ $popup->is_active ? 'checked' : '' }}>
                 <label for="is_active">تفعيل النافذة</label>
             </div>

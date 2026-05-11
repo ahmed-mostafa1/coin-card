@@ -7,9 +7,9 @@
         <div class="flex items-center justify-between gap-4">
             <div>
                 <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-100">طلب وكالة #{{ $agencyRequest->id }}</h1>
-                <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-400">تم الإرسال في {{ $agencyRequest->created_at->format('Y-m-d H:i') }}</p>
+                <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-100">تم الإرسال في {{ $agencyRequest->created_at->format('Y-m-d H:i') }}</p>
             </div>
-            <a href="{{ route('admin.agency-requests.index') }}" class="text-sm text-emerald-900 dark:text-emerald-300 hover:text-emerald-900">عودة للقائمة</a>
+            <a href="{{ route('admin.agency-requests.index') }}" class="text-sm text-emerald-900 dark:text-emerald-100 hover:text-emerald-900 dark:text-emerald-50 dark:bg-emerald-900 dark:border-emerald-700">عودة للقائمة</a>
         </div>
 
         <div class="mt-6 grid gap-4 sm:grid-cols-2">
@@ -29,7 +29,7 @@
                     <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-50 dark:text-slate-50">{{ $value }}</p>
                 </div>
             @empty
-                <p class="col-span-2 text-sm text-slate-900 dark:text-slate-400">لا توجد بيانات.</p>
+                <p class="col-span-2 text-sm text-slate-900 dark:text-slate-100">لا توجد بيانات.</p>
             @endforelse
         </div>
 

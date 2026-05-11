@@ -58,7 +58,7 @@
             <x-page-header :title="__('messages.account_update_title')" :subtitle="__('messages.account_update_desc')" />
 
             @if (session('status'))
-                <div class="mt-4 rounded-xl border border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400">
+                <div class="mt-4 rounded-xl border border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-100">
                     {{ session('status') }}
                 </div>
             @endif
@@ -94,17 +94,17 @@
             </x-card>
             <x-card :hover="false" class="p-8">
                 <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-50">روابط إضافية</h2>
-                <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-400">الروابط الثانوية نُقلت هنا للحفاظ على شريط علوي أخف وأوضح.</p>
+                <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-100">الروابط الثانوية نُقلت هنا للحفاظ على شريط علوي أخف وأوضح.</p>
                 <div class="mt-6 grid gap-3">
                     @foreach ($accountExtraLinks as $link)
                         <a href="{{ $link['url'] }}"
                            @if($link['external']) target="_blank" rel="noreferrer noopener" @endif
                            class="flex items-center justify-between rounded-2xl border border-slate-50 dark:border-slate-700 px-4 py-4 text-sm font-semibold text-slate-900 dark:text-slate-50 transition hover:border-emerald-200 dark:hover:border-emerald-700">
                             <span class="flex items-center gap-3">
-                                <i class="{{ $link['icon'] }} {{ $link['external'] ? 'text-green-500' : 'text-emerald-600 dark:text-emerald-400' }}"></i>
+                                <i class="{{ $link['icon'] }} {{ $link['external'] ? 'text-green-500' : 'text-emerald-600 dark:text-emerald-100' }}"></i>
                                 <span>{{ $link['label'] }}</span>
                             </span>
-                            <i class="fa-solid fa-chevron-left text-xs text-slate-400 rtl:rotate-180"></i>
+                            <i class="fa-solid fa-chevron-left text-xs text-slate-100 rtl:rotate-180"></i>
                         </a>
                     @endforeach
 
@@ -128,13 +128,13 @@
     <div class="grid gap-6 lg:grid-cols-3">
         <x-card class="p-8 lg:col-span-2" :hover="false">
             <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-50">{{ __('messages.account_dashboard_title') }}</h1>
-            <p class="mt-3 text-sm text-slate-900 dark:text-slate-400">{{ __('messages.account_dashboard_desc') }}</p>
+            <p class="mt-3 text-sm text-slate-900 dark:text-slate-100">{{ __('messages.account_dashboard_desc') }}</p>
             <div class="mt-6 grid gap-4 sm:grid-cols-5">
-                <a href="{{ route('deposit.index') }}" class="rounded-2xl border border-emerald-100 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-4 text-center text-sm font-semibold text-emerald-700 dark:text-emerald-400 transition hover:bg-emerald-100 dark:hover:bg-emerald-900/50">{{ __('messages.top_up') }}</a>
+                <a href="{{ route('deposit.index') }}" class="rounded-2xl border border-emerald-100 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-4 text-center text-sm font-semibold text-emerald-700 dark:text-emerald-100 transition hover:bg-emerald-100 dark:hover:bg-emerald-900/50">{{ __('messages.top_up') }}</a>
                 <a href="{{ route('account.deposits') }}" class="rounded-2xl border border-slate-50 dark:border-slate-700 px-4 py-4 text-center text-sm font-semibold text-slate-900 dark:text-slate-50 transition hover:border-emerald-200 dark:hover:border-emerald-700">{{ __('messages.deposit_requests') }}</a>
                 <a href="{{ route('account.wallet') }}" class="rounded-2xl border border-slate-50 dark:border-slate-700 px-4 py-4 text-center text-sm font-semibold text-slate-900 dark:text-slate-50 transition hover:border-emerald-200 dark:hover:border-emerald-700">{{ __('messages.wallet_history') }}</a>
                 <a href="{{ route('account.orders') }}" class="rounded-2xl border border-slate-50 dark:border-slate-700 px-4 py-4 text-center text-sm font-semibold text-slate-900 dark:text-slate-50 transition hover:border-emerald-200 dark:hover:border-emerald-700">{{ __('messages.my_orders') }}</a>
-                <a href="{{ route('account.verification.show') }}" class="rounded-2xl border border-emerald-100 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-4 text-center text-sm font-semibold text-emerald-700 dark:text-emerald-400 transition hover:bg-emerald-100 dark:hover:bg-emerald-900/50">{{ app()->getLocale() === 'ar' ? 'توثيق الحساب' : 'Account verification' }}</a>
+                <a href="{{ route('account.verification.show') }}" class="rounded-2xl border border-emerald-100 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-4 text-center text-sm font-semibold text-emerald-700 dark:text-emerald-100 transition hover:bg-emerald-100 dark:hover:bg-emerald-900/50">{{ app()->getLocale() === 'ar' ? 'توثيق الحساب' : 'Account verification' }}</a>
                 <a href="{{ route('account.security') }}" class="rounded-2xl border border-slate-50 dark:border-slate-700 px-4 py-4 text-center text-sm font-semibold text-slate-900 dark:text-slate-50 transition hover:border-emerald-200 dark:hover:border-emerald-700">{{ app()->getLocale() === 'ar' ? 'الأمان والتحقق الثنائي' : 'Security and 2FA' }}</a>
                 <a href="{{ route('account.notifications') }}" class="relative rounded-2xl border border-slate-50 dark:border-slate-700 px-4 py-4 text-center text-sm font-semibold text-slate-900 dark:text-slate-50 transition hover:border-emerald-200 dark:hover:border-emerald-700">
                     {{ __('messages.notifications') }}
@@ -157,11 +157,11 @@
     <div class="mt-8 grid gap-6 lg:grid-cols-2">
         <x-card class="p-8" :hover="false">
             <div class="flex items-center justify-between">
-                <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">{{ __('messages.latest_orders') }}</h2>
-                <a href="{{ route('account.orders') }}" class="text-sm text-emerald-700 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">{{ __('messages.view_all') }}</a>
+                <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-100">{{ __('messages.latest_orders') }}</h2>
+                <a href="{{ route('account.orders') }}" class="text-sm text-emerald-700 dark:text-emerald-100 hover:text-emerald-900 dark:hover:text-emerald-100">{{ __('messages.view_all') }}</a>
             </div>
             <x-table class="mt-4">
-                    <thead class="border-b border-slate-50 dark:border-slate-700 text-slate-900 dark:text-slate-400">
+                    <thead class="border-b border-slate-50 dark:border-slate-700 text-slate-900 dark:text-slate-100">
                         <tr>
                             <th class="py-2">{{ __('messages.service') }}</th>
                             <th class="py-2">{{ __('messages.package') }}</th>
@@ -182,16 +182,16 @@
                                     @elseif ($order->status === 'processing')
                                         <span class="rounded-full bg-blue-100 dark:bg-blue-900/30 px-3 py-1 text-xs text-blue-700 dark:text-blue-300">{{ __('messages.status_processing') }}</span>
                                     @elseif ($order->status === 'done')
-                                        <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/30 px-3 py-1 text-xs text-emerald-700 dark:text-emerald-300">{{ __('messages.status_done') }}</span>
+                                        <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/30 px-3 py-1 text-xs text-emerald-700 dark:text-emerald-100">{{ __('messages.status_done') }}</span>
                                     @else
                                         <span class="rounded-full bg-rose-100 dark:bg-rose-900/30 px-3 py-1 text-xs text-rose-700 dark:text-rose-300">{{ __('messages.status_rejected') }}</span>
                                     @endif
                                 </td>
-                                <td class="py-3 text-slate-900 dark:text-slate-400" data-label="{{ __('messages.date') }}">{{ $order->created_at->format('Y-m-d') }}</td>
+                                <td class="py-3 text-slate-900 dark:text-slate-100" data-label="{{ __('messages.date') }}">{{ $order->created_at->format('Y-m-d') }}</td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="py-6 text-center text-slate-900 dark:text-slate-400">{{ __('messages.no_orders_yet') }}</td>
+                                <td colspan="5" class="py-6 text-center text-slate-900 dark:text-slate-100">{{ __('messages.no_orders_yet') }}</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -200,11 +200,11 @@
 
         <x-card class="p-8" :hover="false">
             <div class="flex items-center justify-between">
-                <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-400">{{ __('messages.latest_deposits') }}</h2>
-                <a href="{{ route('account.deposits') }}" class="text-sm text-emerald-700 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">{{ __('messages.view_all') }}</a>
+                <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-100">{{ __('messages.latest_deposits') }}</h2>
+                <a href="{{ route('account.deposits') }}" class="text-sm text-emerald-700 dark:text-emerald-100 hover:text-emerald-900 dark:hover:text-emerald-100">{{ __('messages.view_all') }}</a>
             </div>
             <x-table class="mt-4">
-                    <thead class="border-b border-slate-50 dark:border-slate-700 text-slate-900 dark:text-slate-400">
+                    <thead class="border-b border-slate-50 dark:border-slate-700 text-slate-900 dark:text-slate-100">
                         <tr>
                             <th class="py-2">{{ __('messages.method') }}</th>
                             <th class="py-2">{{ __('messages.amount') }}</th>
@@ -231,11 +231,11 @@
                                         <span class="rounded-full bg-rose-100 px-3 py-1 text-xs text-rose-700">{{ __('messages.status_rejected') }}</span>
                                     @endif
                                 </td>
-                                <td class="py-3 text-slate-900 dark:text-slate-400">{{ $deposit->created_at->format('Y-m-d') }}</td>
+                                <td class="py-3 text-slate-900 dark:text-slate-100">{{ $deposit->created_at->format('Y-m-d') }}</td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="py-6 text-center text-slate-900 dark:text-slate-400">{{ __('messages.no_deposits_yet') }}</td>
+                                <td colspan="4" class="py-6 text-center text-slate-900 dark:text-slate-100">{{ __('messages.no_deposits_yet') }}</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -247,7 +247,7 @@
         <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
                 <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-50">روابط إضافية</h2>
-                <p class="mt-1 text-sm text-slate-900 dark:text-slate-400">نقلنا الروابط الثانوية من الشريط العلوي إلى هنا حتى تبقى الواجهة أوضح على الجوال.</p>
+                <p class="mt-1 text-sm text-slate-900 dark:text-slate-100">نقلنا الروابط الثانوية من الشريط العلوي إلى هنا حتى تبقى الواجهة أوضح على الجوال.</p>
             </div>
         </div>
         <div class="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
@@ -256,10 +256,10 @@
                    @if($link['external']) target="_blank" rel="noreferrer noopener" @endif
                    class="flex items-center justify-between rounded-2xl border border-slate-50 dark:border-slate-700 px-4 py-4 text-sm font-semibold text-slate-900 dark:text-slate-50 transition hover:border-emerald-200 dark:hover:border-emerald-700">
                     <span class="flex items-center gap-3">
-                        <i class="{{ $link['icon'] }} {{ $link['external'] ? 'text-green-500' : 'text-emerald-600 dark:text-emerald-400' }}"></i>
+                        <i class="{{ $link['icon'] }} {{ $link['external'] ? 'text-green-500' : 'text-emerald-600 dark:text-emerald-100' }}"></i>
                         <span>{{ $link['label'] }}</span>
                     </span>
-                    <i class="fa-solid fa-chevron-left text-xs text-slate-400 rtl:rotate-180"></i>
+                    <i class="fa-solid fa-chevron-left text-xs text-slate-100 rtl:rotate-180"></i>
                 </a>
             @endforeach
 

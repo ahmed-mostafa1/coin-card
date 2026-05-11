@@ -7,7 +7,7 @@
         <x-card class="p-4 sm:p-6 lg:col-span-2" :hover="false">
             @if (session('status'))
                 <div
-                    class="mb-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900 dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">
+                    class="mb-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900 dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-100">
                     {{ session('status') }}
                 </div>
             @endif
@@ -69,14 +69,14 @@
                             <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-50">
                                 @if ($order->discount_percentage > 0)
                                     <span
-                                        class="block text-xs font-medium text-slate-400 line-through">{{ number_format($order->original_price, 2) }}
+                                        class="block text-xs font-medium text-slate-100 line-through">{{ number_format($order->original_price, 2) }}
                                         USD</span>
                                     <span class="mt-1 flex flex-wrap items-center gap-2">
                                         <span
-                                            class="text-emerald-900 dark:text-emerald-300">{{ number_format($order->price_at_purchase, 2) }}
+                                            class="text-emerald-900 dark:text-emerald-100">{{ number_format($order->price_at_purchase, 2) }}
                                             USD</span>
                                         <span
-                                            class="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-900 dark:bg-emerald-900/30 dark:text-emerald-400">
+                                            class="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-900 dark:bg-emerald-900/30 dark:text-emerald-100">
                                             -{{ number_format($order->discount_percentage, 0) }}%
                                         </span>
                                     </span>
@@ -88,12 +88,12 @@
                         @if ($order->discount_percentage > 0)
                             <tr>
                                 <th scope="row"
-                                    class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-emerald-700 dark:text-emerald-400">
+                                    class="w-2/5 px-4 py-3 align-top text-xs font-semibold text-emerald-700 dark:text-emerald-100">
                                     {{ app()->getLocale() == 'ar' ? 'المبلغ الموفر' : 'Amount Saved' }}</th>
-                                <td class="px-4 py-3 text-sm font-semibold text-emerald-900 dark:text-emerald-300">
+                                <td class="px-4 py-3 text-sm font-semibold text-emerald-900 dark:text-emerald-100">
                                     {{ number_format($order->discount_amount, 2) }} USD
                                     <span
-                                        class="mt-1 block text-xs font-medium text-emerald-700 dark:text-emerald-400">{{ app()->getLocale() == 'ar' ? 'خصم الحساب' : 'Account Discount' }}</span>
+                                        class="mt-1 block text-xs font-medium text-emerald-700 dark:text-emerald-100">{{ app()->getLocale() == 'ar' ? 'خصم الحساب' : 'Account Discount' }}</span>
                                 </td>
                             </tr>
                         @endif
@@ -215,7 +215,7 @@
             </div>
 
             @if ($order->admin_note)
-                <div class="mt-6 rounded-2xl border border-emerald-100 bg-emerald-50 p-4 text-sm text-emerald-900">
+                <div class="mt-6 rounded-2xl border border-emerald-100 bg-emerald-50 p-4 text-sm text-emerald-900 dark:text-emerald-50 dark:bg-emerald-900 dark:border-emerald-700">
                     {{ __('messages.admin_note_label', ['note' => $order->admin_note]) }}
                 </div>
             @endif
@@ -245,7 +245,7 @@
                         <div class="flex items-center justify-between gap-2">
                             <p class="text-sm font-semibold text-slate-900 dark:text-slate-50">
                                 {{ $event->message ?? __('messages.update_label') }}</p>
-                            <span class="text-xs text-slate-400">{{ $event->created_at->format('Y-m-d H:i') }}</span>
+                            <span class="text-xs text-slate-100">{{ $event->created_at->format('Y-m-d H:i') }}</span>
                         </div>
                         <p class="mt-2 text-xs text-slate-700 dark:text-slate-50">
                             {{ __('messages.actor_label', ['actor' => $actorLabel]) }}</p>

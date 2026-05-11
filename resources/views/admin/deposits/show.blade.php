@@ -61,7 +61,7 @@
             @if ($depositRequest->paymentMethod && $depositRequest->paymentMethod->fields->isNotEmpty())
                 <div class="mt-6 rounded-2xl border border-slate-50 dark:border-slate-700 bg-white dark:bg-slate-900 p-4">
                     <p class="text-xs text-slate-700 dark:text-slate-50">{{ __('messages.additional_details_label') }}</p>
-                    <div class="mt-3 space-y-2 text-sm text-slate-700">
+                    <div class="mt-3 space-y-2 text-sm text-slate-900 dark:text-slate-50">
                         @foreach ($depositRequest->paymentMethod->fields->sortBy('sort_order') as $field)
                             <div class="flex items-center justify-between gap-4">
                                 <p class="text-xs text-slate-700 dark:text-slate-50">{{ $field->label }}</p>
@@ -78,7 +78,7 @@
                     @if (str_starts_with($depositRequest->evidence->mime, 'image/'))
                         <img src="{{ route('admin.deposits.evidence', $depositRequest) }}" alt="إثبات التحويل" class="mt-3 max-h-64 rounded-2xl border border-slate-50 dark:border-slate-700 object-contain">
                     @else
-                        <a href="{{ route('admin.deposits.evidence', $depositRequest) }}" class="mt-3 inline-flex rounded-full border border-emerald-200 dark:border-emerald-700 px-4 py-2 text-sm font-semibold text-emerald-900 dark:text-emerald-400">تحميل ملف الإثبات</a>
+                        <a href="{{ route('admin.deposits.evidence', $depositRequest) }}" class="mt-3 inline-flex rounded-full border border-emerald-200 dark:border-emerald-700 px-4 py-2 text-sm font-semibold text-emerald-900 dark:text-emerald-100">تحميل ملف الإثبات</a>
                     @endif
                 @else
                     <p class="mt-2 text-sm text-slate-900">لا يوجد ملف مرفق.</p>
@@ -86,7 +86,7 @@
             </div>
 
             @if ($depositRequest->admin_note)
-                <div class="mt-6 rounded-2xl border border-emerald-100 dark:border-emerald-900/30 bg-emerald-50 dark:bg-emerald-900/20 p-4 text-sm text-emerald-900 dark:text-emerald-400">
+                <div class="mt-6 rounded-2xl border border-emerald-100 dark:border-emerald-900/30 bg-emerald-50 dark:bg-emerald-900/20 p-4 text-sm text-emerald-900 dark:text-emerald-100">
                     ملاحظة الإدارة: {{ $depositRequest->admin_note }}
                 </div>
             @endif

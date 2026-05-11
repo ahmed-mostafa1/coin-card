@@ -103,7 +103,7 @@
                 'url' => $sharedTiktokLink ?? '',
                 'enabled' => ($sharedTiktokEnabled ?? '0') === '1',
                 'icon' => 'fa-brands fa-tiktok',
-                'classes' => 'text-slate-900 dark:text-white hover:border-slate-400/40 hover:bg-slate-900/10',
+                'classes' => 'text-slate-900 dark:text-white hover:border-slate-100/40 hover:bg-slate-900/10',
             ],
         ])->filter(fn (array $social): bool => $social['enabled'] && filled(trim((string) $social['url'])) && trim((string) $social['url']) !== '#')->values();
     @endphp
@@ -247,7 +247,7 @@
                                           decoding="async"
                                           class="h-full w-full object-contain p-1.5 sm:p-2">
                                 @else
-                                    <span class="text-2xl font-black text-emerald-900 dark:text-emerald-300 sm:text-3xl">
+                                    <span class="text-2xl font-black text-emerald-900 dark:text-emerald-100 sm:text-3xl">
                                         {{ mb_substr($logoTextValue, 0, 1) }}
                                     </span>
                                 @endif
@@ -256,7 +256,7 @@
                                 <span class="block truncate text-sm font-black tracking-[0.01em] text-slate-950 dark:text-white sm:text-base">
                                     {{ $logoTextValue }}
                                 </span>
-                                <span class="hidden truncate text-[11px] font-medium text-slate-900 dark:text-slate-400 sm:block">
+                                <span class="hidden truncate text-[11px] font-medium text-slate-900 dark:text-slate-100 sm:block">
                                     {{ $isAr ? 'شحن ألعاب وتطبيقات ' : 'Games and Apps topup' }}
                                 </span>
                             </span>
@@ -310,7 +310,7 @@
                                             <span class="block max-w-28 truncate text-sm font-bold text-slate-900 dark:text-white">
                                                 {{ $currentUser->name }} <x-user-badge :user="$currentUser" class="h-4 w-4" />
                                             </span>
-                                            <span class="block truncate text-[11px] font-medium text-slate-900 dark:text-slate-400">
+                                            <span class="block truncate text-[11px] font-medium text-slate-900 dark:text-slate-100">
                                                 {{ $menuTierLabel }}
                                             </span>
                                         </span>
@@ -339,7 +339,7 @@
                                                 <p class="truncate text-base font-bold text-slate-950 dark:text-white">{{ $currentUser->name }} <x-user-badge :user="$currentUser" /></p>
                                                 <p class="mt-1 truncate text-xs text-slate-9000 dark:text-slate-50">{{ $currentUser->email }}</p>
                                                 <div class="mt-3 flex flex-wrap items-center gap-2">
-                                                    <span class="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-900 dark:bg-emerald-950/50 dark:text-emerald-300">
+                                                    <span class="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-900 dark:bg-emerald-950/50 dark:text-emerald-100">
                                                         <i class="fa-solid fa-crown text-[11px] text-amber-400"></i>
                                                         {{ $menuTierLabel }}
                                                     </span>
@@ -355,36 +355,36 @@
 
                                         <div class="mt-4 grid grid-cols-2 gap-2">
                                             <div class="rounded-[1.15rem] border border-slate-50 bg-slate-50 px-3 py-3 dark:border-slate-700 dark:bg-slate-800/80">
-                                                <span class="text-[11px] font-semibold text-slate-900 dark:text-slate-400">{{ __('messages.available_balance') }}</span>
-                                                <p class="mt-1 text-sm font-bold text-emerald-900 dark:text-emerald-300" dir="ltr">$ {{ number_format($currentUser->available_balance, 2) }}</p>
+                                                <span class="text-[11px] font-semibold text-slate-900 dark:text-slate-100">{{ __('messages.available_balance') }}</span>
+                                                <p class="mt-1 text-sm font-bold text-emerald-900 dark:text-emerald-100" dir="ltr">$ {{ number_format($currentUser->available_balance, 2) }}</p>
                                             </div>
                                             <div class="rounded-[1.15rem] border border-slate-50 bg-slate-50 px-3 py-3 dark:border-slate-700 dark:bg-slate-800/80">
-                                                <span class="text-[11px] font-semibold text-slate-900 dark:text-slate-400">{{ __('messages.held_balance') }}</span>
+                                                <span class="text-[11px] font-semibold text-slate-900 dark:text-slate-100">{{ __('messages.held_balance') }}</span>
                                                 <p class="mt-1 text-sm font-bold text-slate-900 dark:text-white" dir="ltr">$ {{ number_format($currentUser->wallet?->held_balance ?? 0, 2) }}</p>
                                             </div>
                                         </div>
 
                                         <div class="mt-4 grid grid-cols-2 gap-2">
                                             <a href="{{ route('lang.switch', $languageToggleLocale) }}"
-                                               class="flex items-center gap-3 rounded-[1rem] border border-slate-50 bg-slate-50 px-3 py-3 text-sm font-semibold text-slate-900 transition hover:border-emerald-200 hover:text-emerald-900 dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-50 dark:hover:border-emerald-700 dark:hover:text-emerald-300">
+                                               class="flex items-center gap-3 rounded-[1rem] border border-slate-50 bg-slate-50 px-3 py-3 text-sm font-semibold text-slate-900 transition hover:border-emerald-200 hover:text-emerald-900 dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-50 dark:hover:border-emerald-700 dark:hover:text-emerald-100">
                                                 <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl bg-white text-slate-900 shadow-sm dark:bg-slate-900 dark:text-slate-50">
                                                     <i class="fa-solid fa-language text-sm"></i>
                                                 </span>
                                                 <span class="min-w-0">
-                                                    <span class="block text-xs font-medium text-slate-900 dark:text-slate-400">{{ $isAr ? 'اللغة' : 'Language' }}</span>
+                                                    <span class="block text-xs font-medium text-slate-900 dark:text-slate-100">{{ $isAr ? 'اللغة' : 'Language' }}</span>
                                                     <span class="block truncate">{{ $languageToggleLabel }}</span>
                                                 </span>
                                             </a>
 
                                             <button type="button"
                                                     @click="darkMode = !darkMode"
-                                                    class="flex items-center gap-3 rounded-[1rem] border border-slate-50 bg-slate-50 px-3 py-3 text-sm font-semibold text-slate-900 transition hover:border-emerald-200 hover:text-emerald-900 dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-50 dark:hover:border-emerald-700 dark:hover:text-emerald-300">
+                                                    class="flex items-center gap-3 rounded-[1rem] border border-slate-50 bg-slate-50 px-3 py-3 text-sm font-semibold text-slate-900 transition hover:border-emerald-200 hover:text-emerald-900 dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-50 dark:hover:border-emerald-700 dark:hover:text-emerald-100">
                                                 <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl bg-white text-slate-900 shadow-sm dark:bg-slate-900 dark:text-slate-50">
                                                     <i class="fa-solid fa-sun text-sm" x-show="!darkMode" x-cloak></i>
                                                     <i class="fa-solid fa-moon text-sm" x-show="darkMode" x-cloak></i>
                                                 </span>
                                                 <span class="min-w-0 text-start">
-                                                    <span class="block text-xs font-medium text-slate-900 dark:text-slate-400">{{ $isAr ? 'المظهر' : 'Theme' }}</span>
+                                                    <span class="block text-xs font-medium text-slate-900 dark:text-slate-100">{{ $isAr ? 'المظهر' : 'Theme' }}</span>
                                                     <span class="block truncate" x-text="darkMode ? '{{ $isAr ? 'داكن' : 'Dark' }}' : '{{ $isAr ? 'فاتح' : 'Light' }}'"></span>
                                                 </span>
                                             </button>
@@ -394,7 +394,7 @@
                                             <div class="mt-4 space-y-1.5">
                                                 @foreach($menuLinks as $link)
                                                     <a href="{{ $link['route'] }}"
-                                                       class="flex items-center justify-between rounded-[1rem] px-3 py-3 text-sm font-semibold transition {{ $link['active'] ? 'bg-emerald-50 text-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-300' : 'text-slate-700 hover:bg-slate-50 hover:text-slate-950 dark:text-slate-50 dark:hover:bg-slate-800 dark:hover:text-white' }}">
+                                                       class="flex items-center justify-between rounded-[1rem] px-3 py-3 text-sm font-semibold transition {{ $link['active'] ? 'bg-emerald-50 text-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-100' : 'text-slate-700 hover:bg-slate-50 hover:text-slate-950 dark:text-slate-50 dark:hover:bg-slate-800 dark:hover:text-white' }}">
                                                         <span class="flex min-w-0 items-center gap-3">
                                                             <i class="{{ $link['icon'] }} text-sm shrink-0"></i>
                                                             <span class="truncate">{{ $link['label'] }}</span>
@@ -446,15 +446,15 @@
                                          class="absolute end-0 top-full z-50 mt-2 w-52 overflow-hidden rounded-2xl border border-slate-50 bg-white p-2 shadow-xl shadow-slate-900/10 dark:border-slate-700 dark:bg-slate-900">
 
                                         <a href="{{ route('login') }}"
-                                           class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-800 transition hover:bg-emerald-50 hover:text-emerald-900 dark:text-slate-50 dark:hover:bg-emerald-950/30 dark:hover:text-emerald-300">
-                                            <i class="fa-solid fa-right-to-bracket w-4 text-center text-slate-400"></i>
+                                           class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-800 transition hover:bg-emerald-50 hover:text-emerald-900 dark:text-slate-50 dark:hover:bg-emerald-950/30 dark:hover:text-emerald-100">
+                                            <i class="fa-solid fa-right-to-bracket w-4 text-center text-slate-100"></i>
                                             <span>{{ __('messages.login') }}</span>
                                         </a>
 
                                         @if (Route::has('register'))
                                             <a href="{{ route('register') }}"
                                                class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-800 transition hover:bg-slate-50 hover:text-slate-950 dark:text-slate-50 dark:hover:bg-slate-800 dark:hover:text-white">
-                                                <i class="fa-solid fa-user-plus w-4 text-center text-slate-400"></i>
+                                                <i class="fa-solid fa-user-plus w-4 text-center text-slate-100"></i>
                                                 <span>{{ __('messages.register') }}</span>
                                             </a>
                                         @endif
@@ -463,15 +463,15 @@
                                             {{-- Language switch: only in dropdown on mobile --}}
                                             <a href="{{ route('lang.switch', $languageToggleLocale) }}"
                                                class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-800 transition hover:bg-slate-50 hover:text-slate-950 dark:text-slate-50 dark:hover:bg-slate-800 sm:hidden">
-                                                <i class="fa-solid fa-globe w-4 text-center text-slate-400"></i>
+                                                <i class="fa-solid fa-globe w-4 text-center text-slate-100"></i>
                                                 <span>{{ $languageToggleLabel }}</span>
                                             </a>
 
                                             <button type="button"
                                                     @click="darkMode = !darkMode; guestOpen = false"
                                                     class="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-800 transition hover:bg-slate-50 dark:text-slate-50 dark:hover:bg-slate-800">
-                                                <i class="fa-solid fa-sun w-4 text-center text-slate-400" x-show="!darkMode" x-cloak></i>
-                                                <i class="fa-solid fa-moon w-4 text-center text-slate-400" x-show="darkMode" x-cloak></i>
+                                                <i class="fa-solid fa-sun w-4 text-center text-slate-100" x-show="!darkMode" x-cloak></i>
+                                                <i class="fa-solid fa-moon w-4 text-center text-slate-100" x-show="darkMode" x-cloak></i>
                                                 <span x-text="darkMode ? '{{ $isAr ? 'داكن' : 'Dark' }}' : '{{ $isAr ? 'فاتح' : 'Light' }}'"></span>
                                             </button>
                                         </div>
@@ -491,13 +491,13 @@
 
         <footer class="mb-24 border-t border-slate-50 bg-white/90 px-4 py-5 backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/90 lg:mb-0">
             <div class="mx-auto flex w-[85%] max-w-none flex-col items-center justify-between gap-3 text-center sm:flex-row sm:text-start">
-                <p class="text-xs font-medium text-slate-900 dark:text-slate-400">
+                <p class="text-xs font-medium text-slate-900 dark:text-slate-100">
                  {{ __('messages.all_rights_reserved') ?? 'All rights reserved.' }}
                 </p>
                 <div class="flex flex-wrap items-center justify-center gap-2 sm:justify-end">
                     @foreach($legalLinks as $link)
                         <a href="{{ $link['route'] }}"
-                           class="inline-flex items-center rounded-full border border-slate-50 bg-white px-3 py-2 text-xs font-semibold text-slate-900 transition hover:border-emerald-200 hover:text-emerald-900 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-50 dark:hover:border-emerald-700 dark:hover:text-emerald-300">
+                           class="inline-flex items-center rounded-full border border-slate-50 bg-white px-3 py-2 text-xs font-semibold text-slate-900 transition hover:border-emerald-200 hover:text-emerald-900 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-50 dark:hover:border-emerald-700 dark:hover:text-emerald-100">
                             {{ $link['label'] }}
                         </a>
                     @endforeach
@@ -525,7 +525,7 @@
                     <div class="grid grid-cols-4 gap-1">
                         @foreach($topNavLinks as $link)
                             <a href="{{ $link['route'] }}"
-                               class="relative flex min-w-0 flex-col items-center justify-center gap-1 rounded-2xl px-1 py-2 text-[11px] font-semibold transition {{ $link['active'] ? 'bg-emerald-50 text-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-300' : 'text-slate-900 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white' }}">
+                               class="relative flex min-w-0 flex-col items-center justify-center gap-1 rounded-2xl px-1 py-2 text-[11px] font-semibold transition {{ $link['active'] ? 'bg-emerald-50 text-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-100' : 'text-slate-900 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white' }}">
                                 <span class="relative inline-flex h-5 items-center justify-center">
                                     <i class="{{ $link['icon'] }} text-sm"></i>
                                     @if(!empty($link['badge']))

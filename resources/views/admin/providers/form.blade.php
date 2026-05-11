@@ -123,21 +123,21 @@
                     <div>
                         <label class="block text-sm font-medium text-slate-900 dark:text-slate-50 mb-1">
                             مسار قائمة المنتجات في الاستجابة
-                            <span class="text-xs text-slate-400">(مثال: results أو data.items)</span>
+                            <span class="text-xs text-slate-100">(مثال: results أو data.items)</span>
                         </label>
                         <x-text-input name="catalog_response_path" dir="ltr" :value="old('catalog_response_path', $provider?->catalog_response_path)" placeholder="results" class="w-full" />
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-900 dark:text-slate-50 mb-1">
                             مسار الإجمالي في الاستجابة
-                            <span class="text-xs text-slate-400">(مثال: count)</span>
+                            <span class="text-xs text-slate-100">(مثال: count)</span>
                         </label>
                         <x-text-input name="catalog_count_path" dir="ltr" :value="old('catalog_count_path', $provider?->catalog_count_path)" placeholder="count" class="w-full" />
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-900 dark:text-slate-50 mb-1">
                             مسار رابط الصفحة التالية
-                            <span class="text-xs text-slate-400">(مثال: next)</span>
+                            <span class="text-xs text-slate-100">(مثال: next)</span>
                         </label>
                         <x-text-input name="catalog_next_path" dir="ltr" :value="old('catalog_next_path', $provider?->catalog_next_path)" placeholder="next" class="w-full" />
                     </div>
@@ -169,7 +169,7 @@
             {{-- ═══ 4. Field Map ════════════════════════════════════════════════ --}}
             <div class="rounded-xl border border-slate-50 dark:border-slate-700 p-5">
                 <h2 class="text-base font-semibold text-slate-700 dark:text-white mb-1">خريطة حقول المنتج</h2>
-                <p class="text-xs text-slate-400 mb-4">اسم الحقل كما يرد في استجابة الـ API. يدعم النقاط للوصول المتداخل (مثال: <code>data.title</code>).</p>
+                <p class="text-xs text-slate-100 mb-4">اسم الحقل كما يرد في استجابة الـ API. يدعم النقاط للوصول المتداخل (مثال: <code>data.title</code>).</p>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-slate-900 dark:text-slate-50 mb-1">اسم المنتج (name) *</label>
@@ -201,7 +201,7 @@
             {{-- ═══ 5. Order Placement ══════════════════════════════════════════ --}}
             <div class="rounded-xl border border-slate-50 dark:border-slate-700 p-5">
                 <h2 class="text-base font-semibold text-slate-700 dark:text-white mb-1">تنفيذ الطلبات</h2>
-                <p class="text-xs text-slate-400 mb-4">اتركه فارغاً إذا كان تنفيذ الطلبات يدوياً.</p>
+                <p class="text-xs text-slate-100 mb-4">اتركه فارغاً إذا كان تنفيذ الطلبات يدوياً.</p>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-slate-900 dark:text-slate-50 mb-1">مسار إنشاء الطلب</label>
@@ -215,27 +215,27 @@
                         </x-select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-900 dark:text-slate-50 mb-1">اسم حقل رقم طلبنا <span class="text-xs text-slate-400">(مثال: client_order_id)</span></label>
+                        <label class="block text-sm font-medium text-slate-900 dark:text-slate-50 mb-1">اسم حقل رقم طلبنا <span class="text-xs text-slate-100">(مثال: client_order_id)</span></label>
                         <x-text-input name="order_our_ref_field" dir="ltr" :value="old('order_our_ref_field', $provider?->order_our_ref_field)" placeholder="client_order_id" class="w-full" />
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-900 dark:text-slate-50 mb-1">اسم حقل المنتج في الـ API <span class="text-xs text-slate-400">(مثال: product)</span></label>
+                        <label class="block text-sm font-medium text-slate-900 dark:text-slate-50 mb-1">اسم حقل المنتج في الـ API <span class="text-xs text-slate-100">(مثال: product)</span></label>
                         <x-text-input name="order_product_field" dir="ltr" :value="old('order_product_field', $provider?->order_product_field)" placeholder="product" class="w-full" />
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-900 dark:text-slate-50 mb-1">اسم حقل رقم حساب المستخدم في الـ API <span class="text-xs text-slate-400">(مثال: account_id)</span></label>
+                        <label class="block text-sm font-medium text-slate-900 dark:text-slate-50 mb-1">اسم حقل رقم حساب المستخدم في الـ API <span class="text-xs text-slate-100">(مثال: account_id)</span></label>
                         <x-text-input name="order_account_id_field" dir="ltr" :value="old('order_account_id_field', $provider?->order_account_id_field)" placeholder="account_id" class="w-full" />
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-900 dark:text-slate-50 mb-1">مفتاح رقم الحساب في نموذج الطلب <span class="text-xs text-slate-400">(مثال: customer_identifier)</span></label>
+                        <label class="block text-sm font-medium text-slate-900 dark:text-slate-50 mb-1">مفتاح رقم الحساب في نموذج الطلب <span class="text-xs text-slate-100">(مثال: customer_identifier)</span></label>
                         <x-text-input name="order_account_id_source" dir="ltr" :value="old('order_account_id_source', $provider?->order_account_id_source)" placeholder="customer_identifier" class="w-full" />
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-900 dark:text-slate-50 mb-1">اسم حقل الكمية في الـ API <span class="text-xs text-slate-400">(فارغ = دائماً 1)</span></label>
+                        <label class="block text-sm font-medium text-slate-900 dark:text-slate-50 mb-1">اسم حقل الكمية في الـ API <span class="text-xs text-slate-100">(فارغ = دائماً 1)</span></label>
                         <x-text-input name="order_quantity_field" dir="ltr" :value="old('order_quantity_field', $provider?->order_quantity_field)" placeholder="quantity" class="w-full" />
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-900 dark:text-slate-50 mb-1">مفتاح الكمية في نموذج الطلب <span class="text-xs text-slate-400">(فارغ = دائماً 1)</span></label>
+                        <label class="block text-sm font-medium text-slate-900 dark:text-slate-50 mb-1">مفتاح الكمية في نموذج الطلب <span class="text-xs text-slate-100">(فارغ = دائماً 1)</span></label>
                         <x-text-input name="order_quantity_source" dir="ltr" :value="old('order_quantity_source', $provider?->order_quantity_source)" placeholder="external_amount" class="w-full" />
                     </div>
                     <div>
@@ -249,7 +249,7 @@
                     <div class="md:col-span-2">
                         <label class="block text-sm font-medium text-slate-900 dark:text-slate-50 mb-1">
                             حقول إضافية ثابتة (JSON)
-                            <span class="text-xs text-slate-400">(مثال: {{"{"}} "currency": "SAR" {{"}"}})</span>
+                            <span class="text-xs text-slate-100">(مثال: {{"{"}} "currency": "SAR" {{"}"}})</span>
                         </label>
                         <textarea name="order_extra_fields" rows="2" dir="ltr"
                                   class="w-full rounded-xl border border-slate-50 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-sm font-mono text-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">{{ old('order_extra_fields', $provider?->order_extra_fields ? json_encode($provider->order_extra_fields) : '') }}</textarea>
@@ -261,7 +261,7 @@
             {{-- ═══ 6. Order Status ════════════════════════════════════════════ --}}
             <div class="rounded-xl border border-slate-50 dark:border-slate-700 p-5">
                 <h2 class="text-base font-semibold text-slate-700 dark:text-white mb-1">مزامنة حالة الطلب</h2>
-                <p class="text-xs text-slate-400 mb-4">اتركه فارغاً إذا كانت المزامنة تتم يدوياً.</p>
+                <p class="text-xs text-slate-100 mb-4">اتركه فارغاً إذا كانت المزامنة تتم يدوياً.</p>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-slate-900 dark:text-slate-50 mb-1">مسار استعلام الحالة</label>
@@ -301,9 +301,9 @@
             @if($isEdit)
                 <div class="rounded-xl border border-emerald-200 dark:border-emerald-800 p-5">
                     <h2 class="text-base font-semibold text-slate-700 dark:text-white mb-2">اختبار الاتصال</h2>
-                    <p class="text-sm text-slate-900 dark:text-slate-400 mb-3">سيتم استدعاء نقطة الكتالوج بالإعدادات المحفوظة حالياً وعرض أول 3 منتجات.</p>
+                    <p class="text-sm text-slate-900 dark:text-slate-100 mb-3">سيتم استدعاء نقطة الكتالوج بالإعدادات المحفوظة حالياً وعرض أول 3 منتجات.</p>
                     <button type="button" id="test-btn"
-                            class="rounded-xl border border-emerald-300 dark:border-emerald-700 px-4 py-2 text-sm font-medium text-emerald-900 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 transition"
+                            class="rounded-xl border border-emerald-300 dark:border-emerald-700 px-4 py-2 text-sm font-medium text-emerald-900 dark:text-emerald-100 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 transition"
                             data-url="{{ route('admin.providers.test', $provider) }}">
                         اختبار الاتصال الآن
                     </button>

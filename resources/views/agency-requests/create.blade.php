@@ -4,12 +4,12 @@
 
 @section('content')
     <div class="w-full rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-8 shadow-sm">
-        <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">طلب وكالة</h1>
+        <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-100">طلب وكالة</h1>
         <span class="sr-only">Agency</span>
         <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-50">املأ البيانات التالية وسيتم التواصل معك.</p>
 
         @if (session('status'))
-            <div class="mt-4 rounded-lg border border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-300">
+            <div class="mt-4 rounded-lg border border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-100">
                 {{ session('status') }}
             </div>
         @endif
@@ -51,7 +51,7 @@
                 <x-primary-button class="w-full">إرسال</x-primary-button>
             </form>
         @else
-            <p class="mt-6 text-sm text-slate-900 dark:text-slate-400">نموذج الطلب غير متاح حالياً. يرجى التواصل معنا مباشرة.</p>
+            <p class="mt-6 text-sm text-slate-900 dark:text-slate-100">نموذج الطلب غير متاح حالياً. يرجى التواصل معنا مباشرة.</p>
         @endif
     </div>
 @endsection

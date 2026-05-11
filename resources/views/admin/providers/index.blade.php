@@ -22,7 +22,7 @@
         </x-page-header>
 
         @if(session('success'))
-            <div class="mt-4 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-400">
+            <div class="mt-4 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-100">
                 {{ session('success') }}
             </div>
         @endif
@@ -33,10 +33,10 @@
         @endif
 
         @if($providers->isEmpty())
-            <p class="mt-6 text-center text-slate-900 dark:text-slate-400">لا يوجد مزودون بعد. أضف مزوداً لبدء استيراد المنتجات.</p>
+            <p class="mt-6 text-center text-slate-900 dark:text-slate-100">لا يوجد مزودون بعد. أضف مزوداً لبدء استيراد المنتجات.</p>
         @else
             <x-table class="mt-6">
-                <thead class="bg-slate-50 dark:bg-slate-700/50 text-slate-900 dark:text-slate-400">
+                <thead class="bg-slate-50 dark:bg-slate-700/50 text-slate-900 dark:text-slate-100">
                     <tr>
                         <th class="py-2 px-3 text-right">الاسم</th>
                         <th class="py-2 px-3 text-right">المعرّف</th>
@@ -53,7 +53,7 @@
                             <td class="py-3 px-3">
                                 <code class="text-xs bg-slate-50 dark:bg-slate-800 px-2 py-0.5 rounded">{{ $provider->slug }}</code>
                             </td>
-                            <td class="py-3 px-3 text-sm text-slate-900 dark:text-slate-400">
+                            <td class="py-3 px-3 text-sm text-slate-900 dark:text-slate-100">
                                 {{ \App\Models\ApiProvider::AUTH_TYPES[$provider->auth_type] ?? $provider->auth_type }}
                             </td>
                             <td class="py-3 px-3 text-slate-700 dark:text-white">{{ $provider->services_count }}</td>

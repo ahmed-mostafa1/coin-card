@@ -4,13 +4,13 @@
     <div class="grid gap-6 lg:grid-cols-3">
         <x-card :hover="false" class="p-8 lg:col-span-2">
             <x-page-header title="طلب توثيق #{{ $verificationRequest->id }}" subtitle="{{ $verificationRequest->user?->name }} - {{ $verificationRequest->status }}" />
-            @if (session('status'))<div class="mt-6 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-300">{{ session('status') }}</div>@endif
+            @if (session('status'))<div class="mt-6 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-100">{{ session('status') }}</div>@endif
             <div class="mt-6 space-y-3">
                 @foreach (($verificationRequest->payload ?? []) as $key => $value)
                     <div class="rounded-2xl border border-slate-50 p-4 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70"><p class="text-xs text-slate-9000 dark:text-slate-50">{{ $key }}</p><p class="mt-1 font-semibold text-slate-800 dark:text-white break-words">{{ $value }}</p></div>
                 @endforeach
                 @foreach ($verificationRequest->files as $file)
-                    <div class="rounded-2xl border border-slate-50 p-4 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70"><p class="text-xs text-slate-9000 dark:text-slate-50">{{ $file->field?->label ?? $file->field_key }}</p><a href="{{ route('admin.verification-requests.files.show', [$verificationRequest, $file->id]) }}" class="mt-2 inline-flex rounded-full border border-emerald-200 dark:border-emerald-700 px-4 py-2 text-sm font-semibold text-emerald-900 dark:text-emerald-300">عرض/تحميل الملف</a></div>
+                    <div class="rounded-2xl border border-slate-50 p-4 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70"><p class="text-xs text-slate-9000 dark:text-slate-50">{{ $file->field?->label ?? $file->field_key }}</p><a href="{{ route('admin.verification-requests.files.show', [$verificationRequest, $file->id]) }}" class="mt-2 inline-flex rounded-full border border-emerald-200 dark:border-emerald-700 px-4 py-2 text-sm font-semibold text-emerald-900 dark:text-emerald-100">عرض/تحميل الملف</a></div>
                 @endforeach
             </div>
         </x-card>

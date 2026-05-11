@@ -6,7 +6,7 @@
     <div class="rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm transition-colors duration-200">
         <div class="flex flex-wrap items-center justify-between gap-4">
             <div>
-                <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">{{ __('messages.service_variants_title', ['name' => $service->name]) }}</h1>
+                <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-100">{{ __('messages.service_variants_title', ['name' => $service->name]) }}</h1>
                 <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-50">{{ __('messages.manage_service_variants_desc') }}</p>
             </div>
             <div class="flex flex-wrap gap-3">
@@ -16,13 +16,13 @@
         </div>
 
         @if (session('status'))
-            <div class="mt-6 rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-400">
+            <div class="mt-6 rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-100">
                 {{ session('status') }}
             </div>
         @endif
 
         <x-table class="mt-6">
-            <thead class="border-b border-slate-50 dark:border-slate-700 text-slate-900 dark:text-slate-400">
+            <thead class="border-b border-slate-50 dark:border-slate-700 text-slate-900 dark:text-slate-100">
                 <tr>
                     <th class="py-2">{{ __('messages.name_label') }}</th>
                     <th class="py-2">{{ __('messages.price') }}</th>
@@ -42,15 +42,15 @@
                         </td>
                         <td class="py-3">
                             @if ($variant->is_active)
-                                <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/50 px-3 py-1 text-xs text-emerald-900 dark:text-emerald-400">{{ __('messages.status_active') }}</span>
+                                <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/50 px-3 py-1 text-xs text-emerald-900 dark:text-emerald-100">{{ __('messages.status_active') }}</span>
                             @else
                                 <span class="rounded-full bg-slate-50 dark:bg-slate-700 px-3 py-1 text-xs text-slate-700 dark:text-slate-50">{{ __('messages.status_inactive') }}</span>
                             @endif
                         </td>
-                        <td class="py-3 text-slate-900 dark:text-slate-400">{{ $variant->sort_order }}</td>
+                        <td class="py-3 text-slate-900 dark:text-slate-100">{{ $variant->sort_order }}</td>
                         <td class="py-3">
                             <div class="flex flex-wrap gap-3">
-                                <a href="{{ route('admin.services.variants.edit', [$service, $variant]) }}" class="text-emerald-900 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">{{ __('messages.edit') }}</a>
+                                <a href="{{ route('admin.services.variants.edit', [$service, $variant]) }}" class="text-emerald-900 dark:text-emerald-100 hover:text-emerald-900 dark:hover:text-emerald-100">{{ __('messages.edit') }}</a>
                                 <form method="POST" action="{{ route('admin.services.variants.destroy', [$service, $variant]) }}" onsubmit="return confirm('{{ __('messages.confirm_delete_variant') }}')">
                                     @csrf
                                     @method('DELETE')
@@ -61,7 +61,7 @@
                     </tr>
                 @empty
                     <tr>
-                            <td colspan="6" class="py-6 text-center text-slate-900 dark:text-slate-400">{{ __('messages.no_variants_text') }}</td>
+                            <td colspan="6" class="py-6 text-center text-slate-900 dark:text-slate-100">{{ __('messages.no_variants_text') }}</td>
                     </tr>
                 @endforelse
             </tbody>

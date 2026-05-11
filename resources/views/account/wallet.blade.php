@@ -41,7 +41,7 @@
                             $displayAmount = -$amount;
                         }
 
-                        $amountClass = $displayAmount >= 0 ? 'text-emerald-900' : 'text-rose-700';
+                        $amountClass = $displayAmount >= 0 ? 'text-emerald-900 dark:text-emerald-100' : 'text-rose-700 dark:text-rose-300';
                     @endphp
                     <tr class="transition hover:bg-slate-50 dark:hover:bg-transparent">
                         <td class="py-3 text-slate-900 dark:text-slate-50" data-label="{{ __('messages.type') }}">
@@ -61,12 +61,12 @@
                                 <x-badge type="rejected">{{ __('messages.status_rejected') }}</x-badge>
                             @endif
                         </td>
-                        <td class="py-3 text-slate-700 dark:text-slate-400" data-label="{{ __('messages.date') }}">{{ $transaction->created_at->format('Y-m-d') }}</td>
-                        <td class="py-3 text-slate-700 dark:text-slate-400" data-label="{{ __('messages.notes') }}">{{ $transaction->note ?? '-' }}</td>
+                        <td class="py-3 text-slate-700 dark:text-slate-100" data-label="{{ __('messages.date') }}">{{ $transaction->created_at->format('Y-m-d') }}</td>
+                        <td class="py-3 text-slate-700 dark:text-slate-100" data-label="{{ __('messages.notes') }}">{{ $transaction->note ?? '-' }}</td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="py-6 text-center text-slate-900 dark:text-slate-400">{{ __('messages.no_transactions_yet') }}</td>
+                        <td colspan="5" class="py-6 text-center text-slate-900 dark:text-slate-100">{{ __('messages.no_transactions_yet') }}</td>
                     </tr>
                 @endforelse
             </tbody>

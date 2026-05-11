@@ -93,7 +93,7 @@
                 </div>
                 <div class="flex items-center gap-4 mt-1 text-xs text-gray-500">
                     <span>النوع: <strong>{{ $type }}</strong></span>
-                    <span>السعر: <strong class="text-emerald-900">{{ $price }}</strong></span>
+                    <span>السعر: <strong class="text-emerald-900 dark:text-emerald-50 dark:bg-emerald-900 dark:border-emerald-700">{{ $price }}</strong></span>
                     @if($minQty !== null || $maxQty !== null)
                         <span>الكمية: {{ $minQty ?? '—' }} &ndash; {{ $maxQty ?? '∞' }}</span>
                     @endif

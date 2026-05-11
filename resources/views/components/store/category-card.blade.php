@@ -29,7 +29,7 @@
                  class="h-full w-full object-cover transition duration-300 group-hover:scale-105">
         @else
             <div class="flex h-full w-full items-center justify-center">
-                <i class="fa-solid fa-layer-group text-3xl text-slate-400"></i>
+                <i class="fa-solid fa-layer-group text-3xl text-slate-100"></i>
             </div>
         @endif
     </div>

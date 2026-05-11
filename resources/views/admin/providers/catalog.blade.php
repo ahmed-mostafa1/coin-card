@@ -34,7 +34,7 @@
         </x-page-header>
 
         @if(session('success'))
-            <div class="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900 dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">
+            <div class="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900 dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-100">
                 {{ session('success') }}
             </div>
         @endif
@@ -103,13 +103,13 @@
         </form>
 
         @if($isDailyCard && $searchIsLocal)
-            <div class="mt-4 rounded-xl border border-slate-50 bg-slate-50 px-4 py-3 text-sm text-slate-900 dark:bg-slate-700/50 dark:text-slate-400">
+            <div class="mt-4 rounded-xl border border-slate-50 bg-slate-50 px-4 py-3 text-sm text-slate-900 dark:bg-slate-700/50 dark:text-slate-100">
                 بحث DailyCard يتم محليًا بعد تحميل النتائج، لأن واجهة المزود تعيد أخطاء عند استخدام `search` مباشرة.
             </div>
         @endif
 
         @if($mode === 'all' && ! $wasTruncated)
-            <div class="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900 dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">
+            <div class="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900 dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-100">
                 تم عرض الكتالوج كاملاً في صفحة واحدة.
                 @if($isDailyCard)
                     تم استخدام طلب موسّع مناسب لـ DailyCard.
@@ -133,7 +133,7 @@
         @endif
 
         <x-table class="mt-4">
-            <thead class="bg-slate-50 text-slate-900 dark:bg-slate-700/50 dark:text-slate-400">
+            <thead class="bg-slate-50 text-slate-900 dark:bg-slate-700/50 dark:text-slate-100">
                 <tr>
                     <th class="px-3 py-2 text-right">المعرّف</th>
                     <th class="px-3 py-2 text-right">الاسم</th>
@@ -147,9 +147,9 @@
                 @forelse($products as $product)
                     @php $extId = $product['external_id']; $isImported = isset($importedIds[$extId]); @endphp
                     <tr class="transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
-                        <td class="px-3 py-3 font-mono text-xs text-slate-400">{{ $extId }}</td>
+                        <td class="px-3 py-3 font-mono text-xs text-slate-100">{{ $extId }}</td>
                         <td class="px-3 py-3 font-medium text-slate-700 dark:text-white">{{ $product['name'] }}</td>
-                        <td class="px-3 py-3 text-sm text-slate-900 dark:text-slate-400">{{ $product['type'] ?? '—' }}</td>
+                        <td class="px-3 py-3 text-sm text-slate-900 dark:text-slate-100">{{ $product['type'] ?? '—' }}</td>
                         <td class="px-3 py-3 font-semibold text-emerald-600">{{ number_format((float) $product['price'], 2) }}</td>
                         <td class="px-3 py-3">
                             @if($product['available'])
@@ -175,7 +175,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="py-8 text-center text-slate-900 dark:text-slate-400">لا توجد منتجات.</td>
+                        <td colspan="6" class="py-8 text-center text-slate-900 dark:text-slate-100">لا توجد منتجات.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -183,7 +183,7 @@
 
         @if($mode === 'page' && ($hasPreviousPage || $hasNextPage || $totalPages > 1))
             <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
-                <p class="text-sm text-slate-900 dark:text-slate-400">
+                <p class="text-sm text-slate-900 dark:text-slate-100">
                     الصفحة {{ $currentPage }}
                     @if($totalPages > 1)
                         من {{ $totalPages }}

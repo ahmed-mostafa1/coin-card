@@ -5,7 +5,7 @@
 @section('content')
     <x-card :hover="false" class="p-8">
         <x-page-header title="إعدادات الولاء" subtitle="تحكم بالنقاط والخصومات التدريجية للمستوى الثالث." />
-        @if (session('status'))<div class="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">{{ session('status') }}</div>@endif
+        @if (session('status'))<div class="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-50 dark:bg-emerald-900 dark:border-emerald-700">{{ session('status') }}</div>@endif
         <form method="POST" action="{{ route('admin.loyalty-settings.update') }}" class="mt-6 space-y-4">
             @csrf
             <label class="flex items-center gap-2 text-sm text-slate-900"><input type="checkbox" name="is_enabled" value="1" class="rounded border-slate-50 text-emerald-600" @checked($settings->is_enabled)> تفعيل نظام الولاء</label>

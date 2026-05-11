@@ -31,7 +31,7 @@
             <p class="mt-3 text-sm leading-7 text-slate-900 dark:text-slate-50">{{ __('contact.form_description') }}</p>
 
             @if (session('status'))
-                <div class="mt-5 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900 dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300">
+                <div class="mt-5 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900 dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-100">
                     {{ session('status') }}
                 </div>
             @endif
@@ -78,7 +78,7 @@
         <x-card :hover="false" class="p-6 sm:p-8">
             <h2 class="text-lg font-semibold text-slate-900 dark:text-white">{{ __('contact.support_title') }}</h2>
             <p class="mt-3 text-sm leading-7 text-slate-900 dark:text-slate-50">{{ __('contact.support_description') }}</p>
-            <p class="mt-4 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900 dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300">
+            <p class="mt-4 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900 dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-100">
                 {{ __('contact.response_time') }}
             </p>
 

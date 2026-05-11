@@ -5,7 +5,7 @@
 
 @section('content')
     <div class="w-full rounded-3xl border border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm transition-colors duration-200">
-        <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">{{ __('messages.edit_category') }}</h1>
+        <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-100">{{ __('messages.edit_category') }}</h1>
 
         <form method="POST" action="{{ route('admin.categories.update', $category) }}" enctype="multipart/form-data" class="mt-6 space-y-4">
             @csrf
@@ -43,14 +43,14 @@
 
             <div>
                 <x-input-label for="image" :value="__('messages.image_optional')" />
-                <input id="image" name="image" type="file" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-900 dark:text-slate-50 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-800 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-900 dark:file:text-emerald-300">
+                <input id="image" name="image" type="file" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 px-4 py-2 text-sm text-slate-900 dark:text-slate-50 file:mr-3 file:rounded-full file:border-0 file:bg-emerald-100 dark:file:bg-emerald-800 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-900 dark:file:text-emerald-100">
                 <x-input-error :messages="$errors->get('image')" />
                 <p class="mt-1 text-xs text-slate-900 dark:text-slate-50">{{ __('messages.recommended_size') }}: 500x500 px</p>
                 @if ($category->image_path)
                 @endif
             </div>
 
-            <div class="flex items-center gap-3 text-sm text-slate-900 dark:text-slate-400">
+            <div class="flex items-center gap-3 text-sm text-slate-900 dark:text-slate-100">
                 <input id="is_active" name="is_active" type="checkbox" value="1" class="rounded border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-700 text-emerald-600 focus:ring-emerald-500" {{ $category->is_active ? 'checked' : '' }}>
                 <label for="is_active">{{ __('messages.activate_category') }}</label>
             </div>

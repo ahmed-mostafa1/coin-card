@@ -7,7 +7,7 @@
     <div class="rounded-3xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-slate-800 p-8 shadow-sm">
         <div class="flex flex-wrap items-center justify-between gap-4">
             <div>
-                <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-400">التصنيفات</h1>
+                <h1 class="text-2xl font-semibold text-emerald-900 dark:text-emerald-100">التصنيفات</h1>
                 <p class="mt-2 text-sm text-slate-900 dark:text-slate-50 dark:text-slate-50">إدارة التصنيفات الرئيسية والفرعية.</p>
             </div>
             <div class="flex flex-wrap items-center gap-4">
@@ -18,7 +18,7 @@
                                value="{{ request('search') }}" 
                                placeholder=".." 
                                class="w-80 rounded-xl border border-slate-50 bg-slate-50 py-2.5 pr-10 pl-4 text-sm outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-1 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-900/50 dark:text-white dark:focus:border-emerald-500 dark:focus:bg-slate-900">
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400">
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-slate-100">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                             </svg>
@@ -40,13 +40,13 @@
         </div>
 
         @if (session('status'))
-            <div class="mt-6 rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-400">
+            <div class="mt-6 rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-100">
                 {{ session('status') }}
             </div>
         @endif
 
         <x-table class="mt-6">
-            <thead class="border-b border-slate-50 dark:border-slate-700 text-slate-900 dark:text-slate-400">
+            <thead class="border-b border-slate-50 dark:border-slate-700 text-slate-900 dark:text-slate-100">
                 <tr>
                     <th class="py-2">الاسم</th>
                     <th class="py-2">التصنيف الأب</th>
@@ -61,8 +61,8 @@
                 @forelse ($categories as $category)
                     <tr>
                         <td class="py-3 text-slate-700 dark:text-white">{{ $category->name }}</td>
-                        <td class="py-3 text-slate-900 dark:text-slate-400">{{ $category->parent?->name ?? 'تصنيف رئيسي' }}</td>
-                        <td class="py-3 text-slate-900 dark:text-slate-400">{{ $category->slug }}</td>
+                        <td class="py-3 text-slate-900 dark:text-slate-100">{{ $category->parent?->name ?? 'تصنيف رئيسي' }}</td>
+                        <td class="py-3 text-slate-900 dark:text-slate-100">{{ $category->slug }}</td>
                         <td class="py-3">
                             @if (empty($category->source) || $category->source === 'manual')
                                 <span class="rounded-full bg-slate-50 dark:bg-slate-700 px-3 py-1 text-xs text-slate-700 dark:text-slate-50">يدوي</span>
@@ -74,14 +74,14 @@
                         </td>
                         <td class="py-3">
                             @if ($category->is_active)
-                                <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/50 px-3 py-1 text-xs text-emerald-900 dark:text-emerald-400">مفعل</span>
+                                <span class="rounded-full bg-emerald-100 dark:bg-emerald-900/50 px-3 py-1 text-xs text-emerald-900 dark:text-emerald-100">مفعل</span>
                             @else
                                 <span class="rounded-full bg-rose-100 dark:bg-rose-900/50 px-3 py-1 text-xs text-rose-700 dark:text-rose-400">متوقف</span>
                             @endif
                         </td>
-                        <td class="py-3 text-slate-900 dark:text-slate-400">{{ $category->sort_order }}</td>
+                        <td class="py-3 text-slate-900 dark:text-slate-100">{{ $category->sort_order }}</td>
                         <td class="py-3 flex items-center gap-3">
-                            <a href="{{ route('admin.categories.edit', $category) }}" class="text-emerald-900 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300">تعديل</a>
+                            <a href="{{ route('admin.categories.edit', $category) }}" class="text-emerald-900 dark:text-emerald-100 hover:text-emerald-900 dark:hover:text-emerald-100">تعديل</a>
                             
                             <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="delete-form">
                                 @csrf
@@ -92,7 +92,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="py-6 text-center text-slate-900 dark:text-slate-400">لا توجد تصنيفات بعد.</td>
+                        <td colspan="7" class="py-6 text-center text-slate-900 dark:text-slate-100">لا توجد تصنيفات بعد.</td>
                     </tr>
                 @endforelse
             </tbody>
