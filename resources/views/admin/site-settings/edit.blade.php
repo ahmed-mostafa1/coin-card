@@ -44,7 +44,7 @@
                             <p class="text-xs text-slate-500 dark:text-slate-400">إظهار شاشة تحميل عند الانتقال بين الصفحات أو إرسال النماذج لمنع النقرات المزدوجة.</p>
                         </div>
                         <label class="relative inline-block w-12 h-6 align-middle select-none transition duration-200 ease-in cursor-pointer">
-                            <input type="checkbox" name="global_loader_enabled" value="1" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer border-slate-300 dark:border-slate-600 checked:right-0 checked:border-emerald-500 transition-all duration-300" @checked(old('global_loader_enabled', $globalLoaderEnabled) == '1') />
+                            <input type="checkbox" name="global_loader_enabled" value="1" class="toggle-checkbox toggle-checkbox--emerald absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer border-slate-300 dark:border-slate-600 transition-all duration-300" @checked(old('global_loader_enabled', $globalLoaderEnabled) == '1') />
                             <span class="toggle-label block overflow-hidden h-6 rounded-full bg-slate-300 dark:bg-slate-600"></span>
                         </label>
                     </div>
@@ -123,7 +123,7 @@
                                 </span>
                                 <div>
                                     <h4 class="font-semibold text-slate-800 dark:text-slate-50">البطاقة {{ $feature['index'] }}</h4>
-                                    <p class="text-xs text-slate-9000 dark:text-slate-50">الأيقونة ثابتة، والنصوص قابلة للتعديل.</p>
+                                    <p class="text-xs text-slate-900 dark:text-slate-50">الأيقونة ثابتة، والنصوص قابلة للتعديل.</p>
                                 </div>
                             </div>
 
@@ -164,7 +164,7 @@
         <!-- Logo Settings Form -->
         <form action="{{ route('admin.site-settings.update-logo') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            <div class="rounded-3xl border border-slate-50 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm" x-data="{ type: '{{ old('logo_type', $logoType) }}' }">
+            <div class="rounded-3xl border border-slate-50 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm" x-data="{ type: @js(old('logo_type', $logoType)) }">
                 <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-50 mb-6 pb-2 border-b border-slate-50 dark:border-slate-700">إعدادات الشعار</h2>
                 
                 <div class="space-y-4">
@@ -232,7 +232,7 @@
                                     </span>
                                     <div>
                                         <h3 class="font-semibold text-slate-800 dark:text-slate-50">{{ $social['label'] }}</h3>
-                                        <p class="text-xs text-slate-9000 dark:text-slate-50">رابط + تفعيل للظهور في الفوتر.</p>
+                                        <p class="text-xs text-slate-900 dark:text-slate-50">رابط + تفعيل للظهور في الفوتر.</p>
                                     </div>
                                 </div>
                                 <label class="inline-flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-50">
@@ -276,7 +276,7 @@
                 <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-50 mb-1 pb-2 border-b border-slate-50 dark:border-slate-700">
                     <i class="fa-solid fa-magnifying-glass-chart ml-2 text-emerald-600"></i> SEO والإعلانات
                 </h2>
-                <p class="text-xs text-slate-9000 dark:text-slate-50 mb-6">تُحفظ في قاعدة البيانات – لن تُفقد عند تحديث الكود.</p>
+                <p class="text-xs text-slate-900 dark:text-slate-50 mb-6">تُحفظ في قاعدة البيانات – لن تُفقد عند تحديث الكود.</p>
 
                 <div class="space-y-6">
 
@@ -316,12 +316,11 @@
                         <div class="flex items-center justify-between mb-1">
                             <x-input-label for="seo_title" value="عنوان الموقع في البحث (Title Tag)" />
                             <span id="seo_title_counter"
-                                class="text-xs font-mono tabular-nums transition-colors"
-                                :class="...">
+                                class="text-xs font-mono tabular-nums transition-colors">
                                 <span id="seo_title_count">{{ mb_strlen($seoTitle) }}</span>/60
                             </span>
                         </div>
-                        <p class="mb-2 text-xs text-slate-9000 dark:text-slate-50">
+                        <p class="mb-2 text-xs text-slate-900 dark:text-slate-50">
                             يظهر في تبويب المتصفح وعنوان نتيجة البحث. المثالي: أقل من 60 حرفاً.
                             إذا تُرك فارغاً سيُستخدم اسم الموقع تلقائياً.
                         </p>
@@ -342,7 +341,7 @@
                                 <span id="meta_desc_count">{{ mb_strlen($metaDescription) }}</span>/160
                             </span>
                         </div>
-                        <p class="mb-2 text-xs text-slate-9000 dark:text-slate-50">
+                        <p class="mb-2 text-xs text-slate-900 dark:text-slate-50">
                             الجملة الصغيرة التي تظهر أسفل العنوان في جوجل. الأفضل: 120–160 حرفاً.
                             إذا تُرك فارغاً سيُستخدم وصف المتجر تلقائياً.
                         </p>
@@ -358,7 +357,7 @@
                     {{-- ── Meta Keywords ─────────────────────────────────────────── --}}
                     <div>
                         <x-input-label for="meta_keywords" value="الكلمات المفتاحية (Keywords)" />
-                        <p class="mb-2 text-xs text-slate-9000 dark:text-slate-50">افصل بين الكلمات بفاصلة – مثال: بطاقات العاب، شحن رصيد، خدمات رقمية</p>
+                        <p class="mb-2 text-xs text-slate-900 dark:text-slate-50">افصل بين الكلمات بفاصلة – مثال: بطاقات العاب، شحن رصيد، خدمات رقمية</p>
                         <x-text-input id="meta_keywords" name="meta_keywords" type="text"
                             :value="old('meta_keywords', $metaKeywords)" class="w-full" dir="auto"
                             placeholder="بطاقات العاب، شحن رصيد، ..." />
@@ -373,7 +372,7 @@
                         <div class="grid gap-4 md:grid-cols-2">
                             <div>
                                 <x-input-label for="fb_pixel_id" value="Facebook / Meta Pixel ID" />
-                                <p class="mb-1 text-xs text-slate-9000 dark:text-slate-50">أرقام فقط – مثال: 1234567890123456</p>
+                                <p class="mb-1 text-xs text-slate-900 dark:text-slate-50">أرقام فقط – مثال: 1234567890123456</p>
                                 <div class="relative">
                                     <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                                         <i class="fa-brands fa-meta text-blue-600 text-sm"></i>
@@ -386,7 +385,7 @@
                             </div>
                             <div>
                                 <x-input-label for="ga_id" value="Google Analytics ID" />
-                                <p class="mb-1 text-xs text-slate-9000 dark:text-slate-50">مثال: G-XXXXXXXXXX</p>
+                                <p class="mb-1 text-xs text-slate-900 dark:text-slate-50">مثال: G-XXXXXXXXXX</p>
                                 <div class="relative">
                                     <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                                         <i class="fa-brands fa-google text-orange-500 text-sm"></i>
@@ -409,7 +408,7 @@
                         <div class="p-4 space-y-4 bg-white dark:bg-slate-800">
                             <div>
                                 <x-input-label for="head_scripts" value="كود مخصص داخل <head>" />
-                                <p class="mb-1 text-xs text-slate-9000 dark:text-slate-50">مناسب لـ TikTok Pixel أو Google Tag Manager.</p>
+                                <p class="mb-1 text-xs text-slate-900 dark:text-slate-50">مناسب لـ TikTok Pixel أو Google Tag Manager.</p>
                                 <textarea id="head_scripts" name="head_scripts" rows="5"
                                     class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-slate-50 dark:bg-slate-900 px-4 py-3 text-sm font-mono text-slate-700 dark:text-slate-50 focus:border-emerald-500 focus:ring-emerald-500"
                                     dir="ltr" placeholder="<!-- أدخل الكود هنا -->">{{ old('head_scripts', $headScripts) }}</textarea>
@@ -417,7 +416,7 @@
                             </div>
                             <div>
                                 <x-input-label for="body_scripts" value="كود مخصص قبل </body>" />
-                                <p class="mb-1 text-xs text-slate-9000 dark:text-slate-50">مناسب لأدوات الدردشة المباشرة.</p>
+                                <p class="mb-1 text-xs text-slate-900 dark:text-slate-50">مناسب لأدوات الدردشة المباشرة.</p>
                                 <textarea id="body_scripts" name="body_scripts" rows="5"
                                     class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-slate-50 dark:bg-slate-900 px-4 py-3 text-sm font-mono text-slate-700 dark:text-slate-50 focus:border-emerald-500 focus:ring-emerald-500"
                                     dir="ltr" placeholder="<!-- أدخل الكود هنا -->">{{ old('body_scripts', $bodyScripts) }}</textarea>
@@ -447,12 +446,12 @@
                     <label class="inline-flex items-center gap-2 cursor-pointer">
                         <span class="text-sm font-medium text-slate-700 dark:text-slate-50">تفعيل وضع الصيانة</span>
                         <div class="relative inline-block w-12 h-6 align-middle select-none transition duration-200 ease-in">
-                            <input type="checkbox" name="maintenance_enabled" value="1" id="maintenance_enabled" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer border-slate-300 dark:border-slate-600 checked:right-0 checked:border-rose-500 transition-all duration-300" @checked(old('maintenance_enabled', $maintenanceEnabled) == '1') />
-                            <label for="maintenance_enabled" class="toggle-label block overflow-hidden h-6 rounded-full bg-slate-300 dark:bg-slate-600 cursor-pointer"></label>
+                            <input type="checkbox" name="maintenance_enabled" value="1" id="maintenance_enabled" class="toggle-checkbox toggle-checkbox--rose absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer border-slate-300 dark:border-slate-600 transition-all duration-300" @checked(old('maintenance_enabled', $maintenanceEnabled) == '1') />
+                            <span class="toggle-label block overflow-hidden h-6 rounded-full bg-slate-300 dark:bg-slate-600 cursor-pointer"></span>
                         </div>
                     </label>
                 </div>
-                <p class="text-sm text-slate-9000 dark:text-slate-50 mb-6">عند تفعيل وضع الصيانة، سيتم منع الزوار من تصفح الموقع، بينما سيبقى المديرون قادرين على الدخول بشكل طبيعي.</p>
+                <p class="text-sm text-slate-900 dark:text-slate-50 mb-6">عند تفعيل وضع الصيانة، سيتم منع الزوار من تصفح الموقع، بينما سيبقى المديرون قادرين على الدخول بشكل طبيعي.</p>
 
                 <div class="space-y-4">
                     <div>
@@ -499,9 +498,12 @@
                 </div>
             </div>
             <style>
-                .toggle-checkbox:checked { right: 0; border-color: #f43f5e; }
-                .toggle-checkbox:checked + .toggle-label { background-color: #f43f5e; }
-                .toggle-checkbox { right: 0; z-index: 1; border-color: #e2e8f0; }
+                .toggle-checkbox { left: 0; right: auto; z-index: 1; border-color: #e2e8f0; }
+                .toggle-checkbox:checked { left: auto; right: 0; }
+                .toggle-checkbox--emerald:checked { border-color: #10b981; }
+                .toggle-checkbox--emerald:checked + .toggle-label { background-color: #10b981; }
+                .toggle-checkbox--rose:checked { border-color: #f43f5e; }
+                .toggle-checkbox--rose:checked + .toggle-label { background-color: #f43f5e; }
                 .dark .toggle-checkbox { border-color: #475569; }
             </style>
         </form>
@@ -567,7 +569,7 @@
     const descCount   = document.getElementById('meta_desc_count');
     const descFill    = document.getElementById('meta_desc_fill');
     const serpDesc    = document.getElementById('serp_desc_preview');
-    const fallbackDesc = {{ json_encode(Str::limit(strip_tags($storeDescription), 160, '')) }};
+    const fallbackDesc = {{ json_encode(\Illuminate\Support\Str::limit(strip_tags($storeDescription), 160, '')) }};
 
     function syncDesc() {
         const val = descInput.value.trim();

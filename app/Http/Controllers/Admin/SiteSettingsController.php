@@ -69,6 +69,7 @@ class SiteSettingsController extends Controller
         $maintenanceImage = SiteSetting::get('maintenance_image', null);
         $maintenanceButtonText = SiteSetting::get('maintenance_button_text', '');
         $maintenanceButtonUrl = SiteSetting::get('maintenance_button_url', '');
+        $globalLoaderEnabled = SiteSetting::get('global_loader_enabled', '1');
 
         return view('admin.site-settings.edit', compact(
             'tickerText',
