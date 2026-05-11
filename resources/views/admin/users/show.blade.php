@@ -161,6 +161,32 @@
                         <button type="submit" class="w-full rounded-lg bg-rose-600 px-4 py-2 text-sm font-medium text-white hover:bg-rose-700">تغيير كلمة المرور</button>
                     </form>
                 </div>
+
+                <!-- Deposit Block Card -->
+                <div class="rounded-3xl border border-amber-100 dark:border-amber-800 bg-white dark:bg-slate-800 p-6 shadow-sm">
+                    <h2 class="text-lg font-semibold text-amber-700 dark:text-amber-400">حظر الإيداع الشحن</h2>
+                    <form method="POST" action="{{ route('admin.users.deposit-block', $user) }}" class="mt-4 space-y-4">
+                        @csrf
+                        <div class="text-sm">
+                            <span class="block mb-2 text-slate-900 dark:text-slate-100">
+                                الحالة الحالية: 
+                                @if($user->is_deposit_blocked)
+                                    <span class="font-bold text-rose-600 dark:text-rose-400">محظور</span>
+                                @else
+                                    <span class="font-bold text-emerald-600 dark:text-emerald-400">غير محظور</span>
+                                @endif
+                            </span>
+                        </div>
+                        <div>
+                            <x-input-label for="deposit_block_message" value="رسالة الحظر المخصصة (اختياري)" />
+                            <textarea id="deposit_block_message" name="deposit_block_message" rows="2" class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white" placeholder="سبب المنع الذي سيظهر للعميل">{{ old('deposit_block_message', $user->deposit_block_message) }}</textarea>
+                            <x-input-error :messages="$errors->get('deposit_block_message')" />
+                        </div>
+                        <button type="submit" class="w-full rounded-lg {{ $user->is_deposit_blocked ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-amber-600 hover:bg-amber-700' }} px-4 py-2 text-sm font-medium text-white">
+                            {{ $user->is_deposit_blocked ? 'إلغاء حظر الإيداع' : 'حظر الإيداع' }}
+                        </button>
+                    </form>
+                </div>
             </div>
 
             <!-- Left Columns (RTL) / Right Columns (LTR) -->
@@ -203,25 +229,46 @@
                             </form>
                         </div>
 
-                        {{-- Refund Held Balance --}}
-                        @if ($wallet->held_balance > 0)
+                        {{-- Suspended Balance Controls --}}
                         <div class="mt-4 border-t border-slate-50 dark:border-slate-700 pt-4">
-                            <h3 class="text-sm font-bold text-amber-600 dark:text-amber-400 mb-2">إرجاع الرصيد المعلّق</h3>
+                            <h3 class="text-sm font-bold text-amber-600 dark:text-amber-400 mb-2">التحكم بالرصيد المعلّق</h3>
                             <p class="text-xs text-slate-900 dark:text-slate-100 mb-3">الرصيد المعلّق الحالي: <strong>{{ number_format($wallet->held_balance, 2) }} USD</strong></p>
-                            <form method="POST" action="{{ route('admin.users.refund-held', $user) }}" class="space-y-4">
-                                @csrf
-                                <div>
-                                    <x-input-label for="refund_held_amount" value="المبلغ" />
-                                    <x-text-input id="refund_held_amount" name="amount" type="number" step="0.01" min="0.01" max="{{ $wallet->held_balance }}" :value="old('amount')" required />
-                                </div>
-                                <div>
-                                    <x-input-label for="refund_held_note" value="سبب الإرجاع (مطلوب)" />
-                                    <textarea id="refund_held_note" name="note" rows="2" class="w-full rounded-xl border border-slate-50 dark:border-slate-600 bg-white/80 dark:bg-slate-700 px-4 py-2 text-sm text-slate-700 dark:text-white" required>{{ old('note') }}</textarea>
-                                </div>
-                                <button type="submit" class="w-full rounded-lg bg-amber-500 px-4 py-2 text-sm font-medium text-white hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2">إرجاع الرصيد المعلّق</button>
-                            </form>
+
+                            <div class="space-y-4">
+                                {{-- Hold Balance --}}
+                                <form method="POST" action="{{ route('admin.users.hold-balance', $user) }}" class="rounded-xl border border-slate-50 dark:border-slate-700 p-3">
+                                    @csrf
+                                    <h4 class="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2">تعليق رصيد (خصم من المتاح)</h4>
+                                    <div class="space-y-2">
+                                        <x-text-input id="hold_amount" name="amount" type="number" step="0.01" min="0.01" max="{{ max($wallet->balance, 0.01) }}" :value="old('amount')" placeholder="المبلغ" required class="w-full text-xs" />
+                                        <x-text-input id="hold_note" name="note" type="text" :value="old('note')" placeholder="سبب التعليق" required class="w-full text-xs" />
+                                        <button type="submit" class="w-full rounded-lg bg-slate-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-slate-700">تعليق الرصيد</button>
+                                    </div>
+                                </form>
+
+                                {{-- Refund Held Balance --}}
+                                <form method="POST" action="{{ route('admin.users.refund-held', $user) }}" class="rounded-xl border border-amber-50 dark:border-amber-900/30 p-3 bg-amber-50/50 dark:bg-amber-900/10">
+                                    @csrf
+                                    <h4 class="text-xs font-semibold text-amber-700 dark:text-amber-400 mb-2">إرجاع معلّق (إضافة للمتاح)</h4>
+                                    <div class="space-y-2">
+                                        <x-text-input id="refund_held_amount" name="amount" type="number" step="0.01" min="0.01" max="{{ max($wallet->held_balance, 0.01) }}" :value="old('amount')" placeholder="المبلغ" required class="w-full text-xs" />
+                                        <x-text-input id="refund_held_note" name="note" type="text" :value="old('note')" placeholder="سبب الإرجاع" required class="w-full text-xs" />
+                                        <button type="submit" class="w-full rounded-lg bg-amber-500 px-3 py-1.5 text-xs font-medium text-white hover:bg-amber-600" @disabled($wallet->held_balance <= 0)>إرجاع الرصيد</button>
+                                    </div>
+                                </form>
+
+                                {{-- Settle Held Balance --}}
+                                <form method="POST" action="{{ route('admin.users.settle-held', $user) }}" class="rounded-xl border border-rose-50 dark:border-rose-900/30 p-3 bg-rose-50/50 dark:bg-rose-900/10">
+                                    @csrf
+                                    <h4 class="text-xs font-semibold text-rose-700 dark:text-rose-400 mb-2">تسوية معلّق (خصم نهائي)</h4>
+                                    <div class="space-y-2">
+                                        <x-text-input id="settle_held_amount" name="amount" type="number" step="0.01" min="0.01" max="{{ max($wallet->held_balance, 0.01) }}" :value="old('amount')" placeholder="المبلغ" required class="w-full text-xs" />
+                                        <x-text-input id="settle_held_note" name="note" type="text" :value="old('note')" placeholder="سبب التسوية" required class="w-full text-xs" />
+                                        <button type="submit" class="w-full rounded-lg bg-rose-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-rose-700" @disabled($wallet->held_balance <= 0)>تسوية الرصيد</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
-                        @endif
                     </div>
 
                     <!-- Send Email Card -->

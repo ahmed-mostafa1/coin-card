@@ -17,6 +17,11 @@ class DepositController extends Controller
 {
     public function index(): View
     {
+        $user = auth()->user();
+        if ($user && $user->is_deposit_blocked) {
+            return view('deposits.blocked', ['message' => $user->deposit_block_message]);
+        }
+
         $methods = PaymentMethod::query()
             ->where('is_active', true)
             ->orderBy('sort_order')
@@ -28,6 +33,11 @@ class DepositController extends Controller
 
     public function show(PaymentMethod $paymentMethod): View
     {
+        $user = auth()->user();
+        if ($user && $user->is_deposit_blocked) {
+            return view('deposits.blocked', ['message' => $user->deposit_block_message]);
+        }
+
         abort_unless($paymentMethod->is_active, 404);
 
         $paymentMethod->loadMissing([
@@ -50,9 +60,13 @@ class DepositController extends Controller
         NotificationService $notificationService
     ): RedirectResponse
     {
-        abort_unless($paymentMethod->is_active, 404);
-
         $user = $request->user();
+
+        if ($user->is_deposit_blocked) {
+            return redirect()->back()->with('error', $user->deposit_block_message ?: 'تم إيقاف ميزة الإيداع لحسابك. يرجى التواصل مع الدعم.');
+        }
+
+        abort_unless($paymentMethod->is_active, 404);
         $paymentMethod->loadMissing('fields');
         $currencyConfig = $depositQuoteService->enabledConfigFor($paymentMethod, $request->input('currency_id'));
         $quote = $depositQuoteService->quote($currencyConfig, $request->input('amount'));

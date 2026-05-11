@@ -109,9 +109,12 @@ Route::middleware(['auth', 'not_banned', 'role:admin'])->prefix('admin')->name('
     Route::post('/users/{user}/password', [AdminUserController::class, 'changePassword'])->name('users.password');
     Route::post('/users/{user}/ban', [AdminUserController::class, 'toggleBan'])->name('users.ban');
     Route::post('/users/{user}/freeze', [AdminUserController::class, 'toggleFreeze'])->name('users.freeze');
+    Route::post('/users/{user}/deposit-block', [AdminUserController::class, 'toggleDepositBlock'])->name('users.deposit-block');
     Route::post('/users/{user}/credit', [AdminUserController::class, 'credit'])->name('users.credit');
     Route::post('/users/{user}/debit', [AdminUserController::class, 'debit'])->name('users.debit');
+    Route::post('/users/{user}/hold-balance', [AdminUserController::class, 'holdBalance'])->name('users.hold-balance');
     Route::post('/users/{user}/refund-held', [AdminUserController::class, 'refundHeld'])->name('users.refund-held');
+    Route::post('/users/{user}/settle-held', [AdminUserController::class, 'settleHeld'])->name('users.settle-held');
     Route::post('/users/{user}/verification-discount', [AdminUserController::class, 'updateVerificationDiscount'])->name('users.verification-discount');
     Route::post('/users/{user}/send-email', [AdminUserController::class, 'sendEmail'])->name('users.send-email');
     Route::post('/users/{user}/send-notification', [AdminUserController::class, 'sendNotification'])->name('users.send-notification');
@@ -180,6 +183,7 @@ Route::middleware(['auth', 'not_banned', 'role:admin'])->prefix('admin')->name('
     Route::post('/site-settings/logo', [AdminSiteSettingsController::class, 'updateLogo'])->name('site-settings.update-logo');
     Route::post('/site-settings/social', [AdminSiteSettingsController::class, 'updateSocial'])->name('site-settings.update-social');
     Route::post('/site-settings/seo', [AdminSiteSettingsController::class, 'updateSeo'])->name('site-settings.update-seo');
+    Route::post('/site-settings/maintenance', [AdminSiteSettingsController::class, 'updateMaintenance'])->name('site-settings.update-maintenance');
     
     // Pages Management Routes
     Route::get('/pages', [AdminPageController::class, 'edit'])->name('pages.edit');

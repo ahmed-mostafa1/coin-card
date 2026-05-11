@@ -64,6 +64,12 @@ class SiteSettingsController extends Controller
         $headScripts = SiteSetting::get('head_scripts', '');
         $bodyScripts = SiteSetting::get('body_scripts', '');
 
+        $maintenanceEnabled = SiteSetting::get('maintenance_enabled', '0');
+        $maintenanceMessage = SiteSetting::get('maintenance_message', 'المتجر تحت الصيانة حالياً. سنعود قريباً!');
+        $maintenanceImage = SiteSetting::get('maintenance_image', null);
+        $maintenanceButtonText = SiteSetting::get('maintenance_button_text', '');
+        $maintenanceButtonUrl = SiteSetting::get('maintenance_button_url', '');
+
         return view('admin.site-settings.edit', compact(
             'tickerText',
             'tickerTextEn',
@@ -89,7 +95,9 @@ class SiteSettingsController extends Controller
             'homeHeroTitleAr', 'homeHeroTitleEn', 'homeHeroTextAr', 'homeHeroTextEn',
             'homeFeatureSettings',
             'aboutAr', 'aboutEn', 'privacyAr', 'privacyEn',
-            'metaDescription', 'metaKeywords', 'seoTitle', 'fbPixelId', 'gaId', 'headScripts', 'bodyScripts'
+            'metaDescription', 'metaKeywords', 'seoTitle', 'fbPixelId', 'gaId', 'headScripts', 'bodyScripts',
+            'maintenanceEnabled', 'maintenanceMessage', 'maintenanceImage', 'maintenanceButtonText', 'maintenanceButtonUrl',
+            'globalLoaderEnabled'
         ));
     }
 
@@ -120,12 +128,14 @@ class SiteSettingsController extends Controller
             'home_feature_4_title_en' => ['nullable', 'string', 'max:120'],
             'home_feature_4_description_ar' => ['required', 'string', 'max:500'],
             'home_feature_4_description_en' => ['nullable', 'string', 'max:500'],
+            'global_loader_enabled' => ['nullable', 'boolean'],
         ]);
 
         SiteSetting::set('ticker_text', $data['ticker_text']);
         SiteSetting::set('ticker_text_en', $data['ticker_text_en'] ?? '');
         SiteSetting::set('store_description', $data['store_description']);
         SiteSetting::set('store_description_en', $data['store_description_en'] ?? '');
+        SiteSetting::set('global_loader_enabled', $request->boolean('global_loader_enabled') ? '1' : '0');
         SiteSetting::set('home_hero_title_ar', $data['home_hero_title_ar']);
         SiteSetting::set('home_hero_title_en', $data['home_hero_title_en'] ?? '');
         SiteSetting::set('home_hero_text_ar', $data['home_hero_text_ar']);
@@ -242,5 +252,43 @@ class SiteSettingsController extends Controller
         cache()->forget('shared_body_scripts');
 
         return redirect()->route('admin.site-settings.edit')->with('status', 'تم تحديث إعدادات SEO والإعلانات بنجاح.');
+    }
+
+    public function updateMaintenance(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'maintenance_enabled' => ['nullable', 'boolean'],
+            'maintenance_message' => ['nullable', 'string', 'max:500'],
+            'maintenance_button_text' => ['nullable', 'string', 'max:100'],
+            'maintenance_button_url' => ['nullable', 'string', 'max:500'],
+            'maintenance_image' => ['nullable', 'image', 'max:2048'],
+        ]);
+
+        SiteSetting::set('maintenance_enabled', $request->boolean('maintenance_enabled') ? '1' : '0');
+        SiteSetting::set('maintenance_message', $data['maintenance_message'] ?? 'المتجر تحت الصيانة حالياً. سنعود قريباً!');
+        SiteSetting::set('maintenance_button_text', $data['maintenance_button_text'] ?? '');
+        SiteSetting::set('maintenance_button_url', $data['maintenance_button_url'] ?? '');
+
+        if ($request->hasFile('maintenance_image')) {
+            $oldImage = SiteSetting::get('maintenance_image');
+            if ($oldImage && Storage::disk('public')->exists($oldImage)) {
+                Storage::disk('public')->delete($oldImage);
+            }
+            $path = $request->file('maintenance_image')->store('maintenance', 'public');
+            SiteSetting::set('maintenance_image', $path);
+        } elseif ($request->boolean('remove_maintenance_image')) {
+            $oldImage = SiteSetting::get('maintenance_image');
+            if ($oldImage && Storage::disk('public')->exists($oldImage)) {
+                Storage::disk('public')->delete($oldImage);
+            }
+            SiteSetting::set('maintenance_image', null);
+        }
+
+        cache()->forget('shared_maintenance_enabled');
+
+        return redirect()->route('admin.site-settings.edit')->with('status', 'تم تحديث إعدادات الصيانة بنجاح.');
+    }
+}
+�ات الصيانة بنجاح.');
     }
 }

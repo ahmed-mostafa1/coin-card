@@ -297,15 +297,22 @@
                 const text = shareButton.dataset.shareText || '';
 
                 try {
+                    let shared = false;
                     if (navigator.share) {
-                        await navigator.share({ title, text });
-                        return;
+                        try {
+                            await navigator.share({ title, text });
+                            shared = true;
+                        } catch (err) {
+                            if (err.name === 'AbortError') return;
+                            // Silently ignore other errors and fallback to clipboard
+                        }
                     }
 
-                    await navigator.clipboard.writeText(text);
-                    Swal.fire({ toast: true, position: 'top', icon: 'success', title: 'تم نسخ تفاصيل الطلب', showConfirmButton: false, timer: 1800 });
+                    if (!shared) {
+                        await navigator.clipboard.writeText(text);
+                        Swal.fire({ toast: true, position: 'top', icon: 'success', title: 'تم نسخ تفاصيل الطلب', showConfirmButton: false, timer: 1800 });
+                    }
                 } catch (error) {
-                    if (error?.name === 'AbortError') return;
                     Swal.fire({ toast: true, position: 'top', icon: 'error', title: 'تعذر مشاركة الطلب', showConfirmButton: false, timer: 1800 });
                 }
             });

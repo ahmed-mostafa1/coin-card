@@ -38,6 +38,17 @@
                 <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-50 mb-6 pb-2 border-b border-slate-50 dark:border-slate-700">الإعدادات العامة</h2>
                 
                 <div class="space-y-4">
+                    <div class="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-100 dark:border-slate-700">
+                        <div>
+                            <h3 class="font-semibold text-slate-800 dark:text-slate-50">تفعيل شاشة التحميل (Global Loader)</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">إظهار شاشة تحميل عند الانتقال بين الصفحات أو إرسال النماذج لمنع النقرات المزدوجة.</p>
+                        </div>
+                        <label class="relative inline-block w-12 h-6 align-middle select-none transition duration-200 ease-in cursor-pointer">
+                            <input type="checkbox" name="global_loader_enabled" value="1" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer border-slate-300 dark:border-slate-600 checked:right-0 checked:border-emerald-500 transition-all duration-300" @checked(old('global_loader_enabled', $globalLoaderEnabled) == '1') />
+                            <span class="toggle-label block overflow-hidden h-6 rounded-full bg-slate-300 dark:bg-slate-600"></span>
+                        </label>
+                    </div>
+
                     <div>
                         <x-input-label for="ticker_text" value="نص الشريط المتحرك (عربي)" />
                         <textarea id="ticker_text" name="ticker_text" rows="2" 
@@ -423,6 +434,76 @@
                     </x-primary-button>
                 </div>
             </div>
+        </form>
+
+        {{-- ── Maintenance Mode ────────────────────────────────────────── --}}
+        <form action="{{ route('admin.site-settings.update-maintenance') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="rounded-3xl border border-slate-50 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm">
+                <div class="flex items-center justify-between mb-6 pb-2 border-b border-slate-50 dark:border-slate-700">
+                    <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-50">
+                        <i class="fa-solid fa-person-digging ml-2 text-rose-600"></i> وضع الصيانة
+                    </h2>
+                    <label class="inline-flex items-center gap-2 cursor-pointer">
+                        <span class="text-sm font-medium text-slate-700 dark:text-slate-50">تفعيل وضع الصيانة</span>
+                        <div class="relative inline-block w-12 h-6 align-middle select-none transition duration-200 ease-in">
+                            <input type="checkbox" name="maintenance_enabled" value="1" id="maintenance_enabled" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer border-slate-300 dark:border-slate-600 checked:right-0 checked:border-rose-500 transition-all duration-300" @checked(old('maintenance_enabled', $maintenanceEnabled) == '1') />
+                            <label for="maintenance_enabled" class="toggle-label block overflow-hidden h-6 rounded-full bg-slate-300 dark:bg-slate-600 cursor-pointer"></label>
+                        </div>
+                    </label>
+                </div>
+                <p class="text-sm text-slate-9000 dark:text-slate-50 mb-6">عند تفعيل وضع الصيانة، سيتم منع الزوار من تصفح الموقع، بينما سيبقى المديرون قادرين على الدخول بشكل طبيعي.</p>
+
+                <div class="space-y-4">
+                    <div>
+                        <x-input-label for="maintenance_message" value="رسالة الصيانة" />
+                        <textarea id="maintenance_message" name="maintenance_message" rows="3"
+                            class="w-full rounded-xl border border-slate-50 dark:border-slate-900 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-700 dark:text-slate-50 focus:border-rose-500 focus:ring-rose-500">{{ old('maintenance_message', $maintenanceMessage) }}</textarea>
+                        <x-input-error :messages="$errors->get('maintenance_message')" />
+                    </div>
+
+                    <div class="grid gap-4 md:grid-cols-2">
+                        <div>
+                            <x-input-label for="maintenance_button_text" value="نص الزر (اختياري)" />
+                            <x-text-input id="maintenance_button_text" name="maintenance_button_text" type="text" :value="old('maintenance_button_text', $maintenanceButtonText)" class="w-full" placeholder="مثال: تابعنا على تيلغرام" />
+                            <x-input-error :messages="$errors->get('maintenance_button_text')" />
+                        </div>
+                        <div>
+                            <x-input-label for="maintenance_button_url" value="رابط الزر (اختياري)" />
+                            <x-text-input id="maintenance_button_url" name="maintenance_button_url" type="text" :value="old('maintenance_button_url', $maintenanceButtonUrl)" class="w-full" dir="ltr" placeholder="https://" />
+                            <x-input-error :messages="$errors->get('maintenance_button_url')" />
+                        </div>
+                    </div>
+
+                    <div>
+                        <x-input-label for="maintenance_image" value="صورة توضيحية (اختياري)" />
+                        <div class="mt-2 flex flex-wrap items-center gap-4">
+                            @if($maintenanceImage)
+                                <div class="h-24 w-24 rounded bg-slate-50 dark:bg-slate-700 flex items-center justify-center overflow-hidden border border-slate-50 dark:border-slate-900 relative">
+                                    <img src="{{ asset('storage/' . $maintenanceImage) }}" alt="Maintenance Image" class="h-full w-full object-contain">
+                                </div>
+                                <label class="inline-flex items-center gap-2 text-sm text-rose-600">
+                                    <input type="checkbox" name="remove_maintenance_image" value="1" class="rounded border-slate-300 text-rose-600 focus:ring-rose-500"> حذف الصورة
+                                </label>
+                            @endif
+                            <input type="file" id="maintenance_image" name="maintenance_image" accept="image/*" class="block w-full text-sm text-slate-900 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-rose-50 file:text-rose-900 hover:file:bg-rose-100 dark:file:bg-rose-900/50 dark:file:text-rose-100">
+                        </div>
+                        <x-input-error :messages="$errors->get('maintenance_image')" />
+                    </div>
+                </div>
+
+                <div class="mt-6 flex justify-end">
+                    <x-primary-button class="!bg-rose-600 hover:!bg-rose-700 focus:!ring-rose-500">
+                        <i class="fa-solid fa-floppy-disk ml-2"></i> حفظ إعدادات الصيانة
+                    </x-primary-button>
+                </div>
+            </div>
+            <style>
+                .toggle-checkbox:checked { right: 0; border-color: #f43f5e; }
+                .toggle-checkbox:checked + .toggle-label { background-color: #f43f5e; }
+                .toggle-checkbox { right: 0; z-index: 1; border-color: #e2e8f0; }
+                .dark .toggle-checkbox { border-color: #475569; }
+            </style>
         </form>
 
     </div>

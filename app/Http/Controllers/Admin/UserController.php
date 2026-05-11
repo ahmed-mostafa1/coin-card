@@ -134,6 +134,32 @@ class UserController extends Controller
             ->with('status', 'تم تحديث حالة التجميد بنجاح.');
     }
 
+    public function toggleDepositBlock(User $user, Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'deposit_block_message' => ['nullable', 'string', 'max:255'],
+        ]);
+
+        if ($user->is_deposit_blocked) {
+            $user->forceFill([
+                'is_deposit_blocked' => false,
+                'deposit_block_message' => null,
+            ])->save();
+            app(SecurityLogger::class)->log('admin_user_deposit_unblocked', $user, $request, [], $user, $request->user());
+            $status = 'تم إلغاء حظر الإيداع عن المستخدم بنجاح.';
+        } else {
+            $user->forceFill([
+                'is_deposit_blocked' => true,
+                'deposit_block_message' => $data['deposit_block_message'] ?? 'تم إيقاف ميزة الإيداع لحسابك. يرجى التواصل مع الدعم.',
+            ])->save();
+            app(SecurityLogger::class)->log('admin_user_deposit_blocked', $user, $request, ['message' => $data['deposit_block_message']], $user, $request->user());
+            $status = 'تم حظر الإيداع للمستخدم بنجاح.';
+        }
+
+        return redirect()->route('admin.users.show', $user)
+            ->with('status', $status);
+    }
+
     public function credit(User $user, Request $request, WalletService $walletService): RedirectResponse
     {
         $data = $request->validate([
@@ -249,6 +275,72 @@ class UserController extends Controller
 
         return redirect()->route('admin.users.show', $user)
             ->with('status', 'تم إرجاع الرصيد المعلّق إلى رصيد المستخدم بنجاح.');
+    }
+
+    public function holdBalance(User $user, Request $request, WalletService $walletService): RedirectResponse
+    {
+        $data = $request->validate([
+            'amount' => ['required', 'numeric', 'min:0.01', 'max:100000'],
+            'note'   => ['required', 'string', 'max:500'],
+        ]);
+
+        $wallet = $user->wallet()->firstOrCreate([]);
+
+        if ($wallet->balance < $data['amount']) {
+            return redirect()->route('admin.users.show', $user)
+                ->withErrors(['amount' => 'رصيد المستخدم غير كافٍ للتعليق.']);
+        }
+
+        $transaction = $walletService->holdAmount($wallet, (string) $data['amount'], [
+            'type'               => WalletTransaction::TYPE_HOLD,
+            'reference_type'     => 'admin_manual_hold',
+            'note'               => $data['note'],
+            'created_by_user_id' => $request->user()?->id,
+            'approved_by_user_id'=> $request->user()?->id,
+            'approved_at'        => now(),
+        ]);
+
+        app(SecurityLogger::class)->log('admin_balance_hold', $user, $request, [
+            'wallet_transaction_id' => $transaction->id,
+            'amount' => $data['amount'],
+            'note'   => $data['note'],
+        ], $transaction, $request->user());
+
+        return redirect()->route('admin.users.show', $user)
+            ->with('status', 'تم تعليق الرصيد بنجاح.');
+    }
+
+    public function settleHeld(User $user, Request $request, WalletService $walletService): RedirectResponse
+    {
+        $data = $request->validate([
+            'amount' => ['required', 'numeric', 'min:0.01', 'max:100000'],
+            'note'   => ['required', 'string', 'max:500'],
+        ]);
+
+        $wallet = $user->wallet()->firstOrCreate([]);
+
+        if ($wallet->held_balance < $data['amount']) {
+            return redirect()->route('admin.users.show', $user)
+                ->withErrors(['amount' => 'الرصيد المعلّق أقل من المبلغ المطلوب تسويته.']);
+        }
+
+        $transaction = $walletService->settleHeldAmount($wallet, (string) $data['amount'], [
+            'type'               => WalletTransaction::TYPE_SETTLE,
+            'reference_type'     => 'admin_manual_settle',
+            'note'               => $data['note'],
+            'created_by_user_id' => $request->user()?->id,
+            'approved_by_user_id'=> $request->user()?->id,
+            'approved_at'        => now(),
+        ]);
+
+        app(SecurityLogger::class)->log('admin_held_settled', $user, $request, [
+            'wallet_transaction_id' => $transaction->id,
+            'amount' => $data['amount'],
+            'note'   => $data['note'],
+        ], $transaction, $request->user());
+
+        return redirect()->route('admin.users.show', $user)
+            ->with('status', 'تم تسوية الرصيد المعلّق بنجاح (خصم نهائي).');
     }
 
     public function sendEmail(User $user, Request $request): RedirectResponse

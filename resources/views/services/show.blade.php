@@ -1097,26 +1097,30 @@
                     const failureMessage = button.dataset.shareFailure;
 
                     try {
+                        let shared = false;
                         if (navigator.share) {
-                            await navigator.share({ title, url });
-                            return;
+                            try {
+                                await navigator.share({ title, url });
+                                shared = true;
+                            } catch (err) {
+                                if (err?.name === 'AbortError') return;
+                                // Fallback to clipboard
+                            }
                         }
 
-                        await navigator.clipboard.writeText(url);
+                        if (!shared) {
+                            await navigator.clipboard.writeText(url);
 
-                        Swal.fire({
-                            toast: true,
-                            position: 'top',
-                            icon: 'success',
-                            title: successMessage,
-                            showConfirmButton: false,
-                            timer: 1800,
-                        });
+                            Swal.fire({
+                                toast: true,
+                                position: 'top',
+                                icon: 'success',
+                                title: successMessage,
+                                showConfirmButton: false,
+                                timer: 1800,
+                            });
+                        }
                     } catch (error) {
-                        if (error?.name === 'AbortError') {
-                            return;
-                        }
-
                         Swal.fire({
                             toast: true,
                             position: 'top',

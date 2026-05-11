@@ -47,7 +47,7 @@
                 </div>
             @endif
 
-            @if($paymentMethod->account_number)
+            @if($paymentMethod->account_number && $paymentMethod->show_account_number)
                 <div class="mt-4 rounded-2xl border border-slate-50 dark:border-slate-700 bg-white dark:bg-slate-800 p-4">
                     <div class="flex items-center justify-between gap-4">
                         <div>

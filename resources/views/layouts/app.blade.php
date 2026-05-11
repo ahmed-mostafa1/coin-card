@@ -34,6 +34,74 @@
           else document.documentElement.classList.remove('dark');
       })">
 
+    @if(\App\Models\SiteSetting::get('global_loader_enabled', '1') === '1')
+        <div x-data="{
+                 loading: false,
+                 init() {
+                     window.addEventListener('beforeunload', () => { this.loading = true; });
+                     window.addEventListener('pageshow', () => { this.loading = false; });
+                     
+                     document.addEventListener('submit', (e) => {
+                         if (!e.defaultPrevented) {
+                             this.loading = true;
+                             // Disable submit buttons to prevent double click
+                             const buttons = e.target.querySelectorAll('button[type=submit], input[type=submit]');
+                             buttons.forEach(btn => {
+                                btn.dataset.originalText = btn.innerHTML;
+                                btn.style.opacity = '0.7';
+                                btn.style.pointerEvents = 'none';
+                             });
+                         }
+                     });
+                     
+                     // Custom events to manually trigger from inside components
+                     window.addEventListener('loader-show', () => { this.loading = true; });
+                     window.addEventListener('loader-hide', () => { this.loading = false; });
+                     
+                     // Setup axios interceptors if axios exists
+                     if (window.axios) {
+                         window.axios.interceptors.request.use(config => {
+                             this.loading = true;
+                             return config;
+                         });
+                         window.axios.interceptors.response.use(response => {
+                             this.loading = false;
+                             return response;
+                         }, error => {
+                             this.loading = false;
+                             return Promise.reject(error);
+                         });
+                     } else {
+                         // wait for axios to be loaded
+                         document.addEventListener('DOMContentLoaded', () => {
+                             if (window.axios) {
+                                 window.axios.interceptors.request.use(config => {
+                                     this.loading = true;
+                                     return config;
+                                 });
+                                 window.axios.interceptors.response.use(response => {
+                                     this.loading = false;
+                                     return response;
+                                 }, error => {
+                                     this.loading = false;
+                                     return Promise.reject(error);
+                                 });
+                             }
+                         });
+                     }
+                 }
+             }"
+             x-show="loading"
+             x-transition.opacity.duration.200ms
+             x-cloak
+             class="fixed inset-0 z-[99999] flex items-center justify-center bg-slate-50/70 backdrop-blur-sm dark:bg-slate-900/70">
+            <div class="flex flex-col items-center bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-700 animate-bounce">
+                <i class="fa-solid fa-spinner fa-spin text-4xl text-emerald-600 dark:text-emerald-400"></i>
+                <span class="mt-4 text-sm font-bold text-slate-700 dark:text-slate-200">الرجاء الانتظار...</span>
+            </div>
+        </div>
+    @endif
+
     @php
         $containerWidth = 'w-[85%] mx-auto';
         $mainWidth = trim($__env->yieldContent('mainWidth', $containerWidth));
