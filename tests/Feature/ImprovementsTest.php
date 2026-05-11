@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\User;
 use App\Models\SiteSetting;
 use App\Services\DailyCardOrderService;
+use App\Services\EmailTwoFactorService;
 use App\Services\WalletService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
@@ -40,6 +41,43 @@ class ImprovementsTest extends TestCase
         $this->actingAs($user)->get('/')->assertStatus(503);
         
         $this->actingAs($admin)->get('/')->assertStatus(200);
+    }
+
+    public function test_admin_can_login_while_maintenance_mode_is_enabled()
+    {
+        SiteSetting::set('maintenance_enabled', '1');
+
+        $admin = User::factory()->create([
+            'password' => Hash::make('password123')
+        ]);
+        $admin->assignRole('admin');
+
+        $this->post('/login', [
+            'email' => $admin->email,
+            'password' => 'password123',
+        ])->assertRedirect(route('dashboard'));
+
+        $this->assertAuthenticatedAs($admin);
+    }
+
+    public function test_admin_can_complete_two_factor_login_to_dashboard_while_maintenance_mode_is_enabled()
+    {
+        SiteSetting::set('maintenance_enabled', '1');
+
+        $admin = User::factory()->create([
+            'two_factor_email_code_hash' => Hash::make('123456'),
+            'two_factor_email_code_expires_at' => now()->addMinutes(5),
+        ]);
+        $admin->assignRole('admin');
+
+        $this->withSession([
+            EmailTwoFactorService::SESSION_USER_ID => $admin->id,
+            EmailTwoFactorService::SESSION_REMEMBER => false,
+        ])->post('/two-factor-email', [
+            'code' => '123456',
+        ])->assertRedirect(route('dashboard'));
+
+        $this->assertAuthenticatedAs($admin);
     }
 
     public function test_login_redirects_customer_to_home_and_admin_to_dashboard()

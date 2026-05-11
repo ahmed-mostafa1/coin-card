@@ -26,8 +26,9 @@ class CheckStoreMaintenance
                 return $next($request);
             }
 
-            // Allow login, logout, password resets
-            if ($request->routeIs('login') || $request->routeIs('logout') || $request->routeIs('password.*')) {
+            // Allow authentication flow so admins can sign in while maintenance is enabled.
+            if ($request->routeIs('login', 'logout', 'password.*', 'two-factor.email.*')
+                || $request->is('login', 'two-factor-email', 'two-factor-email/*')) {
                 return $next($request);
             }
 

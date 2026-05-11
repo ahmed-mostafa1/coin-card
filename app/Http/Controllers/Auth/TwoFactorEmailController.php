@@ -48,7 +48,11 @@ class TwoFactorEmailController extends Controller
         $request->session()->regenerate();
         $securityLogger->log('login_2fa', $user, $request);
 
-        return redirect()->intended(route('home', absolute: false));
+        if ($user->hasRole('admin')) {
+            return redirect()->intended(route('dashboard', absolute: false));
+        }
+
+        return redirect()->route('home');
     }
 
     public function resend(Request $request, EmailTwoFactorService $twoFactorService): RedirectResponse
