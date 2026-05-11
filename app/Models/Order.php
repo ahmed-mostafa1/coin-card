@@ -84,6 +84,7 @@ class Order extends Model
         'handled_at' => 'datetime',
         'settled_at' => 'datetime',
         'released_at' => 'datetime',
+        'gift_card_data' => 'encrypted:array',
     ];
 
     public function user(): BelongsTo

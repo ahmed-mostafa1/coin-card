@@ -65,6 +65,33 @@
 
             <div class="mt-6 rounded-2xl border border-slate-50 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 p-4">
                 <p class="text-xs text-slate-9000 dark:text-slate-50">{{ __('messages.order_data_label') }}</p>
+
+                @if ($order->gift_card_data)
+                    <div class="mt-4 mb-4 rounded-xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-700 dark:bg-amber-900/30">
+                        <p class="mb-3 text-sm font-bold text-amber-900 dark:text-amber-100">
+                            بيانات البطاقة / الكود (Gift Card)
+                        </p>
+                        <div class="grid gap-3 sm:grid-cols-2">
+                            @foreach ($order->gift_card_data as $card)
+                                <div class="rounded-lg bg-white p-3 shadow-sm dark:bg-slate-800">
+                                    @if(isset($card['code']))
+                                        <p class="text-xs text-slate-500">الكود</p>
+                                        <p class="font-mono text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $card['code'] }}</p>
+                                    @endif
+                                    @if(isset($card['pin']))
+                                        <p class="mt-2 text-xs text-slate-500">الرقم السري</p>
+                                        <p class="font-mono text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $card['pin'] }}</p>
+                                    @endif
+                                    @if(isset($card['serial']))
+                                        <p class="mt-2 text-xs text-slate-500">السيريال</p>
+                                        <p class="font-mono text-sm font-semibold text-slate-900 dark:text-slate-50">{{ $card['serial'] }}</p>
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+
                 @if (count($order->payload))
                     <div class="mt-3 grid gap-3 sm:grid-cols-2">
                         @foreach ($order->payload as $key => $value)

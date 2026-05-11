@@ -27,9 +27,9 @@ class DailyCardWebhookController extends Controller
      */
     public function handle(Request $request): JsonResponse
     {
-        $orderId = $request->query('order_id');
-        $status = $request->query('status');
-        $clientOrderId = $request->query('client_order_id');
+        $orderId = $request->input('order_id') ?? $request->query('order_id');
+        $status = $request->input('status') ?? $request->query('status');
+        $clientOrderId = $request->input('client_order_id') ?? $request->query('client_order_id');
 
         Log::info('DailyCard Webhook Received', [
             'order_id' => $orderId,

@@ -64,6 +64,7 @@ class WalletService
 
     public function releaseHeldAmount(Wallet $wallet, string $amount, array $meta = [], bool $useTransaction = true): WalletTransaction
     {
+        $amount = (string) abs((float) $amount);
         $operation = function () use ($wallet, $amount, $meta) {
             $lockedWallet = Wallet::whereKey($wallet->id)->lockForUpdate()->firstOrFail();
 

@@ -1,469 +1,661 @@
-# Project Context
+You are a **senior Laravel backend engineer + payment systems engineer** working on a live production platform.
+
+Your task is to investigate and fix **critical wallet/accounting/order-sync bugs** in production. These bugs directly affect user balances, admin financial operations, and digital product fulfillment.
 
 Project name: **S7SH**
 Production domain: [s7sh.com](https://s7sh.com?utm_source=chatgpt.com)
-Framework: [Laravel](https://laravel.com?utm_source=chatgpt.com) (existing production app)
-Architecture:
+Framework: [Laravel](https://laravel.com?utm_source=chatgpt.com)
+External provider: Daily Card
 
-* Laravel backend
-* Blade or Laravel frontend views (detect actual implementation before changing anything)
-* Admin dashboard already exists
-* Queue/jobs may exist
-* External provider integration exists with Daily Card
-
-Critical business rules:
-
-* Never break checkout, orders, wallet, deposits, or provider integrations.
-* Preserve backward compatibility.
-* All new features must be toggleable if relevant.
-* Avoid hardcoding UI strings.
-* Use existing architecture patterns, naming conventions, and permissions system.
+This is a **money-related system**, so you must work with accounting-grade safety.
 
 ---
 
-# Mandatory First Phase (Do NOT Skip)
+# Critical Rules Before Touching Code
 
-Before changing code:
+Before implementing anything:
 
-## Step 1: Audit the project
+## Step 1 — Audit Actual Codebase
 
-Scan and document:
+Do NOT guess.
 
-### Routes
+Inspect and document all related code:
 
-Check:
+### Database
 
-* `routes/web.php`
-* `routes/api.php`
-* admin routes
+Find tables related to:
 
-### Controllers
+* users
+* wallets
+* balances
+* held balances
+* orders
+* transactions
+* gift cards
+* provider responses
 
-Find related controllers for:
+Inspect:
 
-* Auth/Login
-* Orders
-* Services
-* Deposits
-* Payment settings
-* Admin settings
-* User management
+* migrations
+* current schema
+* nullable fields
+* numeric field types (`decimal`, `float`, etc.)
+
+Pay special attention to:
+
+* precision/scale issues
+* signed/unsigned inconsistencies
+* default values
+
+---
 
 ### Models
 
-Find:
+Find actual models such as:
 
 * User
 * Order
-* Service
-* Store settings/config model
-* Deposit/payment models
+* Wallet
+* WalletTransaction
+* ProviderOrder
+* GiftCard / GiftCardOrder
 
-### Frontend
+Document:
 
-Find:
+* casts
+* accessors
+* mutators
+* computed attributes
 
-* Global layout
-* Shared JS files
-* Navigation logic
-* Order pages
-* Payment pages
-
-### Integrations
-
-Locate all code related to:
-
-* Daily Card API sync
-* Webhooks
-* Order polling/status updates
-* Wallet balance updates
-
-After auditing, create an implementation plan based on actual code—not assumptions.
+Especially check if user profile uses an accessor while admin dashboard uses direct DB values.
 
 ---
 
-# Required Implementations
+### Business Logic
+
+Find all logic for:
+
+#### Wallet operations
+
+Search for:
+
+* `held_balance`
+* `pending_balance`
+* `available_balance`
+* `wallet_balance`
+* `balance`
+* `refund`
+* `reserve`
+* `release`
+
+#### Provider sync
+
+Search for:
+
+* Daily Card API
+* webhook handlers
+* polling jobs
+* status mapping
+* gift card fulfillment logic
 
 ---
 
-# FEATURE 1 — Store Maintenance Mode (Admin Controlled)
+### Search Entire Project For
 
-Goal:
-Temporarily block customers from using the store while keeping admin access working.
+Search for all occurrences of:
 
-## Backend
+```php
+held_balance
+available_balance
+balance
+processing
+completed
+gift_card
+daily
+refund
+wallet
+transaction
+```
 
-Create settings if not already existing:
-
-Example keys:
-
-* `maintenance_enabled`
-* `maintenance_message`
-* `maintenance_image`
-* `maintenance_button_text`
-* `maintenance_button_url`
-
-Use existing settings system if available. Do not create duplicate config systems.
-
-## Middleware
-
-Create a middleware:
-
-Example:
-`CheckStoreMaintenance`
-
-Logic:
-
-If:
-
-* maintenance mode = enabled
-  AND
-* current user is NOT admin
-
-Then:
-
-* block access to store
-* show maintenance page
-
-Allow:
-
-* admin routes
-* authenticated admins
-* API endpoints only if business-critical
-
-Do not block:
-
-* admin dashboard
-* login for admins
-
-## Frontend
-
-Create maintenance page with:
-
-* animated message
-* optional image
-* optional CTA button
-
-Use graceful fallback if image or button is missing.
+Build dependency map before changing code.
 
 ---
 
-# FEATURE 2 — Global Loading Experience
+# BUG 1 — Held Money Always Stored as Negative
 
-Goal:
-Prevent users from thinking pages are frozen during navigation/actions.
+## Problem
 
-## Audit first
+Held money is being stored/displayed like:
 
-Find:
+* `-23.6`
+* `-5.1`
 
-* global layout
-* app.js
-* shared frontend scripts
+instead of positive values.
 
-## Implement
-
-Add global loading overlay for:
-
-### Page navigation
-
-Show loading on:
-
-* internal navigation
-* form submissions
-* checkout actions
-* service order submissions
-
-Hide loading on:
-
-* page fully loaded
-* request completion
-* validation errors
-
-Must prevent:
-
-* duplicate submissions
-* multiple order clicks
-
-## Admin control
-
-Add setting:
-
-* `global_loader_enabled`
-
-If disabled:
-loader never appears.
+This causes admin financial tools and balance actions to behave incorrectly.
 
 ---
 
-# FEATURE 3 — Force Homepage Entry After Login/Re-entry
-
-Business reason:
-Service prices change frequently.
-
-Users must not resume old service pages with stale prices.
-
-## Implement
-
-Audit auth flow first.
-
-After:
-
-* login
-* logout → login
-* session restoration
-
-Redirect customers to:
-`/`
-
-Do NOT affect admins.
-
-Do NOT break:
-
-* password reset
-* email verification
-* admin auth
-
-Use role-based redirect logic.
-
----
-
-# FEATURE 4 — Desktop Order Sharing
-
-Current issue:
-Share works on mobile only.
-
-## Implement
-
-Audit existing order sharing implementation.
-
-use same share process as on mobile screens
-
-Must work on:
-
-* Windows browsers
-* Chrome
-* Edge
-* Firefox (with safe fallback)
-
-Must preserve mobile behavior.
-
----
-
-# FEATURE 5 — Payment Transfer Number Visibility Bug
-
-Bug:
-When admin hides transfer number, it still appears on frontend.
-
-## Root Cause Investigation
+## Investigation Required
 
 Audit:
 
-* caching
-* blade conditionals
-* API serialization
-* frontend state caching
+### Database values
 
-## Fix
+Check whether values are actually stored negative in DB or only displayed negative.
 
-When hidden in admin:
+Run investigation on:
 
-Number must never render in:
-
-* desktop
-* mobile
-* cached frontend states
-
-Clear related caches if needed.
-
-Must verify:
-
-* config cache
-* view cache
-* settings cache
+* wallet tables
+* transaction tables
+* balance snapshots
 
 ---
 
-# FEATURE 6 — Daily Card Rejected Orders Sync Bug
+### Business logic
 
-Bug:
-Provider rejects order but local order remains “processing”.
-
-## Audit
-
-Find:
-
-* order sync jobs
-* webhook handlers
-* provider status mapping
-
-Document all provider statuses.
-
-## Implement status mapping
-
-If provider status = rejected / failed / canceled:
-
-Then:
-
-### Order:
-
-Set status = rejected
-
-### Wallet:
-
-Automatically refund held balance
-
-### Ledger:
-
-Create transaction log
-
-### Safety:
-
-Prevent double refund using:
-
-* DB transaction
-* idempotency checks
-
-Use:
-`DB::transaction()`
-
-this is daily card API documentation link: https://www.dailycard.net/apiDocumentation
-
----
-
-# FEATURE 7 — Daily Card Completed Orders Bug
-
-Bug:
-Provider marks complete but local order stays processing.
-
-## Fix
-
-When provider sends completed:
-
-Update:
-
-* order status = completed
-* delivered_at = timestamp if field exists
-
-Trigger existing:
-
-* notifications
-* events
-* emails
-
-Do not duplicate notifications.
-
-this is daily card API documentation link: https://www.dailycard.net/apiDocumentation
-
-
----
-
-# FEATURE 8 — Block User Deposits
-
-Goal:
-Admin can prevent specific users from depositing.
-
-## Database
-
-Add fields to users table:
+Find where held money is created:
 
 Examples:
 
-* `deposit_blocked`
-* `deposit_block_message`
+* order placement
+* pending orders
+* provider reservations
+* refunds
+* cancellations
 
-Use migration safely.
+Look for code like:
 
-## Admin UI
+```php
+$held -= $amount
+```
 
-In user admin page:
+or
 
-Allow:
+```php
+$held = -$amount
+```
 
-* toggle deposit block
-* custom message
+or sign inversions in:
 
-## Frontend Logic
-
-Before deposit:
-
-Check user status.
-
-If blocked:
-
-Reject deposit and show custom message.
-
-Must enforce:
-
-* UI validation
-* backend validation
-* API validation
-
-Never rely only on frontend.
+* accessors
+* transformers
+* API resources
 
 ---
 
-# FEATURE 9 — Suspended Balance Admin Control Missing
+## Required Fix
 
-Bug:
-Suspended balance control disappeared.
+Held money must always be treated as:
 
-## Audit
+### Positive reserved money
+
+Meaning:
+
+Correct:
+
+* `23.60`
+
+Wrong:
+
+* `-23.60`
+
+---
+
+## Implementation Rules
+
+### Storage
+
+Normalize storage logic.
+
+Held balance must be saved as:
+
+```php
+abs($amount)
+```
+
+only where business logic confirms reserve funds.
+
+---
+
+### Existing Bad Data
+
+Create safe repair migration or command.
+
+Fix existing negative records:
+
+Convert:
+
+```sql
+-23.60 → 23.60
+```
+
+But ONLY for actual held balance fields.
+
+Do NOT mass-update without field verification.
+
+---
+
+### Safety
+
+Wrap repair in transaction:
+
+```php
+DB::transaction()
+```
+
+Create backup log before repair.
+
+---
+
+# BUG 2 — User Profile Available Balance Is Wrong
+
+## Problem
+
+Users see wrong available balance on their profile page.
+
+But admin dashboard shows correct value.
+
+This is a severe accounting inconsistency.
+
+---
+
+## Investigation Required
+
+Find both balance calculation paths:
+
+### User-facing balance
+
+Trace:
+
+* controller
+* API resource
+* accessor
+* frontend state
+
+### Admin balance
+
+Trace:
+
+* admin controller
+* queries
+* dashboard calculations
+
+Compare line-by-line.
+
+---
+
+## Likely Root Causes to Audit
+
+Check for:
+
+### Different formulas
+
+Example:
+
+User:
+
+```php
+wallet - held
+```
+
+Admin:
+
+```php
+wallet - pending - held
+```
+
+---
+
+### Cached values
 
 Check:
 
-* hidden UI conditions
-* permissions
-* feature flags
-* removed columns
-* policy checks
-
-## Fix
-
-Restore suspended balance controls in user management.
-
-Ensure:
-
-* only admins can edit
-
-Log all changes.
+* Redis
+* Laravel cache
+* session cache
+* frontend local storage
 
 ---
 
-# Quality Requirements
+### Different DB fields
 
-Before finishing:
+Example:
 
-## Database safety
+User reading:
 
-* Add proper migrations
-* Add rollback support
+```php
+users.balance
+```
 
-## Logging
+Admin reading:
 
-Add logs for:
+```php
+wallets.available_balance
+```
 
-* provider status changes
-* refunds
-* deposit blocks
-* maintenance mode activation
+---
 
-Use Laravel logs only where appropriate.
+### Accessor bugs
 
-## Tests
+Example:
 
-Create/update tests for:
+```php
+getAvailableBalanceAttribute()
+```
 
-* maintenance access
-* login redirects
-* refund logic
-* deposit blocking
-* provider status updates
+May be calculating incorrectly.
+
+---
+
+## Required Fix
+
+There must be ONE source of truth.
+
+Create centralized balance service:
+
+Example:
+
+`App\Services\WalletBalanceService`
+
+Method example:
+
+```php
+calculateAvailableBalance(User $user)
+```
+
+Use same method everywhere:
+
+### User profile
+
+### Admin dashboard
+
+### API responses
+
+### Order validations
+
+Remove duplicated formulas.
+
+---
+
+## Validation Required
+
+Test with users having:
+
+### No orders
+
+### Pending orders
+
+### Held money
+
+### Refunds
+
+### Completed orders
+
+### Failed orders
+
+All balance views must match exactly.
+
+---
+
+# BUG 3 — Daily Card Gift Card Completion Sync Broken
+
+## Problem
+
+When a user orders a gift card:
+
+### At Daily Card:
+
+Order becomes completed.
+
+### In our store:
+
+Order stays:
+
+`processing`
+
+Also:
+
+User does NOT receive gift card details.
+
+This breaks product delivery.
+
+---
+
+## Investigation Required
+
+Audit:
+
+### Provider integration
+
+Find:
+this is dailycard api documentation :"https://www.dailycard.net/apiDocumentation
+* webhook controllers
+* polling jobs
+* status mappers
+* provider response handlers
+
+---
+
+### Status mapping
+
+Document all Daily Card statuses.
+
+Examples:
+
+* pending
+* processing
+* completed
+* rejected
+* failed
+
+Check current mapping.
+
+---
+
+### Gift card delivery flow
+
+Find where gift card data is saved:
+
+Examples:
+
+* code
+* PIN
+* serial
+* redemption URL
+
+Search:
+
+```php
+gift_card
+code
+pin
+voucher
+serial
+delivery
+```
+
+---
+
+# Required Fix
+
+When Daily Card returns:
+
+### Completed
+
+System must:
+
+---
+
+## 1. Update order
+
+Change:
+
+```php
+processing → completed
+```
+
+Set:
+
+```php
+completed_at
+```
+
+if field exists.
+
+---
+
+## 2. Save gift card data
+
+Extract and store:
+
+If provider sends:
+
+* code
+* pin
+* serial
+* instructions
+
+Save all securely.
+
+Use encrypted storage if project already encrypts sensitive data.
+
+---
+
+## 3. Deliver to user
+
+User must be able to see gift card details in:
+
+### Orders page
+
+or
+
+### Gift card details page
+
+Use existing UI if available.
+
+If missing, wire existing fields into frontend.
+
+---
+
+## 4. Prevent duplicate processing
+
+Webhook/job may fire multiple times.
+
+Implement idempotency:
+
+Do not process completed order twice.
+
+Examples:
+
+If already completed:
+
+Skip.
+
+---
+
+## 5. Trigger existing events
+
+If project has:
+
+* notifications
+* emails
+* in-app alerts
+
+Trigger once only.
+
+---
+
+# Financial Safety Requirements
 
 Use:
-[PHPUnit]
 
-# Final Validation
+```php
+DB::transaction()
+```
+
+for:
+
+* balance updates
+* gift card saves
+* status updates
+
+Never partially update.
+
+---
+
+# Logging
+
+Add structured logs for:
+
+### Held balance repair
+
+### Balance calculation mismatch
+
+### Daily Card callbacks
+
+### Gift card fulfillment
+
+Include:
+
+* user_id
+* order_id
+* provider_status
+* old_value
+* new_value
+
+Do not log sensitive gift card codes.
+
+---
+
+# Tests Required
+
+Create/update [PHPUnit](https://phpunit.de?utm_source=chatgpt.com) tests for:
+
+---
+
+## Held balance
+
+Test:
+
+* reserve funds
+* refund
+* release
+
+Held balance must never become negative.
+
+---
+
+## Balance consistency
+
+Test:
+
+Same user balance across:
+
+* user profile
+* admin dashboard
+* API
+
+Must always match.
+
+---
+
+## Daily Card fulfillment
+
+Test:
+
+Provider sends completed.
+
+Assert:
+
+* order completed
+* gift card saved
+* user can access card
+* duplicate callbacks ignored
+
+---
+
+# Final Verification
 
 Run:
 
@@ -473,116 +665,34 @@ php artisan migrate
 php artisan test
 ```
 
-Then manually test:
-
-Customer:
-
-* login
-* order
-* share
-* deposit
-* payment page
-
-Admin:
-
-* maintenance mode
-* user settings
-* suspended balance
-
-Provider:
-
-* rejected orders
-* completed orders
-* duplicate callbacks
+Then manually verify with real sandbox/provider data.
 
 ---
 
-# Final Output Required From You
+# Required Final Output
 
 When finished, provide:
 
-1. Files changed
-2. Database migrations added
-3. Bugs fixed
-4. Edge cases handled
-5. Any breaking change risks
-6. Recommended next improvements
+## Root Causes Found
 
-Do not make assumptions. Inspect actual codebase first, then implement based on real architecture.
+Explain exact root cause for each bug.
 
----
+## Files Changed
 
-# Implementation Plan (Based on Codebase Audit)
+List every changed file.
 
-## Audit Summary
+## Database Changes
 
-- **Routes:** 
-  - `routes/web.php` contains web routes, admin routes (under `admin/` prefix), and `api/dailycard/webhook` route.
-  - `routes/auth.php` handles standard Laravel Breeze authentication.
-  - No separate `api.php` or `admin.php` files are currently used for main routing, everything is consolidated in `web.php` and `auth.php`.
-- **Controllers:** 
-  - Admin settings are managed by controllers like `AdminSiteSettingsController`. 
-  - Orders by `OrderController`, `OpsOrderController`.
-  - Auth handled by `AuthenticatedSessionController`.
-  - Webhooks by `DailyCardWebhookController`.
-- **Models:** 
-  - Settings are stored in the `SiteSetting` model with `key`/`value` structure. 
-  - `Order` manages order data and statuses, including provider tracking.
-  - `User` has `balance` and `available_balance` attributes, roles (using spatie/laravel-permission).
-  - `Wallet` manages user balances and held amounts.
-- **Frontend:**
-  - Layout is located in `resources/views/layouts/app.blade.php`. It uses Alpine.js (`x-data`) and Tailwind CSS.
-  - Alpine.js is used extensively for UI interactions (dark mode, dropdowns, etc.).
-- **Integrations:**
-  - Daily Card API logic is mostly inside `app/Services/DailyCardOrderService.php` and `app/Http/Controllers/Api/DailyCardWebhookController.php`.
-  - Local statuses and allowed transitions are managed by `app/Services/OrderStatusService.php`.
+List migrations/repair scripts.
+
+## Data Repairs
+
+Explain if old bad records were fixed.
+
+## Edge Cases Handled
+
+List duplicate callbacks, partial updates, stale cache, etc.
+
+Do NOT guess. Audit first, then implement using the actual architecture.
 
 ---
-
-## Feature Implementation Strategy
-
-### FEATURE 1: Store Maintenance Mode
-- **Settings:** Add `maintenance_enabled`, `maintenance_message`, `maintenance_image` keys via `SiteSetting` model and `AdminSiteSettingsController`.
-- **Middleware:** Create `app/Http/Middleware/CheckStoreMaintenance.php`.
-  - Register it in `bootstrap/app.php` (Laravel 11 style) or as a route middleware.
-  - Logic: Check `SiteSetting::get('maintenance_enabled')`. Allow access if `auth()->user()?->hasRole('admin')` or `request()->is('admin/*')` or `request()->routeIs('login')`.
-- **View:** Create `resources/views/maintenance.blade.php` acting as the fallback UI when triggered.
-
-### FEATURE 2: Global Loading Experience
-- **Admin Control:** Add `global_loader_enabled` to `SiteSetting`.
-- **Frontend:** Use a lightweight in-app loader, not an external Skeleton.js dependency. Modify `resources/views/layouts/app.blade.php` to show a fixed Alpine.js/native JS overlay on internal navigation, form submit, and active `fetch`/`axios` requests.
-- **Skeleton UI:** Use Tailwind-based skeleton placeholders only for async content sections where a full overlay would feel too heavy.
-- Ensure submit buttons are disabled during submissions to avoid duplicate actions.
-
-### FEATURE 3: Force Homepage Entry After Login
-- **Auth Flow:** Modify `AuthenticatedSessionController::store`.
-- **Logic:** After `Auth::login($user, ...)`, check if `$user->hasRole('admin')`.
-  - If admin, allow normal redirect (e.g., `redirect()->intended(route('dashboard'))`).
-  - If NOT admin, force `redirect()->route('home')` ignoring intended URL.
-
-### FEATURE 4: Desktop Order Sharing
-- **Audit:** Locate mobile sharing implementation (likely Web Share API in a blade component).
-- **Fix:** Provide a fallback for `navigator.share` on desktop. Add an Alpine.js modal/toast for desktop fallback that copies the URL to the clipboard since `navigator.share` is mostly supported on mobile and specific desktop browsers.
-
-### FEATURE 5: Payment Transfer Number Visibility Bug
-- **Audit:** Verify how transfer number is hidden in admin and stored in `PaymentMethod` or similar.
-- **Fix:** In the respective component or view (e.g., `deposit.show`), check the visibility rule before rendering the number. Clear view/config caches when the admin setting is toggled via `AdminPaymentMethodController`.
-
-### FEATURE 6: Daily Card Rejected Orders Sync Bug
-- **Root Cause:** Provider rejects but status remains 'processing'.
-- **Fix:** In `DailyCardWebhookController` and `DailyCardOrderService::mapToLocalStatus`, ensure rejected/failed mappings map to `Order::STATUS_REJECTED`. 
-- `OrderStatusService::updateStatus` already safely handles refunding `amount_held` when status moves to `rejected`. Verify this transition is smooth when triggered by the Webhook.
-
-### FEATURE 7: Daily Card Completed Orders Bug
-- **Fix:** Ensure `DailyCardWebhookController` maps completed statuses to `Order::STATUS_DONE`.
-- `OrderStatusService::updateStatus` handles the wallet settlement and fires `OrderStatusChangedNotification`.
-
-### FEATURE 8: Block User Deposits
-- **DB:** Add `is_deposit_blocked` (boolean) and `deposit_block_message` (string) to `users` table via a new migration.
-- **Model:** Update `User.php` `$fillable` fields.
-- **Admin:** Update `AdminUserController` and related views to allow toggling this field.
-- **Frontend/Backend Validation:** Add checks in `DepositController::store` and UI to block deposit creation if `is_deposit_blocked` is true.
-
-### FEATURE 9: Suspended Balance Admin Control
-- **Audit:** `held_balance` is stored in the `wallets` table.
-- **Fix:** Re-add the UI for modifying or viewing the suspended balance (`held_balance`) in the user administration views (e.g., `resources/views/admin/users/show.blade.php`), ensuring it hits a controller method with proper logging.

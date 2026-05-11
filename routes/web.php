@@ -251,6 +251,6 @@ Route::get('/debug/test-email', function () {
         return 'Failed to send email: ' . $e->getMessage();
     }
 });
-Route::get('/api/dailycard/webhook', [\App\Http\Controllers\Api\DailyCardWebhookController::class, 'handle'])->name('api.dailycard.webhook');
+Route::match(['get', 'post'], '/api/dailycard/webhook', [\App\Http\Controllers\Api\DailyCardWebhookController::class, 'handle'])->name('api.dailycard.webhook');
 
 require __DIR__ . '/auth.php';

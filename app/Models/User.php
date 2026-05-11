@@ -140,7 +140,7 @@ class User extends Authenticatable
      */
     public function getBalanceAttribute(): float
     {
-        return $this->wallet?->balance ?? 0.0;
+        return ($this->wallet?->balance ?? 0.0) + ($this->wallet?->held_balance ?? 0.0);
     }
 
     /**
@@ -148,11 +148,7 @@ class User extends Authenticatable
      */
     public function getAvailableBalanceAttribute(): float
     {
-        $wallet = $this->wallet;
-        if (!$wallet) {
-            return 0.0;
-        }
-        return $wallet->balance - ($wallet->held_balance ?? 0.0);
+        return $this->wallet?->balance ?? 0.0;
     }
 
     protected static function booted(): void

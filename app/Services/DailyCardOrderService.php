@@ -121,13 +121,31 @@ class DailyCardOrderService
         $providerStatus  = strtolower((string) ($data['status'] ?? ''));
         $replay          = isset($data['replay']) ? (string) $data['replay'] : null;
 
-        $changed = $order->provider_execution_status !== $executionStatus
-            || ($replay && $order->provider_replay !== $replay);
+        $giftCardData = null;
+        if (isset($data['cards']) && is_array($data['cards'])) {
+            $giftCardData = $data['cards'];
+        } elseif (isset($data['details'])) {
+            $giftCardData = $data['details'];
+        } elseif (isset($data['code']) || isset($data['pin']) || isset($data['serial'])) {
+            $giftCardData = [
+                ['code' => $data['code'] ?? null, 'pin' => $data['pin'] ?? null, 'serial' => $data['serial'] ?? null]
+            ];
+        }
 
-        $order->update([
+        $changed = $order->provider_execution_status !== $executionStatus
+            || ($replay && $order->provider_replay !== $replay)
+            || ($giftCardData && !$order->gift_card_data);
+
+        $orderUpdateData = [
             'provider_execution_status' => $executionStatus ?: $order->provider_execution_status,
             'provider_replay'           => $replay ?? $order->provider_replay,
-        ]);
+        ];
+        
+        if ($giftCardData && !$order->gift_card_data) {
+            $orderUpdateData['gift_card_data'] = $giftCardData;
+        }
+
+        $order->update($orderUpdateData);
 
         return [
             'ok'               => true,
@@ -135,6 +153,7 @@ class DailyCardOrderService
             'execution_status' => $executionStatus,
             'provider_status'  => $providerStatus,
             'error_message'    => null,
+            'gift_card_data'   => $giftCardData,
         ];
     }
 
